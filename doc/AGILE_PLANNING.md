@@ -73,7 +73,7 @@
     * Feature/Use Case 2: Enabling drag and drop and once done: a validation + save config
 
 * Team Member 7: Divyansh - Backend: data/engine
-    * Feature/Use Case 1
+    * Feature/Use Case 1: 
 
     * Feature/Use Case 2
 
