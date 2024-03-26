@@ -48,7 +48,6 @@
 
 * Team Member 2: Arnav - Backend Enginge/Data
     * Feature/Use Case 1: handle user input and update the view accordingly with user move
-
     * Feature/Use Case 2: set up mvc architecture   
 
 * Team Member 3: Yasha - Frontend: game play
@@ -67,7 +66,6 @@
 
 * Team Member 5: Philip - Backend engine
     * Feature/Use Case 1: Creating BaBa is you and its movement along the grid.
-
     * Feature/Use Case 2: Start with the reading of the rules (The algorithm to process and update new state changes)
 
 * Team Member 6: Nikita - Frontend: authoring engine
