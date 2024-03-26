@@ -58,9 +58,12 @@
     * Feature/Use Case 2: See information about the game/level and pause, end, or continue the gameplay.
 
 * Team Member 4: Joseph - Backend engine
-    * Feature/Use Case 1 : create an interface for objects on the screen. 
-
-    * Feature/Use Case 2 : create an abstraction for the properties that these objects can implement. 
+    * Feature/Use Case 1 : create an interface for all possible objects on the screen.
+    * Feature/Use Case 2 : create an abstraction for the properties that these objects can extend. 
+    * Feature/Use Case 3 : create basic validation to ensure game is winnable.
+    * Feature/Use Case 4 : read JSON file to figure out which objects have which properties.
+    * Feature/Use Case 5 : read JSON file to inform placement of objects on the intial Game player screen
+    * Feature/Use Case 6 : inform model of the properties objects have to know which abstractions to extend. 
 
 * Team Member 5: Philip - Backend engine
     * Feature/Use Case 1: Creating BaBa is you and its movement along the grid.
