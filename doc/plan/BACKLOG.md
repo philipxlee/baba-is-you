@@ -1,7 +1,11 @@
 # Backlog
 
 ## Authoring Environment - View
-1. 
+1. Loading and saving of levels from configuration files
+2. Drag and drop or Clicking feature that allows user to insert game elements
+   into the grid that represents the level being built.
+3. Creating grid and object panels
+4. Implementing the same visuals as the GamePlayer
 
 ## Authoring Environment - Model
 1. 
@@ -26,3 +30,8 @@
 
 ## GamePlayer - Controller
 1. Handle user input
+
+## JsonManager - Configuration
+1. Save authoring environment creations into JSON
+2. Load JSON files into both the authoring environment and game player
+3. Save current game in GamePlayer
