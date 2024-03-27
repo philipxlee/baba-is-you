@@ -13,11 +13,12 @@
   - Implement block factory to create blocks
   - Implement basic grid in view
   - Implement controller to handle player movement
+  - Start load/saving functionality with established schema
 
 
 ### Sprint 2
 - Authoring Environment
-  - Implement drag and drop functionality
+  - Implement drag and drop functionality or Clicking from one pane to the other
   - Code the validation for game winnability
   - Implement save configuration functionality
 - Game Player
