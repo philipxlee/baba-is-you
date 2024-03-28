@@ -15,10 +15,4 @@ public class BabaVisualBlock extends AbstractVisualBlock {
     visitor.visit(this);
   }
 
-  @Override
-  public void initializeBehaviors() {
-    addBehavior(new Controllable());
-    addBehavior(new Pushable());
-  }
-
 }
