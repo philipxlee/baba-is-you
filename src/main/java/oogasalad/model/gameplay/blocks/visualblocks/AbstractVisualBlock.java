@@ -2,6 +2,7 @@ package oogasalad.model.gameplay.blocks.visualblocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 public abstract class AbstractVisualBlock {
@@ -15,6 +16,8 @@ public abstract class AbstractVisualBlock {
     this.imagePath = imagePath;
     this.behaviors = new ArrayList<>();
   }
+
+  public abstract void accept(BlockVisitor visitor);
 
   public abstract void initializeBehaviors();
 
