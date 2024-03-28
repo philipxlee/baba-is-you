@@ -7,23 +7,17 @@ import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 
 public class Grid {
-  private static final int ROWS = 10;
-  private static final int COLS = 10;
   private AbstractBlock[][] grid;
   private RuleInterpreter parser;
   private KeyHandler keyHandler;
   private BlockFactory factory;
 
-  public Grid() {
-    this.grid = new AbstractBlock[ROWS][COLS];
+  public Grid(int rows, int cols) {
+    this.grid = new AbstractBlock[rows][cols];
     this.parser = new RuleInterpreter();
-    this.keyHandler = new KeyHandler();
-    tempInitializeGrid();
+    this.keyHandler = new KeyHandler(this);
     this.factory = new BlockFactory();
-  }
-
-  public void handleKeyPress(KeyCode key) {
-    keyHandler.handleKeyPress(key);
+    tempInitializeGrid();
   }
 
   // Call everytime there's a handle key press
@@ -38,18 +32,18 @@ public class Grid {
   private void tempInitializeGrid() {
     // Initialize grid with blocks
     String tempStringGrid[][] = {
-      {"Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"},
-      {"Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"},
-      {"Empty", "Empty", "RockTextBlock", "Empty", "Empty", "Empty", "Empty", "Empty"},
-      {"Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"},
-      {"Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"},
-      {"Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"},
-      {"Empty", "Empty", "Empty", "Empty", "BabaTextBlock", "IsTextBlock", "YouTextBlock", "Empty"},
-      {"BabaVisualBlock", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"}
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "RockVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "RockTextBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "BabaTextBlock", "IsTextBlock", "YouTextBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"BabaVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"}
     };
 
-    for (int i = 0; i < ROWS; i++) {
-      for (int j = 0; j < COLS; j++) {
+    for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
         this.grid[i][j] = factory.createBlock(tempStringGrid[i][j]);
       }
     }

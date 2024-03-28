@@ -1,6 +1,8 @@
 package oogasalad.model.gameplay.blocks;
 
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.strategies.Controllable;
+import oogasalad.model.gameplay.strategies.Strategy;
 
 public class AbstractBlock {
 
@@ -21,4 +23,5 @@ public class AbstractBlock {
     return this.getClass().getSimpleName();
   }
 
+  public boolean hasBehavior(Class<? extends Strategy> behaviorType) {return false;}
 }

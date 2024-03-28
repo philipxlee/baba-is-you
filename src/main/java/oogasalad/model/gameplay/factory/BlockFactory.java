@@ -7,6 +7,7 @@ import oogasalad.model.gameplay.blocks.textblocks.nouns.BabaTextBlock;
 import oogasalad.model.gameplay.blocks.textblocks.verbs.IsTextBlock;
 import oogasalad.model.gameplay.blocks.textblocks.nouns.RockTextBlock;
 import oogasalad.model.gameplay.blocks.textblocks.properties.YouTextBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 
 
 public class BlockFactory {
@@ -22,6 +23,7 @@ public class BlockFactory {
       case "IsTextBlock" -> new IsTextBlock("IsTextBlock", defaultImagePath);
       case "YouTextBlock" -> new YouTextBlock("YouTextBlock", defaultImagePath);
       case "BabaVisualBlock" -> new BabaVisualBlock("BabaVisualBlock", defaultImagePath);
+      case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock", defaultImagePath);
       default -> throw new IllegalArgumentException("Invalid block name");
     };
   }

@@ -11,7 +11,8 @@ public class RuleInterpreter {
         AbstractBlock firstBlock = abstractBlocks[col];
         AbstractBlock secondBlock = abstractBlocks[col + 1];
         AbstractBlock thirdBlock = abstractBlocks[col + 2];
-        if (firstBlock.isTextBlock() && secondBlock.isTextBlock() && thirdBlock.isTextBlock()) {
+        if (firstBlock != null &&  secondBlock != null && thirdBlock != null &&
+            firstBlock.isTextBlock() && secondBlock.isTextBlock() && thirdBlock.isTextBlock()) {
           processRule(firstBlock, secondBlock, thirdBlock, grid);
         }
       }
@@ -20,7 +21,6 @@ public class RuleInterpreter {
 
   private void processRule(AbstractBlock first, AbstractBlock second, AbstractBlock third, AbstractBlock[][] grid) {
     BlockVisitor visitor = determineVisitor(third.getBlockName());
-
     // Ensuring a visitor is available
     if (visitor == null) {
       return; // or handle error
@@ -30,6 +30,7 @@ public class RuleInterpreter {
     for (AbstractBlock[] row : grid) {
       for (AbstractBlock cell : row) {
         if (!cell.isTextBlock() && cell.matches(first.getBlockName())) {
+          System.out.println("Applying visitor to " + cell.getBlockName());
           cell.accept(visitor);
         }
       }

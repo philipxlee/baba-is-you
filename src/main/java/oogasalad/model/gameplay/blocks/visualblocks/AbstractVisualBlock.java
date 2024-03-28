@@ -28,6 +28,18 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     behaviors.removeIf(behaviorType::isInstance);
   }
 
+  @Override
+  public boolean hasBehavior(Class<? extends Strategy> behaviorType) {
+    return behaviors.stream().anyMatch(behaviorType::isInstance);
+  }
+
+ @Override
+  public boolean matches(String descriptor) {
+    // Remove "VisualBlock" from the block's class name and compare it to the descriptor
+    String normalizedBlockName = this.name.replace("VisualBlock", "");
+    return normalizedBlockName.equalsIgnoreCase(descriptor.replace("TextBlock", ""));
+  }
+
   public void executeBehaviors() {
     for (Strategy behavior : behaviors) {
       behavior.execute(this);
