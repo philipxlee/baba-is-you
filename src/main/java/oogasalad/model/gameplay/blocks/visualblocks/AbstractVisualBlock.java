@@ -2,10 +2,11 @@ package oogasalad.model.gameplay.blocks.visualblocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.strategies.Strategy;
 
-public abstract class AbstractVisualBlock {
+public abstract class AbstractVisualBlock extends AbstractBlock {
 
   private final String name;
   private final String imagePath;

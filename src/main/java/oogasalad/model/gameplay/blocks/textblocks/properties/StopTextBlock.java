@@ -1,5 +1,5 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
-public class WallTextBlock {
+public class StopTextBlock {
 
 }
