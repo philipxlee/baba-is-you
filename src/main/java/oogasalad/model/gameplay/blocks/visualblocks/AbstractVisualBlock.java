@@ -35,4 +35,8 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
       behavior.execute(this);
     }
   }
+
+  public String getBlockName() {
+    return name;
+  }
 }

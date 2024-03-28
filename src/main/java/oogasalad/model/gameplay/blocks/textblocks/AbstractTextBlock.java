@@ -18,15 +18,9 @@ public abstract class AbstractTextBlock extends AbstractBlock {
     return true;
   }
 
-  @Override
-  public void checkRuleIfTextBlock(AbstractBlock second, AbstractBlock third, Grid grid, int x, int y) {
-    if (second.isTextBlock() && third.isTextBlock()) {
-      grid.processRule(this, second, third, x, y);
-    }
-  }
 
-  public String getName() {
-    return name;
+  public String getBlockName() {
+    return this.name;
   }
 
 }

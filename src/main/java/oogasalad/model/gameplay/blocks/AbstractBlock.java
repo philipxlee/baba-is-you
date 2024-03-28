@@ -1,6 +1,6 @@
 package oogasalad.model.gameplay.blocks;
 
-import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
 public class AbstractBlock {
 
@@ -8,8 +8,17 @@ public class AbstractBlock {
     return false;
   }
 
-  public void checkRuleIfTextBlock(AbstractBlock abstractBlock, AbstractBlock block, Grid grid,
-      int col, int row) {
-    // Intentionally empty, to be overridden
+  public boolean matches(String descriptor) {
+    return this.getClass().getSimpleName().equals(descriptor);
   }
+
+  public void accept(BlockVisitor visitor) {
+    // Default implementation does nothing.
+    // Only visual blocks will override this to actually accept visitors.
+  }
+
+  public String getBlockName() {
+    return this.getClass().getSimpleName();
+  }
+
 }
