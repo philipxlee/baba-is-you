@@ -2,11 +2,23 @@ package oogasalad.model.gameplay.interpreter;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.*;
-import oogasalad.model.gameplay.grid.Grid;
 
 public class RuleInterpreter {
 
-  public void processRule(AbstractBlock first, AbstractBlock second, AbstractBlock third, Grid grid) {
+  public void interpretRules(AbstractBlock[][] grid) {
+    for (AbstractBlock[] abstractBlocks : grid) {
+      for (int col = 0; col < abstractBlocks.length - 2; col++) {
+        AbstractBlock firstBlock = abstractBlocks[col];
+        AbstractBlock secondBlock = abstractBlocks[col + 1];
+        AbstractBlock thirdBlock = abstractBlocks[col + 2];
+        if (firstBlock.isTextBlock() && secondBlock.isTextBlock() && thirdBlock.isTextBlock()) {
+          processRule(firstBlock, secondBlock, thirdBlock, grid);
+        }
+      }
+    }
+  }
+
+  private void processRule(AbstractBlock first, AbstractBlock second, AbstractBlock third, AbstractBlock[][] grid) {
     BlockVisitor visitor = determineVisitor(third.getBlockName());
 
     // Ensuring a visitor is available
@@ -15,8 +27,7 @@ public class RuleInterpreter {
     }
 
     // Loop through the grid to apply the visitor to all matching visual blocks
-    AbstractBlock[][] gridArray = grid.getGrid();
-    for (AbstractBlock[] row : gridArray) {
+    for (AbstractBlock[] row : grid) {
       for (AbstractBlock cell : row) {
         if (!cell.isTextBlock() && cell.matches(first.getBlockName())) {
           cell.accept(visitor);

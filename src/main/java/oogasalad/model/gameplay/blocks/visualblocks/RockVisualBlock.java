@@ -14,8 +14,4 @@ public class RockVisualBlock extends AbstractVisualBlock {
     visitor.visit(this);
   }
 
-  @Override
-  public void initializeBehaviors() {
-    addBehavior(new Pushable());
-  }
 }

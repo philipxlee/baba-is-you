@@ -20,8 +20,6 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
 
   public abstract void accept(BlockVisitor visitor);
 
-  public abstract void initializeBehaviors();
-
   public void addBehavior(Strategy behavior) {
     this.behaviors.add(behavior);
   }
