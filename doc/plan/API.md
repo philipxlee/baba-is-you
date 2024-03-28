@@ -10,6 +10,52 @@
 ## GamePlayer
 ### View
 
+--- 
+
+```java
+import java.util.ArrayList;
+
+//Cell wrapper to hold multiple blocks in one grid of the cell
+public class CellView {
+
+  private List<BlockView> content;
+
+  public CellView() {
+    this.content = new ArrayList<>();
+  }
+
+  public List<BlockView> getViews() {
+    return content.clone();
+  }
+}
+
+public abstract class BlockView {
+  private StackPane stackPane;
+  public BlockView initializeBlock(String imgPath) {
+    //Initalizes some JavaFX object with the image from the imagePath
+  }
+  //Or whatever JavaFX obj it is
+  public StackPane getView() {
+    return this.stackPane;
+  }
+}
+
+  //For each subclass
+  public class BabaView extends BlockView {
+  }
+  public class WallView extends BlockView {
+  }
+  //etc...
+}
+```
+- Abstract BlockView paradigm for the visual representations of the game objects.
+  - Ideally has a hierarchy, different block types are abstraction by the superclass BlockView
+  - CellView is made to keep track of and hold multiple blocks that can exist in the same grid cell. 
+  Its contents should be ordered to determine the overlap and which block(s) Baba can interact with.
+  - This makes the front-end grid easier to deal with because it will just be a 2D array of CelLView
+  objects.
+---  
+
 
 
 ### Controller

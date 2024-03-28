@@ -59,4 +59,30 @@
   - ErrorHandler interface will allow for error pop ups through an
     onError(AlertType type, String message) method
 
+##### View - Keyboard presses/Screen interactions - Yasha
+- Game is paused (Positive Test)
+  - GIVEN a working frontend with timeline functionality
+  - IF a user presses the pause button
+  - THEN the game time should pause and a splash screen should show with a continue button
+  - We would confirm this by checking that the time stays the same and the main screen switches to this
+  pause screen.
+- Keyboard keys that aren't arrows are pressed (Negative Test)
+  - GIVEN functionality for the handleKeyboardPress() method in the View
+  - IF a user presses keys that aren't arrow buttons
+  - THEN Baba/all blocks should remain in the same place.
+  - We could check this by ensuring the position of both the front and backend blocks remain in the same 
+  place. (The backend would probably be a separate test though)
+- The Left arrow key is pressed (Positive Test)
+  - GIVEN functionality for the handleKeyboardPress() method in the View
+  - IF a user presses the left arrow
+  - THEN the View should move Baba/associated blocks to the left.
+  - This would be checked by checking all associated blocks.
+- User presses on blocks/parts of the game screen (Negative Test)
+  - GIVEN a separate functionality for a game screen (Baba Is You gameplay) and an interaction screen
+    (where you can load a file and pick new games),
+  - IF the user clicks on any of the blocks in the game screen,
+  - THEN nothing should happen.
+  - We can check this by ensuring the positions of all blocks remain the same. You should only be able
+  to click on icons in the interaction screen and the pause button in the game screen.
+
 ##### [NEXT API] - AUTHOR

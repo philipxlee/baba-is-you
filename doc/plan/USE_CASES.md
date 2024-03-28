@@ -38,6 +38,35 @@ class Winnable implements Component {
 }
 ```
 
-* 
+--- 
 
+* Use case 2: renderGrid() in the View/GameScene class
+  * This method is called to iterate over the CellView[][] frontend grid and render each object in the
+  screen.
+  * It is rendered everytime there is a backend change that needs to be reflected in the frontend.
+
+```java
+class GameScene implements Scene {
+  private GridPane grid;
+  private int rows;
+  private int cols;
+  public GameScene() {
+    //Initializes the scene here with the grid...
+  }
+  
+  //Calls everytime the backend game objects change/every iteration
+  public void renderObjects(CellView[][] cells) {
+    for (int i=0; i<rows; i++) {
+      for (int j=0; j<cols; j++) {
+        //Whatever the JavaFX object is...
+        for (BlockView block: cell[i][j].getViews()) {
+          StackPane pane = block.getView();
+          grid.add(pane, j, i);
+        }
+      }
+    }
+  }
+}
+
+```
 --- 
