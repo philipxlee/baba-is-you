@@ -34,4 +34,29 @@
   - Expected Outcome: The block does not move.
   - By checking the block's position remains unchanged and ensuring no exceptions are thrown, we confirm the grid boundary logic is correct.
 
+##### Loading/Saving - Jonathan
+- File Loads in Correctly (Positive Test)
+  - GIVEN a working load feature in the GamePlayer and Authoring Environment
+  - IF the user uploads a file through a file chooser
+  - THEN the testing should return the correct file
+  - We would confirm that it is working by checking that the file is not null and that the path 
+  matches that of the file chosen.
+- Invalid File is uploaded (Negative Test)
+  - GIVEN a working load feature in the GamePlayer and Authoring Environment
+  - IF the user uploads an invalid file
+  - THEN an error pop up should appear that describes why the file is invalid
+  - ErrorHandler interface will allow for error pop ups through an 
+  onError(AlertType type, String message) method
+- File Saves Correctly (Positive Test)
+  - GIVEN a working save feature in the GamePlayer and Authoring Environment
+  - IF the user saves an authoring environment or current game 
+  - THEN the saved file should load into both authoring environment and game player accurately
+  - We would confirm this by verifying the size of the grid and the location of specific blocks. 
+- File Does Not Save Correctly (Negative Test)
+  - GIVEN a working save feature in the GamePlayer and Authoring Environment
+  - IF the user saves a game or level file that is invalid
+  - THEN an error message should pop up explaining why the current state cannot be saved. 
+  - ErrorHandler interface will allow for error pop ups through an
+    onError(AlertType type, String message) method
+
 ##### [NEXT API] - AUTHOR
