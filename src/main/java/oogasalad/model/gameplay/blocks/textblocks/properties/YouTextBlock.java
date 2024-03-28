@@ -1,5 +1,10 @@
-package oogasalad.model.gameplay.blocks.textblocks;
+package oogasalad.model.gameplay.blocks.textblocks.properties;
 
-public class YouTextBlock {
+import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
+public class YouTextBlock extends AbstractTextBlock {
+
+  public YouTextBlock(String name, String imagePath) {
+    super(name, imagePath);
+  }
 }

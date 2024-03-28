@@ -1,5 +1,12 @@
-package oogasalad.model.gameplay.blocks.textblocks;
+package oogasalad.model.gameplay.blocks.textblocks.properties;
 
-public class StopTextBlock {
+import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
+
+public class StopTextBlock extends AbstractTextBlock {
+
+  public StopTextBlock(String name, String imagePath) {
+    super(name, imagePath);
+  }
+
 
 }

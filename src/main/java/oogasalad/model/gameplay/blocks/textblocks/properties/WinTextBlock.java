@@ -1,5 +1,12 @@
-package oogasalad.model.gameplay.blocks.textblocks;
+package oogasalad.model.gameplay.blocks.textblocks.properties;
 
-public class WinTextBlock {
+
+import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
+
+public class WinTextBlock extends AbstractTextBlock {
+
+  public WinTextBlock(String name, String imagePath) {
+    super(name, imagePath);
+  }
 
 }

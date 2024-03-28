@@ -1,5 +1,11 @@
-package oogasalad.model.gameplay.blocks.textblocks;
+package oogasalad.model.gameplay.blocks.textblocks.verbs;
 
-public class IsTextBlock {
+import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
+
+public class IsTextBlock extends AbstractTextBlock {
+
+  public IsTextBlock(String name, String imagePath) {
+    super(name, imagePath);
+  }
 
 }
