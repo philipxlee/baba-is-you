@@ -1,5 +1,7 @@
 package oogasalad.model.gameplay.blocks.visualblocks;
 
+import oogasalad.model.gameplay.strategies.Stoppable;
+
 public class WallVisualBlock extends AbstractVisualBlock {
 
   public WallVisualBlock(String name, String imagePath) {
@@ -8,7 +10,7 @@ public class WallVisualBlock extends AbstractVisualBlock {
 
   @Override
   public void initializeBehaviors() {
-    // No behaviors
+    addBehavior(new Stoppable());
   }
 
 }
