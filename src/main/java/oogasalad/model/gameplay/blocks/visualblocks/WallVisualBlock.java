@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay.blocks.VisualBlocks;
+package oogasalad.model.gameplay.blocks.visualblocks;
 
 public class WallVisualBlock extends AbstractVisualBlock {
 

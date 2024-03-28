@@ -1,6 +1,6 @@
 package oogasalad.model.gameplay.strategies;
 
-import oogasalad.model.gameplay.blocks.VisualBlocks.AbstractVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 
 public class Controllable implements Strategy {
 
