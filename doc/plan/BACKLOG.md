@@ -8,10 +8,14 @@
 4. Implementing the same visuals as the GamePlayer
 
 ## Authoring Environment - Model
-1. 
+1. Creating Level Representation (Iterator)
+2. Creating Block Representation
+3. Methods to easily modify Level's grid 
+4. Methods to easily modify Level's metadata
 
 ## Authoring Environment - Controller
-1.
+1. API for View to interact with Model
+2. Parse 
 
 
 ## GamePlayer - View

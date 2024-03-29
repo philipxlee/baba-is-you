@@ -4,6 +4,9 @@
 
 ## Introduction
 - We will have two programs: Authoring Environment and Game Player
+- Each application will be setup with a model-view controller architecture
+- The Authoring environment will be responsible for creating a variation of a Baba is You game (JSON file)
+- The Game player will be responsible for reading and playing a variation of a Baba is You game (JSON file)
 - These two programs also have shared APIs and classes
 
 ### Shared
