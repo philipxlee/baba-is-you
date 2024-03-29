@@ -111,6 +111,7 @@
 * We will use the Factory design pattern
 * We will use the Strategy design pattern
 * We will use the Visitor design pattern
+* We'll be sharing APIs between the respective models and views to avoid repetition.
 
 
 
