@@ -14,7 +14,7 @@ without breaking existing functionality.
 #### Level Management
 Represents a game level, including its dimensions and the objects it contains.
 
-```
+```java
 
 public class LevelManager {
 
@@ -35,10 +35,10 @@ public class LevelManager {
 Represents an entity within a level, such as blocks, characters, or text elements, along 
 with its properties and position.
 
-```
+```java
 public class ObjectManager {
 
-    public GameObject createObject(String type, int x, int y) {
+    public BlockView createObject(String type, int x, int y) {
     }
 
     public void moveObject(BlockView object, int newX, int newY) {
@@ -55,7 +55,7 @@ public class ObjectManager {
 #### Rule Management
 Dictates the behavior and interactions between objects within the level based on predefined logic.
 
-```
+```java
 public class RuleManager {
 
     public Rule createRule(String subject, String verb, String object) {

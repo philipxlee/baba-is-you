@@ -4,6 +4,47 @@
 
 ### Authoring Environment
 
+* Use Case 1: createObject()
+
+```java
+public BlockView createObject(String type, int x, int y) {
+  // This method would need to be expanded to handle different types of BlockView subclasses.
+  BlockView newObject = switch (type) {
+    case "Wall" -> new WallBlock(x, y); // Assuming a WallBlock class exists extending BlockView
+    // Add cases for other types
+    default -> throw new IllegalArgumentException("Unsupported block type: " + type);
+  };
+  currentLevel.objects.add(newObject);
+  return newObject;
+}
+```
+
+* Use Case 2: Some Level Management methods
+
+```java
+public class LevelManager {
+
+  private final Map<String, Level> levels = new HashMap<>();
+
+  public Level createLevel(String name, int width, int height) {
+    String levelId = UUID.randomUUID().toString();
+    Level newLevel = new Level(levelId, name, width, height);
+    levels.put(levelId, newLevel);
+    return newLevel;
+  }
+
+  public Level loadLevel(String levelId) {
+    return levels.get(levelId);
+  }
+
+  public void saveLevel(Level level) {
+    // Assuming a simplistic save mechanism here. This would likely involve serializing the level state
+    // and writing it to a file or database in a real application.
+    levels.put(level.id, level);
+  }
+}
+
+```
 
 ---
 
