@@ -140,9 +140,6 @@ public class AbstractBlock {
 ---
 
 
-<<<<<<< HEAD
---- 
-
 ### Configuration Files
 
 ---
@@ -212,5 +209,4 @@ jsonManager.getValue(levelOneObject, "grid");
 JsonManager jsonManager = new JsonManager();
 jsonManager.setValue(levelOneObject, "grid", ["babaBlock", "textBlock", "wallBlack"]);
 ```
-=======
->>>>>>> feccb0ccbd189e8dc2c78340daa5ad4dfe701cb8
+
