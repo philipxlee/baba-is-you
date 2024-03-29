@@ -4,6 +4,64 @@
 
 ### Authoring Environment
 
+Use Case : Adding element from view to model through the controller. Implementation of Controller and Model interfaces for demo :
+
+```java
+
+interface AuthoringEnvironmentController {
+void addGameElement(Object element, int row, int column);
+}
+
+interface AuthoringEnvironmentModel {
+void addGameElement(Object element, int row, int column);
+}
+
+class AuthoringEnvironmentControllerImpl implements AuthoringEnvironmentController {
+private final AuthoringEnvironmentModel model;
+
+    public AuthoringEnvironmentControllerImpl(AuthoringEnvironmentModel model) {
+        this.model = model;
+    }
+
+    @Override
+    public void addGameElement(Object element, int row, int column) {
+        model.addGameElement(element, row, column);
+    }
+}
+
+class AuthoringEnvironmentModelImpl implements AuthoringEnvironmentModel {
+private Object[][] grid; // Representing the grid of the authoring environment
+
+    public AuthoringEnvironmentModelImpl(int rows, int columns) {
+        this.grid = new Object[rows][columns];
+    }
+
+    @Override
+    public void addGameElement(Object element, int row, int column) {
+        if (row >= 0 && row < grid.length && column >= 0 && column < grid[0].length) {
+            grid[row][column] = element; //not exactly sure of the implementation/structure of grid cells, but conveys the idea.
+                  //might have to do something like grid[row][column].append(element);
+            System.out.println("Added " + element.toString() + " to grid cell [" + row + ", " + column + "]");
+        } else {
+            System.out.println("Invalid grid cell coordinates");
+        }
+    }
+}
+
+public class Main {
+public static void main(String[] args) {
+// First creating an instance of the AuthoringEnvironmentModel. choosing random arbitrary for now. 
+AuthoringEnvironmentModel model = new AuthoringEnvironmentModelImpl(5, 5);
+
+        // instance of the AuthoringEnvironmentController and injecting the model
+        AuthoringEnvironmentController controller = new AuthoringEnvironmentControllerImpl(model);
+
+        // Adding a game element such as like a block to a specific grid cell
+        controller.addGameElement("Block", 2, 3);
+    }
+}
+
+```
 
 ---
 
