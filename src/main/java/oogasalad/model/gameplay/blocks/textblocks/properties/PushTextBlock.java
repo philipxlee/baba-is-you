@@ -2,9 +2,17 @@ package oogasalad.model.gameplay.blocks.textblocks.properties;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
+/**
+ * A text block that represents the "push" property.
+ */
 public class PushTextBlock extends AbstractTextBlock {
 
-  public PushTextBlock(String name, String imagePath) {
-    super(name, imagePath);
+  /**
+   * Creates a new "push" text block.
+   *
+   * @param name the name of the block.
+   */
+  public PushTextBlock(String name) {
+    super(name);
   }
 }

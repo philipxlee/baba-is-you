@@ -25,10 +25,13 @@ public class MainController extends Application {
     Scene scene = new Scene(root, 400, 400);
     this.root = root;
     renderGrid(root);
+
+    // NOTE: This ORDER of event handling is important and INTENTIONAL
     scene.setOnKeyPressed(event -> {
-      keyHandler.handleKeyPress(event.getCode());
-      gameGrid.checkForRules();
-      renderGrid(root);  // Re-render grid after handling key press
+      gameGrid.checkForRules(); // FIRST, SCAN GRID FOR RULES
+      keyHandler.handleKeyPress(event.getCode()); // THEN HANDLE USER KEY PRESS
+      renderGrid(root);  // THEN RENDER THE NEW GRID
+      resetAllBlocks(); // THEN RESET ALL BLOCKS
     });
 
     stage.setScene(scene);
@@ -40,6 +43,18 @@ public class MainController extends Application {
     launch(args);
   }
 
+  private void resetAllBlocks() {
+    // Reset all behaviors
+    AbstractBlock[][] grid = gameGrid.getGrid();
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        AbstractBlock block = grid[i][j];
+        if (!block.isTextBlock()) {
+          block.resetAllBehaviors();
+        }
+      }
+    }
+  }
 
   private void renderGrid(Group root) {
     root.getChildren().clear();
@@ -65,8 +80,4 @@ public class MainController extends Application {
       default -> Color.BLACK;
     };
   }
-
-
-
-
 }

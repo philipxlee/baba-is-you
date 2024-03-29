@@ -1,14 +1,26 @@
 package oogasalad.model.gameplay.blocks.visualblocks;
 
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
-import oogasalad.model.gameplay.strategies.Pushable;
 
+/**
+ * A visual block that represents a rock in the game.
+ */
 public class RockVisualBlock extends AbstractVisualBlock {
 
-  public RockVisualBlock(String name, String imagePath) {
-    super(name, imagePath);
+  /**
+   * Constructor for the RockVisualBlock class.
+   *
+   * @param name the name of the block.
+   */
+  public RockVisualBlock(String name) {
+    super(name);
   }
 
+  /**
+   * Initializes the behaviors of the rock block.
+   *
+   * @param visitor The visitor to accept.
+   */
   @Override
   public void accept(BlockVisitor visitor) {
     visitor.visit(this);
