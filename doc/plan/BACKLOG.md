@@ -12,22 +12,22 @@
 9. Be able to classify different blocks (rule subject, rule relationship, rule predicate, objects)
 
 ## Authoring Environment - Model
-1. Creating Level Representation (Iterator)
+1. Creating Level Representation (Iterator?)
 2. Creating Block Representation
-3. Methods to easily modify Level's grid 
+3. Methods to easily modify Level's grid
 4. Methods to easily modify Level's metadata
+5. Methods to clear and reset Level
 
 ## Authoring Environment - Controller
-1. Read and update 2D grid from controller
-2. Load previously constructed levels from JSON for editing
-3. Save current levels 
-4. Update grid dimensions dynamically on the backend
-5. Implement validations for valid game constructions
-
-## Authoring Environment - Controller
-1. Handle basic errors and exceptions in authoring environment. 
-2. Relay user commands from the View to the Model and update the View with changes in the Model.
-3. Receiving and processing user input from the View.
+1. Serve as API for View to interact with Model
+2. Read and update specific position of 2D grid with Block from controller
+3. Load previously constructed levels from JSON for editing
+4. Save current levels (Serialize to JSON)
+5. Update grid dimensions dynamically on the backend
+6. Implement validations for valid game constructions
+7. Handle basic errors and exceptions in authoring environment. 
+8. Relay user commands from the View to the Model and update the View with changes in the Model.
+9. Receiving and processing user input from the View.
 
 ## GamePlayer - View
 1. Moving the Baba character around the screen with arrows keys
@@ -44,11 +44,14 @@
 3. Movement of blocks via handlers
 4. Observer pattern to listen to model to update the View
 5. Components pattern to establish dynamic rule changes
-6. Rule interpretation via interpreter 
+6. Rule interpretation via interpreter
 7. Loading of levels from configuration files
 
 ## GamePlayer - Controller
-1. Handle user input
+1. Act as an API for the View to interact with the Model
+2. Method to request new game state given event (e.g. key press)
+3. Instantiate frontend abstractions based on backend abstractions using reflection
+4. Use Model as a data store to modify as events are given to it by the View
 
 ## JsonManager - Configuration
 1. Save authoring environment creations into JSON
