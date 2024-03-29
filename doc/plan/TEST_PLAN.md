@@ -2,6 +2,7 @@
 
 ---
 
+
 ### Strategies for Enhancing API Testability:
 - Incorporating Dependency Injection (DI): 
   - We will implement or focus on introducing DI to facilitate easier testing and better isolation of our components. 
@@ -59,4 +60,21 @@
   - ErrorHandler interface will allow for error pop ups through an
     onError(AlertType type, String message) method
 
+##### Rule Interaction - Joseph
+- Creating a New Rule (Positive Test):
+  - Action: Creating a new rule by aligning the words "BABA", "IS", and "YOU".
+  - Expected Outcome: The character named BABA becomes controllable by the player.
+  - Verification: Verify that the player can now move the character BABA according to the rules.
+- Overlapping Rules (Negative Test):
+  - Action: Overlapping conflicting rules, such as "BABA IS YOU" and "BABA IS WIN".
+  - Expected Outcome: The game should handle conflicting rules gracefully without crashing.
+  - Verification: Ensure that the game does not allow contradictory rules to simultaneously apply, maintaining game integrity.
+- Achieving Victory (Positive Test):
+  - Action: Aligning the words "BABA", "IS", and "WIN" to make BABA the winning condition.
+  - Expected Outcome: The level is completed when BABA reaches the winning condition.
+  - Verification: Confirm that the victory condition is triggered when BABA overlaps with the winning object.
+- Unreachable Victory (Negative Test):
+  - Action: Making the winning condition unreachable due to blocked paths or conflicting rules.
+  - Expected Outcome: The level remains incomplete until the victory condition becomes reachable.
+  - Verification: Ensure that the victory condition is not triggered prematurely and that the player must solve the level correctly to win.
 ##### [NEXT API] - AUTHOR

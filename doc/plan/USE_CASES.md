@@ -19,7 +19,10 @@
   * This method is called when two blocks interact with each other.
   * It is used to determine the outcome of the interaction based on the rules of the game.
   * For example, if a player block moves onto a win condition block, the game should be marked as won.
-
+* Use case 3: Winnable():
+  * This method is called after the level is created
+  * Checks to ensure that the author hasn't created an impossible level
+  * For example: if flag is win and flag is not present on the level, this represents an unwinnable game. 
 ```java
 class Winnable implements Component {
     private boolean isWinCondition = false;
