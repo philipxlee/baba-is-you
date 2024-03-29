@@ -2,6 +2,7 @@
 
 ---
 
+
 ### Strategies for Enhancing API Testability:
 - Incorporating Dependency Injection (DI): 
   - We will implement or focus on introducing DI to facilitate easier testing and better isolation of our components. 
@@ -63,6 +64,26 @@
   - ErrorHandler interface will allow for error pop ups through an
     onError(AlertType type, String message) method
 
+
+##### Rule Interaction - Joseph
+- Creating a New Rule (Positive Test):
+  - Action: Creating a new rule by aligning the words "BABA", "IS", and "YOU".
+  - Expected Outcome: The character named BABA becomes controllable by the player.
+  - Verification: Verify that the player can now move the character BABA according to the rules.
+- Overlapping Rules (Negative Test):
+  - Action: Overlapping conflicting rules, such as "BABA IS YOU" and "BABA IS WIN".
+  - Expected Outcome: The game should handle conflicting rules gracefully without crashing.
+  - Verification: Ensure that the game does not allow contradictory rules to simultaneously apply, maintaining game integrity.
+- Achieving Victory (Positive Test):
+  - Action: Aligning the words "BABA", "IS", and "WIN" to make BABA the winning condition.
+  - Expected Outcome: The level is completed when BABA reaches the winning condition.
+  - Verification: Confirm that the victory condition is triggered when BABA overlaps with the winning object.
+- Unreachable Victory (Negative Test):
+  - Action: Making the winning condition unreachable due to blocked paths or conflicting rules.
+  - Expected Outcome: The level remains incomplete until the victory condition becomes reachable.
+  - Verification: Ensure that the victory condition is not triggered prematurely and that the player must solve the level correctly to win.
+
+
 ##### View - Keyboard presses/Screen interactions - Yasha
 - Game is paused (Positive Test)
   - GIVEN a working frontend with timeline functionality
@@ -88,5 +109,36 @@
   - THEN nothing should happen.
   - We can check this by ensuring the positions of all blocks remain the same. You should only be able
   to click on icons in the interaction screen and the pause button in the game screen.
+
+
+##### Authoring Environment - Adding blocks and elements : Divyansh
+
+- Adding a Block Element to an Empty Grid Cell (Positive Test)
+
+    - GIVEN a grid with at least one empty space
+    - IF the user inserts a block element into an empty grid cell
+    - THEN the block element should occupy the specified grid cell
+    - We verify this by checking if the specified grid cell contains the inserted block element after the insertion operation. 
+  
+- Attempting to Add a Block Element to an Occupied Grid Cell (Negative Test)
+
+  - GIVEN a grid with a block element already occupying a specific grid cell
+  - IF the user attempts to insert another block element into the same grid cell
+  - THEN the insertion operation should fail, and the grid cell should remain unchanged
+  - We can confirm this by checking if the grid cell still contains the initial block element after the insertion attempt.
+
+- Adding a Block Element Outside Grid Boundaries (Negative Test)
+
+  - GIVEN a grid with predefined boundaries
+  - IF the user tries to insert a block element outside the grid boundaries
+  - THEN the insertion operation should fail, and no block element should be added
+  - We verify this by checking that the grid remains unchanged after the insertion attempt, and no exceptions are thrown.
+
+- Modifying an Existing Block Element (Positive Test)
+
+  - GIVEN a grid with an existing block element occupying a specific grid cell
+  - IF the user modifies the properties or characteristics of the existing block element
+  - THEN the changes should be reflected in the grid cell containing the block element
+  - We confirm this by checking that the modified properties of the block element are accurately represented in the corresponding grid cell.
 
 ##### [NEXT API] - AUTHOR

@@ -43,6 +43,66 @@ public class LevelManager {
     levels.put(level.id, level);
   }
 }
+```
+  
+  
+Use Case 3: Adding element from view to model through the controller. Implementation of Controller 
+and Model interfaces for demo
+
+```java
+
+interface AuthoringEnvironmentController {
+void addGameElement(Object element, int row, int column);
+}
+
+interface AuthoringEnvironmentModel {
+void addGameElement(Object element, int row, int column);
+}
+
+class AuthoringEnvironmentControllerImpl implements AuthoringEnvironmentController {
+private final AuthoringEnvironmentModel model;
+
+    public AuthoringEnvironmentControllerImpl(AuthoringEnvironmentModel model) {
+        this.model = model;
+    }
+
+    @Override
+    public void addGameElement(Object element, int row, int column) {
+        model.addGameElement(element, row, column);
+    }
+}
+
+class AuthoringEnvironmentModelImpl implements AuthoringEnvironmentModel {
+private Object[][] grid; // Representing the grid of the authoring environment
+
+    public AuthoringEnvironmentModelImpl(int rows, int columns) {
+        this.grid = new Object[rows][columns];
+    }
+
+    @Override
+    public void addGameElement(Object element, int row, int column) {
+        if (row >= 0 && row < grid.length && column >= 0 && column < grid[0].length) {
+            grid[row][column] = element; //not exactly sure of the implementation/structure of grid cells, but conveys the idea.
+                  //might have to do something like grid[row][column].append(element);
+            System.out.println("Added " + element.toString() + " to grid cell [" + row + ", " + column + "]");
+        } else {
+            System.out.println("Invalid grid cell coordinates");
+        }
+    }
+}
+
+public class Main {
+public static void main(String[] args) {
+// First creating an instance of the AuthoringEnvironmentModel. choosing random arbitrary for now. 
+AuthoringEnvironmentModel model = new AuthoringEnvironmentModelImpl(5, 5);
+
+        // instance of the AuthoringEnvironmentController and injecting the model
+        AuthoringEnvironmentController controller = new AuthoringEnvironmentControllerImpl(model);
+
+        // Adding a game element such as like a block to a specific grid cell
+        controller.addGameElement("Block", 2, 3);
+    }
+}
 
 ```
 
@@ -56,6 +116,15 @@ public class LevelManager {
   * This method is called when a block is placed on the grid. 
   * It is used to apply the rules of the game to the block.
   * For example, if a block is placed on the grid with the text "Win", the block should be marked as a win condition.
+
+* Use case 2: interact():
+  * This method is called when two blocks interact with each other.
+  * It is used to determine the outcome of the interaction based on the rules of the game.
+  * For example, if a player block moves onto a win condition block, the game should be marked as won.
+* Use case 3: Winnable():
+  * This method is called after the level is created
+  * Checks to ensure that the author hasn't created an impossible level
+  * For example: if flag is win and flag is not present on the level, this represents an unwinnable game. 
 
 ```java
 class Winnable implements Component {
