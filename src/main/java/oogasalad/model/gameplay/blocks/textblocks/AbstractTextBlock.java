@@ -6,11 +6,9 @@ import oogasalad.model.gameplay.grid.Grid;
 public abstract class AbstractTextBlock extends AbstractBlock {
 
   private final String name;
-  private final String imagePath;
 
-  public AbstractTextBlock(String name, String imagePath) {
+  public AbstractTextBlock(String name) {
     this.name = name;
-    this.imagePath = imagePath;
   }
 
   @Override

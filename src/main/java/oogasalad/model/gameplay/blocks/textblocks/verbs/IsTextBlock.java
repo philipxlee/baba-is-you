@@ -4,8 +4,8 @@ import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 public class IsTextBlock extends AbstractTextBlock {
 
-  public IsTextBlock(String name, String imagePath) {
-    super(name, imagePath);
+  public IsTextBlock(String name) {
+    super(name);
   }
 
 }

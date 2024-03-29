@@ -5,8 +5,8 @@ import oogasalad.model.gameplay.strategies.Stoppable;
 
 public class WallVisualBlock extends AbstractVisualBlock {
 
-  public WallVisualBlock(String name, String imagePath) {
-    super(name, imagePath);
+  public WallVisualBlock(String name) {
+    super(name);
   }
 
   @Override

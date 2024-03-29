@@ -5,8 +5,8 @@ import oogasalad.model.gameplay.strategies.Winnable;
 
 public class FlagVisualBlock extends AbstractVisualBlock {
 
-  public FlagVisualBlock(String name, String imagePath) {
-    super(name, imagePath);
+  public FlagVisualBlock(String name) {
+    super(name);
   }
 
   @Override

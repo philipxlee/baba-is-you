@@ -14,14 +14,19 @@ public class AbstractBlock {
     return this.getClass().getSimpleName().equals(descriptor);
   }
 
-  public void accept(BlockVisitor visitor) {
-    // Default implementation does nothing.
-    // Only visual blocks will override this to actually accept visitors.
-  }
+  public boolean hasBehavior(Class<? extends Strategy> behaviorType) { return false;}
 
   public String getBlockName() {
     return this.getClass().getSimpleName();
   }
 
-  public boolean hasBehavior(Class<? extends Strategy> behaviorType) {return false;}
+  public void accept(BlockVisitor visitor) {
+    // Do nothing.
+    // Only visual blocks will override this to actually accept visitors.
+  }
+
+  public void resetAllBehaviors() {
+    // Do nothing.
+    // Only visual blocks will override this to reset behaviors.
+  }
 }

@@ -6,8 +6,8 @@ import oogasalad.model.gameplay.strategies.Pushable;
 
 public class BabaVisualBlock extends AbstractVisualBlock {
 
-  public BabaVisualBlock(String name, String imagePath) {
-    super(name, imagePath);
+  public BabaVisualBlock(String name) {
+    super(name);
   }
 
   @Override

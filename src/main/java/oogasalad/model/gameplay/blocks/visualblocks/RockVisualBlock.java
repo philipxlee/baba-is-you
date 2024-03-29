@@ -5,8 +5,8 @@ import oogasalad.model.gameplay.strategies.Pushable;
 
 public class RockVisualBlock extends AbstractVisualBlock {
 
-  public RockVisualBlock(String name, String imagePath) {
-    super(name, imagePath);
+  public RockVisualBlock(String name) {
+    super(name);
   }
 
   @Override
