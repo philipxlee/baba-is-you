@@ -70,7 +70,23 @@ public class RuleManager {
 
 ### Controller
 
+---
+```java
+addGameElement(Enum element, int row, int column) {}
+
+```
+- Adds a game element to the specified grid cell. Handles user actions 
+  to add game elements onto the grid in the Authoring Environment.
+---
+
 ### Model
+
+---
+```java
+modifyGridDimensions(int rows, int column){}
+```
+- Modifies the dimensions of the grid : updates the internal grid representation to reflect the modified dimensions.
+---
 
 
 ## GamePlayer

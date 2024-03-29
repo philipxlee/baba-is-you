@@ -12,10 +12,16 @@
 9. Be able to classify different blocks (rule subject, rule relationship, rule predicate, objects)
 
 ## Authoring Environment - Model
-1. 
+1. Read and update 2D grid from controller
+2. Load previously constructed levels from JSON for editing
+3. Save current levels 
+4. Update grid dimensions dynamically on the backend
+5. Implement validations for valid game constructions
 
 ## Authoring Environment - Controller
-1.
+1. Handle basic errors and exceptions in authoring environment. 
+2. Relay user commands from the View to the Model and update the View with changes in the Model.
+3. Receiving and processing user input from the View.
 
 
 ## GamePlayer - View
