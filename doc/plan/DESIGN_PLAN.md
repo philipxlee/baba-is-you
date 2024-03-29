@@ -1,5 +1,5 @@
 # OOGASalad Design Plan
-### Arnav Nayak, Philip Lee, Divyansh Jain, Jonathan Esponda, Joseph Ogunbadewa, 
+### Arnav Nayak, Philip Lee, Divyansh Jain, Jonathan Esponda, Joseph Ogunbadewa, Yasha Doddabele, Nikita Daga
 ### Baba is Us
 
 ## Introduction
