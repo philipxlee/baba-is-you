@@ -10,6 +10,7 @@ public abstract class AbstractTextBlock extends AbstractBlock {
   private final String name;
 
   public AbstractTextBlock(String name) {
+    super();
     this.name = name;
   }
 

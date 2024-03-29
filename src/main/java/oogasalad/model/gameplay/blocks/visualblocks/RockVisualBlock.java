@@ -3,14 +3,14 @@ package oogasalad.model.gameplay.blocks.visualblocks;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
 /**
- * A visual block that represents a rock in the game
+ * A visual block that represents a rock in the game.
  */
 public class RockVisualBlock extends AbstractVisualBlock {
 
   /**
-   * Constructor for the RockVisualBlock class
+   * Constructor for the RockVisualBlock class.
    *
-   * @param name the name of the block
+   * @param name the name of the block.
    */
   public RockVisualBlock(String name) {
     super(name);

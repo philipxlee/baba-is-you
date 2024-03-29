@@ -3,12 +3,12 @@ package oogasalad.model.gameplay.blocks.visualblocks;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
 /**
- * A visual block that represents the Baba block in the game
+ * A visual block that represents the Baba block in the game.
  */
 public class BabaVisualBlock extends AbstractVisualBlock {
 
   /**
-   * Constructor for the BabaVisualBlock class
+   * Constructor for the BabaVisualBlock class.
    *
    * @param name the name of the block
    */
@@ -17,7 +17,7 @@ public class BabaVisualBlock extends AbstractVisualBlock {
   }
 
   /**
-   * Accepts a visitor to visit this block
+   * Accepts a visitor to visit this block.
    *
    * @param visitor The visitor to accept.
    */

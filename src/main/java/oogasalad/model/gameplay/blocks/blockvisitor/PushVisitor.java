@@ -7,12 +7,12 @@ import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.strategies.Pushable;
 
 /**
- * Visitor pattern for the pushable behavior
+ * Visitor pattern for the pushable behavior.
  */
 public class PushVisitor implements BlockVisitor {
 
   /**
-   * Adds the pushable behavior to the baba block
+   * Adds the pushable behavior to the baba block.
    *
    * @param baba the baba block
    */
@@ -22,9 +22,9 @@ public class PushVisitor implements BlockVisitor {
   }
 
   /**
-   * Adds the pushable behavior to the wall block
+   * Adds the pushable behavior to the wall block.
    *
-   * @param wall the wall block
+   * @param wall the wall block.
    */
   @Override
   public void visit(WallVisualBlock wall) {
@@ -32,9 +32,9 @@ public class PushVisitor implements BlockVisitor {
   }
 
   /**
-   * Adds the pushable behavior to the flag block
+   * Adds the pushable behavior to the flag block.
    *
-   * @param flag the flag block
+   * @param flag the flag block.
    */
   @Override
   public void visit(FlagVisualBlock flag) {
@@ -42,9 +42,9 @@ public class PushVisitor implements BlockVisitor {
   }
 
   /**
-   * Adds the pushable behavior to the rock block
+   * Adds the pushable behavior to the rock block.
    *
-   * @param rock the rock block
+   * @param rock the rock block.
    */
   @Override
   public void visit(RockVisualBlock rock) {

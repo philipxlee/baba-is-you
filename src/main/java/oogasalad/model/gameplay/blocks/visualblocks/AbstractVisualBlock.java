@@ -16,6 +16,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   private final List<Strategy> behaviors;
 
   public AbstractVisualBlock(String name) {
+    super();
     this.name = name;
     this.behaviors = new ArrayList<>();
   }

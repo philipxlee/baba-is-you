@@ -11,7 +11,7 @@ public class Controllable implements Strategy {
   /**
    * This method is used to execute the behavior of the block.
    *
-   * @param block the block that is being controlled
+   * @param block the block that is being controlled.
    */
   public void execute(AbstractVisualBlock block) {
   }

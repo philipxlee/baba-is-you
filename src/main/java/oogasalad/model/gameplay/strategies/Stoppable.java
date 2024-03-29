@@ -8,9 +8,9 @@ import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 public class Stoppable implements Strategy {
 
   /**
-   * Executes the stoppable strategy
+   * Executes the stoppable strategy.
    *
-   * @param block the block that is being stopped
+   * @param block the block that is being stopped.
    */
   public void execute(AbstractVisualBlock block) {
   }

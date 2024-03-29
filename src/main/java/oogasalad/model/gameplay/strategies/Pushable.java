@@ -9,9 +9,9 @@ import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 public class Pushable implements Strategy {
 
   /**
-   * Executes the pushable strategy
+   * Executes the pushable strategy.
    *
-   * @param block the block that is being pushed
+   * @param block the block that is being pushed.
    */
   public void execute(AbstractVisualBlock block) {
   }

@@ -9,9 +9,9 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 public class FlagVisualBlock extends AbstractVisualBlock {
 
   /**
-   * Constructor for the FlagVisualBlock class
+   * Constructor for the FlagVisualBlock class.
    *
-   * @param name the name of the block
+   * @param name the name of the block.
    */
   public FlagVisualBlock(String name) {
     super(name);

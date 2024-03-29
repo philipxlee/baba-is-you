@@ -10,7 +10,7 @@ public class WallTextBlock extends AbstractTextBlock {
   /**
    * Creates a new "wall" text block.
    *
-   * @param name the name of the block
+   * @param name the name of the block.
    */
   public WallTextBlock(String name) {
     super(name);

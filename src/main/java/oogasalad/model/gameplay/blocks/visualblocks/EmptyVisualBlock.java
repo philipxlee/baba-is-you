@@ -9,16 +9,16 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 public class EmptyVisualBlock extends AbstractVisualBlock {
 
   /**
-   * Constructor for the EmptyVisualBlock class
+   * Constructor for the EmptyVisualBlock class.
    *
-   * @param name the name of the block
+   * @param name the name of the block.
    */
   public EmptyVisualBlock(String name) {
     super(name);
   }
 
   /**
-   * Accepts a visitor to visit this block
+   * Accepts a visitor to visit this block.
    *
    * @param visitor The visitor to accept.
    */

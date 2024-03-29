@@ -12,9 +12,9 @@ import oogasalad.model.gameplay.strategies.Winnable;
 public class WinVisitor implements BlockVisitor {
 
   /**
-   * Adds the winnable behavior to the baba block
+   * Adds the winnable behavior to the baba block.
    *
-   * @param baba the baba block
+   * @param baba the baba block.
    */
   @Override
   public void visit(BabaVisualBlock baba) {
@@ -22,9 +22,9 @@ public class WinVisitor implements BlockVisitor {
   }
 
   /**
-   * Adds the winnable behavior to the wall block
+   * Adds the winnable behavior to the wall block.
    *
-   * @param wall the wall block
+   * @param wall the wall block.
    */
   @Override
   public void visit(WallVisualBlock wall) {
@@ -32,9 +32,9 @@ public class WinVisitor implements BlockVisitor {
   }
 
   /**
-   * Adds the winnable behavior to the flag block
+   * Adds the winnable behavior to the flag block.
    *
-   * @param flag the flag block
+   * @param flag the flag block.
    */
   @Override
   public void visit(FlagVisualBlock flag) {
@@ -42,9 +42,9 @@ public class WinVisitor implements BlockVisitor {
   }
 
   /**
-   * Adds the winnable behavior to the rock block
+   * Adds the winnable behavior to the rock block.
    *
-   * @param rock the rock block
+   * @param rock the rock block.
    */
   @Override
   public void visit(RockVisualBlock rock) {

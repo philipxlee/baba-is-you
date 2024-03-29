@@ -10,7 +10,7 @@ public class YouTextBlock extends AbstractTextBlock {
   /**
    * Creates a new "you" text block.
    *
-   * @param name the name of the block
+   * @param name the name of the block.
    */
   public YouTextBlock(String name) {
     super(name);

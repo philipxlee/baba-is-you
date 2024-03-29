@@ -8,9 +8,9 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 public class WallVisualBlock extends AbstractVisualBlock {
 
   /**
-   * Constructor for the WallVisualBlock class
+   * Constructor for the WallVisualBlock class.
    *
-   * @param name the name of the block
+   * @param name the name of the block.
    */
   public WallVisualBlock(String name) {
     super(name);
