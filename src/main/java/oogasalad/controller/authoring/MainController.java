@@ -6,19 +6,22 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * test branch update
+ * MainController is the entrypoint for the Authoring Environment.
  */
 public class MainController extends Application {
 
+  /**
+   * Connects Model, Views and Controllers together.
+   *
+   * @param stage primary stage of the application
+   */
+
   @Override
   public void start(Stage stage) throws Exception {
-    Group root = new Group();
-    Scene scene = new Scene(root, 800, 600);
-    stage.setScene(scene);
-    stage.show();
-  }
+    // initialize models
 
-  public static void main(String[] args) {
-    launch(args);
+    // initialize controllers
+
+    // initialize views
   }
 }
