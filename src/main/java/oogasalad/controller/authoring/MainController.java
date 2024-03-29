@@ -5,6 +5,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * test branch update
+ */
 public class MainController extends Application {
 
   @Override
