@@ -2,6 +2,72 @@
 ## Authoring Environment
 ### View
 
+#### Design Goals:
+
+The API is designed to be easy to understand and use. While providing a straightforward way to 
+perform common tasks, the API also allows for more complex operations and customizations.
+The API's structure supports easy extension and modification, allowing for future enhancements 
+without breaking existing functionality.
+
+#### API and Abstractions:
+
+#### Level Management
+Represents a game level, including its dimensions and the objects it contains.
+
+```
+
+public class LevelManager {
+
+    public Level createLevel(String name, int width, int height) {
+    }
+
+    public Level loadLevel(String levelId) {
+    }
+
+    public void saveLevel(String levelId) {
+    }
+
+    public List<Level> listLevels() {
+    }
+}
+```
+#### Object Management
+Represents an entity within a level, such as blocks, characters, or text elements, along 
+with its properties and position.
+
+```
+public class ObjectManager {
+
+    public GameObject createObject(String type, int x, int y) {
+    }
+
+    public void moveObject(BlockView object, int newX, int newY) {
+    }
+
+    public void deleteObject(BlockView object) {
+    }
+
+    public void updateObjectProperties(BlockView object, Map<String, Object> properties) {
+    }
+}
+```
+
+#### Rule Management
+Dictates the behavior and interactions between objects within the level based on predefined logic.
+
+```
+public class RuleManager {
+
+    public Rule createRule(String subject, String verb, String object) {
+    }
+
+    public void deleteRule(String ruleId) {
+    }
+}
+
+```
+
+
 ### Controller
 
 ### Model
@@ -32,7 +98,7 @@ public class CellView {
 public abstract class BlockView {
   private StackPane stackPane;
   public BlockView initializeBlock(String imgPath) {
-    //Initalizes some JavaFX object with the image from the imagePath
+    //Initializes some JavaFX object with the image from the imagePath
   }
   //Or whatever JavaFX obj it is
   public StackPane getView() {
