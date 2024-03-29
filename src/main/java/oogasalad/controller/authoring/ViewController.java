@@ -1,6 +1,7 @@
 package oogasalad.controller.authoring;
 
 import javafx.stage.Stage;
+import oogasalad.view.shared.Scene;
 
 /**
  * ViewController is Controller that manages Scenes and the JavaFX Stage.
@@ -21,5 +22,22 @@ public class ViewController {
     stage.setTitle("Baba is Us");
     stage.setResizable(false);
     stage.show();
+  }
+
+  /**
+   * Initialize Start Scene.
+   */
+  public void initializeViews() {
+    // switch to start scene
+  }
+
+  /**
+   * Switch to new Scene.
+   *
+   * @param scene is new Scene to switch to
+   */
+  public void switchToScene(Scene scene) {
+    scene.initializeScene(WIDTH, HEIGHT);
+    stage.setScene(scene.getScene());
   }
 }
