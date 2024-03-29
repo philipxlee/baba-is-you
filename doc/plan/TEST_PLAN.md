@@ -89,4 +89,33 @@
   - We can check this by ensuring the positions of all blocks remain the same. You should only be able
   to click on icons in the interaction screen and the pause button in the game screen.
 
-##### [NEXT API] - AUTHOR
+
+##### Authoring Environment - Adding blocks and elements : Divyansh
+
+- Adding a Block Element to an Empty Grid Cell (Positive Test)
+
+    - GIVEN a grid with at least one empty space
+    - IF the user inserts a block element into an empty grid cell
+    - THEN the block element should occupy the specified grid cell
+    - We verify this by checking if the specified grid cell contains the inserted block element after the insertion operation. 
+  
+- Attempting to Add a Block Element to an Occupied Grid Cell (Negative Test)
+
+  - GIVEN a grid with a block element already occupying a specific grid cell
+  - IF the user attempts to insert another block element into the same grid cell
+  - THEN the insertion operation should fail, and the grid cell should remain unchanged
+  - We can confirm this by checking if the grid cell still contains the initial block element after the insertion attempt.
+
+- Adding a Block Element Outside Grid Boundaries (Negative Test)
+
+  - GIVEN a grid with predefined boundaries
+  - IF the user tries to insert a block element outside the grid boundaries
+  - THEN the insertion operation should fail, and no block element should be added
+  - We verify this by checking that the grid remains unchanged after the insertion attempt, and no exceptions are thrown.
+
+- Modifying an Existing Block Element (Positive Test)
+
+  - GIVEN a grid with an existing block element occupying a specific grid cell
+  - IF the user modifies the properties or characteristics of the existing block element
+  - THEN the changes should be reflected in the grid cell containing the block element
+  - We confirm this by checking that the modified properties of the block element are accurately represented in the corresponding grid cell.
