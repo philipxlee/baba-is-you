@@ -17,22 +17,26 @@
 ---
 
 #### Moving a Block - Philip
-- Happy Path Test for moveBlock (Positive Test):
-  - Action: Moving a block to an adjacent free space.
-  - Expected Outcome: The block is successfully moved to the new position.
-  - We can verify this by checking the block's new position in the grid and ensuring it matches the expected position.
-- Attempting to Move a Non-Pushable Block (Negative Test):
-  - Action: Trying to move a block that is not pushable.
-  - Expected Outcome: The block remains in its original position.
-  - Our design allows us to mock a block's components, setting a block as non-pushable and asserting that its position does not change post-action.
-- Win Condition Activation (Positive Test):
-  - Action: Moving the player block to overlap with a winnable block.
-  - Expected Outcome: The game state changes to a win condition.
-  - We can invoke the interact method on the winnable component and check if the game context's state updates to reflect the win.
-- Moving Block Outside Grid Boundaries (Negative Test):
-  - Action: Attempting to move a block outside the grid.
-  - Expected Outcome: The block does not move.
-  - By checking the block's position remains unchanged and ensuring no exceptions are thrown, we confirm the grid boundary logic is correct.
+- Moving a Block to an Adjacent Free Space (Positive Test)
+  - GIVEN a grid with at least one movable block adjacent to an empty space
+  - IF the player initiates a move command in the direction of the empty space
+  - THEN the block should move to the new position successfully
+  - We verify this by checking the new position of the block in the grid to ensure it occupies the space we expected it to move into.
+- Attempting to Move a Non-Pushable Block (Negative Test)
+  - GIVEN a grid with a non-pushable block adjacent to the player's block
+  - IF the player initiates a move command towards the non-pushable block
+  - THEN the non-pushable block should remain in its original position
+  - We can confirm this by asserting the block's position remains unchanged after the move command is processed.
+- Win Condition Activation (Positive Test)
+  - GIVEN a grid where moving the player block to a specific position activates a win condition
+  - IF the player moves the block to that specific position
+  - THEN the game state should change to reflect a win condition
+  - We check if the game context or state updates to a win scenario after the player block overlaps with the winnable block.
+- Moving Block Outside Grid Boundaries (Negative Test)
+  - GIVEN a grid with a movable block positioned at the boundary
+  - IF the player initiates a move command directing the block outside the grid boundaries
+  - THEN the block does not move and remains at its boundary position
+  - We verify this by confirming the block's position remains constant post-command and ensuring no exceptions or unintended behavior occur.
 
 ##### Loading/Saving - Jonathan
 - File Loads in Correctly (Positive Test)
