@@ -14,6 +14,9 @@
   - Implement basic grid in view
   - Implement controller to handle player movement
   - Start load/saving functionality with established schema
+  - Implement basic character functionality in View - moving with the arrows
+  - Make BlockView hierarchy in the frontend to be shared with Authoring Environment
+  - Have some interaction in the game screen with Baba and other objects
 
 
 ### Sprint 2

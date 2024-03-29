@@ -2,13 +2,141 @@
 ## Authoring Environment
 ### View
 
+#### Design Goals:
+
+The API is designed to be easy to understand and use. While providing a straightforward way to 
+perform common tasks, the API also allows for more complex operations and customizations.
+The API's structure supports easy extension and modification, allowing for future enhancements 
+without breaking existing functionality.
+
+#### API and Abstractions:
+
+#### Level Management
+Represents a game level, including its dimensions and the objects it contains.
+
+```
+
+public class LevelManager {
+
+    public Level createLevel(String name, int width, int height) {
+    }
+
+    public Level loadLevel(String levelId) {
+    }
+
+    public void saveLevel(String levelId) {
+    }
+
+    public List<Level> listLevels() {
+    }
+}
+```
+#### Object Management
+Represents an entity within a level, such as blocks, characters, or text elements, along 
+with its properties and position.
+
+```
+public class ObjectManager {
+
+    public GameObject createObject(String type, int x, int y) {
+    }
+
+    public void moveObject(BlockView object, int newX, int newY) {
+    }
+
+    public void deleteObject(BlockView object) {
+    }
+
+    public void updateObjectProperties(BlockView object, Map<String, Object> properties) {
+    }
+}
+```
+
+#### Rule Management
+Dictates the behavior and interactions between objects within the level based on predefined logic.
+
+```
+public class RuleManager {
+
+    public Rule createRule(String subject, String verb, String object) {
+    }
+
+    public void deleteRule(String ruleId) {
+    }
+}
+
+```
+
+
 ### Controller
 
+---
+```java
+addGameElement(Enum element, int row, int column) {}
+
+```
+- Adds a game element to the specified grid cell. Handles user actions 
+  to add game elements onto the grid in the Authoring Environment.
+---
+
 ### Model
+
+---
+```java
+modifyGridDimensions(int rows, int column){}
+```
+- Modifies the dimensions of the grid : updates the internal grid representation to reflect the modified dimensions.
+---
 
 
 ## GamePlayer
 ### View
+
+--- 
+
+```java
+import java.util.ArrayList;
+
+//Cell wrapper to hold multiple blocks in one grid of the cell
+public class CellView {
+
+  private List<BlockView> content;
+
+  public CellView() {
+    this.content = new ArrayList<>();
+  }
+
+  public List<BlockView> getViews() {
+    return content.clone();
+  }
+}
+
+public abstract class BlockView {
+  private StackPane stackPane;
+  public BlockView initializeBlock(String imgPath) {
+    //Initializes some JavaFX object with the image from the imagePath
+  }
+  //Or whatever JavaFX obj it is
+  public StackPane getView() {
+    return this.stackPane;
+  }
+}
+
+  //For each subclass
+  public class BabaView extends BlockView {
+  }
+  public class WallView extends BlockView {
+  }
+  //etc...
+}
+```
+- Abstract BlockView paradigm for the visual representations of the game objects.
+  - Ideally has a hierarchy, different block types are abstraction by the superclass BlockView
+  - CellView is made to keep track of and hold multiple blocks that can exist in the same grid cell. 
+  Its contents should be ordered to determine the overlap and which block(s) Baba can interact with.
+  - This makes the front-end grid easier to deal with because it will just be a 2D array of CelLView
+  objects.
+---  
 
 
 
@@ -55,14 +183,6 @@ public void applyRule(String behavior) {
 ```
 - Applies a rule to the game, such as "ROCK IS PUSH" or "BABA IS YOU" or "FLAG IS WIN".
 ---
-```java
-@Override
-public void interact(Block actingBlock, Block receivingBlock) {
-    // Handle interactions between a block and a receiving block.
-}
-```
-- Interacts with the blocks in the game, such as when a block is pushed or when a block is moved to a win condition.
-- If the win condition is met, the game context is notified of the win.
 
 
 ## JsonManager (Jonathan)
