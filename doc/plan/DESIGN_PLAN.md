@@ -109,7 +109,7 @@
 
 ## Team Responsibilities
 
-* Team Member #1
+* Team Member #1: Nikita - Authoring Environment View
 
 * Team Member #2
 

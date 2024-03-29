@@ -1,11 +1,15 @@
 # Backlog
 
 ## Authoring Environment - View
-1. Loading and saving of levels from configuration files
-2. Drag and drop or Clicking feature that allows user to insert game elements
-   into the grid that represents the level being built.
-3. Creating grid and object panels
-4. Implementing the same visuals as the GamePlayer
+1. Loading of previously constructed levels for editing
+2. Saving of levels into configuration files
+3. Drag and drop feature that allows user to insert game elements into the grid
+4. Creating grid and object panels
+5. Implementing the same visuals for elements as the GamePlayer
+6. Provide a way for users to tag levels as easy, medium, or hard
+7. Allow the m*n grid dimensions to be modifiable
+8. Allow game elements on the grid to be deleted
+9. Be able to classify different blocks (rule subject, rule relationship, rule predicate, objects)
 
 ## Authoring Environment - Model
 1. 
