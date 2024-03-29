@@ -19,9 +19,13 @@
 
 
 ## GamePlayer - View
-1. Scene and grid representation
-2. Observer pattern to listen to model
-3. Loading and saving of levels from configuration files
+1. Moving the Baba character around the screen with arrows keys
+2. Interacting/moving other blocks with the Baba characters
+3. Showing a completed level screen when the flag object is obtained
+4. Scene and grid representation
+5. Observer pattern to listen to model - potentially
+6. Loading and saving of levels from configuration files
+7. Clicking the pause/resume buttons in the game screen to show a pause screen
 
 ## GamePlayer - Model
 1. Create grid representation

@@ -96,30 +96,51 @@
 ```
 
 ## Design Overview
+* Two apps: Game Player and Authoring Environment
+* Shared classes between the two apps
+* MVC design pattern
 
 
 ## Design Details
-
+* Follow SOLID principles
+* Use design patterns
 
 ## Design Considerations
+* We will use the MVC design pattern
+* We will use the Observer design pattern
+* We will use the Factory design pattern
+* We will use the Strategy design pattern
+* We will use the Visitor design pattern
+* We'll be sharing APIs between the respective models and views to avoid repetition.
+
 
 
 ## Test Plan
+* Practice some TDD
+* Aim to have a 70% internal testing throughout the milestones
+* Increase testing near end of project
 
 
 ## Team Responsibilities
 
-* Team Member #1: Nikita - Authoring Environment View
+* Team Member #1: Arnav Nayak
+  * Model for Game Player and Authoring Environment
 
-* Team Member #2
+* Team Member #2: Philip Lee
+  * Model for Game Player
 
-* Team Member #3
+* Team Member #3: Joseph Ogunbadewa
+  * Model for Game Player
 
-* Team Member #4
+* Team Member #4: Divyansh Jain
+  * Model for Authoring Environment
 
-* Team Member #5
+* Team Member #5: Jonathan Esponda
+  * View for Game Player and Authoring Environment
 
-* Team Member #6
+* Team Member #6: Yasha Doddabele
+  * View for Game Player
 
-* Team Member #7
+* Team Member #7: Nikita Daga
+  * View for Authoring Environment
 
