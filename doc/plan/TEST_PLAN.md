@@ -110,16 +110,15 @@
   - We can check this by ensuring the positions of all blocks remain the same. You should only be able
   to click on icons in the interaction screen and the pause button in the game screen.
 
-
-##### Authoring Environment - Adding blocks and elements : Divyansh
+##### Adding blocks and elements - Divyansh
 
 - Adding a Block Element to an Empty Grid Cell (Positive Test)
 
-    - GIVEN a grid with at least one empty space
-    - IF the user inserts a block element into an empty grid cell
-    - THEN the block element should occupy the specified grid cell
-    - We verify this by checking if the specified grid cell contains the inserted block element after the insertion operation. 
-  
+  - GIVEN a grid with at least one empty space
+  - IF the user inserts a block element into an empty grid cell
+  - THEN the block element should occupy the specified grid cell
+  - We verify this by checking if the specified grid cell contains the inserted block element after the insertion operation.
+
 - Attempting to Add a Block Element to an Occupied Grid Cell (Negative Test)
 
   - GIVEN a grid with a block element already occupying a specific grid cell
@@ -141,4 +140,33 @@
   - THEN the changes should be reflected in the grid cell containing the block element
   - We confirm this by checking that the modified properties of the block element are accurately represented in the corresponding grid cell.
 
-##### [NEXT API] - AUTHOR
+##### Creating a new level - Nikita
+
+- Creating a successful new level (Positive Test)
+
+    - GIVEN no preconditions, starting from a clean state.
+    - IF the createLevel method is called with a valid name, width, and height for a level.
+    - THEN the method returns a new Level object with the specified name, width, and height.
+    - Verify that the returned Level object is not null, and its name, width, and height match the input values. 
+  
+- Level creation with invalid dimensions (Negative Test)
+
+  - GIVEN no preconditions.
+  - IF the createLevel method is called with either a width or height that is below the minimum allowed size.
+  - THEN the method throws an exception indicating that the dimensions are invalid.
+  - Catch the exception and assert that the message contains information about the invalid dimensions.
+
+- Level creation with null or empty name (Negative Test)
+
+  - GIVEN no preconditions.
+  - IF the createLevel method is called with a null or empty string as the level name.
+  - THEN the method throws an exception indicating that the name cannot be null or empty.
+  - Catch the exception and assert that the message contains information about the name being invalid.
+
+- Duplicate level name (Negative Test)
+
+  - GIVEN an existing level with a specific name.
+  - IF the createLevel method is called with the same name.
+  - THEN the method throws and exception indicating that another level with the same name already exists.
+  - Catch the exception and assert that the message contains information about duplicate names.
+
