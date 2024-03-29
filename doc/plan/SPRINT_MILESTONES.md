@@ -4,6 +4,8 @@
 ### Sprint 1 
 - Authoring Environment
   - Implement basic authoring environment scenes.
+  - Implement drag and drop functionality or Clicking from one pane to the other
+  - Allow game elements on the grid to be deleted
   - Set up property files and css files for the authoring environment
   - Start load/saving functionality with established schema.
 
@@ -21,9 +23,10 @@
 
 ### Sprint 2
 - Authoring Environment
-  - Implement drag and drop functionality or Clicking from one pane to the other
-  - Code the validation for game winnability
+  - Provide a way for users to tag levels as easy, medium, or hard
+  - Allow the m*n grid dimensions to be modifiable
   - Implement save configuration functionality
+  - Be able to classify different blocks (rule subject, rule relationship, rule predicate, objects)
 - Game Player
   - Implement observer design pattern to listen to model
   - Create shared API for view
