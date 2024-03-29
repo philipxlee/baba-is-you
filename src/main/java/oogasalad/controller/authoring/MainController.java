@@ -21,7 +21,9 @@ public class MainController extends Application {
     // initialize models
 
     // initialize controllers
+    ViewController viewController = new ViewController(stage);
 
     // initialize views
+    viewController.initializeViews();
   }
 }

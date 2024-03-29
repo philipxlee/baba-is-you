@@ -1,6 +1,7 @@
 package oogasalad.controller.authoring;
 
 import javafx.stage.Stage;
+import oogasalad.view.authoring.MainScene;
 import oogasalad.view.shared.Scene;
 
 /**
@@ -19,22 +20,22 @@ public class ViewController {
    */
   public ViewController(Stage stage) {
     this.stage = stage;
-    stage.setTitle("Baba is Us");
+    stage.setTitle("Baba is Us: Authoring Environment");
     stage.setResizable(false);
     stage.show();
   }
 
   /**
-   * Initialize Start Scene.
+   * Initialize Main Scene.
    */
   public void initializeViews() {
-    // switch to start scene
+    switchToScene(new MainScene());
   }
 
   /**
    * Switch to new Scene.
    *
-   * @param scene is new Scene to switch to
+   * @param scene is new Scene to switch to.
    */
   public void switchToScene(Scene scene) {
     scene.initializeScene(WIDTH, HEIGHT);
