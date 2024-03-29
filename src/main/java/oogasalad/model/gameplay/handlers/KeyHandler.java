@@ -21,11 +21,13 @@ public class KeyHandler {
 
   public void handleKeyPress(KeyCode code) {
     AbstractBlock[][] gameGrid = grid.getGrid();
+
+
     // Iterate over the grid to find the controllable block
     for (int i = 0; i < gameGrid.length; i++) {
       for (int j = 0; j < gameGrid[i].length; j++) {
         AbstractBlock block = gameGrid[i][j];
-        if (block != null && block.hasBehavior(Controllable.class)) {
+        if (block.hasBehavior(Controllable.class)) {
           int deltaI = 0;
           int deltaJ = 0;
           switch (code) {

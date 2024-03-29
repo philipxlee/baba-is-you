@@ -11,19 +11,18 @@ import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 
 
 public class BlockFactory {
-  private final String defaultImagePath = "/";
 
   public BlockFactory() {}
 
   public AbstractBlock createBlock(String blockName) {
     return switch (blockName) {
-      case "EmptyVisualBlock" -> new EmptyVisualBlock("EmptyVisualBlock", defaultImagePath);
-      case "RockTextBlock" -> new RockTextBlock("RockTextBlock", defaultImagePath);
-      case "BabaTextBlock" -> new BabaTextBlock("BabaTextBlock", defaultImagePath);
-      case "IsTextBlock" -> new IsTextBlock("IsTextBlock", defaultImagePath);
-      case "YouTextBlock" -> new YouTextBlock("YouTextBlock", defaultImagePath);
-      case "BabaVisualBlock" -> new BabaVisualBlock("BabaVisualBlock", defaultImagePath);
-      case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock", defaultImagePath);
+      case "EmptyVisualBlock" -> new EmptyVisualBlock("EmptyVisualBlock");
+      case "RockTextBlock" -> new RockTextBlock("RockTextBlock");
+      case "BabaTextBlock" -> new BabaTextBlock("BabaTextBlock");
+      case "IsTextBlock" -> new IsTextBlock("IsTextBlock");
+      case "YouTextBlock" -> new YouTextBlock("YouTextBlock");
+      case "BabaVisualBlock" -> new BabaVisualBlock("BabaVisualBlock");
+      case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock");
       default -> throw new IllegalArgumentException("Invalid block name");
     };
   }

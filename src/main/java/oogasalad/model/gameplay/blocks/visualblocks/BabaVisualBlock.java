@@ -1,15 +1,26 @@
 package oogasalad.model.gameplay.blocks.visualblocks;
 
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
-import oogasalad.model.gameplay.strategies.Controllable;
-import oogasalad.model.gameplay.strategies.Pushable;
 
+/**
+ * A visual block that represents the Baba block in the game.
+ */
 public class BabaVisualBlock extends AbstractVisualBlock {
 
-  public BabaVisualBlock(String name, String imagePath) {
-    super(name, imagePath);
+  /**
+   * Constructor for the BabaVisualBlock class.
+   *
+   * @param name the name of the block
+   */
+  public BabaVisualBlock(String name) {
+    super(name);
   }
 
+  /**
+   * Accepts a visitor to visit this block.
+   *
+   * @param visitor The visitor to accept.
+   */
   @Override
   public void accept(BlockVisitor visitor) {
     visitor.visit(this);

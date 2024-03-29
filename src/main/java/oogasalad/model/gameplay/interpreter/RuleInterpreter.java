@@ -1,49 +1,94 @@
 package oogasalad.model.gameplay.interpreter;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.blockvisitor.*;
+import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
+/**
+ * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's
+ * current state represented as a grid of blocks.
+ */
 public class RuleInterpreter {
 
+  private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blocks.blockvisitor.";
+  private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
+  private static final String VISITOR_SUFFIX = "Visitor";
+
+  /**
+   * Interprets and applies rules across the entire grid based on the detected text block patterns.
+   *
+   * @param grid The game grid to be interpreted.
+   */
   public void interpretRules(AbstractBlock[][] grid) {
-    for (AbstractBlock[] abstractBlocks : grid) {
-      for (int col = 0; col < abstractBlocks.length - 2; col++) {
-        AbstractBlock firstBlock = abstractBlocks[col];
-        AbstractBlock secondBlock = abstractBlocks[col + 1];
-        AbstractBlock thirdBlock = abstractBlocks[col + 2];
-        if (firstBlock != null &&  secondBlock != null && thirdBlock != null &&
-            firstBlock.isTextBlock() && secondBlock.isTextBlock() && thirdBlock.isTextBlock()) {
-          processRule(firstBlock, secondBlock, thirdBlock, grid);
-        }
+    for (AbstractBlock[] row : grid) {
+      for (int col = 0; col <= row.length - 3; col++) {
+        checkAndProcessRuleAt(row[col], row[col + 1], row[col + 2], grid);
       }
     }
   }
 
-  private void processRule(AbstractBlock first, AbstractBlock second, AbstractBlock third, AbstractBlock[][] grid) {
-    BlockVisitor visitor = determineVisitor(third.getBlockName());
-    // Ensuring a visitor is available
-    if (visitor == null) {
-      return; // or handle error
+  /**
+   * Processes a potential rule if the given blocks form a valid rule structure.
+   *
+   * @param firstBlock  The first block of the potential rule.
+   * @param secondBlock The second block (usually "IS") of the potential rule.
+   * @param thirdBlock  The third block defining the rule effect.
+   * @param grid        The game grid.
+   */
+  private void checkAndProcessRuleAt(AbstractBlock firstBlock, AbstractBlock secondBlock,
+      AbstractBlock thirdBlock, AbstractBlock[][] grid) {
+    if (isValidRule(firstBlock, secondBlock, thirdBlock)) {
+      BlockVisitor visitor = determineVisitor(thirdBlock.getBlockName());
+      if (visitor != null) {
+        applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName(), grid);
+      }
     }
+  }
 
-    // Loop through the grid to apply the visitor to all matching visual blocks
+  /**
+   * Validates if the combination of blocks can form a rule.
+   *
+   * @param first  The first block in the rule.
+   * @param second The second block in the rule (typically representing "IS").
+   * @param third  The third block in the rule, determining the effect.
+   * @return true if the blocks form a valid rule; false otherwise.
+   */
+  private boolean isValidRule(AbstractBlock first, AbstractBlock second, AbstractBlock third) {
+    return (first != null && second != null && third != null) &&
+        (first.isTextBlock() && second.isTextBlock() && third.isTextBlock());
+  }
+
+  /**
+   * Applies a visitor to all blocks in the grid that match the given block name.
+   *
+   * @param visitor   The visitor to apply.
+   * @param blockName The name of the blocks to which the visitor should be applied.
+   * @param grid      The game grid.
+   */
+  private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName,
+      AbstractBlock[][] grid) {
     for (AbstractBlock[] row : grid) {
       for (AbstractBlock cell : row) {
-        if (!cell.isTextBlock() && cell.matches(first.getBlockName())) {
-          System.out.println("Applying visitor to " + cell.getBlockName());
+        if (!cell.isTextBlock() && cell.matches(blockName)) {
           cell.accept(visitor);
         }
       }
     }
   }
 
+  /**
+   * Determines the visitor to instantiate based on the block name, using reflections.
+   *
+   * @param blockName The name of the block for which to determine the visitor.
+   * @return The corresponding BlockVisitor instance or null if none found.
+   */
   private BlockVisitor determineVisitor(String blockName) {
-    return switch (blockName) {
-      case "YouTextBlock" -> new YouVisitor();
-      case "PushTextBlock" -> new PushVisitor();
-      case "WinTextBlock" -> new WinVisitor();
-      case "StopTextBlock" -> new StopVisitor();
-      default -> null; // or handle the default case
-    };
+    String className = VISITOR_PACKAGE + blockName.replace(TEXT_BLOCK_SUFFIX, "") + VISITOR_SUFFIX;
+    try {
+      Class<?> visitorClass = Class.forName(className);
+      return (BlockVisitor) visitorClass.getDeclaredConstructor().newInstance();
+    } catch (ReflectiveOperationException e) {
+      System.err.println("Could not instantiate visitor for " + blockName);
+      return null;
+    }
   }
 }

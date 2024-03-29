@@ -2,9 +2,17 @@ package oogasalad.model.gameplay.blocks.textblocks.nouns;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
+/**
+ * A text block that represents the "baba" noun.
+ */
 public class BabaTextBlock extends AbstractTextBlock {
 
-  public BabaTextBlock(String name, String imagePath) {
-    super(name, imagePath);
+  /**
+   * Creates a new "baba" text block.
+   *
+   * @param name the name of the block.
+   */
+  public BabaTextBlock(String name) {
+    super(name);
   }
 }

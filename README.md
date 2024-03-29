@@ -1,52 +1,46 @@
 # oogasalad
-## TEAM NAME
-## NAMES
 
+## TEAM NAME
+
+## NAMES
 
 This project implements an authoring environment and player for multiple related games.
 
 ### Timeline
 
- * Start Date: 
+* Start Date:
 
- * Finish Date: 
+* Finish Date:
 
- * Hours Spent:
-
-
+* Hours Spent:
 
 ### Attributions
 
- * Resources used for learning (including AI assistance)
- 
- * Resources used directly (including AI assistance)
+* Resources used for learning (including AI assistance)
 
+* Resources used directly (including AI assistance)
 
 ### Running the Program
 
- * Main class:
+* Main class:
 
- * Data files needed: 
+* Data files needed:
 
- * Interesting data files:
+* Interesting data files:
 
- * Key/Mouse inputs:
-
-
+* Key/Mouse inputs:
 
 ### Notes/Assumptions
 
- * Assumptions or Simplifications:
+* Assumptions or Simplifications:
 
- * Known Bugs:
+* Known Bugs:
 
- * Features implemented:
+* Features implemented:
 
- * Features unimplemented:
+* Features unimplemented:
 
- * Noteworthy Features:
-
-
+* Noteworthy Features:
 
 ### Assignment Impressions
 
