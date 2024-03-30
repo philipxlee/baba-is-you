@@ -15,6 +15,11 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   private final String name;
   private final List<Strategy> behaviors;
 
+  /**
+   * Constructs a new visual block with the given name.
+   *
+   * @param name The name of the visual block.
+   */
   public AbstractVisualBlock(String name) {
     super();
     this.name = name;

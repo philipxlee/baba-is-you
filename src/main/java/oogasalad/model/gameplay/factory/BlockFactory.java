@@ -1,6 +1,7 @@
 package oogasalad.model.gameplay.factory;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.textblocks.nouns.EmptyTextBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.blocks.textblocks.nouns.BabaTextBlock;
@@ -23,6 +24,7 @@ public class BlockFactory {
       case "YouTextBlock" -> new YouTextBlock("YouTextBlock");
       case "BabaVisualBlock" -> new BabaVisualBlock("BabaVisualBlock");
       case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock");
+      case "EmptyTextBlock" -> new EmptyTextBlock("EmptyTextBlock");
       default -> throw new IllegalArgumentException("Invalid block name");
     };
   }
