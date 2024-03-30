@@ -1,6 +1,6 @@
 package oogasalad.model.gameplay.strategies;
 
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.shared.blocks.visualblocks.AbstractVisualBlock;
 
 /**
  * Strategy interface that defines the execute method for a strategy. A strategy, or behavior, is a

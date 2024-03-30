@@ -1,7 +1,7 @@
 package oogasalad.model.gameplay.interpreter;
 
-import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.shared.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blockvisitor.BlockVisitor;
 
 /**
  * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's
@@ -9,7 +9,7 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
  */
 public class RuleInterpreter {
 
-  private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blocks.blockvisitor.";
+  private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blockvisitor.";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String VISITOR_SUFFIX = "Visitor";
 
