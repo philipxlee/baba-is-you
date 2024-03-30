@@ -2,7 +2,7 @@ package oogasalad.app;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import oogasalad.controller.authoring.ViewController;
+import oogasalad.controller.authoring.SceneController;
 
 /**
  * MainController is the entrypoint for the Authoring Environment.
@@ -20,9 +20,9 @@ public class AuthoringEnvironment extends Application {
     // initialize models
 
     // initialize controllers
-    ViewController viewController = new ViewController(stage);
+    SceneController sceneController = new SceneController(stage);
 
     // initialize views
-    viewController.initializeViews();
+    sceneController.initializeViews();
   }
 }

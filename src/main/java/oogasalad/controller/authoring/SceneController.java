@@ -5,9 +5,9 @@ import oogasalad.view.authoring.MainScene;
 import oogasalad.shared.Scene;
 
 /**
- * ViewController is Controller that manages Scenes and the JavaFX Stage.
+ * SceneController is Controller that manages Scenes and the JavaFX Stage.
  */
-public class ViewController {
+public class SceneController {
 
   private static final int WIDTH = 1500;
   private static final int HEIGHT = 800;
@@ -18,7 +18,7 @@ public class ViewController {
    *
    * @param stage primary stage of JavaFX application
    */
-  public ViewController(Stage stage) {
+  public SceneController(Stage stage) {
     this.stage = stage;
     stage.setTitle("Baba is Us: Authoring Environment");
     stage.setResizable(false);
