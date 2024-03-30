@@ -8,9 +8,9 @@ import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 public class Winnable implements Strategy {
 
   /**
-   * Executes the winnable strategy
+   * Executes the winnable strategy.
    *
-   * @param block the block that is being won
+   * @param block the block that is being won.
    */
   public void execute(AbstractVisualBlock block) {
   }
