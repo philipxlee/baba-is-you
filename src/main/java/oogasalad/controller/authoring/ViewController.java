@@ -2,7 +2,7 @@ package oogasalad.controller.authoring;
 
 import javafx.stage.Stage;
 import oogasalad.view.authoring.MainScene;
-import oogasalad.view.shared.Scene;
+import oogasalad.shared.Scene;
 
 /**
  * ViewController is Controller that manages Scenes and the JavaFX Stage.

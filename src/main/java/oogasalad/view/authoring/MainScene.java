@@ -3,7 +3,7 @@ package oogasalad.view.authoring;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import oogasalad.view.shared.Scene;
+import oogasalad.shared.Scene;
 
 /**
  * MainScene is the main scene implementation for Authoring Environment.

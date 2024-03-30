@@ -1,14 +1,13 @@
-package oogasalad.controller.authoring;
+package oogasalad.app;
 
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import oogasalad.controller.authoring.ViewController;
 
 /**
  * MainController is the entrypoint for the Authoring Environment.
  */
-public class MainController extends Application {
+public class AuthoringEnvironment extends Application {
 
   /**
    * Connects Model, Views and Controllers together.
