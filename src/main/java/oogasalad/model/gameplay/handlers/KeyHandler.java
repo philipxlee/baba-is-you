@@ -1,9 +1,7 @@
 package oogasalad.model.gameplay.handlers;
 
 import javafx.scene.input.KeyCode;
-import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
+import oogasalad.shared.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Controllable;

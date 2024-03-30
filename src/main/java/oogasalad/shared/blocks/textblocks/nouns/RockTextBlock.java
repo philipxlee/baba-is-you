@@ -1,6 +1,6 @@
-package oogasalad.model.gameplay.blocks.textblocks.nouns;
+package oogasalad.shared.blocks.textblocks.nouns;
 
-import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
+import oogasalad.shared.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "rock" noun.
