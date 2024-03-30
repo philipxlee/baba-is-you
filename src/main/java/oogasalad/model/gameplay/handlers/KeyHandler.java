@@ -1,6 +1,7 @@
 package oogasalad.model.gameplay.handlers;
 
 import javafx.scene.input.KeyCode;
+import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.grid.Grid;
@@ -14,10 +15,9 @@ public class KeyHandler {
   public KeyHandler(Grid grid) {
     this.grid = grid;
     this.blockFactory = new BlockFactory();
-    grid.checkForRules();  // Initialize rules
   }
 
-  public void handleKeyPress(KeyCode code) {
+  public void handleKeyPress(KeyCode code) throws InvalidBlockName {
     AbstractBlock[][] gameGrid = grid.getGrid();
 
 
