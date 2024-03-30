@@ -1,5 +1,6 @@
 package oogasalad.model.gameplay.factory;
 
+import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.blocks.AbstractBlock;
 import oogasalad.shared.blocks.textblocks.nouns.EmptyTextBlock;
 import oogasalad.shared.blocks.visualblocks.BabaVisualBlock;
@@ -15,7 +16,7 @@ public class BlockFactory {
 
   public BlockFactory() {}
 
-  public AbstractBlock createBlock(String blockName) {
+  public AbstractBlock createBlock(String blockName) throws InvalidBlockName {
     return switch (blockName) {
       case "EmptyVisualBlock" -> new EmptyVisualBlock("EmptyVisualBlock");
       case "RockTextBlock" -> new RockTextBlock("RockTextBlock");
@@ -25,7 +26,7 @@ public class BlockFactory {
       case "BabaVisualBlock" -> new BabaVisualBlock("BabaVisualBlock");
       case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock");
       case "EmptyTextBlock" -> new EmptyTextBlock("EmptyTextBlock");
-      default -> throw new IllegalArgumentException("Invalid block name");
+      default -> throw new InvalidBlockName("Invalid block name " + blockName);
     };
   }
 
