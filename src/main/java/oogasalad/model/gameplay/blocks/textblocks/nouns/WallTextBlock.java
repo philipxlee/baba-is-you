@@ -15,5 +15,4 @@ public class WallTextBlock extends AbstractTextBlock {
   public WallTextBlock(String name) {
     super(name);
   }
-
 }

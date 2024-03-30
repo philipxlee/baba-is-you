@@ -20,5 +20,4 @@ public interface BlockVisitor {
   void visit(FlagVisualBlock flag);
 
   void visit(EmptyVisualBlock empty);
-
 }

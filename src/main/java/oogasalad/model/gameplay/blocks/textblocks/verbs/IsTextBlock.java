@@ -15,5 +15,4 @@ public class IsTextBlock extends AbstractTextBlock {
   public IsTextBlock(String name) {
     super(name);
   }
-
 }
