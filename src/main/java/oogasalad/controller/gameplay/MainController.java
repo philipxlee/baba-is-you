@@ -12,8 +12,8 @@ import oogasalad.model.gameplay.handlers.KeyHandler;
 
 public class MainController extends Application {
 
-  private Grid gameGrid;
   private static final int CELL_SIZE = 50;
+  private Grid gameGrid;
   private Group root;
   private KeyHandler keyHandler;
 
@@ -37,10 +37,6 @@ public class MainController extends Application {
     stage.setScene(scene);
     stage.setTitle("Game Grid");
     stage.show();
-  }
-
-  public static void main(String[] args) {
-    launch(args);
   }
 
   private void resetAllBlocks() {
