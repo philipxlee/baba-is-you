@@ -25,6 +25,11 @@ public class KeyHandler {
   public void handleKeyPress(KeyCode code) {
     List<AbstractBlock>[][] gameGrid = grid.getGrid();
     List<int[]> controllableBlockPositions = findControllableBlock(gameGrid);
+    for(int[] controllable : controllableBlockPositions){ //prints all the positions
+      for(int element: controllable) {
+        System.out.println(element);
+      }
+    }
     if(controllableBlockPositions.get(0) != null){
       for(int[] element : controllableBlockPositions){
         moveBlock(element[0], element[1], element[2], code, gameGrid);
@@ -71,7 +76,7 @@ public class KeyHandler {
     while (true) {
       int nextI = i + length * deltaI;
       int nextJ = j + length * deltaJ;
-      if (isValidMove(nextI, nextJ, gameGrid) && !"EmptyVisualBlock".equals(gameGrid[nextI][nextJ].get(k).getBlockName())) {
+      if (isValidMove(nextI, nextJ, gameGrid) && !"EmptyVisualBlock".equals(gameGrid[nextI][nextJ].get(0).getBlockName())) {
         length++;
       }
       else{
@@ -95,11 +100,11 @@ public class KeyHandler {
       int currentJ = j + m * deltaJ;
       int nextI = currentI + deltaI;
       int nextJ = currentJ + deltaJ;
-      gameGrid[nextI][nextJ] = gameGrid[currentI][currentJ];
+      gameGrid[nextI][nextJ].set(k, gameGrid[currentI][currentJ].get(k)) ;
     }
 
     // Move controllable block last
-    gameGrid[i + deltaI][j + deltaJ] = gameGrid[i][j];
+    gameGrid[i + deltaI][j + deltaJ].set(k,gameGrid[i][j].get(k));
     gameGrid[i][j].set(k, blockFactory.createBlock("EmptyVisualBlock")) ;
   }
 
