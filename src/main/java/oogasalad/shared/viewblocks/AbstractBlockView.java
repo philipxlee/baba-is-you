@@ -10,7 +10,7 @@ import javafx.scene.layout.StackPane;
  */
 public abstract class AbstractBlockView {
 
-  private StackPane stackPane;
+  private ImageView imageView;
 
   /**
    * AbstractBlockView constructor that initializes the block view.
@@ -27,14 +27,13 @@ public abstract class AbstractBlockView {
    */
   private void initializeBlock(String imgPath) {
     ImageView imageView = new ImageView(imgPath);
-    stackPane = new StackPane(imageView);
   }
 
   /**
    * The getView() method returns the stackPane that represents the view of the block.
    */
-  public StackPane getView() {
-    return this.stackPane;
+  public ImageView getView() {
+    return this.imageView;
   }
 
 }

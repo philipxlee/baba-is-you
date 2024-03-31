@@ -1,13 +1,19 @@
 package oogasalad.view.gameplay;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
+import oogasalad.shared.resources.images.*;
+import oogasalad.shared.viewblocks.AbstractBlockView;
 
 public class MainScene implements oogasalad.shared.Scene {
 
@@ -16,6 +22,7 @@ public class MainScene implements oogasalad.shared.Scene {
   private Group root;
   private KeyHandler keyHandler;
   private javafx.scene.Scene scene;
+  private static final String IMAGE_DIRECTORY = "oogasalad/shared/resources/images/";
 
   @Override
   public void initializeScene(int width, int height) {
@@ -75,9 +82,26 @@ public class MainScene implements oogasalad.shared.Scene {
     AbstractBlock[][] grid = gameGrid.getGrid();
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        Rectangle rect = new Rectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        rect.setFill(getColorForBlock(grid[i][j].getBlockName()));
-        root.getChildren().add(rect);
+        String path = IMAGE_DIRECTORY + grid[i][j].getBlockName() + ".png";
+        String className = grid[i][j].getBlockName() + "View";
+        String source = "oogasalad.shared.viewblocks.";
+        if (className.contains("Visual"))
+          source += "visualblocks.";
+        //do this for the rest
+        try {
+          Class<?> clazz = Class.forName(source + className);
+          AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
+          .newInstance(path);
+          ImageView visualObj = obj.getView();
+          visualObj.setFitWidth(CELL_SIZE);
+          visualObj.setFitHeight(CELL_SIZE);
+          visualObj.setPreserveRatio(true);
+          root.getChildren().add(visualObj);
+        }
+        catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+               InvocationTargetException | ClassNotFoundException e)  {
+          e.printStackTrace();
+        }
       }
     }
   }
@@ -93,4 +117,5 @@ public class MainScene implements oogasalad.shared.Scene {
       default -> Color.BLACK;
     };
   }
+
 }
