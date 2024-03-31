@@ -50,20 +50,11 @@ public class KeyHandler {
     int deltaI = 0;
     int deltaJ = 0;
     switch (code) {
-      case UP:
-        deltaI = -1;
-        break;
-      case DOWN:
-        deltaI = 1;
-        break;
-      case LEFT:
-        deltaJ = -1;
-        break;
-      case RIGHT:
-        deltaJ = 1;
-        break;
-      default:
-        return;
+      case UP -> deltaI = -1;
+      case DOWN -> deltaI = 1;
+      case LEFT -> deltaJ = -1;
+      case RIGHT -> deltaJ = 1;
+      default -> deltaI = 0;
     }
 
     int[] movement = calculateMovement(i, j, deltaI, deltaJ, gameGrid);
@@ -84,7 +75,6 @@ public class KeyHandler {
       else{
         break;
       }
-
     }
 
     int endI = i + length * deltaI;
