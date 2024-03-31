@@ -1,4 +1,4 @@
-package oogasalad.shared.view_blocks.view_nouns;
+package oogasalad.shared.view_blocks.view_textblocks.view_nouns;
 
 import oogasalad.shared.view_blocks.AbstractBlockView;
 
