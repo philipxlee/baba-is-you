@@ -1,5 +1,4 @@
 package oogasalad.model.gameplay.grid;
-
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -7,17 +6,20 @@ import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Grid {
-  private AbstractBlock[][] grid;
+  private List<AbstractBlock>[][] grid;
   private RuleInterpreter parser;
   private KeyHandler keyHandler;
   private BlockFactory factory;
 
   public Grid(int rows, int cols) throws InvalidBlockName {
-    this.grid = new AbstractBlock[rows][cols];
+    this.grid = new ArrayList[rows][cols];
     this.parser = new RuleInterpreter();
     this.factory = new BlockFactory();
-    tempInitializeGrid();
+    InitializeGrid();
   }
 
   // Call everytime there's a handle key press
@@ -25,27 +27,34 @@ public class Grid {
     parser.interpretRules(grid);
   }
 
-  public AbstractBlock[][] getGrid() {
+  public List<AbstractBlock>[][] getGrid() {
     return this.grid;
   }
-
-  private void tempInitializeGrid() throws InvalidBlockName {
-    // Initialize grid with blocks
-    String tempStringGrid[][] = {
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "RockVisualBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "RockTextBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "RockTextBlock", "IsTextBlock", "PushTextBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "BabaTextBlock", "IsTextBlock", "YouTextBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
-      {"BabaVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"}
-    };
-
-    for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 8; j++) {
-        this.grid[i][j] = factory.createBlock(tempStringGrid[i][j]);
+  private void InitializeGrid(){
+    // Initializing elements
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        grid[i][j] = new ArrayList<AbstractBlock>();
+        createBlocks(grid[i][j], tempconfiguration[i][j]);
       }
     }
   }
+
+  private void createBlocks(List<AbstractBlock> AbstractBlocks, String[] Blocktypes){
+    for(int i=0; i< Blocktypes.length; i++){
+      AbstractBlocks.add(factory.createBlock(Blocktypes[i]));
+    }
+  }
+  String[][][] tempconfiguration = {
+          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
+          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"RockVisualBlock"}, {"EmptyVisualBlock"}},
+          {{"EmptyVisualBlock"}, {"RockTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
+          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
+          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
+          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"IsTextBlock"}, {"YouTextBlock"}, {"EmptyVisualBlock"}},
+          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
+          {{"BabaVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}}
+  };
+
+
 }

@@ -1,5 +1,6 @@
 package oogasalad.model.gameplay.interpreter;
 
+import java.util.List;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
@@ -19,13 +20,21 @@ public class RuleInterpreter {
    *
    * @param grid The game grid to be interpreted.
    */
-  public void interpretRules(AbstractBlock[][] grid) throws VisitorReflectionException {
-    for (AbstractBlock[] row : grid) {
+  public void interpretRules(List<AbstractBlock>[][] grid) throws VisitorReflectionException {
+    for (List<AbstractBlock>[] row : grid) {
       for (int col = 0; col <= row.length - 3; col++) {
-        checkAndProcessRuleAt(row[col], row[col + 1], row[col + 2], grid);
+        // Iterate over every combination of blocks in the three adjacent positions
+        for (AbstractBlock block1 : row[col]) {
+          for (AbstractBlock block2 : row[col + 1]) {
+            for (AbstractBlock block3 : row[col + 2]) {
+              checkAndProcessRuleAt(block1, block2, block3, grid);
+            }
+          }
+        }
       }
     }
   }
+
 
   /**
    * Processes a potential rule if the given blocks form a valid rule structure.
@@ -36,7 +45,7 @@ public class RuleInterpreter {
    * @param grid        The game grid.
    */
   private void checkAndProcessRuleAt(AbstractBlock firstBlock, AbstractBlock secondBlock,
-      AbstractBlock thirdBlock, AbstractBlock[][] grid) throws VisitorReflectionException {
+      AbstractBlock thirdBlock, List<AbstractBlock>[][] grid) throws VisitorReflectionException {
     if (isValidRule(firstBlock, secondBlock, thirdBlock)) {
       BlockVisitor visitor = determineVisitor(thirdBlock.getBlockName());
       applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName(), grid);
@@ -62,13 +71,22 @@ public class RuleInterpreter {
    * @param blockName The name of the blocks to which the visitor should be applied.
    * @param grid      The game grid.
    */
-  private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName,
-      AbstractBlock[][] grid) {
-    for (AbstractBlock[] row : grid) {
-      for (AbstractBlock cell : row) {
-        if (!cell.isTextBlock() && cell.matches(blockName)) {
-          System.out.println("Applying visitor to block: " + cell.getBlockName());
-          cell.accept(visitor);
+  /**
+   * Applies a visitor to all blocks in the grid that match the given block name.
+   *
+   * @param visitor   The visitor to apply.
+   * @param blockName The name of the blocks to which the visitor should be applied.
+   * @param grid      The game grid, where each cell contains a list of AbstractBlocks.
+   */
+  private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName, List<AbstractBlock>[][] grid) {
+    for (List<AbstractBlock>[] row : grid) {
+      for (List<AbstractBlock> cell : row) {
+        for (AbstractBlock block : cell) {
+          // Apply the visitor only to non-text blocks that match the block name.
+          if (!block.isTextBlock() && block.matches(blockName)) {
+            System.out.println("Applying visitor to block: " + block.getBlockName());
+            block.accept(visitor);
+          }
         }
       }
     }

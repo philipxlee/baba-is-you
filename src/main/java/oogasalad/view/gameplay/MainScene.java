@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay;
 
+import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
@@ -61,27 +62,46 @@ public class MainScene implements Scene {
   }
 
   private void resetAllBlocks() {
-    AbstractBlock[][] grid = gameGrid.getGrid();
-    for (AbstractBlock[] blocks : grid) {
-      for (AbstractBlock block : blocks) {
-        if (!block.isTextBlock()) {
-          block.resetAllBehaviors();
+    List<AbstractBlock>[][] grid = gameGrid.getGrid();
+    for (List<AbstractBlock>[] blocksRow : grid) {
+      for (List<AbstractBlock> cell : blocksRow) {
+        for (AbstractBlock block : cell) {
+          if (!block.isTextBlock()) {
+            block.resetAllBehaviors();
+          }
         }
       }
     }
   }
 
+
   private void renderGrid() {
     root.getChildren().clear();
-    AbstractBlock[][] grid = gameGrid.getGrid();
+    List<AbstractBlock>[][] grid = gameGrid.getGrid();
+    double blockOffset = CELL_SIZE * 0.2; // Offset for displaying stacked blocks
+
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        Rectangle rect = new Rectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        rect.setFill(getColorForBlock(grid[i][j].getBlockName()));
-        root.getChildren().add(rect);
+        List<AbstractBlock> blocks = grid[i][j];
+        for (int k = 0; k < blocks.size(); k++) {
+          AbstractBlock block = blocks.get(k);
+
+          // Calculate the offset position for each block within the same cell
+          double offsetX = j * CELL_SIZE + k * blockOffset;
+          double offsetY = i * CELL_SIZE + k * blockOffset;
+
+          // Ensure that the block does not exceed the boundaries of the cell
+          offsetX = Math.min(offsetX, j * CELL_SIZE + CELL_SIZE - blockOffset);
+          offsetY = Math.min(offsetY, i * CELL_SIZE + CELL_SIZE - blockOffset);
+
+          Rectangle rect = new Rectangle(offsetX, offsetY, CELL_SIZE - k * blockOffset, CELL_SIZE - k * blockOffset);
+          rect.setFill(getColorForBlock(block.getBlockName()));
+          root.getChildren().add(rect);
+        }
       }
     }
   }
+
 
   private Color getColorForBlock(String blockType) {
     return switch (blockType) {
