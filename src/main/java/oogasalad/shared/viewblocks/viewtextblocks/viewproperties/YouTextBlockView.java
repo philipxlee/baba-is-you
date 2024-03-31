@@ -1,6 +1,6 @@
-package oogasalad.shared.view_blocks.view_textblocks.view_properties;
+package oogasalad.shared.viewblocks.viewtextblocks.viewproperties;
 
-import oogasalad.shared.view_blocks.AbstractBlockView;
+import oogasalad.shared.viewblocks.AbstractBlockView;
 
 /**
  * A view for the text block that represents the "you" property.

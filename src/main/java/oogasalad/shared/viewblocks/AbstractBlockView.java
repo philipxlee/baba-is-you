@@ -1,4 +1,4 @@
-package oogasalad.shared.view_blocks;
+package oogasalad.shared.viewblocks;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;

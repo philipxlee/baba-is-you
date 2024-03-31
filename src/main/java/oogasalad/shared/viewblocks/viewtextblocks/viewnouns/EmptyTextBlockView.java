@@ -1,6 +1,6 @@
-package oogasalad.shared.view_blocks.view_textblocks.view_nouns;
+package oogasalad.shared.viewblocks.viewtextblocks.viewnouns;
 
-import oogasalad.shared.view_blocks.AbstractBlockView;
+import oogasalad.shared.viewblocks.AbstractBlockView;
 
 /**
  * A view for the text block that represents the "empty" noun.
