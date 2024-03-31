@@ -1,6 +1,6 @@
 package oogasalad.model.gameplay.strategies;
 
-import oogasalad.shared.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 
 /**
  * Strategy for blocks that can be won by the player.

@@ -1,6 +1,6 @@
-package oogasalad.shared.blocks;
+package oogasalad.model.gameplay.blocks;
 
-import oogasalad.model.gameplay.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**

@@ -1,6 +1,6 @@
-package oogasalad.shared.blocks.textblocks.verbs;
+package oogasalad.model.gameplay.blocks.textblocks.verbs;
 
-import oogasalad.shared.blocks.textblocks.AbstractTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "is" verb.

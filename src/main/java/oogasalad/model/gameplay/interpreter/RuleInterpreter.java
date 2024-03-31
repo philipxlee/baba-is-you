@@ -1,8 +1,8 @@
 package oogasalad.model.gameplay.interpreter;
 
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
-import oogasalad.shared.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
 /**
  * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's
@@ -10,7 +10,7 @@ import oogasalad.model.gameplay.blockvisitor.BlockVisitor;
  */
 public class RuleInterpreter {
 
-  private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blockvisitor.";
+  private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blocks.blockvisitor.";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String VISITOR_SUFFIX = "Visitor";
 
@@ -79,7 +79,7 @@ public class RuleInterpreter {
    * @param blockName The name of the block for which to determine the visitor.
    * @return The corresponding BlockVisitor instance or null if none found.
    */
-  private BlockVisitor determineVisitor(String blockName) throws VisitorReflectionException {
+  private BlockVisitor determineVisitor(String blockName) {
     String className = VISITOR_PACKAGE + blockName.replace(TEXT_BLOCK_SUFFIX, "") + VISITOR_SUFFIX;
     try {
       Class<?> visitorClass = Class.forName(className);

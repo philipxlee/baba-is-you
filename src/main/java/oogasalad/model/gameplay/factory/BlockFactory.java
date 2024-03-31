@@ -1,15 +1,15 @@
 package oogasalad.model.gameplay.factory;
 
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
-import oogasalad.shared.blocks.AbstractBlock;
-import oogasalad.shared.blocks.textblocks.nouns.EmptyTextBlock;
-import oogasalad.shared.blocks.visualblocks.BabaVisualBlock;
-import oogasalad.shared.blocks.visualblocks.EmptyVisualBlock;
-import oogasalad.shared.blocks.textblocks.nouns.BabaTextBlock;
-import oogasalad.shared.blocks.textblocks.verbs.IsTextBlock;
-import oogasalad.shared.blocks.textblocks.nouns.RockTextBlock;
-import oogasalad.shared.blocks.textblocks.properties.YouTextBlock;
-import oogasalad.shared.blocks.visualblocks.RockVisualBlock;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.textblocks.nouns.EmptyTextBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
+import oogasalad.model.gameplay.blocks.textblocks.nouns.BabaTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.verbs.IsTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.nouns.RockTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.properties.YouTextBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 
 
 public class BlockFactory {

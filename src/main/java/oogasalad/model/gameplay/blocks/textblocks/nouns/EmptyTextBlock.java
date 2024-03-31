@@ -1,6 +1,6 @@
-package oogasalad.shared.blocks.textblocks.nouns;
+package oogasalad.model.gameplay.blocks.textblocks.nouns;
 
-import oogasalad.shared.blocks.textblocks.AbstractTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "empty" noun.
