@@ -1,7 +1,8 @@
 package oogasalad.model.gameplay.grid;
 
-import javafx.scene.input.KeyCode;
-import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+import oogasalad.shared.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
@@ -12,16 +13,15 @@ public class Grid {
   private KeyHandler keyHandler;
   private BlockFactory factory;
 
-  public Grid(int rows, int cols) {
+  public Grid(int rows, int cols) throws InvalidBlockName {
     this.grid = new AbstractBlock[rows][cols];
     this.parser = new RuleInterpreter();
-    this.keyHandler = new KeyHandler(this);
     this.factory = new BlockFactory();
     tempInitializeGrid();
   }
 
   // Call everytime there's a handle key press
-  public void checkForRules() {
+  public void checkForRules() throws VisitorReflectionException {
     parser.interpretRules(grid);
   }
 
@@ -29,7 +29,7 @@ public class Grid {
     return this.grid;
   }
 
-  private void tempInitializeGrid() {
+  private void tempInitializeGrid() throws InvalidBlockName {
     // Initialize grid with blocks
     String tempStringGrid[][] = {
       {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},

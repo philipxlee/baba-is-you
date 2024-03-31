@@ -1,6 +1,6 @@
 package oogasalad.model.gameplay.strategies;
 
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.shared.blocks.visualblocks.AbstractVisualBlock;
 
 /**
  * This class is a strategy that is used to determine the behavior of a block that is pushable It is

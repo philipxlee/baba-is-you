@@ -1,6 +1,6 @@
-package oogasalad.model.gameplay.blocks.textblocks;
+package oogasalad.shared.blocks.textblocks;
 
-import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.shared.blocks.AbstractBlock;
 
 /**
  * Represents an abstract text block within the game, providing text-specific functionality.

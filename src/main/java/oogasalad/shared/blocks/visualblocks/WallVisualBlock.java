@@ -1,6 +1,6 @@
-package oogasalad.model.gameplay.blocks.visualblocks;
+package oogasalad.shared.blocks.visualblocks;
 
-import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.blockvisitor.BlockVisitor;
 
 /**
  * A visual block that represents a wall in the game.

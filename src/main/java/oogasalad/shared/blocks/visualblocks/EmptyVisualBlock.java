@@ -1,6 +1,6 @@
-package oogasalad.model.gameplay.blocks.visualblocks;
+package oogasalad.shared.blocks.visualblocks;
 
-import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.blockvisitor.BlockVisitor;
 
 /**
  * This class represents an empty visual block that does not have any behavior. It is used to

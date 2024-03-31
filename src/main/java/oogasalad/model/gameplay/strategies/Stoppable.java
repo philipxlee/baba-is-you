@@ -1,6 +1,6 @@
 package oogasalad.model.gameplay.strategies;
 
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.shared.blocks.visualblocks.AbstractVisualBlock;
 
 /**
  * A strategy that makes a block stoppable, meaning it will not move when pushed.
