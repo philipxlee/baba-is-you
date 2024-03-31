@@ -21,14 +21,24 @@ public class KeyHandler {
     grid.checkForRules();
   }
 
-  public void handleKeyPress(KeyCode code) {
-    AbstractBlock[][] gameGrid = grid.getGrid();
-    List<int[]> controllableBlockPositions = findControllableBlock(gameGrid);
-    if (controllableBlockPositions.get(0) != null) {
-      for(int[] element : controllableBlockPositions){
-        moveBlock(element[0], element[1], code, gameGrid);
-      }
+//  public void handleKeyPress(KeyCode code) {
+//    AbstractBlock[][] gameGrid = grid.getGrid();
+//    List<int[]> controllableBlockPositions = findControllableBlock(gameGrid);
+//    if (controllableBlockPositions.get(0) != null) {
+//      for(int[] element : controllableBlockPositions){
+//        moveBlock(element[0], element[1], code, gameGrid);
+//      }
+//
+//    }
+//  }
 
+  public void handleKeyPress(KeyCode code) {
+    List<AbstractBlock>[][] gameGrid = grid.getGrid();
+    List<int[]> controllableBlockPositions = findControllableBlock(gameGrid);
+    if(controllableBlockPositions.get(0) != null){
+      for(int[] element : controllableBlockPositions){
+        moveBlock(element[0], element[1], element[2], code, gameGrid);
+      }
     }
   }
 
@@ -46,7 +56,7 @@ public class KeyHandler {
     return AllControllableBlocks;
   }
 
-  private void moveBlock(int i, int j, KeyCode code, AbstractBlock[][] gameGrid) {
+  private void moveBlock(int i, int j, int k,  KeyCode code, AbstractBlock[][] gameGrid) {
     int deltaI = 0;
     int deltaJ = 0;
     switch (code) {
