@@ -12,6 +12,13 @@ public class Stoppable implements Strategy {
    *
    * @param block the block that is being stopped.
    */
+  @Override
   public void execute(AbstractVisualBlock block) {
+
+  }
+
+  @Override
+  public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
+    return false;
   }
 }

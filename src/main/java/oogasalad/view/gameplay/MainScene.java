@@ -90,6 +90,7 @@ public class MainScene implements oogasalad.shared.Scene {
       case "IsTextBlock" -> Color.YELLOW;
       case "YouTextBlock" -> Color.GREEN;
       case "RockTextBlock" -> Color.BLUE;
+      case "PushTextBlock" -> Color.GRAY;
       default -> Color.BLACK;
     };
   }

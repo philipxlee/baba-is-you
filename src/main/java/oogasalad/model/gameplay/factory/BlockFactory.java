@@ -1,5 +1,6 @@
 package oogasalad.model.gameplay.factory;
 
+import oogasalad.model.gameplay.blocks.textblocks.properties.PushTextBlock;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.textblocks.nouns.EmptyTextBlock;
@@ -26,6 +27,7 @@ public class BlockFactory {
       case "BabaVisualBlock" -> new BabaVisualBlock("BabaVisualBlock");
       case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock");
       case "EmptyTextBlock" -> new EmptyTextBlock("EmptyTextBlock");
+      case "PushTextBlock" -> new PushTextBlock("PushTextBlock");
       default -> throw new InvalidBlockName("Invalid block name " + blockName);
     };
   }

@@ -13,9 +13,13 @@ public class Controllable implements Strategy {
    *
    * @param block the block that is being controlled.
    */
+  @Override
   public void execute(AbstractVisualBlock block) {
-     // in block class run all strategies to decide next spot
-    // then validate each next spot
+
   }
 
+  @Override
+  public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
+    return false;
+  }
 }

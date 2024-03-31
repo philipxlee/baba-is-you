@@ -67,6 +67,7 @@ public class RuleInterpreter {
     for (AbstractBlock[] row : grid) {
       for (AbstractBlock cell : row) {
         if (!cell.isTextBlock() && cell.matches(blockName)) {
+          System.out.println("Applying visitor to block: " + cell.getBlockName());
           cell.accept(visitor);
         }
       }

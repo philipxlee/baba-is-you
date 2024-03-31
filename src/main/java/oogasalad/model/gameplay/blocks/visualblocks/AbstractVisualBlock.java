@@ -83,4 +83,15 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   public String getBlockName() {
     return name;
   }
+
+  /**
+   * Executes all behaviors associated with this block, based on the provided direction and grid context.
+   *
+   */
+  @Override
+  public void executeBehaviors() {
+    for (Strategy behavior : behaviors) {
+      behavior.execute(this);
+    }
+  }
 }
