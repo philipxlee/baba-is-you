@@ -12,10 +12,11 @@ import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
+import oogasalad.shared.scene.Scene;
 import oogasalad.shared.*;
 import oogasalad.shared.viewblocks.AbstractBlockView;
 
-public class MainScene implements oogasalad.shared.Scene {
+public class MainScene implements Scene {
 
   private static final int CELL_SIZE = 50;
   private Grid gameGrid;

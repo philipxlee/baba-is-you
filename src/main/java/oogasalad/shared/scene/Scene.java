@@ -1,4 +1,4 @@
-package oogasalad.shared;
+package oogasalad.shared.scene;
 
 /**
  * Scene abstraction represents a scene being displayed.

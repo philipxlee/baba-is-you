@@ -35,5 +35,4 @@ public abstract class AbstractBlockView {
   public ImageView getView() {
     return this.imageView;
   }
-
 }

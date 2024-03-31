@@ -1,7 +1,7 @@
 package oogasalad.controller.gameplay;
 
 import javafx.stage.Stage;
-import oogasalad.shared.Scene;
+import oogasalad.shared.scene.Scene;
 import oogasalad.view.gameplay.MainScene;
 
 /**
