@@ -12,7 +12,7 @@ import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
-import oogasalad.shared.resources.images.*;
+import oogasalad.shared.*;
 import oogasalad.shared.viewblocks.AbstractBlockView;
 
 public class MainScene implements oogasalad.shared.Scene {
@@ -89,14 +89,23 @@ public class MainScene implements oogasalad.shared.Scene {
           source += "visualblocks.";
         //do this for the rest
         try {
-          Class<?> clazz = Class.forName(source + className);
-          AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
-          .newInstance(path);
-          ImageView visualObj = obj.getView();
-          visualObj.setFitWidth(CELL_SIZE);
-          visualObj.setFitHeight(CELL_SIZE);
-          visualObj.setPreserveRatio(true);
-          root.getChildren().add(visualObj);
+          System.out.println(path);
+          //temporary, delete below when implementation is done
+          if (!className.equals("BabaVisualBlockView") || !className.equals("WallVisualBlockView")) {
+            Rectangle rect = new Rectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            rect.setFill(getColorForBlock(grid[i][j].getBlockName()));
+            root.getChildren().add(rect);
+          }
+          else {
+            Class<?> clazz = Class.forName(source + className);
+            AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
+                .newInstance(path);
+            ImageView visualObj = obj.getView();
+            visualObj.setFitWidth(CELL_SIZE);
+            visualObj.setFitHeight(CELL_SIZE);
+            visualObj.setPreserveRatio(true);
+            root.getChildren().add(visualObj);
+          }
         }
         catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
                InvocationTargetException | ClassNotFoundException e)  {
