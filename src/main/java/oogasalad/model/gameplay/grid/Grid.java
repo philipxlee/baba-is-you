@@ -1,5 +1,4 @@
 package oogasalad.model.gameplay.grid;
-
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -32,24 +31,23 @@ public class Grid {
     return this.grid;
   }
   private void InitializeGrid(){
-    ArrayList<String>[][] gridOfArrayLists = new ArrayList[8][8];
 
     // Initializing elements
-    for (int i = 0; i < gridOfArrayLists.length; i++) {
-      for (int j = 0; j < gridOfArrayLists[i].length; j++) {
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
 
-        gridOfArrayLists[i][j] = new ArrayList<String>();
-        createBlocks(gridOfArrayLists[i][j],tempconfig[i][j]);
+        grid[i][j] = new ArrayList<AbstractBlock>();
+        createBlocks(grid[i][j], tempconfiguration[i][j]);
       }
     }
   }
 
-  private void createBlocks(ArrayList<String> stringOfAbstractBlocks, String[] Blocktypes){
+  private void createBlocks(List<AbstractBlock> AbstractBlocks, String[] Blocktypes){
     for(int i=0; i< Blocktypes.length; i++){
-      factory.createBlock(Blocktypes[i]);
+      AbstractBlocks.add(factory.createBlock(Blocktypes[i]));
     }
   }
-  String[][][] tempconfig = {
+  String[][][] tempconfiguration = {
           {{"BabaVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}},
           {{"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"RockVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}},
           {{"EmptyVisualBlock", "BabaVisualBlock"}, {"RockTextBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyVisualBlock"}},
@@ -61,11 +59,3 @@ public class Grid {
   };
 
 }
-//[ ["RockVisualBlock", "BabaTextBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["BabaTextBlock", "EmptyVisualBlock"] ["RockVisualBlock", "EmptyVisualBlock"] ["RockVisualBlock", "RockVisualBlock"] ["BabaVisualBlock", "EmptyVisualBlock"] ["RockVisualBlock", "RockVisualBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ];
-//        [ ["BabaTextBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["BabaVisualBlock", "EmptyVisualBlock"] ["BabaVisualBlock", "EmptyVisualBlock"] ["RockVisualBlock", "RockVisualBlock"] ["RockVisualBlock", "EmptyVisualBlock"] ["YouTextBlock", "BabaTextBlock"] ];
-//        [ ["EmptyVisualBlock", "YouTextBlock"] ["RockTextBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "RockVisualBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "YouTextBlock"] ["RockVisualBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "RockVisualBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ];
-//        [ ["BabaTextBlock", "RockTextBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["RockVisualBlock", "EmptyVisualBlock"] ["RockTextBlock", "EmptyVisualBlock"] ["RockVisualBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "RockVisualBlock"] ["BabaTextBlock", "RockVisualBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ];
-//        [ ["RockTextBlock", "RockVisualBlock"] ["BabaTextBlock", "BabaVisualBlock"] ["BabaVisualBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "RockVisualBlock"] ["RockVisualBlock", "YouTextBlock"] ["EmptyVisualBlock", "YouTextBlock"] ["BabaVisualBlock", "RockVisualBlock"] ["BabaVisualBlock", "EmptyVisualBlock"] ];
-//        [ ["EmptyVisualBlock", "RockVisualBlock"] ["RockTextBlock", "BabaTextBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "RockTextBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["RockVisualBlock", "RockTextBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["EmptyVisualBlock", "BabaVisualBlock"] ];
-//        [ ["EmptyVisualBlock", "EmptyVisualBlock"] ["YouTextBlock", "BabaTextBlock"] ["RockTextBlock", "BabaTextBlock"] ["RockVisualBlock", "BabaTextBlock"] ["EmptyVisualBlock", "RockTextBlock"] ["EmptyVisualBlock", "RockTextBlock"] ["EmptyVisualBlock", "RockTextBlock"] ["BabaTextBlock", "RockVisualBlock"] ];
-//        [ ["EmptyVisualBlock", "YouTextBlock"] ["RockVisualBlock", "BabaVisualBlock"] ["BabaVisualBlock", "BabaTextBlock"] ["EmptyVisualBlock", "BabaTextBlock"] ["EmptyVisualBlock", "BabaTextBlock"] ["EmptyVisualBlock", "EmptyVisualBlock"] ["BabaVisualBlock", "EmptyVisualBlock"] ["BabaVisualBlock", "EmptyVisualBlock"] ];
