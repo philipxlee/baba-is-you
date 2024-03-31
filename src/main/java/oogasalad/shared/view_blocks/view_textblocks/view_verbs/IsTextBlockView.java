@@ -13,6 +13,6 @@ public class IsTextBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public IsTextBlockView(String imgPath) {
-    initializeBlock(imgPath);
+    super.initializeBlock(imgPath);
   }
 }
