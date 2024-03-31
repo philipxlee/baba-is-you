@@ -7,6 +7,9 @@ import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Controllable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KeyHandler {
 
   private final Grid grid;
@@ -20,22 +23,27 @@ public class KeyHandler {
 
   public void handleKeyPress(KeyCode code) {
     AbstractBlock[][] gameGrid = grid.getGrid();
-    int[] controllableBlockPosition = findControllableBlock(gameGrid);
-    if (controllableBlockPosition != null) {
-      moveBlock(controllableBlockPosition[0], controllableBlockPosition[1], code, gameGrid);
+    List<int[]> controllableBlockPositions = findControllableBlock(gameGrid);
+    if (controllableBlockPositions.get(0) != null) {
+      for(int[] element : controllableBlockPositions){
+        moveBlock(element[0], element[1], code, gameGrid);
+      }
+
     }
   }
 
-  private int[] findControllableBlock(AbstractBlock[][] gameGrid) {
+  private List<int[]> findControllableBlock(AbstractBlock[][] gameGrid) {
+    List<int[]> AllControllableBlocks = new ArrayList<>();
     for (int i = 0; i < gameGrid.length; i++) {
       for (int j = 0; j < gameGrid[i].length; j++) {
         AbstractBlock block = gameGrid[i][j];
         if (block != null && block.hasBehavior(Controllable.class)) {
-          return new int[]{i, j};
+          int[] a = {i, j};
+          AllControllableBlocks.add(a);
         }
       }
     }
-    return null;
+    return AllControllableBlocks;
   }
 
   private void moveBlock(int i, int j, KeyCode code, AbstractBlock[][] gameGrid) {

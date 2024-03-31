@@ -32,13 +32,13 @@ public class Grid {
   private void tempInitializeGrid() throws InvalidBlockName {
     // Initialize grid with blocks
     String tempStringGrid[][] = {
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"BabaVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
       {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "RockVisualBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "RockTextBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "BabaVisualBlock", "RockTextBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
       {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "RockVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
       {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "BabaTextBlock", "IsTextBlock", "YouTextBlock", "EmptyVisualBlock"},
-      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
+      {"EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "RockVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"},
       {"BabaVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock", "EmptyVisualBlock"}
     };
 
