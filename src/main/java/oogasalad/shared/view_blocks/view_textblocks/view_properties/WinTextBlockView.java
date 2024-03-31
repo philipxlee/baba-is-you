@@ -13,7 +13,7 @@ public class WinTextBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public WinTextBlockView(String imgPath) {
-    initializeBlock(imgPath);
+    super(imgPath);
   }
 
 }

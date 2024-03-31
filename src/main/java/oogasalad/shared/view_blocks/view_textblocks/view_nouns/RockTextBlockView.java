@@ -1,5 +1,6 @@
 package oogasalad.shared.view_blocks.view_textblocks.view_nouns;
 
+
 import oogasalad.shared.view_blocks.AbstractBlockView;
 
 /**
@@ -13,6 +14,6 @@ public class RockTextBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public RockTextBlockView(String imgPath) {
-    initializeBlock(imgPath);
+    super(imgPath);
   }
 }

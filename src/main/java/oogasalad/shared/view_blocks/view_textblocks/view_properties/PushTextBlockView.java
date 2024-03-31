@@ -13,7 +13,7 @@ public class PushTextBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public PushTextBlockView(String imgPath) {
-    initializeBlock(imgPath);
+    super(imgPath);
   }
 
 }

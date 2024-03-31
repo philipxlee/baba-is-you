@@ -9,18 +9,25 @@ import javafx.scene.layout.StackPane;
  * environment.
  */
 public abstract class AbstractBlockView {
+
   private StackPane stackPane;
 
   /**
-   * This method initializes the view block by going to the image path and making it the image
-   * for the imageView.
+   * AbstractBlockView constructor that initializes the block view.
+   */
+  public AbstractBlockView(String imgPath) {
+    initializeBlock(imgPath);
+  }
+
+  /**
+   * This method initializes the view block by going to the image path and making it the image for
+   * the imageView.
    *
    * @param imgPath String that holds the path to the block image.
    */
-  public AbstractBlockView initializeBlock(String imgPath) {
+  private void initializeBlock(String imgPath) {
     ImageView imageView = new ImageView(imgPath);
     stackPane = new StackPane(imageView);
-    return this;
   }
 
   /**

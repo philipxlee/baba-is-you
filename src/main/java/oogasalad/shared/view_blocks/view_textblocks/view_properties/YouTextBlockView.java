@@ -13,7 +13,7 @@ public class YouTextBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public YouTextBlockView(String imgPath) {
-    initializeBlock(imgPath);
+    super(imgPath);
   }
 
 }
