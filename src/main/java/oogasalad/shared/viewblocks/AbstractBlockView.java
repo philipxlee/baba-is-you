@@ -36,5 +36,4 @@ public abstract class AbstractBlockView {
   public StackPane getView() {
     return this.stackPane;
   }
-
 }
