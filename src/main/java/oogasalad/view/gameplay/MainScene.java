@@ -5,8 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
-import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
-import oogasalad.shared.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 
@@ -31,8 +30,8 @@ public class MainScene implements oogasalad.shared.Scene {
         keyHandler.handleKeyPress(event.getCode()); // Handle key press
         renderGrid(); // Render grid
         resetAllBlocks(); // Reset all blocks
-      } catch (VisitorReflectionException | InvalidBlockName e) {
-        showErrorDialog(e.getMessage());
+      } catch (Exception e) {
+        showErrorDialog(e.getClass().getName());
       }
     });
 

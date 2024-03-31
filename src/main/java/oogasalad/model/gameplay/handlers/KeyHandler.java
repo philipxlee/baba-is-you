@@ -2,7 +2,7 @@ package oogasalad.model.gameplay.handlers;
 
 import javafx.scene.input.KeyCode;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
-import oogasalad.shared.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Controllable;
@@ -25,6 +25,7 @@ public class KeyHandler {
     for (int i = 0; i < gameGrid.length; i++) {
       for (int j = 0; j < gameGrid[i].length; j++) {
         AbstractBlock block = gameGrid[i][j];
+        // for  behavior in block, execute()
         if (block.hasBehavior(Controllable.class)) {
           int deltaI = 0;
           int deltaJ = 0;

@@ -2,7 +2,7 @@ package oogasalad.model.gameplay.grid;
 
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
-import oogasalad.shared.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;

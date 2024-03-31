@@ -1,9 +1,9 @@
-package oogasalad.shared.blocks.visualblocks;
+package oogasalad.model.gameplay.blocks.visualblocks;
 
 import java.util.ArrayList;
 import java.util.List;
-import oogasalad.shared.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**

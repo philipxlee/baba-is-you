@@ -3,7 +3,7 @@ package oogasalad.model.gameplay.utils.exceptions;
 /**
  * Exception thrown when the reflection for the visitor fails.
  */
-public class VisitorReflectionException extends Exception {
+public class VisitorReflectionException extends RuntimeException {
 
   /**
    * Throws an exception when the reflection for the visitor fails.
@@ -12,8 +12,7 @@ public class VisitorReflectionException extends Exception {
    * @param cause       the cause of the exception.
    */
   public VisitorReflectionException(String visitorName, Throwable cause) {
-    super("Could not instantiate a Visitor " +
-          "Possible error in reflection for visitor " + visitorName, cause);
+    super(visitorName, cause);
   }
 
 }
