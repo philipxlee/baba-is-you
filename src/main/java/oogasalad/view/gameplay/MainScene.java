@@ -1,6 +1,7 @@
 package oogasalad.view.gameplay;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
@@ -65,52 +66,70 @@ public class MainScene implements Scene {
   }
 
   private void resetAllBlocks() {
-    AbstractBlock[][] grid = gameGrid.getGrid();
-    for (AbstractBlock[] blocks : grid) {
-      for (AbstractBlock block : blocks) {
-        if (!block.isTextBlock()) {
-          block.resetAllBehaviors();
+    List<AbstractBlock>[][] grid = gameGrid.getGrid();
+    for (List<AbstractBlock>[] blocksRow : grid) {
+      for (List<AbstractBlock> cell : blocksRow) {
+        for (AbstractBlock block : cell) {
+          if (!block.isTextBlock()) {
+            block.resetAllBehaviors();
+          }
         }
       }
     }
   }
 
+
   private void renderGrid() {
     root.getChildren().clear();
-    AbstractBlock[][] grid = gameGrid.getGrid();
+    List<AbstractBlock>[][] grid = gameGrid.getGrid();
+    double blockOffset = CELL_SIZE * 0.2; // Offset for displaying stacked blocks
+
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        String path = "/" + grid[i][j].getBlockName() + ".png";
-        String className = grid[i][j].getBlockName() + "View";
-        String source = "oogasalad.shared.viewblocks.";
-        if (className.contains("Visual"))
-          source += "visualblocksview.";
-        //do this for the rest
-        else if (className.contains("Text"))
-          source += "textblocksview.";
-        try {
-          //temporary, delete below when implementation is done
-//          if (!className.equals("BabaVisualBlockView") && !className.equals("WallVisualBlockView")) {
-//            Rectangle rect = new Rectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-//            rect.setFill(getColorForBlock(grid[i][j].getBlockName()));
-//            root.getChildren().add(rect);
-//          }
-//          else {
+        List<AbstractBlock> blocks = grid[i][j];
+        for (int k = 0; k < blocks.size(); k++) {
+          try {
+            AbstractBlock block = blocks.get(k);
+
+            // Calculate the offset position for each block within the same cell
+            double offsetX = j * CELL_SIZE + k * blockOffset;
+            double offsetY = i * CELL_SIZE + k * blockOffset;
+
+            // Ensure that the block does not exceed the boundaries of the cell
+            offsetX = Math.min(offsetX, j * CELL_SIZE + CELL_SIZE - blockOffset);
+            offsetY = Math.min(offsetY, i * CELL_SIZE + CELL_SIZE - blockOffset);
+
+            String path = "/" + block.getBlockName() + ".png";
+            String className = block.getBlockName() + "View";
+            String source = "oogasalad.shared.viewblocks.";
+            if (className.contains("Visual"))
+              source += "visualblocksview.";
+              //do this for the rest
+            else if (className.contains("Text"))
+              source += "textblocksview.";
+            //temporary, delete below when implementation is done
+//          Rectangle rect = new Rectangle(offsetX, offsetY, CELL_SIZE - k * blockOffset, CELL_SIZE - k * blockOffset);
+//          rect.setFill(getColorForBlock(block.getBlockName()));
+//          root.getChildren().add(rect);
             Class<?> clazz = Class.forName(source + className);
             AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
-                .newInstance("oogasalad/shared/resources/images/EmptyVisualBlock.png");
+                .newInstance(path);
             ImageView visualObj = obj.getView();
-            visualObj.setFitWidth(CELL_SIZE);
-            visualObj.setFitHeight(CELL_SIZE);
+            visualObj.setFitWidth(CELL_SIZE- k * blockOffset);
+            visualObj.setFitHeight(CELL_SIZE- k * blockOffset);
             visualObj.setPreserveRatio(true);
+            visualObj.setX(offsetX);
+            visualObj.setY(offsetY);
             root.getChildren().add(visualObj);
-        }
-        catch (Exception e)  {
-          e.printStackTrace();
+
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
         }
       }
     }
   }
+
 
   private Color getColorForBlock(String blockType) {
     return switch (blockType) {
@@ -120,6 +139,7 @@ public class MainScene implements Scene {
       case "IsTextBlock" -> Color.YELLOW;
       case "YouTextBlock" -> Color.GREEN;
       case "RockTextBlock" -> Color.BLUE;
+      case "PushTextBlock" -> Color.GRAY;
       default -> Color.BLACK;
     };
   }

@@ -62,4 +62,13 @@ public abstract class AbstractBlock {
   public void resetAllBehaviors() {
     // Default implementation does nothing since only visual blocks have behaviors to reset.
   }
+
+  /**
+   * Executes all behaviors associated with this block, based on the provided direction and grid context.
+   *
+   */
+  public void executeBehaviors() {
+    // Default implementation does nothing since only visual blocks have behaviors to execute.
+  }
+
 }

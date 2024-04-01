@@ -1,21 +1,18 @@
 package oogasalad.model.gameplay.strategies;
 
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 
-/**
- * This class is a strategy that is used to determine the behavior of a block that is pushable It is
- * used to implement the Strategy design pattern.
- */
 public class Pushable implements Strategy {
 
-  /**
-   * Executes the pushable strategy.
-   *
-   * @param block the block that is being pushed.
-   */
+  @Override
   public void execute(AbstractVisualBlock block) {
-
 
   }
 
+  @Override
+  public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
+    return false;
+  }
 }
