@@ -1,7 +1,8 @@
 package oogasalad.shared.viewblocks;
 
+import java.io.InputStream;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 
 /**
  * Represents a generic view block within the game. This class provides the base functionality and
@@ -26,7 +27,15 @@ public abstract class AbstractBlockView {
    * @param imgPath String that holds the path to the block image.
    */
   private void initializeBlock(String imgPath) {
-    ImageView imageView = new ImageView(imgPath);
+    System.out.println(imgPath);
+    InputStream inputStream = AbstractBlockView.class.getResourceAsStream(imgPath);
+    if (inputStream != null) {
+      Image image = new Image(inputStream);
+      imageView = new ImageView(image);
+    }
+    else {
+      System.out.println("fail");
+    }
   }
 
   /**

@@ -1,10 +1,8 @@
 package oogasalad.view.gameplay;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,7 +11,6 @@ import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.shared.scene.Scene;
-import oogasalad.shared.*;
 import oogasalad.shared.viewblocks.AbstractBlockView;
 
 public class MainScene implements Scene {
@@ -83,33 +80,32 @@ public class MainScene implements Scene {
     AbstractBlock[][] grid = gameGrid.getGrid();
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        String path = IMAGE_DIRECTORY + grid[i][j].getBlockName() + ".png";
+        String path = "/" + grid[i][j].getBlockName() + ".png";
         String className = grid[i][j].getBlockName() + "View";
         String source = "oogasalad.shared.viewblocks.";
         if (className.contains("Visual"))
-          source += "visualblocks.";
+          source += "visualblocksview.";
         //do this for the rest
+        else if (className.contains("Text"))
+          source += "textblocksview.";
         try {
-          System.out.println(path);
           //temporary, delete below when implementation is done
-          if (!className.equals("BabaVisualBlockView") || !className.equals("WallVisualBlockView")) {
-            Rectangle rect = new Rectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            rect.setFill(getColorForBlock(grid[i][j].getBlockName()));
-            root.getChildren().add(rect);
-          }
-          else {
+//          if (!className.equals("BabaVisualBlockView") && !className.equals("WallVisualBlockView")) {
+//            Rectangle rect = new Rectangle(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+//            rect.setFill(getColorForBlock(grid[i][j].getBlockName()));
+//            root.getChildren().add(rect);
+//          }
+//          else {
             Class<?> clazz = Class.forName(source + className);
             AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
-                .newInstance(path);
+                .newInstance("oogasalad/shared/resources/images/EmptyVisualBlock.png");
             ImageView visualObj = obj.getView();
             visualObj.setFitWidth(CELL_SIZE);
             visualObj.setFitHeight(CELL_SIZE);
             visualObj.setPreserveRatio(true);
             root.getChildren().add(visualObj);
-          }
         }
-        catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
-               InvocationTargetException | ClassNotFoundException e)  {
+        catch (Exception e)  {
           e.printStackTrace();
         }
       }

@@ -1,4 +1,4 @@
-package oogasalad.shared.viewblocks.viewtextblocks.viewverbs;
+package oogasalad.shared.viewblocks.textblocksview;
 
 import oogasalad.shared.viewblocks.AbstractBlockView;
 
