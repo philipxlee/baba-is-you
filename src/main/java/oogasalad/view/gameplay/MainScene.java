@@ -21,7 +21,7 @@ public class MainScene implements Scene {
   private Group root;
   private KeyHandler keyHandler;
   private javafx.scene.Scene scene;
-  private static final String IMAGE_DIRECTORY = "oogasalad/shared/resources/images/";
+  private static final String IMAGE_DIRECTORY = "oogasalad.shared.resources.images.";
 
   @Override
   public void initializeScene(int width, int height) {
@@ -113,7 +113,7 @@ public class MainScene implements Scene {
 //          root.getChildren().add(rect);
             Class<?> clazz = Class.forName(source + className);
             AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
-                .newInstance(path);
+                .newInstance(source + className);
             ImageView visualObj = obj.getView();
             visualObj.setFitWidth(CELL_SIZE- k * blockOffset);
             visualObj.setFitHeight(CELL_SIZE- k * blockOffset);

@@ -13,7 +13,10 @@ public class BabaVisualBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public BabaVisualBlockView(String imgPath) {
+
     super(imgPath);
+    System.out.println("Baba created");
   }
+
 
 }
