@@ -25,11 +25,6 @@ public class KeyHandler {
   public void handleKeyPress(KeyCode code) {
     List<AbstractBlock>[][] gameGrid = grid.getGrid();
     List<int[]> controllableBlockPositions = findControllableBlock(gameGrid);
-    for(int[] controllable : controllableBlockPositions){ //prints all the positions
-      for(int element: controllable) {
-        System.out.println(element);
-      }
-    }
     if(controllableBlockPositions.get(0) != null){
       for(int[] element : controllableBlockPositions){
         moveBlock(element[0], element[1], element[2], code, gameGrid);
