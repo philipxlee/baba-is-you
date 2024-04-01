@@ -1,4 +1,5 @@
 package oogasalad.model.gameplay.grid;
+import oogasalad.model.gameplay.strategies.Controllable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -26,10 +27,35 @@ public class Grid {
   public void checkForRules() throws VisitorReflectionException {
     parser.interpretRules(grid);
   }
-
+  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ, int ToK){
+    grid[ToI][ToJ].set(ToK, grid[fromI][fromJ].get(fromK));
+  }
+  public void setBlock(int i, int j, int k, String BlockType){
+    grid[i][j].set(k, factory.createBlock(BlockType));
+  }
+  public AbstractBlock getBlock(int i, int j, int k){
+    return grid[i][j].get(k);
+  }
   public List<AbstractBlock>[][] getGrid() {
     return this.grid;
   }
+
+  public List<int[]> findControllableBlock() {
+    List<int[]> AllControllableBlocks = new ArrayList<>();
+    for(int i = 0; i < grid.length; i++){
+      for(int j = 0; j < grid[i].length; j++){
+        for(int k= 0; k < grid[i][j].size(); k++){
+          AbstractBlock block = grid[i][j].get(k);
+          if(block != null && block.hasBehavior(Controllable.class)){
+            int [] a = {i, j, k};
+            AllControllableBlocks.add(a);
+          }
+        }
+      }
+    }
+    return AllControllableBlocks;
+  }
+
   private void InitializeGrid(){
     // Initializing elements
     for (int i = 0; i < grid.length; i++) {
