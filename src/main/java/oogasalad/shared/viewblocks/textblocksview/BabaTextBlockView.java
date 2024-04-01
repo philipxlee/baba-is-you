@@ -1,4 +1,4 @@
-package oogasalad.shared.viewblocks.viewtextblocks.viewnouns;
+package oogasalad.shared.viewblocks.textblocksview;
 
 
 import oogasalad.shared.viewblocks.AbstractBlockView;
@@ -14,6 +14,8 @@ public class BabaTextBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public BabaTextBlockView(String imgPath) {
+
     super(imgPath);
+    System.out.println("BabaText created");
   }
 }
