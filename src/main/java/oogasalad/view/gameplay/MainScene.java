@@ -113,7 +113,7 @@ public class MainScene implements Scene {
 //          root.getChildren().add(rect);
             Class<?> clazz = Class.forName(source + className);
             AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
-                .newInstance(source + className);
+                .newInstance(path);
             ImageView visualObj = obj.getView();
             visualObj.setFitWidth(CELL_SIZE- k * blockOffset);
             visualObj.setFitHeight(CELL_SIZE- k * blockOffset);

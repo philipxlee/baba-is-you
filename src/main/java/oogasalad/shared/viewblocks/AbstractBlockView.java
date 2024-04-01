@@ -27,11 +27,10 @@ public abstract class AbstractBlockView {
    * @param imgPath String that holds the path to the block image.
    */
   private void initializeBlock(String imgPath) {
-    String correctPath = "/EmptyVisualBlock.png";
     try {
-      InputStream inputStream = AbstractBlockView.class.getResourceAsStream(correctPath);
+      InputStream inputStream = AbstractBlockView.class.getResourceAsStream(imgPath);
       if (inputStream == null) {
-        System.out.println("Resource not found: " + correctPath);
+        System.out.println("Resource not found");
       } else {
         Image image = new Image(inputStream);
         imageView = new ImageView(image);

@@ -64,7 +64,7 @@ public class ImageDisplayApp extends Application {
   @Override
   public void start(Stage primaryStage) {
     // Correct path assuming the image is within your resources folder
-    String correctPath = "/EmptyVisualBlock.png";
+    String correctPath = "/BabaVisualBlock.png";
 
 
     // Loading the image
