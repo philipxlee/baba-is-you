@@ -136,7 +136,7 @@ public class GameScene {
     try {
       String path = "/" + block.getBlockName() + ".png";
       String className = block.getBlockName() + "View";
-      String source = "oogasalad.shared.viewblocks.";
+      String source = "oogasalad.shared.blockviews.";
       if (className.contains("Visual")) {
         source += "visualblocksview.";
       }
