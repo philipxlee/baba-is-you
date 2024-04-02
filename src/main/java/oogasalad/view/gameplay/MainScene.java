@@ -1,11 +1,16 @@
 package oogasalad.view.gameplay;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import oogasalad.shared.scene.Scene;
 
 public class MainScene implements Scene {
   private javafx.scene.Scene scene;
-  private Group root;
+  private HBox root;
   private GameScene gameScene;
   private InteractionScene interactionScene;
   private final int GAMEPLAY_WIDTH = 1000;
@@ -14,8 +19,9 @@ public class MainScene implements Scene {
 
   @Override
   public void initializeScene(int width, int height) {
-    this.root = new Group();
+    this.root = new HBox();
     this.scene = new javafx.scene.Scene(root, width, height);
+    scene.setFill(Color.BLACK);
 
     //Initialize game grid
     this.gameScene = new GameScene();
@@ -27,7 +33,7 @@ public class MainScene implements Scene {
     interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this);
     interactionScene.getPane().setLayoutX(0);
 
-    root.getChildren().addAll(gameScene.getGrid(), interactionScene.getPane());
+    root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
 
   }
 
