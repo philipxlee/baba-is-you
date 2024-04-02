@@ -1,18 +1,16 @@
 package oogasalad.view.gameplay;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.shared.scene.Scene;
-import oogasalad.shared.viewblocks.AbstractBlockView;
+import oogasalad.shared.blockviews.AbstractBlockView;
 
 public class MainScene implements Scene {
 

@@ -1,6 +1,6 @@
-package oogasalad.shared.viewblocks.textblocksview;
+package oogasalad.shared.blockviews.textblocksview;
 
-import oogasalad.shared.viewblocks.AbstractBlockView;
+import oogasalad.shared.blockviews.AbstractBlockView;
 
 /**
  * A view for the text block that represents the "is" verb.
@@ -13,8 +13,6 @@ public class IsTextBlockView extends AbstractBlockView {
    * @param imgPath path to image that will initialize the view block.
    */
   public IsTextBlockView(String imgPath) {
-
     super(imgPath);
-    System.out.println("Is created");
   }
 }

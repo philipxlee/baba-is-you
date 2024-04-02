@@ -1,7 +1,7 @@
-package oogasalad.shared.viewblocks.textblocksview;
+package oogasalad.shared.blockviews.textblocksview;
 
 
-import oogasalad.shared.viewblocks.AbstractBlockView;
+import oogasalad.shared.blockviews.AbstractBlockView;
 
 /**
  * A view for the text block that represents the "rock" noun.

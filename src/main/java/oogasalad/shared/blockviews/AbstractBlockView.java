@@ -1,4 +1,4 @@
-package oogasalad.shared.viewblocks;
+package oogasalad.shared.blockviews;
 
 import java.io.InputStream;
 import javafx.scene.image.Image;
@@ -38,7 +38,6 @@ public abstract class AbstractBlockView {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
   }
 
   /**

@@ -1,6 +1,6 @@
-package oogasalad.shared.viewblocks.visualblocksview;
+package oogasalad.shared.blockviews.visualblocksview;
 
-import oogasalad.shared.viewblocks.AbstractBlockView;
+import oogasalad.shared.blockviews.AbstractBlockView;
 
 /**
  * A view object that represents the rock block.
