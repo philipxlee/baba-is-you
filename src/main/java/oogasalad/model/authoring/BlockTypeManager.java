@@ -24,20 +24,6 @@ public class BlockTypeManager {
   }
 
   /**
-   * Utility method to find BlockType by name.
-   *
-   * @param name The name of the block. Must be in block type properties file.
-   * @return The BlockType object corresponding to the name.
-   * @throws Exception Thrown when the name is invalid (not in properties file).
-   */
-  public static BlockType findBlockTypeByName(String name) throws Exception {
-    return blockTypes.stream()
-        .filter(bt -> bt.name().equalsIgnoreCase(name))
-        .findFirst()
-        .orElseThrow(() -> new Exception("Block name not found: " + name));
-  }
-
-  /**
    * Load block types from the properties file into list of BlockType.
    *
    * @param propertiesFilePath The file path of block type properties file.
@@ -56,5 +42,19 @@ public class BlockTypeManager {
     } catch (IOException e) {
       throw new RuntimeException("Failed to load block types from properties file");
     }
+  }
+
+  /**
+   * Utility method to find BlockType by name.
+   *
+   * @param name The name of the block. Must be in block type properties file.
+   * @return The BlockType object corresponding to the name.
+   * @throws Exception Thrown when the name is invalid (not in properties file).
+   */
+  public BlockType findBlockTypeByName(String name) throws Exception {
+    return blockTypes.stream()
+        .filter(bt -> bt.name().equalsIgnoreCase(name))
+        .findFirst()
+        .orElseThrow(() -> new Exception("Block name not found: " + name));
   }
 }

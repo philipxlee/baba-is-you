@@ -10,13 +10,15 @@ import oogasalad.shared.observer.Observer;
  */
 public class Grid implements Observable<Grid> {
 
+  private final BlockTypeManager blockTypeManager;
   private final Block[][] cells;
   private List<Observer<Grid>> observers;
 
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
    */
-  public Grid(int rows, int cols) {
+  public Grid(int rows, int cols, BlockTypeManager blockTypeManager) {
+    this.blockTypeManager = blockTypeManager;
     cells = new Block[rows][cols];
     observers = new ArrayList<>();
   }
