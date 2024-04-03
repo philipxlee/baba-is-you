@@ -20,6 +20,7 @@ public class KeyHandler {
 
 
   public void handleKeyPress(KeyCode code) {
+    grid.checkBehaviors();
     List<int[]> controllableBlockPositions = grid.findControllableBlock();
     if(controllableBlockPositions.get(0) != null){
       for(int[] element : controllableBlockPositions){
@@ -50,8 +51,8 @@ public class KeyHandler {
     int length = 1;
 
     while (true) {
-      int nextI = i + length * deltaI;
-      int nextJ = j + length * deltaJ;
+      int nextI = i + length * deltaI; //gets next cell
+      int nextJ = j + length * deltaJ; // gets next cell
       if (isValidMove(nextI, nextJ, gameGrid) && !"EmptyVisualBlock".equals(gameGrid.getBlock(nextI, nextJ,k).getBlockName())) {
         length++;
       }

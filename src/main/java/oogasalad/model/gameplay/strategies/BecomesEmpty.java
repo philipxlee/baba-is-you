@@ -14,5 +14,10 @@ public class BecomesEmpty implements Strategy {
     // TODO Auto-generated method stub
     return false;
   }
+
+  @Override
+  public String toString(){
+    return "BecomesEmpty";
+  }
 }
 

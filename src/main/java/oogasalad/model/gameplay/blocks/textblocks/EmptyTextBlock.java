@@ -28,4 +28,5 @@ public class EmptyTextBlock extends AbstractTextBlock {
     return Arrays.asList("PROPERTY", "NOUN");
   }
 
+
 }
