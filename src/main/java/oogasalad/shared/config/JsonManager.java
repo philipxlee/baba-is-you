@@ -64,6 +64,17 @@ public class JsonManager {
   }
 
   /**
+   * Add a JsonObject to a JsonObject. Also replaces the value if an existing key is given.
+   *
+   * @param jsonObject the JsonObject to which the JsonObject will be added.
+   * @param key        the key of the object.
+   * @param object     the JsonObject being added.
+   */
+  public void addObject(JsonObject jsonObject, String key, JsonObject object) {
+    jsonObject.add(key, object);
+  }
+
+  /**
    * Get the value associated with a key from a JsonObject.
    *
    * @param jsonObject the JsonObject from which to retrieve the value.
