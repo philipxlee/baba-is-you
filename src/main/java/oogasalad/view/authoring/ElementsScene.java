@@ -78,7 +78,8 @@ public class ElementsScene {
   private void addBlockViewToRoot(File directory, String blockName) {
     try {
       File imageFile = new File(directory, blockName + ".png");
-      ImageView imageView = new ImageView(new Image(imageFile.toURI().toString(), 100, 100, true, true));
+      ImageView imageView = new ImageView(
+          new Image(imageFile.toURI().toString(), 100, 100, true, true));
       imageView.setFitWidth(100); // Set the image width to 100 for a square shape
       imageView.setFitHeight(100); // Set the image height to 100 for a square shape
       imageView.setPreserveRatio(true);

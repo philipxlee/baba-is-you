@@ -8,6 +8,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 
 public class BuilderScene {
+
   private Pane root; // Your root node for the builder scene
   private int width;
   private int height;
@@ -48,7 +49,8 @@ public class BuilderScene {
   }
 
   private ImageView createBlockView(String blockType) {
-    String imagePath = "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+    String imagePath =
+        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
     // Creating a File object to ensure the path is correctly formed.
     File imageFile = new File(imagePath);
     if (!imageFile.exists()) {
