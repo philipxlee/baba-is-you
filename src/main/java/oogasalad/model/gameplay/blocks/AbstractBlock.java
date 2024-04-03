@@ -9,7 +9,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
  */
 public abstract class AbstractBlock {
 
-  private final String DEFAULT_GRAMMAR = "NO_GRAMMAR";
+  private static final String DEFAULT_GRAMMAR = "NO_GRAMMAR";
 
   /**
    * Indicates whether this block is a text block. By default, a block is not a text block.
