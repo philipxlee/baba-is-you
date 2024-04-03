@@ -1,6 +1,7 @@
 package oogasalad.model.gameplay.handlers;
 
 import javafx.scene.input.KeyCode;
+import oogasalad.model.gameplay.strategies.Stoppable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
@@ -53,7 +54,7 @@ public class KeyHandler {
     while (true) {
       int nextI = i + length * deltaI; //gets next cell
       int nextJ = j + length * deltaJ; // gets next cell
-      if (isValidMove(nextI, nextJ, gameGrid) && !"EmptyVisualBlock".equals(gameGrid.getBlock(nextI, nextJ,k).getBlockName())) {
+      if (isValidMove(nextI, nextJ, k, gameGrid) && !"EmptyVisualBlock".equals(gameGrid.getBlock(nextI, nextJ,k).getBlockName())) {
         length++;
       }
       else{
@@ -63,7 +64,7 @@ public class KeyHandler {
 
     int endI = i + length * deltaI;
     int endJ = j + length * deltaJ;
-    if (!isValidMove(endI, endJ, gameGrid) || !"EmptyVisualBlock".equals(gameGrid.getGrid()[endI][endJ].get(k).getBlockName())) {
+    if (!isValidMove(endI, endJ, k, gameGrid) || !"EmptyVisualBlock".equals(gameGrid.getGrid()[endI][endJ].get(k).getBlockName())) {
       return null; // No space to move the chain
     }
 
@@ -85,8 +86,8 @@ public class KeyHandler {
     gameGrid.setBlock(i, j, k, "EmptyVisualBlock");
   }
 
-  private boolean isValidMove(int i, int j, Grid gameGrid) {
-    return i >= 0 && i < gameGrid.getGrid().length && j >= 0 && j < gameGrid.getGrid()[i].length;
+  private boolean isValidMove(int i, int j, int k, Grid gameGrid) {
+    return i >= 0 && i < gameGrid.getGrid().length && j >= 0 && j < gameGrid.getGrid()[i].length && !gameGrid.getBlock(i, j,k).hasBehavior(Stoppable.class);
   }
 
 }
