@@ -10,7 +10,6 @@ import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 
 
-
 /**
  * LevelController handles user input to modify the current level. Provides methods to interface
  * with backend model.
