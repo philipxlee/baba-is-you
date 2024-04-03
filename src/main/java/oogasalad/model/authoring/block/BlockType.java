@@ -1,4 +1,4 @@
-package oogasalad.model.authoring;
+package oogasalad.model.authoring.block;
 
 /**
  * BlockType abstraction. Represents a type as an object to specify different types of Blocks.

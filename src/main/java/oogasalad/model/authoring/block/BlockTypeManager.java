@@ -1,4 +1,4 @@
-package oogasalad.model.authoring;
+package oogasalad.model.authoring.block;
 
 import java.io.IOException;
 import java.io.InputStream;

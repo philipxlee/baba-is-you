@@ -1,4 +1,4 @@
-package oogasalad.model.authoring;
+package oogasalad.model.authoring.block;
 
 /**
  * Block abstraction. Initialized with a BlockType.

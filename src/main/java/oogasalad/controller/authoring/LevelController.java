@@ -3,9 +3,9 @@ package oogasalad.controller.authoring;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import oogasalad.model.authoring.BlockTypeManager;
-import oogasalad.model.authoring.Level;
-import oogasalad.model.authoring.LevelMetadata;
+import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.level.Level;
+import oogasalad.model.authoring.level.LevelMetadata;
 
 public class LevelController {
 

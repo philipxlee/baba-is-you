@@ -1,8 +1,11 @@
-package oogasalad.model.authoring;
+package oogasalad.model.authoring.level;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import oogasalad.model.authoring.block.Block;
+import oogasalad.model.authoring.block.BlockType;
+import oogasalad.model.authoring.block.BlockTypeManager;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 

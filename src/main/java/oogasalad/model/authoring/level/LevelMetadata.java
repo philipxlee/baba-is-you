@@ -1,4 +1,4 @@
-package oogasalad.model.authoring;
+package oogasalad.model.authoring.level;
 
 /**
  * LevelMetadata record encapsulates the metadata for a Level.
