@@ -53,7 +53,10 @@ public class GameScene {
   protected Pane setUpScreen() {
     StackPane gameScreen = new StackPane(root);
     gameScreen.setAlignment(Pos.CENTER);
+    gameScreen.setPrefWidth(width);
+
     Pane pane = new Pane();
+    pane.setPrefSize(width, height);
     pane.getChildren().add(gameScreen);
     return pane;
   }
