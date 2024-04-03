@@ -7,17 +7,27 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * BlockTypeManager loads the block types from a properties file and returns a list of block types
- * as strings.
+ * BlockTypeManager loads the block types from a properties file and returns a list of block types.
  */
 public class BlockTypeManager {
 
   private List<BlockType> blockTypes = new ArrayList<>();
 
+  /**
+   * BlockTypeManager constructor. Initialized with the Block Type properties filepath.
+   *
+   * @param propertiesFilePath The file path of block type properties file.
+   * @throws IOException Exception thrown if file path is invalid.
+   */
   public BlockTypeManager(String propertiesFilePath) throws IOException {
     loadBlockTypes(propertiesFilePath);
   }
 
+  /**
+   * Load block types from the properties file into list of BlockType.
+   *
+   * @param propertiesFilePath The file path of block type properties file.
+   */
   private void loadBlockTypes(String propertiesFilePath) {
     try (InputStream input = getClass().getResourceAsStream(propertiesFilePath)) {
       if (input == null) {
@@ -34,12 +44,19 @@ public class BlockTypeManager {
     }
   }
 
-  public BlockType findBlockTypeByName(String name) {
+  /**
+   * Utility method to find BlockType by name.
+   *
+   * @param name The name of the block. Must be in block type properties file.
+   * @return The BlockType object corresponding to the name.
+   * @throws Exception Thrown when the name is invalid (not in properties file).
+   */
+  public BlockType findBlockTypeByName(String name) throws Exception {
     for (BlockType blockType : blockTypes) {
       if (blockType.name().equalsIgnoreCase(name)) {
         return blockType;
       }
     }
-    throw new RuntimeException("Block name not found: " + name);
+    throw new Exception("Block name not found: " + name);
   }
 }
