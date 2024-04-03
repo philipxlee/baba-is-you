@@ -32,10 +32,6 @@ public class ElementsScene {
     loadBlocksFromDirectory();
   }
 
-  public ScrollPane getRoot() {
-    return scrollPane;
-  }
-
   protected Pane setUpScreen() {
     Pane pane = new Pane();
     pane.getChildren().add(scrollPane);
