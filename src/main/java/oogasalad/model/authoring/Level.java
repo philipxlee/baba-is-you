@@ -1,5 +1,6 @@
 package oogasalad.model.authoring;
 
+import java.util.ArrayList;
 import java.util.List;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
@@ -23,6 +24,7 @@ public class Level implements Observable<Level> {
   public Level(LevelMetadata levelMetadata, BlockTypeManager blockTypeManager) {
     this.levelMetadata = levelMetadata;
     grid = new Grid(levelMetadata.rows(), levelMetadata.cols(), blockTypeManager);
+    observers = new ArrayList<>();
   }
 
   /**
