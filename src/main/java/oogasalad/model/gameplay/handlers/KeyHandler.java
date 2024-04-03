@@ -36,13 +36,20 @@ public class KeyHandler {
       case DOWN -> deltaI = 1;
       case LEFT -> deltaJ = -1;
       case RIGHT -> deltaJ = 1;
-      default -> deltaI = 0;
+      default -> {
+          return;
+      }
     }
 
     // TEMPORARY: Exits the block when a winning condition is met
     // USED FOR DEMO PURPOSES
     int nextI = i + deltaI;
     int nextJ = j + deltaJ;
+
+    if (!isValidMove(nextI, nextJ, k, gameGrid)) {
+      return; // Don't move if the next position is invalid.
+    }
+
     AbstractBlock nextBlock = gameGrid.getBlock(nextI, nextJ, k);
     if (nextBlock != null && nextBlock.hasBehavior(Winnable.class)) {
       System.out.println("Game over, you won!");

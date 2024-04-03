@@ -34,16 +34,13 @@ public class GameScene {
     this.scene = scene;
 
     this.scene.getScene().setOnKeyPressed(event -> {
-      if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN ||
-          event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
-        try {
-          gameGrid.checkForRules(); // Check for rules
-          keyHandler.handleKeyPress(event.getCode()); // Handle key press
-          renderGrid(); // Render grid
-          resetAllBlocks(); // Reset all blocks
-        } catch (Exception e) {
-          showErrorDialog(e.getClass().getName());
-        }
+      try {
+        gameGrid.checkForRules(); // Check for rules
+        keyHandler.handleKeyPress(event.getCode()); // Handle key press
+        renderGrid(); // Render grid
+        resetAllBlocks(); // Reset all blocks
+      } catch (Exception e) {
+        showErrorDialog(e.getClass().getName());
       }
     });
 
