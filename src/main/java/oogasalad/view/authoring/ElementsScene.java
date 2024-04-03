@@ -3,6 +3,7 @@ package oogasalad.view.authoring;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,6 +11,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import oogasalad.view.authoring.MainScene;
@@ -17,29 +19,31 @@ import oogasalad.view.authoring.MainScene;
 public class ElementsScene {
 
   private ScrollPane scrollPane;
-  private VBox blocksContainer;
   private MainScene scene;
+  private VBox layout;
+  private VBox blocksContainer;
 
   public ElementsScene() {
-    this.blocksContainer = new VBox(10); // Adjust spacing as needed
-    this.scrollPane = new ScrollPane(blocksContainer);
-    scrollPane.setFitToWidth(true); // Ensure the scroll pane fits the width of the blocks container
-    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    initializeElementsLayout();
   }
 
-  public void initializeElementsScene(int width, int height, MainScene scene) {
-    this.scene = scene;
+  private void initializeElementsLayout() {
+    this.layout = new VBox(10); // Adjust spacing as needed
+    this.blocksContainer = new VBox(10); // Space between images
     loadBlocksFromDirectory();
+    this.scrollPane = new ScrollPane(blocksContainer);
+    scrollPane.setFitToWidth(true);
+    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+    Button exampleButton = new Button("Example Button");
+
+    layout.getChildren().addAll(exampleButton, scrollPane);
+    VBox.setVgrow(scrollPane, Priority.ALWAYS); // Allow the scroll pane to grow and fill space
   }
 
-  protected Pane setUpScreen() {
-    Pane pane = new Pane();
-    pane.getChildren().add(scrollPane);
-    return pane;
-  }
-
-  public ScrollPane getScrollPane() {
-    return scrollPane;
+  // Method to access the complete scene layout
+  public VBox getLayout() {
+    return layout;
   }
 
   private List<String> getBlockNamesFromDirectory(File directory) {
@@ -55,7 +59,6 @@ public class ElementsScene {
   }
 
   private void loadBlocksFromDirectory() {
-    // Show a directory chooser dialog for the user to select the directory containing block images
     String directoryPath = "src/main/resources/images";
 
     // Create a File object for the directory

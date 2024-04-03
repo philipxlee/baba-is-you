@@ -10,11 +10,12 @@ public class BuilderScene {
   private int height;
   private MainScene scene;
 
-  public void initializeBuilderScene(int width, int height, MainScene scene) {
+  public BuilderScene() {
+    initializeBuilderScene();
+  }
+
+  public void initializeBuilderScene() {
     this.root = new Pane();
-    this.width = width;
-    this.height = height;
-    this.scene = scene;
     setUpDropHandling();
   }
 
