@@ -15,7 +15,7 @@ public class BabaVisualBlockView extends AbstractBlockView {
   public BabaVisualBlockView(String imgPath) {
 
     super(imgPath);
-    System.out.println("Baba created");
+
   }
 
 

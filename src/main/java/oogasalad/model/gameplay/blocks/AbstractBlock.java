@@ -4,71 +4,88 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
- * Represents a generic block within the game. This class provides the base functionality and
- * interface for all blocks.
+ * Serves as the base class for all block types within the game, defining common properties and behaviors.
+ * Subclasses should override methods as necessary to provide specific functionality.
  */
 public abstract class AbstractBlock {
 
+  private final String DEFAULT_GRAMMAR = "NO_GRAMMAR";
+
   /**
-   * Determines if this block is a text block.
+   * Indicates whether this block is a text block. By default, a block is not a text block.
+   * Subclasses representing text blocks should override this method.
    *
-   * @return true if this is a text block, false otherwise.
+   * @return false by default, indicating this is not a text block.
    */
   public boolean isTextBlock() {
     return false;
   }
 
   /**
-   * Checks if this block matches a given descriptor.
+   * Determines if the block matches a specified descriptor, typically based on its class name.
+   * Subclasses can rely on this implementation or override it for custom matching logic.
    *
-   * @param descriptor The descriptor to match against the block.
-   * @return true if the block matches the descriptor, false otherwise.
+   * @param descriptor The descriptor to match against the block, usually related to the block's class.
+   * @return true if the descriptor matches the block's class name, false otherwise.
    */
   public boolean matches(String descriptor) {
-    return this.getClass().getSimpleName().equals(descriptor);
+    return getBlockName().equals(descriptor);
   }
 
   /**
-   * Checks if this block has a specific behavior.
+   * Checks if the block exhibits a specific behavior. This base implementation always returns false.
+   * Blocks with behaviors should override this method to confirm the presence of a behavior.
    *
-   * @param behaviorType The class of the behavior to check for.
-   * @return true if the block has the behavior, false otherwise.
+   * @param behaviorType The behavior class to check against this block.
+   * @return false by default, indicating no behavior of the specified type.
    */
   public boolean hasBehavior(Class<? extends Strategy> behaviorType) {
     return false;
   }
 
   /**
-   * Gets the name of the block.
+   * Retrieves the name of the block, typically derived from the class name.
    *
-   * @return The name of the block.
+   * @return The simple class name of this block instance.
    */
   public String getBlockName() {
     return this.getClass().getSimpleName();
   }
 
   /**
-   * Accepts a visitor that can perform operations on this block.
+   * Accepts a visitor for performing operations on the block. By default, this method does nothing.
+   * Visual blocks or other specific block types should override to accept visitors properly.
    *
-   * @param visitor The visitor to accept.
+   * @param visitor The BlockVisitor instance to process this block.
    */
   public void accept(BlockVisitor visitor) {
-    // Default implementation does nothing since only visual blocks accept visitors.
+    // Default implementation is intentionally left blank.
   }
 
   /**
-   * Resets all behaviors assigned to this block.
+   * Resets the behaviors of the block, if any. By default, there are no behaviors to reset.
+   * Specific block types with behaviors should override this method.
    */
   public void resetAllBehaviors() {
-    // Default implementation does nothing since only visual blocks have behaviors to reset.
+    // Default implementation is intentionally left blank.
   }
 
   /**
-   * Executes all behaviors associated with this block, based on the provided direction and grid context.
-   *
+   * Executes the block's behaviors. By default, there are no behaviors to execute.
+   * Blocks with executable behaviors should override this method.
    */
   public void executeBehaviors() {
-    // Default implementation does nothing since only visual blocks have behaviors to execute.
+    // Default implementation is intentionally left blank.
+  }
+
+  /**
+   * Gets the grammatical category of the block, useful for parsing or rule validation. By default,
+   * it returns "default". Override in subclasses to provide specific grammar.
+   *
+   * @return The grammatical category of the block as a string, DEFAULT_GRAMMAR for the base class.
+   */
+  public String getBlockGrammar() {
+    return DEFAULT_GRAMMAR;
   }
 
 }

@@ -1,16 +1,19 @@
 package oogasalad.model.gameplay.factory;
 
-import oogasalad.model.gameplay.blocks.textblocks.properties.PushTextBlock;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.textblocks.nouns.BabaTextBlock;
 import oogasalad.model.gameplay.blocks.textblocks.nouns.EmptyTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.nouns.RockTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.properties.PushTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.properties.WallTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.properties.YouTextBlock;
+import oogasalad.model.gameplay.blocks.textblocks.verbs.IsTextBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
-import oogasalad.model.gameplay.blocks.textblocks.nouns.BabaTextBlock;
-import oogasalad.model.gameplay.blocks.textblocks.verbs.IsTextBlock;
-import oogasalad.model.gameplay.blocks.textblocks.nouns.RockTextBlock;
-import oogasalad.model.gameplay.blocks.textblocks.properties.YouTextBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
+import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 
 
 public class BlockFactory {
@@ -28,6 +31,9 @@ public class BlockFactory {
       case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock");
       case "EmptyTextBlock" -> new EmptyTextBlock("EmptyTextBlock");
       case "PushTextBlock" -> new PushTextBlock("PushTextBlock");
+      case "WallVisualBlock" -> new WallVisualBlock("WallVisualBlock");
+      case "FlagVisualBlock" -> new FlagVisualBlock("FlagVisualBlock");
+      case "WallTextBlock" -> new WallTextBlock("WallTextBlock");
       default -> throw new InvalidBlockName("Invalid block name " + blockName);
     };
   }
