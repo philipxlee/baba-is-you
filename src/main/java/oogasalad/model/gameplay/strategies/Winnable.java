@@ -16,6 +16,10 @@ public class Winnable implements Strategy {
   public void execute(AbstractVisualBlock block) {
     // TODO Auto-generated method stub
   }
+  @Override
+  public String toString(){
+    return "Winnable";
+  }
 
   @Override
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {

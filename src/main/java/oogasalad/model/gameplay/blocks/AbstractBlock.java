@@ -91,4 +91,6 @@ public abstract class AbstractBlock {
     return grammarType;
   }
 
+  public abstract String behaviorsToString();
+
 }

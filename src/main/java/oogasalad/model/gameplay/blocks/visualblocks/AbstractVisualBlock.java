@@ -94,4 +94,22 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
       behavior.execute(this);
     }
   }
+  public List<Strategy> getBehaviors() {
+    return behaviors;
+  }
+  @Override
+  public String behaviorsToString() {
+    StringBuilder stringBuilder = new StringBuilder();
+    for (Strategy behavior : behaviors) {
+      stringBuilder.append(behavior.toString()).append(", ");
+    }
+
+    // Remove the trailing ", " if there are behaviors
+    if (stringBuilder.length() > 0) {
+      stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
+    }
+
+    return stringBuilder.toString();
+  }
+
 }
