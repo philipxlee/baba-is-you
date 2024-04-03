@@ -27,9 +27,7 @@ public class GridTest {
   @Before
   public void setUp() throws Exception {
     // Initialize the BlockTypeManager
-    blockTypeManager = Mockito.mock(BlockTypeManager.class);
-    BlockType emptyType = new BlockType("Empty");
-    when(blockTypeManager.findBlockTypeByName("Empty")).thenReturn(emptyType);
+    blockTypeManager = new BlockTypeManager("/blocktypes/blocktypes.properties");
 
     // Initialize the grid
     grid = new Grid(ROWS, COLS, blockTypeManager);
@@ -54,9 +52,6 @@ public class GridTest {
 
   @Test
   public void testSetCellWithValidName() throws Exception {
-    BlockType isType = new BlockType("Is");
-    when(blockTypeManager.findBlockTypeByName("Is")).thenReturn(isType);
-
     grid.setCell(0, 0, "Is");
     Block block = grid.iterator().next();
     assertEquals("Is", block.type().name());
