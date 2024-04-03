@@ -1,35 +1,50 @@
 package oogasalad.model.gameplay.factory;
 
-import oogasalad.model.gameplay.blocks.textblocks.properties.PushTextBlock;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.textblocks.nouns.EmptyTextBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
-import oogasalad.model.gameplay.blocks.textblocks.nouns.BabaTextBlock;
-import oogasalad.model.gameplay.blocks.textblocks.verbs.IsTextBlock;
-import oogasalad.model.gameplay.blocks.textblocks.nouns.RockTextBlock;
-import oogasalad.model.gameplay.blocks.textblocks.properties.YouTextBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
+import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 
-
+/**
+ * Factory class to create block instances based on block names using reflection.
+ */
 public class BlockFactory {
 
+  private static final String PACKAGE_PREFIX = "oogasalad.model.gameplay.blocks.";
+
+  /**
+   * Creates a new BlockFactory.
+   */
   public BlockFactory() {}
 
+  /**
+   * Creates a block instance based on the provided block name using reflection.
+   *
+   * @param blockName The name of the block to create.
+   * @return An instance of AbstractBlock corresponding to the blockName.
+   * @throws InvalidBlockName If the block name does not correspond to a valid block class.
+   */
   public AbstractBlock createBlock(String blockName) throws InvalidBlockName {
-    return switch (blockName) {
-      case "EmptyVisualBlock" -> new EmptyVisualBlock("EmptyVisualBlock");
-      case "RockTextBlock" -> new RockTextBlock("RockTextBlock");
-      case "BabaTextBlock" -> new BabaTextBlock("BabaTextBlock");
-      case "IsTextBlock" -> new IsTextBlock("IsTextBlock");
-      case "YouTextBlock" -> new YouTextBlock("YouTextBlock");
-      case "BabaVisualBlock" -> new BabaVisualBlock("BabaVisualBlock");
-      case "RockVisualBlock" -> new RockVisualBlock("RockVisualBlock");
-      case "EmptyTextBlock" -> new EmptyTextBlock("EmptyTextBlock");
-      case "PushTextBlock" -> new PushTextBlock("PushTextBlock");
-      default -> throw new InvalidBlockName("Invalid block name " + blockName);
-    };
+    try {
+      String className = determineClassName(blockName);
+      Class<?> blockClass = Class.forName(className);
+      validateBlockName(blockName, blockClass);
+      return (AbstractBlock) blockClass.getDeclaredConstructor(String.class).newInstance(blockName);
+    } catch (ReflectiveOperationException e) {
+      throw new InvalidBlockName("Error creating block instance for: " + blockName);
+    }
   }
 
+  private static void validateBlockName(String blockName, Class<?> blockClass) {
+    if (!AbstractBlock.class.isAssignableFrom(blockClass)) {
+      throw new InvalidBlockName("Block name does not correspond to a valid block type: " + blockName);
+    }
+  }
+
+  private String determineClassName(String blockName) {
+    String packageSuffix = blockName.contains("Visual") ? "visualblocks." :
+        blockName.contains("Text") ? "textblocks." :
+            "";
+
+    // Construct the full class name.
+    return PACKAGE_PREFIX + packageSuffix + blockName;
+  }
 }

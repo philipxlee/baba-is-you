@@ -85,9 +85,9 @@
     * Feature/Use Case 2: Enabling drag and drop and once done: a validation + save config
 
 * Team Member 7: Divyansh - Backend: data/engine
-    * Feature/Use Case 1:
+    * Feature/Use Case 1: creating level management abstractions for authoring environment
 
-    * Feature/Use Case 2
+    * Feature/Use Case 2: adding functionality for new elements in the authoring environment
 
 ### Sprint 2 (Your Choice)
 

@@ -8,6 +8,7 @@ import oogasalad.model.gameplay.blocks.AbstractBlock;
 public abstract class AbstractTextBlock extends AbstractBlock {
 
   private final String name;
+  private final String grammar = "default";
 
   public AbstractTextBlock(String name) {
     super();
@@ -33,4 +34,6 @@ public abstract class AbstractTextBlock extends AbstractBlock {
   public String getBlockName() {
     return this.name;
   }
+
+
 }

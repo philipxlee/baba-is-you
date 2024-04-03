@@ -1,14 +1,16 @@
 package oogasalad.model.gameplay.grid;
-import oogasalad.model.gameplay.strategies.Controllable;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
-import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+
+import java.util.ArrayList;
+import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-
-import java.util.ArrayList;
-import java.util.List;
+import oogasalad.model.gameplay.strategies.BecomesEmpty;
+import oogasalad.model.gameplay.strategies.BecomesWall;
+import oogasalad.model.gameplay.strategies.Controllable;
+import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 
 public class Grid {
   private List<AbstractBlock>[][] grid;
@@ -36,6 +38,7 @@ public class Grid {
   public AbstractBlock getBlock(int i, int j, int k){
     return grid[i][j].get(k);
   }
+
   public List<AbstractBlock>[][] getGrid() {
     return this.grid;
   }
@@ -46,6 +49,14 @@ public class Grid {
       for(int j = 0; j < grid[i].length; j++){
         for(int k= 0; k < grid[i][j].size(); k++){
           AbstractBlock block = grid[i][j].get(k);
+          // temporary, needs refactoring
+          if (block != null && block.hasBehavior(BecomesWall.class)) {
+            changeBlockToWall(i, j, k);
+          }
+          // temporary, needs refactoring
+          if (block != null && block.hasBehavior(BecomesEmpty.class)) {
+            changeBlockToEmpty(i, j, k);
+          }
           if(block != null && block.hasBehavior(Controllable.class)){
             int [] a = {i, j, k};
             AllControllableBlocks.add(a);
@@ -56,31 +67,122 @@ public class Grid {
     return AllControllableBlocks;
   }
 
-  private void InitializeGrid(){
-    // Initializing elements
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[i].length; j++) {
-        grid[i][j] = new ArrayList<AbstractBlock>();
-        createBlocks(grid[i][j], tempconfiguration[i][j]);
-      }
-    }
+  private void changeBlockToEmpty(int i, int j, int k) {
+    grid[i][j].set(k, factory.createBlock("EmptyVisualBlock"));
   }
+
+  private void changeBlockToWall(int i, int j, int k) {
+    grid[i][j].set(k, factory.createBlock("WallVisualBlock"));
+  }
+
+  String[][][] tempConfiguration = {
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"},
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"WallVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyTextBlock"}, {"EmptyVisualBlock"}, {"RockVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"IsTextBlock"}, {"WallTextBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"IsTextBlock"}, {"YouTextBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"FlagVisualBlock"}
+      },
+      {
+        {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
+    },
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"IsTextBlock"}, {"YouTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"RockTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"BabaVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"},
+        {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      }
+  };
 
   private void createBlocks(List<AbstractBlock> AbstractBlocks, String[] Blocktypes){
     for(int i=0; i< Blocktypes.length; i++){
       AbstractBlocks.add(factory.createBlock(Blocktypes[i]));
     }
   }
-  String[][][] tempconfiguration = {
-          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
-          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"RockVisualBlock"}, {"EmptyVisualBlock"}},
-          {{"EmptyVisualBlock"}, {"RockTextBlock"}, {"BabaVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
-          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
-          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"RockTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
-          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"IsTextBlock"}, {"YouTextBlock"}, {"EmptyVisualBlock"}},
-          {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}},
-          {{"BabaVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}}
-  };
+
+  private void InitializeGrid(){
+    // Initializing elements
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        grid[i][j] = new ArrayList<AbstractBlock>();
+        createBlocks(grid[i][j], tempConfiguration[i][j]);
+      }
+    }
+  }
 
 
 }
