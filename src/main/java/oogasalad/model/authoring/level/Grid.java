@@ -51,14 +51,15 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
    * @param row  Row position of new block.
    * @param col  Column position of new block.
    * @param name The name of the new block type.
-   * @throws Exception Throws exception if the name is invalid (not in properties file).
+   * @throws Exception Throws exception if the block type or cell position is invalid.
    */
   public void setCell(int row, int col, String name) throws Exception {
-    BlockType blockType = blockTypeManager.findBlockTypeByName(name);
-    if (row >= 0 && row < cells.length && col >= 0 && col < cells[row].length) {
-      cells[row][col] = new Block(blockType);
-      notifyObserver();
+    if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
+      throw new Exception("Invalid Row/Col Position: " + row + " " + col);
     }
+    BlockType blockType = blockTypeManager.findBlockTypeByName(name);
+    cells[row][col] = new Block(blockType);
+    notifyObserver();
   }
 
   /**

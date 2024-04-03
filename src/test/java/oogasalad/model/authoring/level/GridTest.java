@@ -13,8 +13,8 @@ import oogasalad.model.authoring.block.Block;
 import oogasalad.model.authoring.block.BlockType;
 import oogasalad.model.authoring.block.BlockTypeManager;
 import oogasalad.shared.observer.Observer;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 
 public class GridTest {
@@ -24,10 +24,12 @@ public class GridTest {
   private Grid grid;
   private BlockTypeManager blockTypeManager;
 
-  @BeforeEach
+  @Before
   public void setUp() throws Exception {
     // Initialize the BlockTypeManager
-    blockTypeManager = new BlockTypeManager("/blocktypes/blocktypes.properties");
+    blockTypeManager = Mockito.mock(BlockTypeManager.class);
+    BlockType emptyType = new BlockType("Empty");
+    when(blockTypeManager.findBlockTypeByName("Empty")).thenReturn(emptyType);
 
     // Initialize the grid
     grid = new Grid(ROWS, COLS, blockTypeManager);
@@ -52,20 +54,19 @@ public class GridTest {
 
   @Test
   public void testSetCellWithValidName() throws Exception {
-    // Assuming "Solid" is a valid block type
-    BlockType solidType = new BlockType("Empty");
-    when(blockTypeManager.findBlockTypeByName("Solid")).thenReturn(solidType);
+    BlockType isType = new BlockType("Is");
+    when(blockTypeManager.findBlockTypeByName("Is")).thenReturn(isType);
 
-    grid.setCell(1, 1, "Solid");
+    grid.setCell(0, 0, "Is");
     Block block = grid.iterator().next();
-    assertEquals("Solid", block.type().name());
+    assertEquals("Is", block.type().name());
   }
 
   @Test
   public void testSetCellWithInvalidPosition() {
     // Test setting a cell with an invalid position (out of bounds)
-    Exception exception = assertThrows(Exception.class, () -> grid.setCell(ROWS, COLS, "Solid"));
-    assertNotNull(exception); // Optionally check the exception message
+    Exception exception = assertThrows(Exception.class, () -> grid.setCell(ROWS, COLS, "Invalid Row/Col Position"));
+    assertNotNull(exception);
   }
 
   @Test
