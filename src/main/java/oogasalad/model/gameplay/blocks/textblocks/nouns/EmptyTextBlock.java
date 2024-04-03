@@ -15,4 +15,15 @@ public class EmptyTextBlock extends AbstractTextBlock {
   public EmptyTextBlock(String name) {
     super(name);
   }
+
+  /**
+   * Gets the grammar of the block.
+   *
+   * @return The grammar of the block.
+   */
+  @Override
+  public String getBlockGrammar() {
+    return TextType.NOUN.toString();
+  }
+
 }

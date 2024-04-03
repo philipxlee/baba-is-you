@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay.blocks.textblocks.nouns;
+package oogasalad.model.gameplay.blocks.textblocks.properties;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
@@ -14,5 +14,15 @@ public class WallTextBlock extends AbstractTextBlock {
    */
   public WallTextBlock(String name) {
     super(name);
+  }
+
+  /**
+   * Gets the grammar of the block.
+   *
+   * @return The grammar of the block.
+   */
+  @Override
+  public String getBlockGrammar() {
+    return TextType.PROPERTY.toString();
   }
 }

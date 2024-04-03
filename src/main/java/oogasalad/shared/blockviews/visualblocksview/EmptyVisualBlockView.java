@@ -14,7 +14,6 @@ public class EmptyVisualBlockView extends AbstractBlockView {
    */
   public EmptyVisualBlockView(String imgPath) {
     super(imgPath);
-    System.out.println("Empty created");
   }
 
 }

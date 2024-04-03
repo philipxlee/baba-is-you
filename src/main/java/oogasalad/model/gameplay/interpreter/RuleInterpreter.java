@@ -1,9 +1,10 @@
 package oogasalad.model.gameplay.interpreter;
 
 import java.util.List;
-import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+import java.util.Objects;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 
 /**
  * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's
@@ -61,7 +62,10 @@ public class RuleInterpreter {
    * @return true if the blocks form a valid rule; false otherwise.
    */
   private boolean isValidRule(AbstractBlock first, AbstractBlock second, AbstractBlock third) {
-    return first.isTextBlock() && second.isTextBlock() && third.isTextBlock();
+    return first.isTextBlock() && second.isTextBlock() && third.isTextBlock()
+        && Objects.equals(first.getBlockGrammar(), "NOUN")
+        && Objects.equals(second.getBlockGrammar(), "VERB")
+        && Objects.equals(third.getBlockGrammar(), "PROPERTY");
   }
 
   /**
@@ -84,7 +88,6 @@ public class RuleInterpreter {
         for (AbstractBlock block : cell) {
           // Apply the visitor only to non-text blocks that match the block name.
           if (!block.isTextBlock() && block.matches(blockName)) {
-            System.out.println("Applying visitor to block: " + block.getBlockName());
             block.accept(visitor);
           }
         }
