@@ -28,7 +28,7 @@ public class Level implements Observable<Level> {
   }
 
   /**
-   * Add GridModel observer to list of observers.
+   * Add Grid observer to list of observers.
    *
    * @param o The Observer to add to notification service.
    */
