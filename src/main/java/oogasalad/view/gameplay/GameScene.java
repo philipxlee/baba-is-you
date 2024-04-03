@@ -134,7 +134,7 @@ public class GameScene {
 
   private AbstractBlockView reflect(AbstractBlock block) {
     try {
-      String path = "/" + block.getBlockName() + ".png";
+      String path = "/images/" + block.getBlockName() + ".png";
       String className = block.getBlockName() + "View";
       String source = "oogasalad.shared.blockviews.";
       if (className.contains("Visual")) {
