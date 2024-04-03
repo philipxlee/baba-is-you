@@ -1,6 +1,7 @@
 package oogasalad.model.gameplay.handlers;
 
 import javafx.scene.input.KeyCode;
+import oogasalad.model.gameplay.strategies.Winnable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
@@ -38,6 +39,16 @@ public class KeyHandler {
       case LEFT -> deltaJ = -1;
       case RIGHT -> deltaJ = 1;
       default -> deltaI = 0;
+    }
+
+    // TEMPORARY: Exits the block when a winning condition is met
+    // USED FOR DEMO PURPOSES
+    int nextI = i + deltaI;
+    int nextJ = j + deltaJ;
+    AbstractBlock nextBlock = gameGrid.getBlock(nextI, nextJ, k);
+    if (nextBlock != null && nextBlock.hasBehavior(Winnable.class)) {
+      System.out.println("Game over, you won!");
+      System.exit(0);
     }
 
     int[] movement = calculateMovement(i, j, k, deltaI, deltaJ, gameGrid);

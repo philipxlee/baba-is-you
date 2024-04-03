@@ -9,6 +9,7 @@ import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.BecomesEmpty;
 import oogasalad.model.gameplay.strategies.BecomesWall;
 import oogasalad.model.gameplay.strategies.Controllable;
+import oogasalad.model.gameplay.strategies.Winnable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 
@@ -97,7 +98,7 @@ public class Grid {
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WinTextBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
@@ -121,7 +122,7 @@ public class Grid {
       {
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"FlagTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
@@ -132,9 +133,9 @@ public class Grid {
       },
       {
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"FlagVisualBlock"}
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
