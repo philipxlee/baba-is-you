@@ -60,9 +60,9 @@ public class GameScene {
 
   private void createGrid() {
     try {
-      this.gameGrid = new Grid(8, 8);
-      int w = width / 8;
-      int h = height / 8;
+      this.gameGrid = new Grid(15, 15);
+      int w = width / 15;
+      int h = height / 15;
       cellSize = Math.min(w, h);
     } catch (InvalidBlockName e) {
       showErrorDialog(e.getMessage());
@@ -156,19 +156,6 @@ public class GameScene {
       e.printStackTrace();
       return null;
     }
-  }
-
-  private Color getColorForBlock(String blockType) {
-    return switch (blockType) {
-      case "BabaVisualBlock" -> Color.WHITE;
-      case "RockVisualBlock" -> Color.ORANGE;
-      case "BabaTextBlock" -> Color.RED;
-      case "IsTextBlock" -> Color.YELLOW;
-      case "YouTextBlock" -> Color.GREEN;
-      case "RockTextBlock" -> Color.BLUE;
-      case "PushTextBlock" -> Color.GRAY;
-      default -> Color.BLACK;
-    };
   }
 
 }

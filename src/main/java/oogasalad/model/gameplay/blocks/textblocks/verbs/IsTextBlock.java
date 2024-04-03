@@ -15,4 +15,14 @@ public class IsTextBlock extends AbstractTextBlock {
   public IsTextBlock(String name) {
     super(name);
   }
+
+  /**
+   * Gets the grammar of the block.
+   *
+   * @return The grammar of the block.
+   */
+  @Override
+  public String getBlockGrammar() {
+    return TextType.VERB.toString();
+  }
 }

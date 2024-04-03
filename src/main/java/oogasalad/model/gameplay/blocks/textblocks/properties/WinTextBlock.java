@@ -16,4 +16,14 @@ public class WinTextBlock extends AbstractTextBlock {
     super(name);
   }
 
+  /**
+   * Gets the grammar of the block.
+   *
+   * @return The grammar of the block.
+   */
+  @Override
+  public String getBlockGrammar() {
+    return TextType.PROPERTY.toString();
+  }
+
 }
