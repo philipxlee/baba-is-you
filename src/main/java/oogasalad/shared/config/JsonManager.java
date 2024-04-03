@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -14,7 +15,8 @@ import javafx.stage.Stage;
  * environment and the game player to either save it as a JSON file or to load in JSON files.
  */
 public class JsonManager {
-  private final Gson gson = new Gson();
+
+  private static final Gson gson = new Gson();
 
   /**
    * loadFromFile() is responsible for loading in JSON data from a JSON file that a user selects.
@@ -25,12 +27,39 @@ public class JsonManager {
     File file = selectFile(stage);
     if (file != null) {
       try (FileReader reader = new FileReader(file)) {
-        return gson.fromJson(reader, JsonObject.class);
+        JsonObject tempJson = gson.fromJson(reader, JsonObject.class);
+        return tempJson;
       } catch (JsonSyntaxException e) {
         throw new RuntimeException(e);
       }
     }
     return null;
+  }
+
+  /**
+   * Save JSON data to a JSON file.
+   *
+   * @param jsonObject the JsonObject to save.
+   * @param stage      the JavaFX stage used to display the file chooser dialog.
+   */
+  public void saveToFile(JsonObject jsonObject, Stage stage) throws IOException {
+    File file = saveFile(stage);
+    if (file != null) {
+      try (FileWriter writer = new FileWriter(file)) {
+        gson.toJson(jsonObject, writer);
+      }
+    }
+  }
+
+  /**
+   * Add a property to a JsonObject. Also replaces the value if an existing key is given.
+   *
+   * @param jsonObject the JsonObject to which the property will be added.
+   * @param key        the key of the property.
+   * @param value      the value of the property.
+   */
+  public void addProperty(JsonObject jsonObject, String key, String value) {
+    jsonObject.addProperty(key, value);
   }
 
   /**
