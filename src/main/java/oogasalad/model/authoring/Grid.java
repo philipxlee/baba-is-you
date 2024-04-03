@@ -8,14 +8,17 @@ import oogasalad.shared.observer.Observer;
 /**
  * GridModel holds the state of a grid of blocks.
  */
-public class GridModel implements Observable<GridModel> {
+public class Grid implements Observable<Grid> {
 
-  private List<Observer<GridModel>> observers;
+  private final Block[][] cells;
+  private List<Observer<Grid>> observers;
 
   /**
-   * GridModel constructor.
+   * Grid constructor. Initialized with number of rows and number of columns.
    */
-  public GridModel() {
+  public Grid(int rows, int cols) {
+    cells = new Block[rows][cols];
+
     observers = new ArrayList<>();
   }
 
@@ -25,7 +28,7 @@ public class GridModel implements Observable<GridModel> {
    * @param o The Observer to add to notification service.
    */
   @Override
-  public void addObserver(Observer<GridModel> o) {
+  public void addObserver(Observer<Grid> o) {
     observers.add(o);
   }
 
@@ -34,7 +37,7 @@ public class GridModel implements Observable<GridModel> {
    */
   @Override
   public void notifyObserver() {
-    for (Observer<GridModel> observer : observers) {
+    for (Observer<Grid> observer : observers) {
       observer.update(this);
     }
   }
