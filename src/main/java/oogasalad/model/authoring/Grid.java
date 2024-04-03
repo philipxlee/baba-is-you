@@ -7,7 +7,7 @@ import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
 /**
- * GridModel holds the state of a grid of blocks.
+ * Grid holds the state of a grid of blocks.
  */
 public class Grid implements Observable<Grid>, Iterable<Block> {
 
@@ -49,7 +49,7 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
    * @param name The name of the new block type.
    * @throws Exception Throws exception if the name is invalid (not in properties file).
    */
-  public void addBlock(int row, int col, String name) throws Exception {
+  public void setCell(int row, int col, String name) throws Exception {
     BlockType blockType = blockTypeManager.findBlockTypeByName(name);
     if (row >= 0 && row < cells.length && col >= 0 && col < cells[row].length) {
       cells[row][col] = new Block(blockType);
