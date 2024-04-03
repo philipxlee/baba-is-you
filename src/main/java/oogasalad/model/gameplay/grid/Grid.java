@@ -3,12 +3,15 @@ package oogasalad.model.gameplay.grid;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.BecomesEmpty;
 import oogasalad.model.gameplay.strategies.BecomesWall;
 import oogasalad.model.gameplay.strategies.Controllable;
+import oogasalad.model.gameplay.strategies.Winnable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 
@@ -49,14 +52,6 @@ public class Grid {
       for(int j = 0; j < grid[i].length; j++){
         for(int k= 0; k < grid[i][j].size(); k++){
           AbstractBlock block = grid[i][j].get(k);
-          // temporary, needs refactoring
-          if (block != null && block.hasBehavior(BecomesWall.class)) {
-            changeBlockToWall(i, j, k);
-          }
-          // temporary, needs refactoring
-          if (block != null && block.hasBehavior(BecomesEmpty.class)) {
-            changeBlockToEmpty(i, j, k);
-          }
           if(block != null && block.hasBehavior(Controllable.class)){
             int [] a = {i, j, k};
             AllControllableBlocks.add(a);
@@ -67,6 +62,26 @@ public class Grid {
     return AllControllableBlocks;
   }
 
+  public void checkBehaviors(){
+    for(int i = 0; i< grid.length; i++){
+      for(int j = 0; j < grid[i].length; j++){
+        for(int k = 0; k< grid[i][j].size(); k++){
+          AbstractBlock block = grid[i][j].get(k);
+
+          if(block != null && block instanceof EmptyVisualBlock){
+            System.out.println("The behavior of EmptyVisualBlock is: " + block.behaviorsToString());
+          }
+          if (block != null && block.hasBehavior(BecomesWall.class)) {
+            changeBlockToWall(i, j, k);
+          }
+          // temporary, needs refactoring
+          if (block != null && block.hasBehavior(BecomesEmpty.class)) {
+            changeBlockToEmpty(i, j, k);
+          }
+        }
+      }
+    }
+  }
   private void changeBlockToEmpty(int i, int j, int k) {
     grid[i][j].set(k, factory.createBlock("EmptyVisualBlock"));
   }
@@ -74,6 +89,7 @@ public class Grid {
   private void changeBlockToWall(int i, int j, int k) {
     grid[i][j].set(k, factory.createBlock("WallVisualBlock"));
   }
+
 
   String[][][] tempConfiguration = {
       {
@@ -97,7 +113,7 @@ public class Grid {
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WinTextBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
@@ -109,7 +125,7 @@ public class Grid {
       {
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"StopTextBlock"},
         {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"EmptyVisualBlock"}
       },
       {
@@ -121,7 +137,7 @@ public class Grid {
       {
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"FlagTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
@@ -132,9 +148,9 @@ public class Grid {
       },
       {
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"FlagVisualBlock"}
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
@@ -157,8 +173,8 @@ public class Grid {
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallTextBlock"},
+        {"IsTextBlock"}, {"StopTextBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"BabaVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},

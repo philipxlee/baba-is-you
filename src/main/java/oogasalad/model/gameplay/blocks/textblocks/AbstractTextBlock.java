@@ -35,5 +35,8 @@ public abstract class AbstractTextBlock extends AbstractBlock {
     return this.name;
   }
 
-
+  @Override
+  public String behaviorsToString(){
+    return "I dont need this";
+  }
 }

@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -33,13 +34,16 @@ public class GameScene {
     this.scene = scene;
 
     this.scene.getScene().setOnKeyPressed(event -> {
-      try {
-        gameGrid.checkForRules(); // Check for rules
-        keyHandler.handleKeyPress(event.getCode()); // Handle key press
-        renderGrid(); // Render grid
-        resetAllBlocks(); // Reset all blocks
-      } catch (Exception e) {
-        showErrorDialog(e.getClass().getName());
+      if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN ||
+          event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+        try {
+          gameGrid.checkForRules(); // Check for rules
+          keyHandler.handleKeyPress(event.getCode()); // Handle key press
+          renderGrid(); // Render grid
+          resetAllBlocks(); // Reset all blocks
+        } catch (Exception e) {
+          showErrorDialog(e.getClass().getName());
+        }
       }
     });
 
@@ -53,7 +57,10 @@ public class GameScene {
   protected Pane setUpScreen() {
     StackPane gameScreen = new StackPane(root);
     gameScreen.setAlignment(Pos.CENTER);
+    gameScreen.setPrefWidth(width);
+
     Pane pane = new Pane();
+    pane.setPrefSize(width, height);
     pane.getChildren().add(gameScreen);
     return pane;
   }

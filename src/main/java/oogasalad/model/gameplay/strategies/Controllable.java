@@ -17,7 +17,10 @@ public class Controllable implements Strategy {
   public void execute(AbstractVisualBlock block) {
 
   }
-
+  @Override
+  public String toString(){
+    return "Controllable";
+  }
   @Override
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
     return false;
