@@ -1,6 +1,7 @@
 package oogasalad.model.authoring;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
@@ -8,7 +9,7 @@ import oogasalad.shared.observer.Observer;
 /**
  * GridModel holds the state of a grid of blocks.
  */
-public class Grid implements Observable<Grid> {
+public class Grid implements Observable<Grid>, Iterable<Block> {
 
   private final BlockTypeManager blockTypeManager;
   private final Block[][] cells;
@@ -74,5 +75,42 @@ public class Grid implements Observable<Grid> {
     for (Observer<Grid> observer : observers) {
       observer.update(this);
     }
+  }
+
+  /**
+   * Iterator over the blocks of the grid.
+   *
+   * @return Iterator<Block>.
+   */
+  @Override
+  public Iterator<Block> iterator() {
+    return new Iterator<>() {
+      private int row = 0, col = 0;
+
+      /**
+       * Checks if there is another block in iterator.
+       *
+       * @return Boolean if there is at least one block left.
+       */
+      @Override
+      public boolean hasNext() {
+        return row < cells.length && col < cells[row].length;
+      }
+
+      /**
+       * Returns next block in iterator and updates pointers.
+       *
+       * @return Next block.
+       */
+      @Override
+      public Block next() {
+        Block block = cells[row][col++];
+        if (col >= cells[row].length) {
+          col = 0;
+          row++;
+        }
+        return block;
+      }
+    };
   }
 }
