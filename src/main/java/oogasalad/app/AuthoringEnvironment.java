@@ -21,21 +21,5 @@ public class AuthoringEnvironment extends Application {
 
     // Initialize views
     sceneController.initializeViews();
-
-    // Get the primary screen
-    Screen screen = Screen.getPrimary();
-    Rectangle2D bounds = screen.getVisualBounds();
-
-    // Set the dimensions of the stage based on the screen dimensions
-    double screenWidth = bounds.getWidth();
-    double screenHeight = bounds.getHeight();
-
-    // You can adjust these values based on your requirements
-    double stageWidth = screenWidth * 0.8; // 80% of screen width
-    double stageHeight = screenHeight * 0.8; // 80% of screen height
-
-    // Set the dimensions of the stage
-    stage.setWidth(stageWidth);
-    stage.setHeight(stageHeight);
   }
 }
