@@ -1,7 +1,9 @@
 package oogasalad.model.gameplay.interpreter;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
@@ -22,18 +24,11 @@ public class RuleInterpreter {
    * @param grid The game grid to be interpreted.
    */
   public void interpretRules(List<AbstractBlock>[][] grid) throws VisitorReflectionException {
-    for (List<AbstractBlock>[] row : grid) {
-      for (int col = 0; col <= row.length - 3; col++) {
-        // Iterate over every combination of blocks in the three adjacent positions
-        for (AbstractBlock block1 : row[col]) {
-          for (AbstractBlock block2 : row[col + 1]) {
-            for (AbstractBlock block3 : row[col + 2]) {
-              checkAndProcessRuleAt(block1, block2, block3, grid);
-            }
-          }
-        }
-      }
-    }
+    Arrays.stream(grid).forEach(row -> IntStream.rangeClosed(0, row.length - 3)
+        .forEach(currentCol -> row[currentCol].forEach(block1 ->
+            row[currentCol + 1].forEach(block2 ->
+                row[currentCol + 2].forEach(block3 ->
+                    checkAndProcessRuleAt(block1, block2, block3, grid))))));
   }
 
 
@@ -62,35 +57,29 @@ public class RuleInterpreter {
    * @return true if the blocks form a valid rule; false otherwise.
    */
   private boolean isValidRule(AbstractBlock first, AbstractBlock second, AbstractBlock third) {
-    return first.isTextBlock() && second.isTextBlock() && third.isTextBlock()
-        && Objects.equals(first.getBlockGrammar(), "NOUN")
-        && Objects.equals(second.getBlockGrammar(), "VERB")
-        && Objects.equals(third.getBlockGrammar(), "PROPERTY");
+    List<String> firstGrammarList = first.getBlockGrammar();
+    List<String> secondGrammarList = second.getBlockGrammar();
+    List<String> thirdGrammarList = third.getBlockGrammar();
+    return Stream.of(first, second, third)
+        .allMatch(AbstractBlock::isTextBlock)
+        && firstGrammarList.contains("NOUN")
+        && secondGrammarList.contains("VERB")
+        && thirdGrammarList.contains("PROPERTY");
   }
 
   /**
-   * Applies a visitor to all blocks in the grid that match the given block name.
+   * Applies a visitor to all matching blocks within the grid.
    *
    * @param visitor   The visitor to apply.
-   * @param blockName The name of the blocks to which the visitor should be applied.
-   * @param grid      The game grid.
-   */
-  /**
-   * Applies a visitor to all blocks in the grid that match the given block name.
-   *
-   * @param visitor   The visitor to apply.
-   * @param blockName The name of the blocks to which the visitor should be applied.
-   * @param grid      The game grid, where each cell contains a list of AbstractBlocks.
+   * @param blockName The name of blocks the visitor is applied to.
+   * @param grid      The game grid, a two-dimensional array of lists of AbstractBlocks.
    */
   private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName, List<AbstractBlock>[][] grid) {
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> cell : row) {
-        for (AbstractBlock block : cell) {
-          // Apply the visitor only to non-text blocks that match the block name.
-          if (!block.isTextBlock() && block.matches(blockName)) {
-            block.accept(visitor);
-          }
-        }
+        cell.stream()
+            .filter(block -> !block.isTextBlock() && block.matches(blockName))
+            .forEach(block -> block.accept(visitor));
       }
     }
   }

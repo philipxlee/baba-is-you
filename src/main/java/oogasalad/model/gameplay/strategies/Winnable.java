@@ -14,7 +14,7 @@ public class Winnable implements Strategy {
    */
   @Override
   public void execute(AbstractVisualBlock block) {
-
+    // TODO Auto-generated method stub
   }
 
   @Override
