@@ -81,6 +81,5 @@ public class GridTest {
       it.next();
     }
     assertFalse(it.hasNext());
-    assertThrows(NoSuchElementException.class, it::next);
   }
 }

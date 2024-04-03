@@ -7,7 +7,7 @@ import oogasalad.controller.gameplay.SceneController;
 /**
  * MainController is the entrypoint for the Game Player.
  */
-public class  GamePlayer extends Application {
+public class GamePlayer extends Application {
 
   /**
    * Connects Model, Views and Controllers together.
