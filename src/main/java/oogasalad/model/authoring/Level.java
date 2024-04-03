@@ -1,18 +1,30 @@
 package oogasalad.model.authoring;
 
+import java.util.ArrayList;
 import java.util.List;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
+/**
+ * Level abstraction encapsulates a Grid, LevelMetadata. Implements Observable to provide
+ * notifications on state changes.
+ */
 public class Level implements Observable<Level> {
 
   private Grid grid;
   private LevelMetadata levelMetadata;
   private List<Observer<Level>> observers;
 
+  /**
+   * Level Constructor. Initialized with LevelMetadata record and BlockTypeManager
+   *
+   * @param levelMetadata    The levelMetadata record representing the level.
+   * @param blockTypeManager The blockTypeManager being used in the application.
+   */
   public Level(LevelMetadata levelMetadata, BlockTypeManager blockTypeManager) {
     this.levelMetadata = levelMetadata;
     grid = new Grid(levelMetadata.rows(), levelMetadata.cols(), blockTypeManager);
+    observers = new ArrayList<>();
   }
 
   /**

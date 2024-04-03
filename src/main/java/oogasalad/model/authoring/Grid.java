@@ -7,7 +7,8 @@ import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
 /**
- * Grid holds the state of a grid of blocks.
+ * Grid holds the state of a grid of blocks. Implements observable to provide notifications on state
+ * changes. Implements Iterable to provide iterator interface.
  */
 public class Grid implements Observable<Grid>, Iterable<Block> {
 
