@@ -1,11 +1,15 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "you" property.
  */
 public class YouTextBlock extends AbstractTextBlock {
+
 
   /**
    * Creates a new "you" text block.
@@ -22,7 +26,7 @@ public class YouTextBlock extends AbstractTextBlock {
    * @return The grammar of the block.
    */
   @Override
-  public String getBlockGrammar() {
-    return TextType.PROPERTY.toString();
+  public List<String> getBlockGrammar() {
+    return Arrays.asList("PROPERTY");
   }
 }

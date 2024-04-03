@@ -1,5 +1,7 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
+import java.util.Arrays;
+import java.util.List;
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
@@ -22,7 +24,7 @@ public class WallTextBlock extends AbstractTextBlock {
    * @return The grammar of the block.
    */
   @Override
-  public String getBlockGrammar() {
-    return TextType.NOUN.toString();
+  public List<String> getBlockGrammar() {
+    return Arrays.asList("PROPERTY", "NOUN");
   }
 }

@@ -23,7 +23,6 @@ public class WallVisualBlock extends AbstractVisualBlock {
    */
   @Override
   public void accept(BlockVisitor visitor) {
-    System.out.println("Visited wall");
     visitor.visit(this);
   }
 

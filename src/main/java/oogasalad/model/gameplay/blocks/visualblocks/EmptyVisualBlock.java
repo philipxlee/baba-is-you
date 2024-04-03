@@ -24,7 +24,6 @@ public class EmptyVisualBlock extends AbstractVisualBlock {
    */
   @Override
   public void accept(BlockVisitor visitor) {
-    System.out.println("Visited empty block");
     visitor.visit(this);
   }
 }

@@ -2,8 +2,8 @@ package oogasalad.model.gameplay.interpreter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
@@ -57,10 +57,14 @@ public class RuleInterpreter {
    * @return true if the blocks form a valid rule; false otherwise.
    */
   private boolean isValidRule(AbstractBlock first, AbstractBlock second, AbstractBlock third) {
-    return first.isTextBlock() && second.isTextBlock() && third.isTextBlock()
-        && Objects.equals(first.getBlockGrammar(), "NOUN")
-        && Objects.equals(second.getBlockGrammar(), "VERB")
-        && Objects.equals(third.getBlockGrammar(), "PROPERTY");
+    List<String> firstGrammarList = first.getBlockGrammar();
+    List<String> secondGrammarList = second.getBlockGrammar();
+    List<String> thirdGrammarList = third.getBlockGrammar();
+    return Stream.of(first, second, third)
+        .allMatch(AbstractBlock::isTextBlock)
+        && firstGrammarList.contains("NOUN")
+        && secondGrammarList.contains("VERB")
+        && thirdGrammarList.contains("PROPERTY");
   }
 
   /**
@@ -71,7 +75,6 @@ public class RuleInterpreter {
    * @param grid      The game grid, a two-dimensional array of lists of AbstractBlocks.
    */
   private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName, List<AbstractBlock>[][] grid) {
-    System.out.printf("Applying visitor to blocks matching %s%n", blockName);
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> cell : row) {
         cell.stream()

@@ -8,12 +8,8 @@ import oogasalad.model.gameplay.blocks.AbstractBlock;
 public abstract class AbstractTextBlock extends AbstractBlock {
 
   private final String name;
+  private final String grammar = "default";
 
-  /**
-   * Creates a new text block.
-   *
-   * @param name the name of the block.
-   */
   public AbstractTextBlock(String name) {
     super();
     this.name = name;
@@ -39,12 +35,5 @@ public abstract class AbstractTextBlock extends AbstractBlock {
     return this.name;
   }
 
-
-  /**
-   * Gets the type of the text block.
-   */
-  public enum TextType {
-    NOUN, VERB, PROPERTY
-  }
 
 }

@@ -1,5 +1,8 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
@@ -22,8 +25,8 @@ public class WinTextBlock extends AbstractTextBlock {
    * @return The grammar of the block.
    */
   @Override
-  public String getBlockGrammar() {
-    return TextType.PROPERTY.toString();
+  public List<String> getBlockGrammar() {
+    return Arrays.asList("PROPERTY");
   }
 
 }
