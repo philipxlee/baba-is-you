@@ -1,5 +1,8 @@
 package oogasalad.view.authoring;
 
+import java.io.File;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
@@ -31,14 +34,30 @@ public class BuilderScene {
       Dragboard db = event.getDragboard();
       boolean success = false;
       if (db.hasString()) {
-        // Handle the dropped item. For example, instantiate a new block view based on the identifier.
         String blockType = db.getString();
-        // TODO: Create and add a new block view to 'root' based on 'blockType'
-        success = true;
+        // Hypothetical method to create a view based on block type
+        ImageView blockView = createBlockView(blockType);
+        if (blockView != null) {
+          root.getChildren().add(blockView);
+          success = true;
+        }
       }
       event.setDropCompleted(success);
       event.consume();
     });
+  }
+
+  private ImageView createBlockView(String blockType) {
+    String imagePath = "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+    // Creating a File object to ensure the path is correctly formed.
+    File imageFile = new File(imagePath);
+    if (!imageFile.exists()) {
+      System.err.println("Image file not found: " + imagePath);
+      return null; // Or handle this case as needed.
+    }
+
+    Image image = new Image(imageFile.toURI().toString(), 100, 100, true, true);
+    return new ImageView(image);
   }
 
   public Pane getRoot() {

@@ -95,6 +95,7 @@ public class ElementsScene {
       ClipboardContent content = new ClipboardContent();
       content.putString(blockType); // Use blockType as the identifier for the dragged object
       db.setContent(content);
+      db.setDragView(imageView.snapshot(null, null));
       event.consume();
     });
   }
