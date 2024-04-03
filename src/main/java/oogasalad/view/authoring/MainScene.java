@@ -1,38 +1,38 @@
+
+
+
 package oogasalad.view.authoring;
 
-import javafx.geometry.Pos;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import oogasalad.shared.scene.Scene;
 
-/**
- * MainScene is the main scene implementation for Authoring Environment.
- */
 public class MainScene implements Scene {
-
   private javafx.scene.Scene scene;
+  private HBox root;
+  private BuilderScene builderScene;
+  private ElementsScene elementsScene;
 
-  /**
-   * Initialize the Main Scene. Displays level editing platform.
-   *
-   * @param width:  width of scene.
-   * @param height: height of scene.
-   */
   @Override
   public void initializeScene(int width, int height) {
-    VBox box = new VBox();
-    box.setAlignment(Pos.CENTER);
-    Text title = new Text("Authoring Environment: View");
-    box.getChildren().addAll(title);
-    this.scene = new javafx.scene.Scene(box, width, height);
+    this.root = new HBox();
+
+    // Initialize builder scene with 60% of width
+    this.builderScene = new BuilderScene();
+    int builderWidth = (int) (width * 0.6);
+    builderScene.initializeBuilderScene(builderWidth, height, this);
+
+    // Initialize elements scene with 40% of width
+    this.elementsScene = new ElementsScene();
+    int elementsWidth = (int) (width * 0.4);
+    elementsScene.initializeElementsScene(elementsWidth, height, this);
+
+    // Adding panes to the root with calculated widths
+    root.getChildren().addAll(elementsScene.setUpScreen(), builderScene.getRoot());
+    this.scene = new javafx.scene.Scene(root, width, height);
+    scene.setFill(Color.WHITE);
   }
 
-  /**
-   * Get the current scene.
-   *
-   * @return JavaFX scene.
-   */
-  @Override
   public javafx.scene.Scene getScene() {
     return this.scene;
   }
