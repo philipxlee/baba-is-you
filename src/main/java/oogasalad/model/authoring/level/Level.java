@@ -41,6 +41,15 @@ public class Level implements Observable<Level> {
   }
 
   /**
+   * LevelMetadata record of level.
+   *
+   * @return Current LevelMetadata.
+   */
+  public LevelMetadata getLevelMetadata() {
+    return levelMetadata;
+  }
+
+  /**
    * Add Grid observer to list of observers.
    *
    * @param o The Observer to add to notification service.
