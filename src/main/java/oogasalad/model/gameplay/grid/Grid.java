@@ -6,6 +6,8 @@ import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
+import oogasalad.model.gameplay.strategies.BecomesEmpty;
+import oogasalad.model.gameplay.strategies.BecomesWall;
 import oogasalad.model.gameplay.strategies.Controllable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
@@ -36,6 +38,7 @@ public class Grid {
   public AbstractBlock getBlock(int i, int j, int k){
     return grid[i][j].get(k);
   }
+
   public List<AbstractBlock>[][] getGrid() {
     return this.grid;
   }
@@ -46,6 +49,14 @@ public class Grid {
       for(int j = 0; j < grid[i].length; j++){
         for(int k= 0; k < grid[i][j].size(); k++){
           AbstractBlock block = grid[i][j].get(k);
+          // temporary, needs refactoring
+          if (block != null && block.hasBehavior(BecomesWall.class)) {
+            changeBlockToWall(i, j, k);
+          }
+          // temporary, needs refactoring
+          if (block != null && block.hasBehavior(BecomesEmpty.class)) {
+            changeBlockToEmpty(i, j, k);
+          }
           if(block != null && block.hasBehavior(Controllable.class)){
             int [] a = {i, j, k};
             AllControllableBlocks.add(a);
@@ -54,6 +65,14 @@ public class Grid {
       }
     }
     return AllControllableBlocks;
+  }
+
+  private void changeBlockToEmpty(int i, int j, int k) {
+    grid[i][j].set(k, factory.createBlock("EmptyVisualBlock"));
+  }
+
+  private void changeBlockToWall(int i, int j, int k) {
+    grid[i][j].set(k, factory.createBlock("WallVisualBlock"));
   }
 
   String[][][] tempConfiguration = {
