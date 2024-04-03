@@ -52,11 +52,9 @@ public class BlockTypeManager {
    * @throws Exception Thrown when the name is invalid (not in properties file).
    */
   public BlockType findBlockTypeByName(String name) throws Exception {
-    for (BlockType blockType : blockTypes) {
-      if (blockType.name().equalsIgnoreCase(name)) {
-        return blockType;
-      }
-    }
-    throw new Exception("Block name not found: " + name);
+    return blockTypes.stream()
+        .filter(bt -> bt.name().equalsIgnoreCase(name))
+        .findFirst()
+        .orElseThrow(() -> new Exception("Block name not found: " + name));
   }
 }

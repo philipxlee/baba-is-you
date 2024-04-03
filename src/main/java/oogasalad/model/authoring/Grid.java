@@ -1,5 +1,6 @@
 package oogasalad.model.authoring;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.shared.observer.Observable;
@@ -16,9 +17,8 @@ public class Grid implements Observable<Grid> {
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
    */
-  public Grid(int rows, int cols) {
+  public Grid(int rows, int cols) throws IOException {
     cells = new Block[rows][cols];
-
     observers = new ArrayList<>();
   }
 
