@@ -71,6 +71,7 @@ public class RuleInterpreter {
    * @param grid      The game grid, a two-dimensional array of lists of AbstractBlocks.
    */
   private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName, List<AbstractBlock>[][] grid) {
+    System.out.printf("Applying visitor to blocks matching %s%n", blockName);
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> cell : row) {
         cell.stream()

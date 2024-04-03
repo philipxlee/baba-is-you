@@ -1,18 +1,18 @@
-package oogasalad.model.gameplay.blocks.textblocks.properties;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
- * A text block that represents the "push" property.
+ * A text block that represents the "is" verb.
  */
-public class PushTextBlock extends AbstractTextBlock {
+public class IsTextBlock extends AbstractTextBlock {
 
   /**
-   * Creates a new "push" text block.
+   * Creates a new "is" text block.
    *
    * @param name the name of the block.
    */
-  public PushTextBlock(String name) {
+  public IsTextBlock(String name) {
     super(name);
   }
 
@@ -23,7 +23,6 @@ public class PushTextBlock extends AbstractTextBlock {
    */
   @Override
   public String getBlockGrammar() {
-    return TextType.PROPERTY.toString();
+    return TextType.VERB.toString();
   }
-
 }

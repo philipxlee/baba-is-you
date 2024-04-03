@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay.blocks.textblocks.nouns;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 

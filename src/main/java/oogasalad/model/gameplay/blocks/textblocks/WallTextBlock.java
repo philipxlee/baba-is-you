@@ -1,18 +1,18 @@
-package oogasalad.model.gameplay.blocks.textblocks.properties;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
- * A text block that represents the "you" property.
+ * A text block that represents the "wall" noun.
  */
-public class YouTextBlock extends AbstractTextBlock {
+public class WallTextBlock extends AbstractTextBlock {
 
   /**
-   * Creates a new "you" text block.
+   * Creates a new "wall" text block.
    *
    * @param name the name of the block.
    */
-  public YouTextBlock(String name) {
+  public WallTextBlock(String name) {
     super(name);
   }
 
@@ -23,6 +23,6 @@ public class YouTextBlock extends AbstractTextBlock {
    */
   @Override
   public String getBlockGrammar() {
-    return TextType.PROPERTY.toString();
+    return TextType.NOUN.toString();
   }
 }

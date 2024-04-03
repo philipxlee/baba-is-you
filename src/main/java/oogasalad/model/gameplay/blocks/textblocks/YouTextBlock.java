@@ -1,18 +1,18 @@
-package oogasalad.model.gameplay.blocks.textblocks.properties;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
- * A text block that represents the "wall" noun.
+ * A text block that represents the "you" property.
  */
-public class WallTextBlock extends AbstractTextBlock {
+public class YouTextBlock extends AbstractTextBlock {
 
   /**
-   * Creates a new "wall" text block.
+   * Creates a new "you" text block.
    *
    * @param name the name of the block.
    */
-  public WallTextBlock(String name) {
+  public YouTextBlock(String name) {
     super(name);
   }
 

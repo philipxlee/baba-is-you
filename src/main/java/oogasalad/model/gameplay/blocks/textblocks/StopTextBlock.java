@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay.blocks.textblocks.properties;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 

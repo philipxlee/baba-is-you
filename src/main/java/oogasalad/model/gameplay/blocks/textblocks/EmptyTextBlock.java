@@ -1,18 +1,18 @@
-package oogasalad.model.gameplay.blocks.textblocks.verbs;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
- * A text block that represents the "is" verb.
+ * A text block that represents the "empty" noun.
  */
-public class IsTextBlock extends AbstractTextBlock {
+public class EmptyTextBlock extends AbstractTextBlock {
 
   /**
-   * Creates a new "is" text block.
+   * Creates a new "empty" text block.
    *
    * @param name the name of the block.
    */
-  public IsTextBlock(String name) {
+  public EmptyTextBlock(String name) {
     super(name);
   }
 
@@ -23,6 +23,7 @@ public class IsTextBlock extends AbstractTextBlock {
    */
   @Override
   public String getBlockGrammar() {
-    return TextType.VERB.toString();
+    return TextType.PROPERTY.toString();
   }
+
 }

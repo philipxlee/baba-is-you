@@ -1,18 +1,18 @@
-package oogasalad.model.gameplay.blocks.textblocks.nouns;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
- * A text block that represents the "empty" noun.
+ * A text block that represents the "rock" noun.
  */
-public class EmptyTextBlock extends AbstractTextBlock {
+public class RockTextBlock extends AbstractTextBlock {
 
   /**
-   * Creates a new "empty" text block.
+   * Creates a new "rock" text block.
    *
    * @param name the name of the block.
    */
-  public EmptyTextBlock(String name) {
+  public RockTextBlock(String name) {
     super(name);
   }
 

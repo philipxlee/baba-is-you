@@ -1,18 +1,18 @@
-package oogasalad.model.gameplay.blocks.textblocks.nouns;
+package oogasalad.model.gameplay.blocks.textblocks;
 
 import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
- * A text block that represents the "rock" noun.
+ * A text block that represents the "push" property.
  */
-public class RockTextBlock extends AbstractTextBlock {
+public class PushTextBlock extends AbstractTextBlock {
 
   /**
-   * Creates a new "rock" text block.
+   * Creates a new "push" text block.
    *
    * @param name the name of the block.
    */
-  public RockTextBlock(String name) {
+  public PushTextBlock(String name) {
     super(name);
   }
 
@@ -23,7 +23,7 @@ public class RockTextBlock extends AbstractTextBlock {
    */
   @Override
   public String getBlockGrammar() {
-    return TextType.NOUN.toString();
+    return TextType.PROPERTY.toString();
   }
 
 }
