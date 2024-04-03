@@ -1,6 +1,5 @@
 package oogasalad.model.authoring;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.shared.observer.Observable;
@@ -11,15 +10,34 @@ import oogasalad.shared.observer.Observer;
  */
 public class Grid implements Observable<Grid> {
 
+  private final BlockTypeManager blockTypeManager;
   private final Block[][] cells;
   private List<Observer<Grid>> observers;
 
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
    */
-  public Grid(int rows, int cols) throws IOException {
+  public Grid(int rows, int cols, BlockTypeManager blockTypeManager) {
+    this.blockTypeManager = blockTypeManager;
     cells = new Block[rows][cols];
     observers = new ArrayList<>();
+    initializeGrid();
+  }
+
+  /**
+   * Initializes grid with Empty blocks.
+   */
+  private void initializeGrid() {
+    try {
+      BlockType emptyType = blockTypeManager.findBlockTypeByName("Empty");
+      for (int row = 0; row < cells.length; row++) {
+        for (int col = 0; col < cells[row].length; col++) {
+          cells[row][col] = new Block(emptyType);
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**

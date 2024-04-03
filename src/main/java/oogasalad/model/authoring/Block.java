@@ -1,3 +1,10 @@
 package oogasalad.model.authoring;
 
-public record Block(BlockType type) { }
+/**
+ * Block abstraction. Initialized with a BlockType.
+ *
+ * @param type The BlockType of the block.
+ */
+public record Block(BlockType type) {
+
+}

@@ -11,7 +11,7 @@ import java.util.Properties;
  */
 public class BlockTypeManager {
 
-  private List<BlockType> blockTypes = new ArrayList<>();
+  private static final List<BlockType> blockTypes = new ArrayList<>();
 
   /**
    * BlockTypeManager constructor. Initialized with the Block Type properties filepath.
