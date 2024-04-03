@@ -41,6 +41,6 @@ public class BlockTypeManagerTest {
         () -> new BlockTypeManager(validPropertiesFilePath));
     Exception exception = assertThrows(Exception.class,
         () -> manager.findBlockTypeByName("NonexistentType"));
-    assertTrue(exception.getMessage().contains("Block name not found"));
+    assertTrue(exception.getMessage().contains("Invalid block type"));
   }
 }

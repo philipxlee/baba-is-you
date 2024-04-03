@@ -28,7 +28,7 @@ public class BlockTypeManager {
    *
    * @param propertiesFilePath The file path of block type properties file.
    */
-  private void loadBlockTypes(String propertiesFilePath) {
+  private boolean loadBlockTypes(String propertiesFilePath) {
     try (InputStream input = getClass().getResourceAsStream(propertiesFilePath)) {
       if (input == null) {
         throw new IllegalArgumentException("Properties file not found: " + propertiesFilePath);
@@ -39,6 +39,7 @@ public class BlockTypeManager {
       for (String typeName : types) {
         blockTypes.add(new BlockType(typeName.trim()));
       }
+      return true;
     } catch (IOException e) {
       throw new RuntimeException("Failed to load block types from properties file");
     }
@@ -55,6 +56,6 @@ public class BlockTypeManager {
     return blockTypes.stream()
         .filter(bt -> bt.name().equalsIgnoreCase(name))
         .findFirst()
-        .orElseThrow(() -> new Exception("Block name not found: " + name));
+        .orElseThrow(() -> new Exception("Invalid block type: " + name));
   }
 }

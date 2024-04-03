@@ -18,7 +18,7 @@ public class MainScene implements Scene {
   public void initializeScene(int width, int height) {
     this.root = new HBox();
     this.scene = new javafx.scene.Scene(root, width, height);
-    scene.setFill(Color.BLACK);
+    scene.getRoot().setStyle("-fx-background-color: #191A20;");
 
     //Initialize game grid
     this.gameScene = new GameScene();
