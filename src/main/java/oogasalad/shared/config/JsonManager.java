@@ -1,6 +1,7 @@
 package oogasalad.shared.config;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import java.io.File;
@@ -60,6 +61,20 @@ public class JsonManager {
    */
   public void addProperty(JsonObject jsonObject, String key, String value) {
     jsonObject.addProperty(key, value);
+  }
+
+  /**
+   * Get the value associated with a key from a JsonObject.
+   *
+   * @param jsonObject the JsonObject from which to retrieve the value.
+   * @param key        the key whose value is to be retrieved.
+   */
+  public String getValue(JsonObject jsonObject, String key) {
+    JsonElement jsonElement = jsonObject.get(key);
+    if (jsonElement != null && !jsonElement.isJsonNull()) {
+      return jsonElement.getAsString();
+    }
+    return null;
   }
 
   /**
