@@ -41,6 +41,22 @@ public class Grid implements Observable<Grid> {
   }
 
   /**
+   * Adds a Block of a specific type to the grid. Type must be in block type properties file.
+   *
+   * @param row  Row position of new block.
+   * @param col  Column position of new block.
+   * @param name The name of the new block type.
+   * @throws Exception Throws exception if the name is invalid (not in properties file).
+   */
+  public void addBlock(int row, int col, String name) throws Exception {
+    BlockType blockType = blockTypeManager.findBlockTypeByName(name);
+    if (row >= 0 && row < cells.length && col >= 0 && col < cells[row].length) {
+      cells[row][col] = new Block(blockType);
+      notifyObserver();
+    }
+  }
+
+  /**
    * Add GridModel observer to list of observers.
    *
    * @param o The Observer to add to notification service.
