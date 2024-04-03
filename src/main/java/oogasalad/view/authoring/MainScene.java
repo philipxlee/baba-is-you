@@ -1,39 +1,47 @@
 package oogasalad.view.authoring;
 
-import javafx.geometry.Pos;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import oogasalad.shared.scene.Scene;
 
-/**
- * MainScene is the main scene implementation for Authoring Environment.
- */
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import oogasalad.shared.scene.Scene;
+
 public class MainScene implements Scene {
 
   private javafx.scene.Scene scene;
+  private SplitPane root;
+  private BuilderScene builderScene;
+  private ElementsScene elementsScene;
 
-  /**
-   * Initialize the Main Scene. Displays level editing platform.
-   *
-   * @param width:  width of scene.
-   * @param height: height of scene.
-   */
   @Override
   public void initializeScene(int width, int height) {
-    VBox box = new VBox();
-    box.setAlignment(Pos.CENTER);
-    Text title = new Text("Authoring Environment: View");
-    box.getChildren().addAll(title);
-    this.scene = new javafx.scene.Scene(box, width, height);
+    root = new SplitPane();
+
+    // Initialize builder scene with 60% of width
+    this.builderScene = new BuilderScene();
+
+    // Initialize elements scene with 40% of width
+    this.elementsScene = new ElementsScene();
+
+    // Set up left and right sides of SplitPane
+    root.getItems().addAll(builderScene.getRoot(), elementsScene.getLayout());
+    root.setDividerPositions(0.4);
+
+    this.scene = new javafx.scene.Scene(root, width, height);
+    scene.setFill(Color.WHITE);
   }
 
-  /**
-   * Get the current scene.
-   *
-   * @return JavaFX scene.
-   */
-  @Override
   public javafx.scene.Scene getScene() {
     return this.scene;
   }
 }
+
+
+
+
