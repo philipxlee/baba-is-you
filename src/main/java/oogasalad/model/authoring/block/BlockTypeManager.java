@@ -56,6 +56,6 @@ public class BlockTypeManager {
     return blockTypes.stream()
         .filter(bt -> bt.name().equalsIgnoreCase(name))
         .findFirst()
-        .orElseThrow(() -> new Exception("Block name not found: " + name));
+        .orElseThrow(() -> new Exception("Invalid block type: " + name));
   }
 }

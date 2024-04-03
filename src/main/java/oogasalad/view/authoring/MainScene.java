@@ -1,14 +1,6 @@
 package oogasalad.view.authoring;
 
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
-import oogasalad.shared.scene.Scene;
-
 import javafx.scene.control.SplitPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import oogasalad.shared.scene.Scene;
 
