@@ -13,32 +13,33 @@ import javafx.scene.paint.Color;
 import oogasalad.shared.scene.Scene;
 
 public class MainScene implements Scene {
-    private javafx.scene.Scene scene;
-    private SplitPane root;
-    private BuilderScene builderScene;
-    private ElementsScene elementsScene;
 
-    @Override
-    public void initializeScene(int width, int height) {
-        root = new SplitPane();
+  private javafx.scene.Scene scene;
+  private SplitPane root;
+  private BuilderScene builderScene;
+  private ElementsScene elementsScene;
 
-        // Initialize builder scene with 60% of width
-        this.builderScene = new BuilderScene();
+  @Override
+  public void initializeScene(int width, int height) {
+    root = new SplitPane();
 
-        // Initialize elements scene with 40% of width
-        this.elementsScene = new ElementsScene();
+    // Initialize builder scene with 60% of width
+    this.builderScene = new BuilderScene();
 
-        // Set up left and right sides of SplitPane
-        root.getItems().addAll(builderScene.getRoot(), elementsScene.getLayout());
-        root.setDividerPositions(0.4);
+    // Initialize elements scene with 40% of width
+    this.elementsScene = new ElementsScene();
 
-        this.scene = new javafx.scene.Scene(root, width, height);
-        scene.setFill(Color.WHITE);
-    }
+    // Set up left and right sides of SplitPane
+    root.getItems().addAll(builderScene.getRoot(), elementsScene.getLayout());
+    root.setDividerPositions(0.4);
 
-    public javafx.scene.Scene getScene() {
-        return this.scene;
-    }
+    this.scene = new javafx.scene.Scene(root, width, height);
+    scene.setFill(Color.WHITE);
+  }
+
+  public javafx.scene.Scene getScene() {
+    return this.scene;
+  }
 }
 
 
