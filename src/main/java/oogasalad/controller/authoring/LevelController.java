@@ -16,4 +16,8 @@ public class LevelController {
   public void setCell(int row, int col, String blockName) throws Exception {
     currentLevel.setCell(row, col, blockName);
   }
+
+  public void serializeLevel() {
+
+  }
 }
