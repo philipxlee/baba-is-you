@@ -7,18 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Level {
-    private String name;
-    private String description;
-    private String author;
+    private LevelMetadata metadata;
     private List<List<List<AbstractBlock>>> grid; // 3D grid for 2D objects
 
     private BlockTypeManager blockTypeManager;
 
     // Constructor
-    public Level(String name, String description, String author, int width, int height, String blockPropertiesFilePath) throws IOException {
-        this.name = name;
-        this.description = description;
-        this.author = author;
+    public Level(LevelMetadata metadata, int width, int height, String blockPropertiesFilePath) throws IOException {
+        this.metadata = metadata;
         this.grid = new ArrayList<>();
         this.blockTypeManager = new BlockTypeManager(blockPropertiesFilePath); // Initialize BlockTypeManager
         initializeGrid(width, height);
@@ -57,28 +53,13 @@ public class Level {
     }
 
     // Getters and Setters for now
-    public String getName() {
-        return name;
+    public LevelMetadata getMetadata() {
+        return metadata;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+    // Setters for metadata
+    public void setMetadata(LevelMetadata metadata) {
+        this.metadata = metadata;
     }
 }
 

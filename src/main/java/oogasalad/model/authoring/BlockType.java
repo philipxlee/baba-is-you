@@ -20,6 +20,7 @@ public record BlockType(String name) {
 //            case "wall":
 //                return new WallBlock();
             // Add cases for other block types as needed
+            // unsure if to use factory method here, but for now, placeholder
             default:
                 throw new IllegalArgumentException("Unknown block type: " + name);
         }
