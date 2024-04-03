@@ -1,5 +1,8 @@
 package oogasalad.model.gameplay.blocks;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.strategies.Strategy;
 
@@ -9,7 +12,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
  */
 public abstract class AbstractBlock {
 
-  private final String DEFAULT_GRAMMAR = "NO_GRAMMAR";
+  private static final List<String> grammarType = new ArrayList<>();
 
   /**
    * Indicates whether this block is a text block. By default, a block is not a text block.
@@ -84,8 +87,8 @@ public abstract class AbstractBlock {
    *
    * @return The grammatical category of the block as a string, DEFAULT_GRAMMAR for the base class.
    */
-  public String getBlockGrammar() {
-    return DEFAULT_GRAMMAR;
+  public List<String> getBlockGrammar() {
+    return grammarType;
   }
 
 }

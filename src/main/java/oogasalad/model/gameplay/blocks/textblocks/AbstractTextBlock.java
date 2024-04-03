@@ -36,11 +36,4 @@ public abstract class AbstractTextBlock extends AbstractBlock {
   }
 
 
-  /**
-   * Gets the type of the text block.
-   */
-  public enum TextType {
-    NOUN, VERB, PROPERTY
-  }
-
 }
