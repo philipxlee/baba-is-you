@@ -55,7 +55,6 @@ public class GameScene implements Observer<Grid> {
 
   @Override
   public void update(Grid data) {
-    System.out.printf("triggered");
     renderGrid();
   }
 

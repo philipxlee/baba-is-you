@@ -87,9 +87,6 @@ public class Grid implements Observable<Grid> {
         for(int k = 0; k< grid[i][j].size(); k++){
           AbstractBlock block = grid[i][j].get(k);
 
-          if(block != null && block instanceof EmptyVisualBlock){
-            System.out.println("The behavior of EmptyVisualBlock is: " + block.behaviorsToString());
-          }
           if (block != null && block.hasBehavior(BecomesWall.class)) {
             changeBlockToWall(i, j, k);
           }
