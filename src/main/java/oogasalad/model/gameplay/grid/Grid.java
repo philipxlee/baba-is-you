@@ -14,8 +14,11 @@ import oogasalad.model.gameplay.strategies.Controllable;
 import oogasalad.model.gameplay.strategies.Winnable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+import oogasalad.shared.observer.Observable;
+import oogasalad.shared.observer.Observer;
 
-public class Grid {
+public class Grid implements Observable<Grid> {
+  private List<Observer<Grid>> observers = new ArrayList<>();
   private List<AbstractBlock>[][] grid;
   private RuleInterpreter parser;
   private KeyHandler keyHandler;
@@ -44,6 +47,22 @@ public class Grid {
 
   public List<AbstractBlock>[][] getGrid() {
     return this.grid;
+  }
+
+  @Override
+  public void addObserver(Observer<Grid> o) {
+    observers.add(o);
+  }
+
+  @Override
+  public void notifyObserver() {
+    for (Observer<Grid> observer : observers) {
+      observer.update(this);
+    }
+  }
+
+  public void renderChanges() {
+    notifyObserver();
   }
 
   public List<int[]> findControllableBlock() {

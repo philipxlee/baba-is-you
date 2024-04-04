@@ -14,8 +14,9 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.blockviews.AbstractBlockView;
+import oogasalad.shared.observer.Observer;
 
-public class GameScene {
+public class GameScene implements Observer<Grid> {
 
   private int cellSize;
   private Grid gameGrid;
@@ -32,6 +33,7 @@ public class GameScene {
     this.keyHandler = new KeyHandler(gameGrid);
     this.root = new Group();
     this.scene = scene;
+    this.gameGrid.addObserver(this);
 
     this.scene.getScene().setOnKeyPressed(event -> {
       try {
@@ -49,6 +51,12 @@ public class GameScene {
 
   public Group getGrid() {
     return this.root;
+  }
+
+  @Override
+  public void update(Grid data) {
+    System.out.printf("triggered");
+    renderGrid();
   }
 
   protected Pane setUpScreen() {
