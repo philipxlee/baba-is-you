@@ -59,6 +59,9 @@ public class KeyHandler {
     int[] movement = calculateMovement(i, j, k, deltaI, deltaJ, gameGrid);
     if (movement != null) {
       performMovement(i, j, k, deltaI, deltaJ, movement[2], gameGrid);
+      gameGrid.checkForRules();
+      gameGrid.checkBehaviors();
+      gameGrid.renderChanges();
     }
   }
 

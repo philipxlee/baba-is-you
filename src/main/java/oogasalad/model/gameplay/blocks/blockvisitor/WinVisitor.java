@@ -39,7 +39,6 @@ public class WinVisitor implements BlockVisitor {
    */
   @Override
   public void visit(FlagVisualBlock flag) {
-    System.out.printf("Adding winnable behavior to flag block");
     flag.addBehavior(new Winnable());
   }
 

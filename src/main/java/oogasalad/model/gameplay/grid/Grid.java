@@ -14,8 +14,11 @@ import oogasalad.model.gameplay.strategies.Controllable;
 import oogasalad.model.gameplay.strategies.Winnable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+import oogasalad.shared.observer.Observable;
+import oogasalad.shared.observer.Observer;
 
-public class Grid {
+public class Grid implements Observable<Grid> {
+  private List<Observer<Grid>> observers = new ArrayList<>();
   private List<AbstractBlock>[][] grid;
   private RuleInterpreter parser;
   private KeyHandler keyHandler;
@@ -46,6 +49,22 @@ public class Grid {
     return this.grid;
   }
 
+  @Override
+  public void addObserver(Observer<Grid> o) {
+    observers.add(o);
+  }
+
+  @Override
+  public void notifyObserver() {
+    for (Observer<Grid> observer : observers) {
+      observer.update(this);
+    }
+  }
+
+  public void renderChanges() {
+    notifyObserver();
+  }
+
   public List<int[]> findControllableBlock() {
     List<int[]> AllControllableBlocks = new ArrayList<>();
     for(int i = 0; i < grid.length; i++){
@@ -68,9 +87,6 @@ public class Grid {
         for(int k = 0; k< grid[i][j].size(); k++){
           AbstractBlock block = grid[i][j].get(k);
 
-          if(block != null && block instanceof EmptyVisualBlock){
-            System.out.println("The behavior of EmptyVisualBlock is: " + block.behaviorsToString());
-          }
           if (block != null && block.hasBehavior(BecomesWall.class)) {
             changeBlockToWall(i, j, k);
           }
