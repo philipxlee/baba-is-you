@@ -71,9 +71,10 @@ public class GameScene implements Observer<Grid> {
 
   private void createGrid() {
     try {
-      this.gameGrid = new Grid(15, 15);
-      int w = width / 15;
-      int h = height / 15;
+      int n = 15;
+      this.gameGrid = new Grid(n, n);
+      int w = width / n;
+      int h = height / n;
       cellSize = Math.min(w, h);
     } catch (InvalidBlockName e) {
       showErrorDialog(e.getMessage());
