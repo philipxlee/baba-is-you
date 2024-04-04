@@ -1,6 +1,9 @@
 package oogasalad.view.authoring;
 
 import java.io.File;
+
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
@@ -51,15 +54,17 @@ public class BuilderScene {
       boolean success = false;
       if (db.hasString()) {
         String blockType = db.getString();
-        // Hypothetical method to create a view based on block type
         ImageView blockView = createBlockView(blockType);
         if (blockView != null) {
-          blockView.setFitWidth(cellSize);
-          blockView.setFitHeight(cellSize);
-          blockView.setLayoutX(event.getX());
-          blockView.setLayoutY(event.getY());
-          root.getChildren().add(blockView);
-          success = true;
+          Point2D cellCoords = getCellCoordinates(event.getX(), event.getY());
+          if (cellCoords != null) {
+            blockView.setFitWidth(cellSize);
+            blockView.setFitHeight(cellSize);
+            blockView.setLayoutX(cellCoords.getX());
+            blockView.setLayoutY(cellCoords.getY());
+            root.getChildren().add(blockView);
+            success = true;
+          }
         }
       }
       event.setDropCompleted(success);
@@ -69,15 +74,27 @@ public class BuilderScene {
 
   private ImageView createBlockView(String blockType) {
     String imagePath = "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
-    // Creating a File object to ensure the path is correctly formed.
     File imageFile = new File(imagePath);
     if (!imageFile.exists()) {
       System.err.println("Image file not found: " + imagePath);
       return null; // Or handle this case as needed.
     }
-
     Image image = new Image(imageFile.toURI().toString(), 100, 100, true, true);
     return new ImageView(image);
+  }
+
+  private Point2D getCellCoordinates(double x, double y) {
+    for (int i = 0; i < gridSize; i++) {
+      for (int j = 0; j < gridSize; j++) {
+        Bounds cellBounds = gridPane.getChildren().get(i * gridSize + j).getBoundsInParent();
+        if (cellBounds.contains(x, y)) {
+          double cellX = cellBounds.getMinX();
+          double cellY = cellBounds.getMinY();
+          return new Point2D(cellX, cellY);
+        }
+      }
+    }
+    return null;
   }
 
   public Pane getRoot() {
