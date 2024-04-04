@@ -23,7 +23,7 @@ public class MainScene implements Scene {
 
     // Set up left and right sides of SplitPane
     root.getItems().addAll(builderScene.getRoot(), elementsScene.getLayout());
-    root.setDividerPositions(0.4);
+    root.setDividerPositions(0.6);
 
     this.scene = new javafx.scene.Scene(root, width, height);
     scene.setFill(Color.WHITE);
