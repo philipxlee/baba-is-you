@@ -73,7 +73,8 @@ public class BuilderScene {
   }
 
   private ImageView createBlockView(String blockType) {
-    String imagePath = "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+    String imagePath =
+        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
     File imageFile = new File(imagePath);
     if (!imageFile.exists()) {
       System.err.println("Image file not found: " + imagePath);
