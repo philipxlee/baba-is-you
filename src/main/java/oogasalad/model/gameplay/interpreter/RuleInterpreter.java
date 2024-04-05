@@ -17,6 +17,7 @@ public class RuleInterpreter {
   private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blocks.blockvisitor.";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String VISITOR_SUFFIX = "Visitor";
+  private static final String REPLACEMENT = "";
 
   /**
    * Interprets and applies rules across the entire grid based on the detected text block patterns.
@@ -75,7 +76,7 @@ public class RuleInterpreter {
    * @param grid      The game grid, a two-dimensional array of lists of AbstractBlocks.
    */
   private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName, List<AbstractBlock>[][] grid) {
-    System. out.printf("Applying visitor to visual block of: %s%n", blockName);
+    System.out.printf("Applying visitor to visual block of: %s%n", blockName);
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> cell : row) {
         cell.stream()
@@ -92,7 +93,9 @@ public class RuleInterpreter {
    * @return The corresponding BlockVisitor instance or null if none found.
    */
   private BlockVisitor determineVisitor(String blockName) {
-    String className = VISITOR_PACKAGE + blockName.replace(TEXT_BLOCK_SUFFIX, "") + VISITOR_SUFFIX;
+    String className = VISITOR_PACKAGE
+        + blockName.replace(TEXT_BLOCK_SUFFIX, REPLACEMENT)
+        + VISITOR_SUFFIX;
     try {
       Class<?> visitorClass = Class.forName(className);
       return (BlockVisitor) visitorClass.getDeclaredConstructor().newInstance();
