@@ -78,17 +78,33 @@ public class Grid implements Observable<Grid> {
     return AllControllableBlocks;
   }
 
-  public boolean isMovableToMargin(int endI, int endJ, int endK){
+  public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI, int controllableintialJ, int controllableinitialK){
+    boolean already_in_margin = isAlreadyinMargin(controllableintialI, controllableintialJ);
+    if(already_in_margin){
+      return true;
+    }
     if((endI == grid.length -1 || endI == 0)){
-      //check if the element about to move to it is controlable
-      return grid[endI -1][endJ].get(endK).hasBehavior(Stoppable.class);
+      int indexI;
+      indexI = (endI == 0) ? endI + 1 : endI - 1;
+
+      //handle the case if it is already inside the margin and needs to move left or move up and down
+      //how do we know if it is already inside margin?
+      //check if the position of at least one controllable is in the margin
+      //find the position of the controllable. if it is in the margin, it should be able to go back and forth
+      return grid[indexI][endJ].get(endK).hasBehavior(Controllable.class);
     }
     else if ((endJ == grid[0].length -1 || endJ == 0)){
-      return grid[endI][endJ -1].get(endK).hasBehavior(Stoppable.class);
+      int indexJ;
+      indexJ = (endJ == 0) ? endJ + 1 : endJ -1;
+      return grid[endI][indexJ].get(endK).hasBehavior(Controllable.class);
     }
     else{
-      return false;
+      return true;
     }
+  }
+
+  private boolean isAlreadyinMargin(int i, int j){
+    return ((i == grid.length -1 || i == 0) || (j == grid[0].length -1 || j == 0));
   }
 
   public void checkBehaviors(){

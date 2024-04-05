@@ -71,7 +71,7 @@ public class KeyHandler {
     while (true) {
       int nextI = i + length * deltaI; //gets next cell
       int nextJ = j + length * deltaJ; // gets next cell
-      if (isValidMove(nextI, nextJ, k, gameGrid) && !"EmptyVisualBlock".equals(gameGrid.getBlock(nextI, nextJ,k).getBlockName())) {
+      if (isValidMove(nextI, nextJ, k, gameGrid) && !"EmptyVisualBlock".equals(gameGrid.getBlock(nextI, nextJ,k).getBlockName()) && !gameGrid.getBlock(nextI, nextJ,k).hasBehavior(Stoppable.class)) {
         length++;
       }
       else{
@@ -81,10 +81,9 @@ public class KeyHandler {
 
     int endI = i + length * deltaI;
     int endJ = j + length * deltaJ;
-    if (!isValidMove(endI, endJ, k, gameGrid) || !"EmptyVisualBlock".equals(gameGrid.getGrid()[endI][endJ].get(k).getBlockName()) || !gameGrid.isMovableToMargin(endI, endJ, k)) {
+    if (!isValidMove(endI, endJ, k, gameGrid) || !"EmptyVisualBlock".equals(gameGrid.getGrid()[endI][endJ].get(k).getBlockName()) || !gameGrid.isMovableToMargin(endI, endJ, k, i, j, k)) {
       return null; // No space to move the chain
     }
-
     return new int[]{deltaI, deltaJ, length};
   }
 
@@ -104,7 +103,7 @@ public class KeyHandler {
   }
 
   private boolean isValidMove(int i, int j, int k, Grid gameGrid) {
-    return i >= 0 && i < gameGrid.getGrid().length && j >= 0 && j < gameGrid.getGrid()[i].length && !gameGrid.getBlock(i, j,k).hasBehavior(Stoppable.class);
+    return i >= 0 && i < gameGrid.getGrid().length && j >= 0 && j < gameGrid.getGrid()[i].length;
   }
 
 }
