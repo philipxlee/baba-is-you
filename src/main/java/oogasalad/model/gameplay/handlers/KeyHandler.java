@@ -81,7 +81,7 @@ public class KeyHandler {
 
     int endI = i + length * deltaI;
     int endJ = j + length * deltaJ;
-    if (!isValidMove(endI, endJ, k, gameGrid) || !"EmptyVisualBlock".equals(gameGrid.getGrid()[endI][endJ].get(k).getBlockName())) {
+    if (!isValidMove(endI, endJ, k, gameGrid) || !"EmptyVisualBlock".equals(gameGrid.getGrid()[endI][endJ].get(k).getBlockName()) || !gameGrid.isMovableToMargin(endI, endJ, k)) {
       return null; // No space to move the chain
     }
 

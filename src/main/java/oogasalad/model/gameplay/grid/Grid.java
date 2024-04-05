@@ -8,10 +8,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.strategies.BecomesEmpty;
-import oogasalad.model.gameplay.strategies.BecomesWall;
-import oogasalad.model.gameplay.strategies.Controllable;
-import oogasalad.model.gameplay.strategies.Winnable;
+import oogasalad.model.gameplay.strategies.*;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.shared.observer.Observable;
@@ -79,6 +76,19 @@ public class Grid implements Observable<Grid> {
       }
     }
     return AllControllableBlocks;
+  }
+
+  public boolean isMovableToMargin(int endI, int endJ, int endK){
+    if((endI == grid.length -1 || endI == 0)){
+      //check if the element about to move to it is controlable
+      return grid[endI -1][endJ].get(endK).hasBehavior(Stoppable.class);
+    }
+    else if ((endJ == grid[0].length -1 || endJ == 0)){
+      return grid[endI][endJ -1].get(endK).hasBehavior(Stoppable.class);
+    }
+    else{
+      return false;
+    }
   }
 
   public void checkBehaviors(){
