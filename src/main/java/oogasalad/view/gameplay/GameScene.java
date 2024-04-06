@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -13,8 +14,9 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.blockviews.AbstractBlockView;
+import oogasalad.shared.observer.Observer;
 
-public class GameScene {
+public class GameScene implements Observer<Grid> {
 
   private int cellSize;
   private Grid gameGrid;
@@ -31,6 +33,7 @@ public class GameScene {
     this.keyHandler = new KeyHandler(gameGrid);
     this.root = new Group();
     this.scene = scene;
+    this.gameGrid.addObserver(this);
 
     this.scene.getScene().setOnKeyPressed(event -> {
       try {
@@ -50,10 +53,18 @@ public class GameScene {
     return this.root;
   }
 
+  @Override
+  public void update(Grid data) {
+    renderGrid();
+  }
+
   protected Pane setUpScreen() {
     StackPane gameScreen = new StackPane(root);
     gameScreen.setAlignment(Pos.CENTER);
+    gameScreen.setPrefWidth(width);
+
     Pane pane = new Pane();
+    pane.setPrefSize(width, height);
     pane.getChildren().add(gameScreen);
     return pane;
   }

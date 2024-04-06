@@ -10,6 +10,10 @@ public class Pushable implements Strategy {
   public void execute(AbstractVisualBlock block) {
 
   }
+  @Override
+  public String toString(){
+    return "Pushable";
+  }
 
   @Override
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {

@@ -16,6 +16,10 @@ public class Stoppable implements Strategy {
   public void execute(AbstractVisualBlock block) {
 
   }
+  @Override
+  public String toString(){
+    return "Stoppable";
+  }
 
   @Override
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {

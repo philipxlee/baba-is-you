@@ -2,19 +2,18 @@ package oogasalad.model.gameplay.blocks.textblocks;
 
 import java.util.Arrays;
 import java.util.List;
-import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
- * A text block that represents the "empty" noun.
+ * A text block that represents the "flag" noun.
  */
-public class EmptyTextBlock extends AbstractTextBlock {
+public class FlagTextBlock extends AbstractTextBlock {
 
   /**
-   * Creates a new "empty" text block.
+   * Creates a new "flag" text block.
    *
    * @param name the name of the block.
    */
-  public EmptyTextBlock(String name) {
+  public FlagTextBlock(String name) {
     super(name);
   }
 
@@ -25,8 +24,7 @@ public class EmptyTextBlock extends AbstractTextBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return Arrays.asList("PROPERTY", "NOUN");
+    return Arrays.asList("NOUN");
   }
-
 
 }

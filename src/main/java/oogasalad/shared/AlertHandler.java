@@ -58,8 +58,6 @@ public interface AlertHandler {
     alert.setContentText(message);
     alert.showAndWait();
   }
-
-
 }
 
 

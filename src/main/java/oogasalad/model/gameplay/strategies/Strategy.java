@@ -26,4 +26,6 @@ public interface Strategy {
    * @return A boolean indicating whether the interaction was successful or had an effect.
    */
   boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy);
+
+  public abstract String toString();
 }
