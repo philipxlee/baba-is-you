@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class JsonManagerTest {
+
   private JsonObject result;
   private JsonManager manager;
   private File testFile;
@@ -40,6 +41,28 @@ public class JsonManagerTest {
     assertNotNull(manager.getJsonObject(result, "grid"));
     assertNotNull(manager.getJsonObject(manager.getJsonObject(result, "grid"),
         "metadata"));
+  }
+
+  @Test
+  void testAddJsonObject() {
+    //GIVEN the JsonManager
+    //WHEN we try to add a JsonObject to an existing JsonObject
+    //THEN the JsonObject will be nested correctly.
+    JsonObject testObject = new JsonObject();
+    manager.addProperty(testObject, "check", "value");
+    manager.addObject(result, "test", testObject);
+    assertNotNull(manager.getJsonObject(result, "test"));
+    assertEquals("value", manager.getValue(manager.getJsonObject(result, "test"),
+        "check"));
+  }
+
+  @Test
+  void testAddProperty() {
+    //GIVEN the JsonManager
+    //WHEN we try to add a property to an existing JsonObject
+    //THEN the property will be added correctly
+    manager.addProperty(result, "testKey", "testValue");
+    assertEquals("testValue", manager.getValue(result, "testKey"));
   }
 
 }
