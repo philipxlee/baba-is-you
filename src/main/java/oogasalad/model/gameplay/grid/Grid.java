@@ -3,10 +3,7 @@ package oogasalad.model.gameplay.grid;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
-import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.*;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
@@ -18,7 +15,6 @@ public class Grid implements Observable<Grid> {
   private List<Observer<Grid>> observers = new ArrayList<>();
   private List<AbstractBlock>[][] grid;
   private RuleInterpreter parser;
-  private KeyHandler keyHandler;
   private BlockFactory factory;
 
   public Grid(int rows, int cols) throws InvalidBlockName {
@@ -79,7 +75,7 @@ public class Grid implements Observable<Grid> {
   }
 
   public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI, int controllableintialJ, int controllableinitialK){
-    boolean already_in_margin = isAlreadyinMargin(controllableintialI, controllableintialJ);
+    boolean already_in_margin = isAlreadyInMargin(controllableintialI, controllableintialJ);
     if(already_in_margin){
       return true;
     }
@@ -87,10 +83,6 @@ public class Grid implements Observable<Grid> {
       int indexI;
       indexI = (endI == 0) ? endI + 1 : endI - 1;
 
-      //handle the case if it is already inside the margin and needs to move left or move up and down
-      //how do we know if it is already inside margin?
-      //check if the position of at least one controllable is in the margin
-      //find the position of the controllable. if it is in the margin, it should be able to go back and forth
       return grid[indexI][endJ].get(endK).hasBehavior(Controllable.class);
     }
     else if ((endJ == grid[0].length -1 || endJ == 0)){
@@ -103,7 +95,7 @@ public class Grid implements Observable<Grid> {
     }
   }
 
-  private boolean isAlreadyinMargin(int i, int j){
+  private boolean isAlreadyInMargin(int i, int j){
     return ((i == grid.length -1 || i == 0) || (j == grid[0].length -1 || j == 0));
   }
 
@@ -123,6 +115,10 @@ public class Grid implements Observable<Grid> {
         }
       }
     }
+  }
+
+  public boolean isNotOutOfBounds(int i, int j){
+    return i >= 0 && i < grid.length && j >= 0 && j < grid[i].length;
   }
   private void changeBlockToEmpty(int i, int j, int k) {
     grid[i][j].set(k, factory.createBlock("EmptyVisualBlock"));
