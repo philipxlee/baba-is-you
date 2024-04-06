@@ -39,7 +39,7 @@ public class JsonManager {
    * @param file The File object representing the JSON file to be loaded.
    * @return The JsonObject containing the parsed JSON data.
    */
-  JsonObject loadJsonFromFile(File file) throws IOException {
+  protected JsonObject loadJsonFromFile(File file) throws IOException {
     try (FileReader reader = new FileReader(file)) {
       return gson.fromJson(reader, JsonObject.class);
     } catch (JsonSyntaxException e) {
@@ -54,11 +54,21 @@ public class JsonManager {
    * @param stage      the JavaFX stage used to display the file chooser dialog.
    */
   public void saveToFile(JsonObject jsonObject, Stage stage) throws IOException {
-    File file = saveFile(stage);
+    File file = selectSaveFile(stage);
     if (file != null) {
-      try (FileWriter writer = new FileWriter(file)) {
-        gson.toJson(jsonObject, writer);
-      }
+      writeToFile(jsonObject, file);
+    }
+  }
+
+  /**
+   * Writes a JsonObject to a specified File using Gson library.
+   *
+   * @param jsonObject The JsonObject to write to the file.
+   * @param file       The File object representing the file to write to.
+   */
+  protected void writeToFile(JsonObject jsonObject, File file) throws IOException {
+    try (FileWriter writer = new FileWriter(file)) {
+      gson.toJson(jsonObject, writer);
     }
   }
 
@@ -132,7 +142,7 @@ public class JsonManager {
    * @param stage stage that JavaFX uses to display the file chooser.
    * @return the file chosen to be saved by the user
    */
-  private File saveFile(Stage stage) {
+  private File selectSaveFile(Stage stage) {
     FileChooser fileChooser = chooseFile();
     return fileChooser.showSaveDialog(stage);
   }

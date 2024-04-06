@@ -65,4 +65,20 @@ public class JsonManagerTest {
     assertEquals("testValue", manager.getValue(result, "testKey"));
   }
 
+  @Test
+  void testWriteToFile() throws IOException {
+    //GIVEN a JsonObject
+    //WHEN we try to save the jsonObject to a file a file
+    //THEN the writeToFile method will correctly write the json object to the file
+    File mockFile = File.createTempFile("test2", ".json");
+    mockFile.deleteOnExit();
+
+    JsonObject testObject = new JsonObject();
+    testObject.addProperty("testKey", "testValue");
+
+    manager.writeToFile(testObject, mockFile);
+    JsonObject jsonObject = manager.loadJsonFromFile(mockFile);
+    assertEquals("testValue", manager.getValue(jsonObject, "testKey"));
+  }
+
 }
