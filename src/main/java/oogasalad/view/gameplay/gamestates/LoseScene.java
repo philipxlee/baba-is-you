@@ -43,10 +43,10 @@ public class LoseScene implements Scene {
    * Show the lose message.
    */
   private void showLoseMessage() {
-    root.setStyle("-fx-background-color: #FF0000;");
+    root.setStyle("-fx-background-color: #191A20;");
     Label winLabel = new Label("YOU LOST!");
     winLabel.setFont(Font.font("Arial", FontWeight.BOLD, 72));
-    winLabel.setTextFill(javafx.scene.paint.Color.GREEN);
+    winLabel.setTextFill(javafx.scene.paint.Color.RED);
     root.getChildren().add(winLabel);
   }
 }

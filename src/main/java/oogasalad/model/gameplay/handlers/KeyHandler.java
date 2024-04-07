@@ -24,10 +24,12 @@ public class KeyHandler {
   public void handleKeyPress(KeyCode code) {
     grid.checkBehaviors();
     List<int[]> controllableBlockPositions = grid.findControllableBlock();
-    if (controllableBlockPositions.get(0) != null) {
+    if (!controllableBlockPositions.isEmpty()) {
       for (int[] element : controllableBlockPositions) {
         moveBlock(element[0], element[1], element[2], code, grid);
       }
+    } else {
+      gameOverController.displayGameOver(false);
     }
   }
 
