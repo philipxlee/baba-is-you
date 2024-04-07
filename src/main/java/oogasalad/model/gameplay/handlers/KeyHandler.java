@@ -1,6 +1,8 @@
 package oogasalad.model.gameplay.handlers;
 
 import javafx.scene.input.KeyCode;
+import oogasalad.controller.gameplay.GameOverController;
+import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.strategies.Winnable;
 import oogasalad.model.gameplay.strategies.Stoppable;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -10,9 +12,11 @@ import java.util.List;
 public class KeyHandler {
 
   private final Grid grid;
+  private final GameOverController gameOverController;
 
-  public KeyHandler(Grid grid) {
+  public KeyHandler(Grid grid, SceneController sceneController) {
     this.grid = grid;
+    gameOverController = new GameOverController(sceneController);
     grid.checkForRules();
   }
 
@@ -20,8 +24,8 @@ public class KeyHandler {
   public void handleKeyPress(KeyCode code) {
     grid.checkBehaviors();
     List<int[]> controllableBlockPositions = grid.findControllableBlock();
-    if(controllableBlockPositions.get(0) != null){
-      for(int[] element : controllableBlockPositions){
+    if (controllableBlockPositions.get(0) != null) {
+      for (int[] element : controllableBlockPositions) {
         moveBlock(element[0], element[1], element[2], code, grid);
       }
     }
@@ -52,8 +56,7 @@ public class KeyHandler {
 
     AbstractBlock nextBlock = gameGrid.getBlock(nextI, nextJ, k);
     if (nextBlock != null && nextBlock.hasBehavior(Winnable.class)) {
-      System.out.println("Game over, you won!");
-      System.exit(0);
+      gameOverController.displayGameOver(true);
     }
 
     int[] movement = calculateMovement(i, j, k, deltaI, deltaJ, gameGrid);

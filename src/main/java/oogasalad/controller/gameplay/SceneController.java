@@ -31,7 +31,7 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new MainScene());
+    switchToScene(new MainScene(this));
   }
 
   /**

@@ -2,6 +2,7 @@ package oogasalad.app;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import oogasalad.controller.gameplay.GameOverController;
 import oogasalad.controller.gameplay.SceneController;
 
 /**

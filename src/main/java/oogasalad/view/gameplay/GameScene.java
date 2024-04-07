@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.KeyHandler;
@@ -26,11 +27,11 @@ public class GameScene implements Observer<Grid> {
   private int width;
   private int height;
 
-  public void initializeGameGrid(int width, int height, MainScene scene) {
+  public void initializeGameGrid(int width, int height, MainScene scene, SceneController sceneController) {
     this.width = width;
     this.height = height;
     createGrid();
-    this.keyHandler = new KeyHandler(gameGrid);
+    this.keyHandler = new KeyHandler(gameGrid, sceneController);
     this.root = new Group();
     this.scene = scene;
     this.gameGrid.addObserver(this);
