@@ -19,11 +19,11 @@ public class MainScene implements Scene {
     this.builderScene = new BuilderScene();
 
     // Initialize elements scene with 40% of width
-    this.elementsScene = new ElementsScene();
+    this.elementsScene = new ElementsScene(builderScene);
 
     // Set up left and right sides of SplitPane
-    root.getItems().addAll(builderScene.getRoot(), elementsScene.getLayout());
-    root.setDividerPositions(0.6);
+    root.getItems().addAll(elementsScene.getLayout(), builderScene.getRoot());
+    root.setDividerPositions(0.4);
 
     this.scene = new javafx.scene.Scene(root, width, height);
     scene.setFill(Color.WHITE);
