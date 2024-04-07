@@ -18,6 +18,9 @@ public class RuleInterpreter {
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String VISITOR_SUFFIX = "Visitor";
   private static final String REPLACEMENT = "";
+  private static final String NOUN = "NOUN";
+  private static final String VERB = "VERB";
+  private static final String PROPERTY = "PROPERTY";
 
   /**
    * Interprets and applies rules across the entire grid based on the detected text block patterns.
@@ -86,9 +89,9 @@ public class RuleInterpreter {
     List<String> secondGrammarList = second.getBlockGrammar();
     List<String> thirdGrammarList = third.getBlockGrammar();
     return Stream.of(first, second, third).allMatch(AbstractBlock::isTextBlock)
-        && firstGrammarList.contains("NOUN")
-        && secondGrammarList.contains("VERB")
-        && thirdGrammarList.contains("PROPERTY");
+        && firstGrammarList.contains(NOUN)
+        && secondGrammarList.contains(VERB)
+        && thirdGrammarList.contains(PROPERTY);
   }
 
   /**
