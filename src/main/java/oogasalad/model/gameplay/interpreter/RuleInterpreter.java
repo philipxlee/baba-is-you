@@ -25,11 +25,35 @@ public class RuleInterpreter {
    * @param grid The game grid to be interpreted.
    */
   public void interpretRules(List<AbstractBlock>[][] grid) throws VisitorReflectionException {
+    checkHorizontalRules(grid);
+    checkVerticalRules(grid);
+  }
+
+  /**
+   * Checks for horizontal rules in the grid.
+   *
+   * @param grid The game grid to be interpreted.
+   */
+  private void checkHorizontalRules(List<AbstractBlock>[][] grid) {
     Arrays.stream(grid).forEach(row -> IntStream.rangeClosed(0, row.length - 3)
-        .forEach(currentCol -> row[currentCol].forEach(block1 ->
-            row[currentCol + 1].forEach(block2 ->
-                row[currentCol + 2].forEach(block3 ->
-                    checkAndProcessRuleAt(block1, block2, block3, grid))))));
+        .forEach(i -> row[i].
+            forEach(block1 -> row[i + 1]
+                .forEach(block2 -> row[i + 2]
+                    .forEach(block3 -> checkAndProcessRuleAt(block1, block2, block3, grid))))));
+  }
+
+  /**
+   * Checks for vertical rules in the grid.
+   *
+   * @param grid The game grid to be interpreted.
+   */
+  private void checkVerticalRules(List<AbstractBlock>[][] grid) {
+    IntStream.range(0, grid[0].length)
+        .forEach(i -> IntStream.rangeClosed(0, grid.length - 3)
+            .forEach(j -> grid[j][i]
+                .forEach(block1 -> grid[j + 1][i]
+                    .forEach(block2 -> grid[j + 2][i]
+                        .forEach(block3 -> checkAndProcessRuleAt(block1, block2, block3, grid))))));
   }
 
 
@@ -61,8 +85,7 @@ public class RuleInterpreter {
     List<String> firstGrammarList = first.getBlockGrammar();
     List<String> secondGrammarList = second.getBlockGrammar();
     List<String> thirdGrammarList = third.getBlockGrammar();
-    return Stream.of(first, second, third)
-        .allMatch(AbstractBlock::isTextBlock)
+    return Stream.of(first, second, third).allMatch(AbstractBlock::isTextBlock)
         && firstGrammarList.contains("NOUN")
         && secondGrammarList.contains("VERB")
         && thirdGrammarList.contains("PROPERTY");
