@@ -16,11 +16,13 @@ public class Grid implements Observable<Grid> {
   private List<AbstractBlock>[][] grid;
   private RuleInterpreter parser;
   private BlockFactory factory;
+  private BlockUpdater blockUpdater;
 
   public Grid(int rows, int cols) throws InvalidBlockName {
     this.grid = new ArrayList[rows][cols];
     this.parser = new RuleInterpreter();
     this.factory = new BlockFactory();
+    this.blockUpdater = new BlockUpdater(this, factory);
     InitializeGrid();
   }
 
@@ -104,14 +106,7 @@ public class Grid implements Observable<Grid> {
       for(int j = 0; j < grid[i].length; j++){
         for(int k = 0; k< grid[i][j].size(); k++){
           AbstractBlock block = grid[i][j].get(k);
-
-          if (block != null && block.hasBehavior(BecomesWall.class)) {
-            changeBlockToWall(i, j, k);
-          }
-          // temporary, needs refactoring
-          if (block != null && block.hasBehavior(BecomesEmpty.class)) {
-            changeBlockToEmpty(i, j, k);
-          }
+          block.executeBehaviors(this, blockUpdater, i, j, k);
         }
       }
     }
@@ -120,14 +115,6 @@ public class Grid implements Observable<Grid> {
   public boolean isNotOutOfBounds(int i, int j){
     return i >= 0 && i < grid.length && j >= 0 && j < grid[i].length;
   }
-  private void changeBlockToEmpty(int i, int j, int k) {
-    grid[i][j].set(k, factory.createBlock("EmptyVisualBlock"));
-  }
-
-  private void changeBlockToWall(int i, int j, int k) {
-    grid[i][j].set(k, factory.createBlock("WallVisualBlock"));
-  }
-
 
   String[][][] tempConfiguration = {
       {
