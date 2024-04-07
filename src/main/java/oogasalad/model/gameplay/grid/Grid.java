@@ -3,15 +3,9 @@ package oogasalad.model.gameplay.grid;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
-import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.strategies.BecomesEmpty;
-import oogasalad.model.gameplay.strategies.BecomesWall;
-import oogasalad.model.gameplay.strategies.Controllable;
-import oogasalad.model.gameplay.strategies.Winnable;
+import oogasalad.model.gameplay.strategies.*;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.shared.observer.Observable;
@@ -21,7 +15,6 @@ public class Grid implements Observable<Grid> {
   private List<Observer<Grid>> observers = new ArrayList<>();
   private List<AbstractBlock>[][] grid;
   private RuleInterpreter parser;
-  private KeyHandler keyHandler;
   private BlockFactory factory;
 
   public Grid(int rows, int cols) throws InvalidBlockName {
@@ -81,6 +74,31 @@ public class Grid implements Observable<Grid> {
     return AllControllableBlocks;
   }
 
+  public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI, int controllableintialJ, int controllableinitialK){
+    boolean already_in_margin = isAlreadyInMargin(controllableintialI, controllableintialJ);
+    if(already_in_margin){
+      return true;
+    }
+    if((endI == grid.length -1 || endI == 0)){
+      int indexI;
+      indexI = (endI == 0) ? endI + 1 : endI - 1;
+
+      return grid[indexI][endJ].get(endK).hasBehavior(Controllable.class);
+    }
+    else if ((endJ == grid[0].length -1 || endJ == 0)){
+      int indexJ;
+      indexJ = (endJ == 0) ? endJ + 1 : endJ -1;
+      return grid[endI][indexJ].get(endK).hasBehavior(Controllable.class);
+    }
+    else{
+      return true;
+    }
+  }
+
+  private boolean isAlreadyInMargin(int i, int j){
+    return ((i == grid.length -1 || i == 0) || (j == grid[0].length -1 || j == 0));
+  }
+
   public void checkBehaviors(){
     for(int i = 0; i< grid.length; i++){
       for(int j = 0; j < grid[i].length; j++){
@@ -97,6 +115,10 @@ public class Grid implements Observable<Grid> {
         }
       }
     }
+  }
+
+  public boolean isNotOutOfBounds(int i, int j){
+    return i >= 0 && i < grid.length && j >= 0 && j < grid[i].length;
   }
   private void changeBlockToEmpty(int i, int j, int k) {
     grid[i][j].set(k, factory.createBlock("EmptyVisualBlock"));

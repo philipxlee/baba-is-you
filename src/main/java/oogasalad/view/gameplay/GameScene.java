@@ -5,14 +5,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import oogasalad.controller.gameplay.GameOverController;
+import oogasalad.controller.gameplay.KeyHandlerController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.blockviews.AbstractBlockView;
 import oogasalad.shared.observer.Observer;
@@ -22,7 +21,8 @@ public class GameScene implements Observer<Grid> {
   private int cellSize;
   private Grid gameGrid;
   private Group root;
-  private KeyHandler keyHandler;
+  private KeyHandlerController keyHandlerController;
+  private SceneController sceneController;
   private MainScene scene;
   private int width;
   private int height;
@@ -31,15 +31,15 @@ public class GameScene implements Observer<Grid> {
     this.width = width;
     this.height = height;
     createGrid();
-    this.keyHandler = new KeyHandler(gameGrid, sceneController);
     this.root = new Group();
     this.scene = scene;
     this.gameGrid.addObserver(this);
+    this.keyHandlerController = new KeyHandlerController(new GameOverController(sceneController));
 
     this.scene.getScene().setOnKeyPressed(event -> {
       try {
         gameGrid.checkForRules(); // Check for rules
-        keyHandler.handleKeyPress(event.getCode()); // Handle key press
+        keyHandlerController.executeKey(gameGrid, event.getCode()); // Handle key press
         renderGrid(); // Render grid
         resetAllBlocks(); // Reset all blocks
       } catch (Exception e) {
