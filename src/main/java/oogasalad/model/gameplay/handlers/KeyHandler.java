@@ -2,14 +2,17 @@ package oogasalad.model.gameplay.handlers;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.grid.GridHelper;
 import oogasalad.model.gameplay.strategies.Stoppable;
 import oogasalad.model.gameplay.strategies.Winnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class KeyHandler {
     private Grid grid;
+    private GridHelper gridHelper;
     public KeyHandler(Grid grid) {
         this.grid = grid;
         grid.checkForRules();
@@ -24,7 +27,7 @@ public abstract class KeyHandler {
             }
         }
         grid.checkForRules();
-        grid.renderChanges();
+        grid.notifyObserver();
     }
     private void moveBlock(int i, int j, int k, int deltaI, int deltaJ){
         int nextI = i + deltaI;
@@ -44,11 +47,15 @@ public abstract class KeyHandler {
             int currentJ = j + m * deltaJ;
             int nextI = currentI + deltaI;
             int nextJ = currentJ + deltaJ;
-            grid.moveBlock(currentI, currentJ, k, nextI, nextJ, k);
+            //move all the pushable stuffs into the next cell
+            List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
+            indicesToMove.forEach(index -> grid.moveBlock(currentI, currentJ, index, nextI, nextJ));
         }
         // Move controllable block last
-        grid.moveBlock(i, j, k, i+deltaI, j+deltaJ, k);
-        grid.setBlock(i, j, k, "EmptyVisualBlock");
+        grid.moveBlock(i, j, k, i+deltaI, j+deltaJ);
+        if(grid.getGrid()[i][j].size() == 0) {
+            grid.setBlock(i, j, k, "EmptyVisualBlock");
+        }
     }
 
     private Optional<Integer> calculateLength(int i, int j, int k, int deltaI, int deltaJ) {
@@ -57,7 +64,7 @@ public abstract class KeyHandler {
         while (true) {
             int nextI = i + length * deltaI; //gets next cell
             int nextJ = j + length * deltaJ; // gets next cell
-            if (isValidMove(nextI, nextJ, k) && !"EmptyVisualBlock".equals(grid.getBlock(nextI, nextJ,k).getBlockName()) && !grid.getBlock(nextI, nextJ,k).hasBehavior(Stoppable.class)) {
+            if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ)) {
                 length++;
             } else {
                 break;
@@ -66,7 +73,7 @@ public abstract class KeyHandler {
 
         int endI = i + length * deltaI;
         int endJ = j + length * deltaJ;
-        if (!isValidMove(endI, endJ, k) || !"EmptyVisualBlock".equals(grid.getGrid()[endI][endJ].get(k).getBlockName()) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)) {
+        if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)) {
             return Optional.empty(); // No space to move the chain
         }
         return Optional.of(length);

@@ -14,6 +14,7 @@ import oogasalad.shared.observer.Observer;
 public class Grid implements Observable<Grid> {
   private List<Observer<Grid>> observers = new ArrayList<>();
   private List<AbstractBlock>[][] grid;
+
   private RuleInterpreter parser;
   private BlockFactory factory;
 
@@ -28,8 +29,8 @@ public class Grid implements Observable<Grid> {
   public void checkForRules() throws VisitorReflectionException {
     parser.interpretRules(grid);
   }
-  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ, int ToK){
-    grid[ToI][ToJ].set(ToK, grid[fromI][fromJ].get(fromK));
+  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ){
+    grid[ToI][ToJ].add(grid[fromI][fromJ].get(fromK));
   }
   public void setBlock(int i, int j, int k, String BlockType){
     grid[i][j].set(k, factory.createBlock(BlockType));
@@ -54,11 +55,21 @@ public class Grid implements Observable<Grid> {
     }
   }
 
-  public void renderChanges() {
-    notifyObserver();
+  public int gridWidth(){
+    return grid.length;
   }
 
-  public List<int[]> findControllableBlock() {
+  public int gridHeight(){
+    return grid[0].length;
+  }
+
+  public int cellSize(int i, int j){
+    return grid[i][j].size();
+  }
+
+
+
+  public List<int[]> findControllableBlock() { //record class
     List<int[]> AllControllableBlocks = new ArrayList<>();
     for(int i = 0; i < grid.length; i++){
       for(int j = 0; j < grid[i].length; j++){
@@ -115,6 +126,22 @@ public class Grid implements Observable<Grid> {
         }
       }
     }
+  }
+
+  public boolean cellHasPushable(int i , int j){
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Pushable.class));
+    //check for pushable, stoppable, and phasable.
+  }
+
+  public List<Integer> allPushableBlocksIndex(int i, int j) {
+    List<Integer> indicesList = new ArrayList<>();
+
+    grid[i][j].stream()
+            .filter(block -> block.hasBehavior(Pushable.class))
+            .mapToInt(block -> grid[i][j].indexOf(block))
+            .forEach(indicesList::add);
+
+    return indicesList;
   }
 
   public boolean isNotOutOfBounds(int i, int j){
