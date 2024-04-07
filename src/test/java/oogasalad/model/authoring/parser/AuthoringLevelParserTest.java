@@ -3,11 +3,13 @@ package oogasalad.model.authoring.parser;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.level.AuthoringLevelParser;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuthoringLevelParserTest {
@@ -34,11 +36,13 @@ class AuthoringLevelParserTest {
     JsonObject metadataJson = parser.parseLevelMetadata(testLevel);
     //THEN it will turn the information into a corresponding JsonObject
     assertAll("Level metadata should be correctly parsed",
-        () -> assertEquals("TestLevel", jsonManager.getValue(metadataJson, "name"),
-            "Name should match"),
-        () -> assertEquals("10", jsonManager.getValue(metadataJson, "rows"),
-            "Rows should match"),
-        () -> assertEquals("15", jsonManager.getValue(metadataJson, "cols"),
+        () -> assertEquals("TestLevel", jsonManager.getValue(metadataJson,
+            "levelName"), "Name should match"),
+        () -> assertNotNull(jsonManager.getJsonObject(metadataJson, "gridSize")),
+        () -> assertEquals("10", jsonManager.getValue(jsonManager.getJsonObject
+            (metadataJson, "gridSize"), "rows"), "Rows should match"),
+        () -> assertEquals("15", jsonManager.getValue(jsonManager.getJsonObject
+                (metadataJson, "gridSize"), "cols"),
             "Columns should match")
     );
   }
