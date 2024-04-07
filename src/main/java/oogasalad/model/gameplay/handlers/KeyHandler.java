@@ -37,6 +37,20 @@ public abstract class KeyHandler {
                 .ifPresent(length -> performMovement(i, j, k, deltaI, deltaJ, length));
 
     }
+    private void performMovement(int i, int j, int k, int deltaI, int deltaJ, int length) {
+        // Move all blocks
+        for (int m = length - 1; m > 0; m--) {
+            int currentI = i + m * deltaI;
+            int currentJ = j + m * deltaJ;
+            int nextI = currentI + deltaI;
+            int nextJ = currentJ + deltaJ;
+            grid.moveBlock(currentI, currentJ, k, nextI, nextJ, k);
+        }
+        // Move controllable block last
+        grid.moveBlock(i, j, k, i+deltaI, j+deltaJ, k);
+        grid.setBlock(i, j, k, "EmptyVisualBlock");
+    }
+
     private Optional<Integer> calculateLength(int i, int j, int k, int deltaI, int deltaJ) {
         int length = 1;
 
@@ -56,19 +70,6 @@ public abstract class KeyHandler {
             return Optional.empty(); // No space to move the chain
         }
         return Optional.of(length);
-    }
-    private void performMovement(int i, int j, int k, int deltaI, int deltaJ, int length) {
-        // Move all blocks
-        for (int m = length - 1; m > 0; m--) {
-            int currentI = i + m * deltaI;
-            int currentJ = j + m * deltaJ;
-            int nextI = currentI + deltaI;
-            int nextJ = currentJ + deltaJ;
-            grid.moveBlock(currentI, currentJ, k, nextI, nextJ, k);
-        }
-        // Move controllable block last
-        grid.moveBlock(i, j, k, i+deltaI, j+deltaJ, k);
-        grid.setBlock(i, j, k, "EmptyVisualBlock");
     }
     private void nextIsWinningBlock(int nextI, int nextJ, int k){
         AbstractBlock nextBlock = grid.getBlock(nextI, nextJ, k);
