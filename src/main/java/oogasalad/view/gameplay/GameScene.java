@@ -107,7 +107,7 @@ public class GameScene implements Observer<Grid> {
   private void renderGrid() {
     root.getChildren().clear();
     List<AbstractBlock>[][] grid = gameGrid.getGrid();
-    double blockOffset = cellSize * 0.1; // Offset for displaying stacked blocks
+    double blockOffset = 0; // Offset for displaying stacked blocks
 
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
@@ -127,9 +127,12 @@ public class GameScene implements Observer<Grid> {
             AbstractBlockView obj = reflect(block);
             //Fix below to throw an exception or smth
             if (obj == null) {
-              return;
+              throw new NullPointerException("AbstractBlockView is null");
             }
             ImageView visualObj = obj.getView();
+            if (visualObj == null) {
+              throw new NullPointerException("ImageView in AbstractBlockView is null");
+            }
             visualObj.setFitWidth(cellSize - k * blockOffset);
             visualObj.setFitHeight(cellSize - k * blockOffset);
             visualObj.setPreserveRatio(true);

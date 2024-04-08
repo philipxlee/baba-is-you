@@ -150,7 +150,7 @@ public class Grid implements Observable<Grid> {
     boolean hasPushable = false;
     boolean textBlock = false;
     for(AbstractBlock block : grid[i][j]){
-      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock") && !block.getBlockName().equals("WallVisualBlock"))){
+      if(block.getBlockName().endsWith("TextBlock")){
         textBlock = true;
       }
       if (block.hasBehavior(Pushable.class)){
@@ -168,7 +168,7 @@ public class Grid implements Observable<Grid> {
     List<Integer> indicesList = new ArrayList<>();
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
-      if (block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.getBlockName().equals("EmptyVisualBlock") && !block.getBlockName().equals("WallVisualBlock"))) {
+      if (block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && block.hasBehavior(Pushable.class))) {
         indicesList.add(index);
       }
     }
@@ -190,69 +190,69 @@ public class Grid implements Observable<Grid> {
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyTextBlock"}, {"EmptyVisualBlock"}, {"RockVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock","RockVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"IsTextBlock"}, {"WallTextBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "IsTextBlock"}, {"EmptyVisualBlock", "WallTextBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"IsTextBlock"}, {"YouTextBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock", "IsTextBlock"}, {"EmptyVisualBlock", "YouTextBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WinTextBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WinTextBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"StopTextBlock"},
-        {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"EmptyVisualBlock"}
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
+        {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "StopTextBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"EmptyVisualBlock", "BabaVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"FlagTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "PushTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
+        {"EmptyVisualBlock", "BabaVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "FlagTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
+        {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "FlagVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}
+      },
+      {
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}
     },
       {
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"IsTextBlock"}, {"YouTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock", "IsTextBlock"}, {"EmptyVisualBlock", "YouTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "PushTextBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
@@ -261,10 +261,10 @@ public class Grid implements Observable<Grid> {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"RockTextBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"WallTextBlock"},
-        {"IsTextBlock"}, {"StopTextBlock"}, {"EmptyVisualBlock"}
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "RockTextBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
+        {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallTextBlock"},
+        {"EmptyVisualBlock", "IsTextBlock"}, {"EmptyVisualBlock", "StopTextBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},

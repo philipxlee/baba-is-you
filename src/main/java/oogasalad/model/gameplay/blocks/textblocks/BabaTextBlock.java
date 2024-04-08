@@ -26,6 +26,6 @@ public class BabaTextBlock extends AbstractTextBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return Arrays.asList("NOUN");
+    return Arrays.asList("NOUN", "PROPERTY");
   }
 }
