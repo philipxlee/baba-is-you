@@ -14,6 +14,7 @@ import oogasalad.shared.observer.Observer;
 public class Grid implements Observable<Grid> {
   private List<Observer<Grid>> observers = new ArrayList<>();
   private List<AbstractBlock>[][] grid;
+
   private RuleInterpreter parser;
   private BlockFactory factory;
   private BlockUpdater blockUpdater;
@@ -30,8 +31,12 @@ public class Grid implements Observable<Grid> {
   public void checkForRules() throws VisitorReflectionException {
     parser.interpretRules(grid);
   }
-  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ, int ToK){
-    grid[ToI][ToJ].set(ToK, grid[fromI][fromJ].get(fromK));
+  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ){
+    grid[ToI][ToJ].add(grid[fromI][fromJ].get(fromK));
+    grid[fromI][fromJ].remove(fromK);
+    if(grid[fromI][fromJ].size() == 0) {
+      setBlock(fromI, fromJ, 0, "EmptyVisualBlock");
+    }
   }
   public void setBlock(int i, int j, int k, String BlockType){
     grid[i][j].set(k, factory.createBlock(BlockType));
@@ -56,11 +61,21 @@ public class Grid implements Observable<Grid> {
     }
   }
 
-  public void renderChanges() {
-    notifyObserver();
+  public int gridWidth(){
+    return grid.length;
   }
 
-  public List<int[]> findControllableBlock() {
+  public int gridHeight(){
+    return grid[0].length;
+  }
+
+  public int cellSize(int i, int j){
+    return grid[i][j].size();
+  }
+
+
+
+  public List<int[]> findControllableBlock() { //record class
     List<int[]> AllControllableBlocks = new ArrayList<>();
     for(int i = 0; i < grid.length; i++){
       for(int j = 0; j < grid[i].length; j++){
@@ -77,6 +92,7 @@ public class Grid implements Observable<Grid> {
   }
 
   public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI, int controllableintialJ, int controllableinitialK){
+    //grid.isMovableToMargin(endI, endJ, k, i, j, k)
     boolean already_in_margin = isAlreadyInMargin(controllableintialI, controllableintialJ);
     if(already_in_margin){
       return true;
@@ -85,12 +101,12 @@ public class Grid implements Observable<Grid> {
       int indexI;
       indexI = (endI == 0) ? endI + 1 : endI - 1;
 
-      return grid[indexI][endJ].get(endK).hasBehavior(Controllable.class);
+      return grid[indexI][endJ].get(controllableinitialK).hasBehavior(Controllable.class);
     }
     else if ((endJ == grid[0].length -1 || endJ == 0)){
       int indexJ;
       indexJ = (endJ == 0) ? endJ + 1 : endJ -1;
-      return grid[endI][indexJ].get(endK).hasBehavior(Controllable.class);
+      return grid[endI][indexJ].get(controllableinitialK).hasBehavior(Controllable.class);
     }
     else{
       return true;
@@ -110,6 +126,40 @@ public class Grid implements Observable<Grid> {
         }
       }
     }
+  }
+
+  public boolean cellHasStoppable(int i, int j){
+    //return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Stoppable.class));
+    for(AbstractBlock block : grid[i][j]){
+      if(block.hasBehavior(Stoppable.class)){
+        System.out.print("cell has stoppable!");
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean cellHasPushable(int i , int j){
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Pushable.class));
+  }
+
+  public boolean cellHasWinning(int i, int j){
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Winnable.class));
+  }
+
+  public List<Integer> allPushableBlocksIndex(int i, int j) { //Cant use stream and ForEach because we want to ensure order of element in arraylist are kept same way in indiceslist
+    List<Integer> indicesList = new ArrayList<>();
+    System.out.print("allPushable Blocks Index is :");
+    for (int index = 0; index < grid[i][j].size(); index++) {
+      AbstractBlock block = grid[i][j].get(index);
+      if (block.hasBehavior(Pushable.class)) {
+        indicesList.add(index);
+        System.out.print(index);
+      }
+    }
+
+
+    return indicesList;
   }
 
   public boolean isNotOutOfBounds(int i, int j){
