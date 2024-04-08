@@ -107,7 +107,7 @@ public class GameScene implements Observer<Grid> {
   private void renderGrid() {
     root.getChildren().clear();
     List<AbstractBlock>[][] grid = gameGrid.getGrid();
-    double blockOffset = cellSize * 0.1; // Offset for displaying stacked blocks
+    double blockOffset = 0; // Offset for displaying stacked blocks
 
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
