@@ -49,7 +49,8 @@ public class BuilderScene {
     double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
-    double calculatedCellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);
+    double calculatedCellSize = Math.min((availableWidth) / gridWidth,
+        (availableHeight) / gridHeight);
     this.cellSize = calculatedCellSize;
 
     // Calculate total size of the grid
@@ -99,8 +100,6 @@ public class BuilderScene {
     if (result.isPresent() && result.get() == buttonTypeYes) {
       this.gridWidth = width;
       this.gridHeight = height;
-
-
 
       // Clear existing cells
       this.gridPane.getChildren().clear();
@@ -158,7 +157,6 @@ public class BuilderScene {
     }
     return null; // Coordinates (x, y) do not fall within any cell
   }
-
 
 
   private ImageView createBlockView(String blockType) {

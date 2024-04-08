@@ -15,14 +15,9 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
 import javafx.util.Pair;
-import oogasalad.view.authoring.MainScene;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 
 public class ElementsScene {
@@ -143,10 +138,12 @@ public class ElementsScene {
 
       // Do some validation (using the Java 8 lambda syntax).
       widthField.textProperty().addListener((observable, oldValue, newValue) -> {
-        confirmButton.setDisable(newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
+        confirmButton.setDisable(
+            newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
       });
       heightField.textProperty().addListener((observable, oldValue, newValue) -> {
-        confirmButton.setDisable(newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
+        confirmButton.setDisable(
+            newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
       });
 
       dialog.getDialogPane().setContent(grid);
