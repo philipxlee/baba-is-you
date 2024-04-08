@@ -3,15 +3,9 @@ package oogasalad.model.gameplay.grid;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
-import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.strategies.BecomesEmpty;
-import oogasalad.model.gameplay.strategies.BecomesWall;
-import oogasalad.model.gameplay.strategies.Controllable;
-import oogasalad.model.gameplay.strategies.Winnable;
+import oogasalad.model.gameplay.strategies.*;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.shared.observer.Observable;
@@ -20,14 +14,16 @@ import oogasalad.shared.observer.Observer;
 public class Grid implements Observable<Grid> {
   private List<Observer<Grid>> observers = new ArrayList<>();
   private List<AbstractBlock>[][] grid;
+
   private RuleInterpreter parser;
-  private KeyHandler keyHandler;
   private BlockFactory factory;
+  private BlockUpdater blockUpdater;
 
   public Grid(int rows, int cols) throws InvalidBlockName {
     this.grid = new ArrayList[rows][cols];
     this.parser = new RuleInterpreter();
     this.factory = new BlockFactory();
+    this.blockUpdater = new BlockUpdater(this, factory);
     InitializeGrid();
   }
 
@@ -35,11 +31,15 @@ public class Grid implements Observable<Grid> {
   public void checkForRules() throws VisitorReflectionException {
     parser.interpretRules(grid);
   }
-  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ, int ToK){
-    grid[ToI][ToJ].set(ToK, grid[fromI][fromJ].get(fromK));
+  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ){
+    grid[ToI][ToJ].add(grid[fromI][fromJ].get(fromK));
+    grid[fromI][fromJ].remove(fromK);
+    if(grid[fromI][fromJ].isEmpty()) {
+      addBlock(fromI, fromJ, "EmptyVisualBlock");
+    }
   }
-  public void setBlock(int i, int j, int k, String BlockType){
-    grid[i][j].set(k, factory.createBlock(BlockType));
+  private void addBlock(int i, int j, String BlockType){
+    grid[i][j].add (factory.createBlock(BlockType));
   }
   public AbstractBlock getBlock(int i, int j, int k){
     return grid[i][j].get(k);
@@ -61,11 +61,21 @@ public class Grid implements Observable<Grid> {
     }
   }
 
-  public void renderChanges() {
-    notifyObserver();
+  public int gridWidth(){
+    return grid.length;
   }
 
-  public List<int[]> findControllableBlock() {
+  public int gridHeight(){
+    return grid[0].length;
+  }
+
+  public int cellSize(int i, int j){
+    return grid[i][j].size();
+  }
+
+
+
+  public List<int[]> findControllableBlock() { //record class
     List<int[]> AllControllableBlocks = new ArrayList<>();
     for(int i = 0; i < grid.length; i++){
       for(int j = 0; j < grid[i].length; j++){
@@ -81,44 +91,108 @@ public class Grid implements Observable<Grid> {
     return AllControllableBlocks;
   }
 
+  public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI, int controllableintialJ, int controllableinitialK){
+    //grid.isMovableToMargin(endI, endJ, k, i, j, k)
+    boolean already_in_margin = isAlreadyInMargin(controllableintialI, controllableintialJ);
+    if(already_in_margin){
+      return true;
+    }
+    if(!isMovingToMargin(endI, endJ)){
+      //we are not moving to margin
+      return true;
+    }
+    if((endI == grid.length -1 || endI == 0)){
+      int indexI;
+      indexI = (endI == 0) ? endI + 1 : endI - 1;
+
+      //return grid[indexI][endJ].get(controllableinitialK).hasBehavior(Controllable.class);
+      return grid[indexI][endJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+    }
+    else if ((endJ == grid[0].length -1 || endJ == 0)){
+      int indexJ;
+      indexJ = (endJ == 0) ? endJ + 1 : endJ -1;
+      //return grid[endI][indexJ].get(controllableinitialK).hasBehavior(Controllable.class);
+      return grid[endI][indexJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+    }
+    else{
+      return false;
+    }
+  }
+
+  private boolean isAlreadyInMargin(int i, int j){
+    return ((i == grid.length -1 || i == 0) || (j == grid[0].length -1 || j == 0));
+  }
+  private boolean isMovingToMargin(int nextI, int nextJ){
+    return ((nextI == grid.length -1 || nextI == 0) || (nextJ == grid[0].length -1 || nextJ == 0));
+  }
+
   public void checkBehaviors(){
     for(int i = 0; i< grid.length; i++){
       for(int j = 0; j < grid[i].length; j++){
         for(int k = 0; k< grid[i][j].size(); k++){
           AbstractBlock block = grid[i][j].get(k);
-
-          if (block != null && block.hasBehavior(BecomesWall.class)) {
-            changeBlockToWall(i, j, k);
-          }
-          // temporary, needs refactoring
-          if (block != null && block.hasBehavior(BecomesEmpty.class)) {
-            changeBlockToEmpty(i, j, k);
-          }
+          block.executeBehaviors(this, blockUpdater, i, j, k);
         }
       }
     }
   }
-  private void changeBlockToEmpty(int i, int j, int k) {
-    grid[i][j].set(k, factory.createBlock("EmptyVisualBlock"));
+
+  public boolean cellHasStoppable(int i, int j){
+    for (AbstractBlock block : grid[i][j]) {
+      if (block.hasBehavior(Stoppable.class)) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  private void changeBlockToWall(int i, int j, int k) {
-    grid[i][j].set(k, factory.createBlock("WallVisualBlock"));
+  public boolean cellHasPushable(int i , int j){
+    boolean hasPushable = false;
+    boolean textBlock = false;
+    for(AbstractBlock block : grid[i][j]){
+      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock") && !block.getBlockName().equals("WallVisualBlock"))){
+        textBlock = true;
+      }
+      if (block.hasBehavior(Pushable.class)){
+        hasPushable = true;
+      }
+    }
+    return hasPushable || textBlock;
   }
 
+  public boolean cellHasWinning(int i, int j){
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Winnable.class));
+  }
+
+  public List<Integer> allPushableBlocksIndex(int i, int j) { //Cant use stream and ForEach because we want to ensure order of element in arraylist are kept same way in indiceslist
+    List<Integer> indicesList = new ArrayList<>();
+    for (int index = 0; index < grid[i][j].size(); index++) {
+      AbstractBlock block = grid[i][j].get(index);
+      if (block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.getBlockName().equals("EmptyVisualBlock") && !block.getBlockName().equals("WallVisualBlock"))) {
+        indicesList.add(index);
+      }
+    }
+
+
+    return indicesList;
+  }
+
+  public boolean isNotOutOfBounds(int i, int j){
+    return i >= 0 && i < grid.length && j >= 0 && j < grid[i].length;
+  }
 
   String[][][] tempConfiguration = {
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"},
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"WallVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyTextBlock"}, {"EmptyVisualBlock"}, {"RockVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
@@ -127,75 +201,75 @@ public class Grid implements Observable<Grid> {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"IsTextBlock"}, {"YouTextBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"WinTextBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"IsTextBlock"}, {"YouTextBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"StopTextBlock"},
         {"EmptyVisualBlock"}, {"BabaTextBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"EmptyVisualBlock", "BabaVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"FlagTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
         {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
     },
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"IsTextBlock"}, {"YouTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"RockTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"RockTextBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallTextBlock"},
+        {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"WallTextBlock"},
         {"IsTextBlock"}, {"StopTextBlock"}, {"EmptyVisualBlock"}
       },
       {
-        {"BabaVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"},
-        {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       }
   };

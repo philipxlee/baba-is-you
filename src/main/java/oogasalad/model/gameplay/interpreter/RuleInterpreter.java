@@ -17,6 +17,10 @@ public class RuleInterpreter {
   private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blocks.blockvisitor.";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String VISITOR_SUFFIX = "Visitor";
+  private static final String REPLACEMENT = "";
+  private static final String NOUN = "NOUN";
+  private static final String VERB = "VERB";
+  private static final String PROPERTY = "PROPERTY";
 
   /**
    * Interprets and applies rules across the entire grid based on the detected text block patterns.
@@ -24,11 +28,35 @@ public class RuleInterpreter {
    * @param grid The game grid to be interpreted.
    */
   public void interpretRules(List<AbstractBlock>[][] grid) throws VisitorReflectionException {
+    checkHorizontalRules(grid);
+    checkVerticalRules(grid);
+  }
+
+  /**
+   * Checks for horizontal rules in the grid.
+   *
+   * @param grid The game grid to be interpreted.
+   */
+  private void checkHorizontalRules(List<AbstractBlock>[][] grid) {
     Arrays.stream(grid).forEach(row -> IntStream.rangeClosed(0, row.length - 3)
-        .forEach(currentCol -> row[currentCol].forEach(block1 ->
-            row[currentCol + 1].forEach(block2 ->
-                row[currentCol + 2].forEach(block3 ->
-                    checkAndProcessRuleAt(block1, block2, block3, grid))))));
+        .forEach(i -> row[i].
+            forEach(block1 -> row[i + 1]
+                .forEach(block2 -> row[i + 2]
+                    .forEach(block3 -> checkAndProcessRuleAt(block1, block2, block3, grid))))));
+  }
+
+  /**
+   * Checks for vertical rules in the grid.
+   *
+   * @param grid The game grid to be interpreted.
+   */
+  private void checkVerticalRules(List<AbstractBlock>[][] grid) {
+    IntStream.range(0, grid[0].length)
+        .forEach(i -> IntStream.rangeClosed(0, grid.length - 3)
+            .forEach(j -> grid[j][i]
+                .forEach(block1 -> grid[j + 1][i]
+                    .forEach(block2 -> grid[j + 2][i]
+                        .forEach(block3 -> checkAndProcessRuleAt(block1, block2, block3, grid))))));
   }
 
 
@@ -60,11 +88,10 @@ public class RuleInterpreter {
     List<String> firstGrammarList = first.getBlockGrammar();
     List<String> secondGrammarList = second.getBlockGrammar();
     List<String> thirdGrammarList = third.getBlockGrammar();
-    return Stream.of(first, second, third)
-        .allMatch(AbstractBlock::isTextBlock)
-        && firstGrammarList.contains("NOUN")
-        && secondGrammarList.contains("VERB")
-        && thirdGrammarList.contains("PROPERTY");
+    return Stream.of(first, second, third).allMatch(AbstractBlock::isTextBlock)
+        && firstGrammarList.contains(NOUN)
+        && secondGrammarList.contains(VERB)
+        && thirdGrammarList.contains(PROPERTY);
   }
 
   /**
@@ -75,7 +102,7 @@ public class RuleInterpreter {
    * @param grid      The game grid, a two-dimensional array of lists of AbstractBlocks.
    */
   private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName, List<AbstractBlock>[][] grid) {
-    System. out.printf("Applying visitor to visual block of: %s%n", blockName);
+    //System.out.printf("Applying visitor to visual block of: %s%n", blockName);
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> cell : row) {
         cell.stream()
@@ -92,7 +119,9 @@ public class RuleInterpreter {
    * @return The corresponding BlockVisitor instance or null if none found.
    */
   private BlockVisitor determineVisitor(String blockName) {
-    String className = VISITOR_PACKAGE + blockName.replace(TEXT_BLOCK_SUFFIX, "") + VISITOR_SUFFIX;
+    String className = VISITOR_PACKAGE
+        + blockName.replace(TEXT_BLOCK_SUFFIX, REPLACEMENT)
+        + VISITOR_SUFFIX;
     try {
       Class<?> visitorClass = Class.forName(className);
       return (BlockVisitor) visitorClass.getDeclaredConstructor().newInstance();

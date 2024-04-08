@@ -4,11 +4,11 @@ import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.Grid;
 
-public class BecomesWall implements Strategy {
+public class BecomesBaba implements Strategy {
 
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
-    updater.updateBlock(i, j, k, "WallVisualBlock");
+    updater.updateBlock(i, j, k, "BabaVisualBlock");
   }
 
   @Override

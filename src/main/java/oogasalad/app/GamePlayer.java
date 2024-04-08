@@ -2,6 +2,7 @@ package oogasalad.app;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import oogasalad.controller.gameplay.GameOverController;
 import oogasalad.controller.gameplay.SceneController;
 
 /**
@@ -14,6 +15,7 @@ public class GamePlayer extends Application {
    *
    * @param stage primary stage of the application
    */
+
 
   @Override
   public void start(Stage stage) throws Exception {

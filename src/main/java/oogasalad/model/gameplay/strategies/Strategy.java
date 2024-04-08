@@ -1,6 +1,8 @@
 package oogasalad.model.gameplay.strategies;
 
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.model.gameplay.grid.BlockUpdater;
+import oogasalad.model.gameplay.grid.Grid;
 
 /**
  * Interface defining a strategy or behavior that can be applied to a visual block,
@@ -12,9 +14,12 @@ public interface Strategy {
    * Executes the strategy on the given block, potentially altering its state or position
    * based on the provided direction and grid context.
    *
-   * @param block The visual block on which to execute the strategy.
+   * @param grid The grid containing the block to act upon.
+   * @param i The x-coordinate of the block to act upon.
+   * @param j The y-coordinate of the block to act upon.
+   * @param k The z-coordinate of the block to act upon.
    */
-  void execute(AbstractVisualBlock block);
+  void execute(Grid grid, BlockUpdater updater, int i, int j, int k);
 
   /**
    * Defines how this strategy interacts with another strategy acting upon the associated block.
@@ -27,5 +32,4 @@ public interface Strategy {
    */
   boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy);
 
-  public abstract String toString();
 }
