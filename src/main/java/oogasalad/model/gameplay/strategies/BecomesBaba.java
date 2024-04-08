@@ -8,6 +8,23 @@ import oogasalad.model.gameplay.grid.Grid;
 
 public class BecomesBaba implements Strategy {
 
+  // Need to fix DRY here
+  private static boolean isContainsNonEmptyVisualBlock(int j, AbstractBlock targetBlock,
+      List<AbstractBlock>[] gameGrid) {
+    return gameGrid[j]
+        .stream()
+        .anyMatch(block ->
+            !block.isTextBlock() &&
+                !block.getBlockName().equals("EmptyVisualBlock") &&
+                !block.equals(targetBlock));
+  }
+
+  private static boolean isContainsTextBlock(int j, List<AbstractBlock>[] gameGrid) {
+    return gameGrid[j]
+        .stream()
+        .anyMatch(AbstractBlock::isTextBlock);
+  }
+
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
     List<AbstractBlock>[][] gameGrid = grid.getGrid();
@@ -24,23 +41,6 @@ public class BecomesBaba implements Strategy {
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
     // TODO Auto-generated method stub
     return false;
-  }
-
-  // Need to fix DRY here
-  private static boolean isContainsNonEmptyVisualBlock(int j, AbstractBlock targetBlock,
-      List<AbstractBlock>[] gameGrid) {
-    return gameGrid[j]
-        .stream()
-        .anyMatch(block ->
-            !block.isTextBlock() &&
-                !block.getBlockName().equals("EmptyVisualBlock") &&
-                !block.equals(targetBlock));
-  }
-
-  private static boolean isContainsTextBlock(int j, List<AbstractBlock>[] gameGrid) {
-    return gameGrid[j]
-        .stream()
-        .anyMatch(AbstractBlock::isTextBlock);
   }
 
 }

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -12,22 +13,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.effect.DropShadow;
 
 public class InteractionScene {
-  private Group root;
-  private MainScene scene;
 
   private static final Color BASE_COLOR = Color.web("#90A4AE");
   private static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
   private static final int ROUNDED_CORNER = 10;
   private static final int RECTANGLE_SIZE = 50;
   private static final DropShadow DROP_SHADOW = new DropShadow(5, Color.GRAY);
-
   Rectangle left = createRectangle(false);
   Rectangle right = createRectangle(false);
   Rectangle up = createRectangle(false);
   Rectangle down = createRectangle(false);
+  private Group root;
+  private MainScene scene;
 
   public void initializeInteractionPane(int width, int height, MainScene scene) {
     this.scene = scene;
@@ -49,7 +48,8 @@ public class InteractionScene {
     // Load and set up the header image
     HBox hbox = new HBox();
     hbox.setAlignment(Pos.CENTER);
-    InputStream inputStream = InteractionScene.class.getResourceAsStream("/images/BabaIsYouHeader.png");
+    InputStream inputStream = InteractionScene.class.getResourceAsStream(
+        "/images/BabaIsYouHeader.png");
     if (inputStream != null) {
       Image image = new Image(inputStream);
       ImageView imageView = new ImageView(image);
@@ -82,7 +82,8 @@ public class InteractionScene {
   }
 
   private Rectangle createRectangle(boolean transparent) {
-    Rectangle rectangle = new Rectangle(RECTANGLE_SIZE, RECTANGLE_SIZE, transparent ? Color.TRANSPARENT : BASE_COLOR);
+    Rectangle rectangle = new Rectangle(RECTANGLE_SIZE, RECTANGLE_SIZE,
+        transparent ? Color.TRANSPARENT : BASE_COLOR);
     rectangle.setArcWidth(ROUNDED_CORNER);
     rectangle.setArcHeight(ROUNDED_CORNER);
     rectangle.setEffect(DROP_SHADOW);

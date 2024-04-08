@@ -14,9 +14,9 @@ public class Controllable implements Strategy {
    * This method is used to execute the behavior of the block.
    *
    * @param grid The grid containing the block to act upon.
-   * @param i The x-coordinate of the block to act upon.
-   * @param j The y-coordinate of the block to act upon.
-   * @param k The z-coordinate of the block to act upon.
+   * @param i    The x-coordinate of the block to act upon.
+   * @param j    The y-coordinate of the block to act upon.
+   * @param k    The z-coordinate of the block to act upon.
    */
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {

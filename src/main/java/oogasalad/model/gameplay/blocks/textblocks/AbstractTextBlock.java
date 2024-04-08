@@ -1,9 +1,6 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
-import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.strategies.Pushable;
-import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
  * Represents an abstract text block within the game, providing text-specific functionality.

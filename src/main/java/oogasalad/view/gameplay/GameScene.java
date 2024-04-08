@@ -27,7 +27,8 @@ public class GameScene implements Observer<Grid> {
   private int width;
   private int height;
 
-  public void initializeGameGrid(int width, int height, MainScene scene, SceneController sceneController) {
+  public void initializeGameGrid(int width, int height, MainScene scene,
+      SceneController sceneController) {
     this.width = width;
     this.height = height;
     createGrid();

@@ -1,9 +1,7 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "win" property.
@@ -26,7 +24,7 @@ public class WinTextBlock extends AbstractTextBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return Arrays.asList("PROPERTY");
+    return List.of("PROPERTY");
   }
 
 }

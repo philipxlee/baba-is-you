@@ -15,7 +15,7 @@ public class BlockUpdater {
   /**
    * Constructor for BlockUpdater.
    *
-   * @param grid  grid to update block.
+   * @param grid    grid to update block.
    * @param factory factory to create block.
    */
   public BlockUpdater(Grid grid, BlockFactory factory) {
@@ -26,9 +26,9 @@ public class BlockUpdater {
   /**
    * Update the block in the grid.
    *
-   * @param i row index.
-   * @param j column index.
-   * @param k index of block in the list.
+   * @param i            row index.
+   * @param j            column index.
+   * @param k            index of block in the list.
    * @param newBlockType new block type.
    */
   public void updateBlock(int i, int j, int k, String newBlockType) {
