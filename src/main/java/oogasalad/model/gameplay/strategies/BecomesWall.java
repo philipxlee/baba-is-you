@@ -15,7 +15,7 @@ public class BecomesWall implements Strategy {
    * Update the block in the grid to a wall block if it does not contain any text or non-empty.
    *
    * @param grid The grid containing the block to act upon.
-   * @param updater
+   * @param updater The object responsible for updating the block in the grid.
    * @param i The x-coordinate of the block to act upon.
    * @param j The y-coordinate of the block to act upon.
    * @param k The z-coordinate of the block to act upon.
@@ -23,16 +23,10 @@ public class BecomesWall implements Strategy {
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
     List<AbstractBlock>[][] gameGrid = grid.getGrid();
-    boolean containsTextBlock = gameGrid[i][j]
-        .stream()
-        .anyMatch(AbstractBlock::isTextBlock);
-
-    boolean containsNonEmptyVisualBlock = gameGrid[i][j]
-        .stream()
-        .anyMatch(block ->
-            !block.isTextBlock() &&
-                !block.getBlockName().equals("EmptyVisualBlock"));
-
+    AbstractBlock targetBlock = gameGrid[i][j].get(k);
+    boolean containsTextBlock = isContainsTextBlock(j, gameGrid[i]);
+    boolean containsNonEmptyVisualBlock = isContainsNonEmptyVisualBlock(j, targetBlock,
+        gameGrid[i]);
     if (!containsTextBlock && !containsNonEmptyVisualBlock) {
       updater.updateBlock(i, j, k, "WallVisualBlock");
     }
@@ -42,6 +36,22 @@ public class BecomesWall implements Strategy {
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
     // TODO Auto-generated method stub
     return false;
+  }
+
+  private static boolean isContainsNonEmptyVisualBlock(int j, AbstractBlock targetBlock,
+      List<AbstractBlock>[] gameGrid) {
+    return gameGrid[j]
+        .stream()
+        .anyMatch(block ->
+            !block.isTextBlock() &&
+                !block.getBlockName().equals("EmptyVisualBlock") &&
+                !block.equals(targetBlock));
+  }
+
+  private static boolean isContainsTextBlock(int j, List<AbstractBlock>[] gameGrid) {
+    return gameGrid[j]
+        .stream()
+        .anyMatch(AbstractBlock::isTextBlock);
   }
 
 }
