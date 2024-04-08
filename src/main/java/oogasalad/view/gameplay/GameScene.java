@@ -127,9 +127,12 @@ public class GameScene implements Observer<Grid> {
             AbstractBlockView obj = reflect(block);
             //Fix below to throw an exception or smth
             if (obj == null) {
-              return;
+              throw new NullPointerException("AbstractBlockView is null");
             }
             ImageView visualObj = obj.getView();
+            if (visualObj == null) {
+              throw new NullPointerException("ImageView in AbstractBlockView is null");
+            }
             visualObj.setFitWidth(cellSize - k * blockOffset);
             visualObj.setFitHeight(cellSize - k * blockOffset);
             visualObj.setPreserveRatio(true);

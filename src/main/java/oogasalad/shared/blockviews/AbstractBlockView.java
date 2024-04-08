@@ -1,6 +1,8 @@
 package oogasalad.shared.blockviews;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -11,6 +13,7 @@ import javafx.scene.image.ImageView;
  */
 public abstract class AbstractBlockView {
 
+  private static final Map<String, Image> imageCache = new HashMap<>(); // Important for performance
   private ImageView imageView;
 
   /**
@@ -27,18 +30,27 @@ public abstract class AbstractBlockView {
    * @param imgPath String that holds the path to the block image.
    */
   private void initializeBlock(String imgPath) {
-    try {
-      InputStream inputStream = AbstractBlockView.class.getResourceAsStream(imgPath);
-      if (inputStream == null) {
-        System.out.println("Resource not found");
-      } else {
-        Image image = new Image(inputStream);
-        imageView = new ImageView(image);
+    Image image = imageCache.get(imgPath);
+    if (image == null) {
+      try (InputStream inputStream = AbstractBlockView.class.getResourceAsStream(imgPath)) {
+        if (inputStream == null) {
+          System.out.println("Resource not found: " + imgPath);
+        } else {
+          // This is to prevent loading the same image multiple times
+          // Fixes a loading bug and also increases performance
+          // Do not remove!
+          image = new Image(inputStream);
+          imageCache.put(imgPath, image);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+    }
+    if (image != null) {
+      imageView = new ImageView(image);
     }
   }
+
 
   /**
    * The getView() method returns the stackPane that represents the view of the block.

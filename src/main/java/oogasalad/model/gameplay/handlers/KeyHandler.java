@@ -69,7 +69,6 @@ public abstract class KeyHandler {
 
     private void performMovement(int i, int j, int k, int deltaI, int deltaJ, int length) {
       // Move all blocks
-      System.out.println("performing movement");
       for (int m = length - 1; m > 0; m--) {
         int currentI = i + m * deltaI;
         int currentJ = j + m * deltaJ;
@@ -77,7 +76,6 @@ public abstract class KeyHandler {
         int nextJ = currentJ + deltaJ;
         //move all the pushable stuffs into the next cell
         List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
-        System.out.printf("indicesToMove size:, " + indicesToMove.size());
         for(int w = 0; w< indicesToMove.size(); w++){ //cannot use forEACh in stream, does not guarantee order
             int index = indicesToMove.get(w);
             grid.moveBlock(currentI, currentJ, index, nextI, nextJ);
