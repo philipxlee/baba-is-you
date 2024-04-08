@@ -21,8 +21,8 @@ public class BuilderScene {
   private GridPane gridPane;
   private int gridWidth;
   private int gridHeight;
-  private int cellSize;
-  private final int GRID_MARGIN = 5;
+  private double cellSize;
+  private final int GRID_MARGIN = 10;
 
   public BuilderScene() {
     initializeBuilderScene();
@@ -40,6 +40,44 @@ public class BuilderScene {
 
     setUpGrid();
     setUpDropHandling();
+  }
+
+  private void setUpGrid() {
+    gridPane.getChildren().clear(); // Clear the existing grid
+
+    // Adjust the maximum width and height available for the grid, accounting for margins
+    double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
+    double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
+
+    // Calculate cell size based on the available space and the grid dimensions
+    double calculatedCellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);
+    this.cellSize = calculatedCellSize;
+
+    // Calculate total size of the grid
+    double totalGridWidth = gridWidth * (cellSize);
+    double totalGridHeight = gridHeight * (cellSize);
+
+    // Calculate the starting positions to center the grid within the root pane, considering margins
+    double layoutX = (root.getWidth() - totalGridWidth) / 2;
+    double layoutY = (root.getHeight() - totalGridHeight) / 2;
+
+    // Apply the calculated layout positions to the gridPane
+    gridPane.setLayoutX(layoutX);
+    gridPane.setLayoutY(layoutY);
+
+    for (int i = 0; i < gridWidth; i++) {
+      for (int j = 0; j < gridHeight; j++) {
+        Pane cell = new Pane();
+        cell.setPrefSize(cellSize, cellSize);
+        cell.setStyle("-fx-border-color: black; -fx-background-color: white; -fx-border-width: 1;");
+        gridPane.add(cell, i, j);
+      }
+    }
+
+    // Ensure the gridPane is added to the root if not already present
+    if (!root.getChildren().contains(gridPane)) {
+      root.getChildren().add(gridPane);
+    }
   }
 
 
@@ -64,6 +102,7 @@ public class BuilderScene {
       this.gridHeight = height;
 
 
+
       // Clear existing cells
       this.gridPane.getChildren().clear();
       this.root.getChildren().clear();
@@ -73,66 +112,15 @@ public class BuilderScene {
     }
   }
 
-
-  private ImageView createBlockView(String blockType) {
-    String imagePath =
-            "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
-    File imageFile = new File(imagePath);
-    if (!imageFile.exists()) {
-      System.err.println("Image file not found: " + imagePath);
-      return null; // Or handle this case as needed.
-    }
-    Image image = new Image(imageFile.toURI().toString(), 100, 100, true, true);
-    return new ImageView(image);
-  }
-
-  private void setUpGrid() {
-    gridPane.getChildren().clear(); // Clear the existing grid
-
-    // Calculate the available width and height for the grid, accounting for margins
-    double availableWidth = root.getWidth() - 2 * GRID_MARGIN;
-    double availableHeight = root.getHeight() - 2 * GRID_MARGIN;
-
-    // Calculate cell size based on the available space and the grid dimensions
-    double calculatedCellSize = Math.min(availableWidth / gridWidth, availableHeight / gridHeight);
-    this.cellSize = (int) calculatedCellSize;
-
-    // Calculate the total size of the grid
-    double totalGridWidth = gridWidth * cellSize;
-    double totalGridHeight = gridHeight * cellSize;
-
-    // Calculate the starting positions to center the grid within the root pane, considering margins
-    double layoutX = (root.getWidth() - totalGridWidth) / 2;
-    double layoutY = (root.getHeight() - totalGridHeight) / 2;
-
-    // Apply the calculated layout positions to the gridPane
-    gridPane.setLayoutX(layoutX);
-    gridPane.setLayoutY(layoutY);
-
-    for (int i = 0; i < gridWidth; i++) {
-      for (int j = 0; j < gridHeight; j++) {
-        Pane cell = new Pane();
-        cell.setPrefSize(cellSize, cellSize);
-        cell.setStyle("-fx-border-color: #a2871b; -fx-background-color: #b01d1d;");
-        gridPane.add(cell, i, j);
-      }
-    }
-
-    // Ensure the gridPane is added to the root if not already present
-    if (!root.getChildren().contains(gridPane)) {
-      root.getChildren().add(gridPane);
-    }
-  }
-
   private void setUpDropHandling() {
-    root.setOnDragOver(event -> {
-      if (event.getGestureSource() != root && event.getDragboard().hasString()) {
+    gridPane.setOnDragOver(event -> {
+      if (event.getGestureSource() != gridPane && event.getDragboard().hasString()) {
         event.acceptTransferModes(TransferMode.MOVE);
       }
       event.consume();
     });
 
-    root.setOnDragDropped(event -> {
+    gridPane.setOnDragDropped(event -> {
       Dragboard db = event.getDragboard();
       boolean success = false;
       if (db.hasString()) {
@@ -141,18 +129,10 @@ public class BuilderScene {
         if (blockView != null) {
           Point2D cellCoords = getCellCoordinates(event.getX(), event.getY());
           if (cellCoords != null) {
-            // Calculate the position to align the block with the top-left corner of the cell
-            double blockX = cellCoords.getX();
-            double blockY = cellCoords.getY();
-
-            // Set the size of the block to match the size of the cell
             blockView.setFitWidth(cellSize);
             blockView.setFitHeight(cellSize);
-
-            // Set the position of the block within the cell
-            blockView.setLayoutX(blockX);
-            blockView.setLayoutY(blockY);
-
+            blockView.setLayoutX(cellCoords.getX());
+            blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
             success = true;
           }
@@ -167,14 +147,11 @@ public class BuilderScene {
     for (Node node : gridPane.getChildren()) {
       if (node instanceof Pane) {
         Pane cell = (Pane) node;
-        Bounds boundsInRoot = cell.localToParent(cell.getBoundsInLocal());
-        if (boundsInRoot.contains(x, y)) {
-          int cellIndexX = (int) ((x - gridPane.getLayoutX() - boundsInRoot.getMinX()) / cellSize);
-          int cellIndexY = (int) ((y - gridPane.getLayoutY() - boundsInRoot.getMinY()) / cellSize);
-          double cellX = gridPane.getLayoutX() + cell.getBoundsInParent().getMinX() + cellIndexX * cellSize;
-          double cellY = gridPane.getLayoutY() + cell.getBoundsInParent().getMinY() + cellIndexY * cellSize;
-//          double cellX = cell.getBoundsInParent().getMinX() + gridPane.getLayoutX();
-//          double cellY = cell.getBoundsInParent().getMinY() + gridPane.getLayoutY();
+        Bounds boundsInParent = cell.getBoundsInParent();
+        if (boundsInParent.contains(x, y)) {
+          // Calculate the cell coordinates based on the layout coordinates of the cell
+          double cellX = cell.getLayoutX() + gridPane.getLayoutX();
+          double cellY = cell.getLayoutY() + gridPane.getLayoutY();
           return new Point2D(cellX, cellY);
         }
       }
@@ -182,6 +159,17 @@ public class BuilderScene {
     return null; // Coordinates (x, y) do not fall within any cell
   }
 
+  private ImageView createBlockView(String blockType) {
+    String imagePath =
+            "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+    File imageFile = new File(imagePath);
+    if (!imageFile.exists()) {
+      System.err.println("Image file not found: " + imagePath);
+      return null; // Or handle this case as needed.
+    }
+    Image image = new Image(imageFile.toURI().toString(), 100, 100, true, true);
+    return new ImageView(image);
+  }
 
   public Pane getRoot() {
     return root;
