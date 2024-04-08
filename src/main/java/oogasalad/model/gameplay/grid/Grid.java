@@ -138,13 +138,17 @@ public class Grid implements Observable<Grid> {
   }
 
   public boolean cellHasPushable(int i , int j){
-    boolean hasPushable = grid[i][j].stream().anyMatch(block -> block.hasBehavior(Pushable.class));
+    boolean hasPushable = false;
     boolean textBlock = false;
     for(AbstractBlock block : grid[i][j]){
-      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class))){
+      if(block.getBlockName().endsWith("TextBlock")){
         textBlock = true;
       }
+      if (block.hasBehavior(Pushable.class)){
+        hasPushable = true;
+      }
     }
+    System.out.printf("hasPushable returned " + hasPushable + " and textBlock returned " + textBlock);
     return hasPushable || textBlock;
   }
 
