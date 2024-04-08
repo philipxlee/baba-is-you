@@ -41,50 +41,6 @@ public class BuilderScene {
     setUpDropHandling();
   }
 
-
-  public void updateGridSize(int width, int height) {
-    // Display a confirmation dialog
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmation");
-    alert.setHeaderText("Warning: Existing game state will be deleted");
-    alert.setContentText("Would you like to proceed?");
-
-    // Add buttons for user selection
-    ButtonType buttonTypeYes = new ButtonType("Yes");
-    ButtonType buttonTypeNo = new ButtonType("No");
-
-    alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-    Optional<ButtonType> result = alert.showAndWait();
-
-    // If user confirms, clear existing cells and blocks and set up the grid with the new size
-    if (result.isPresent() && result.get() == buttonTypeYes) {
-      this.gridWidth = width;
-      this.gridHeight = height;
-
-
-      // Clear existing cells
-      this.gridPane.getChildren().clear();
-      this.root.getChildren().clear();
-
-      // Re-setup the grid with the new size
-      setUpGrid();
-    }
-  }
-
-
-  private ImageView createBlockView(String blockType) {
-    String imagePath =
-        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
-    File imageFile = new File(imagePath);
-    if (!imageFile.exists()) {
-      System.err.println("Image file not found: " + imagePath);
-      return null; // Or handle this case as needed.
-    }
-    Image image = new Image(imageFile.toURI().toString(), 100, 100, true, true);
-    return new ImageView(image);
-  }
-
   private void setUpGrid() {
     gridPane.getChildren().clear(); // Clear the existing grid
 
@@ -112,7 +68,7 @@ public class BuilderScene {
       for (int j = 0; j < gridHeight; j++) {
         Pane cell = new Pane();
         cell.setPrefSize(cellSize, cellSize);
-        cell.setStyle("-fx-border-color: #a2871b; -fx-background-color: #b01d1d;");
+        cell.setStyle("-fx-border-color: black; -fx-background-color: white;");
         gridPane.add(cell, i, j);
       }
     }
@@ -122,6 +78,41 @@ public class BuilderScene {
       root.getChildren().add(gridPane);
     }
   }
+
+
+
+
+  public void updateGridSize(int width, int height) {
+    // Display a confirmation dialog
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Confirmation");
+    alert.setHeaderText("Warning: Existing game state will be deleted");
+    alert.setContentText("Would you like to proceed?");
+
+    // Add buttons for user selection
+    ButtonType buttonTypeYes = new ButtonType("Yes");
+    ButtonType buttonTypeNo = new ButtonType("No");
+
+    alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+    Optional<ButtonType> result = alert.showAndWait();
+
+    // If user confirms, clear existing cells and blocks and set up the grid with the new size
+    if (result.isPresent() && result.get() == buttonTypeYes) {
+      this.gridWidth = width;
+      this.gridHeight = height;
+
+
+
+      // Clear existing cells
+      this.gridPane.getChildren().clear();
+      this.root.getChildren().clear();
+
+      // Re-setup the grid with the new size
+      setUpGrid();
+    }
+  }
+
 
   private void setUpDropHandling() {
     root.setOnDragOver(event -> {
@@ -140,17 +131,10 @@ public class BuilderScene {
         if (blockView != null) {
           Point2D cellCoords = getCellCoordinates(event.getX(), event.getY());
           if (cellCoords != null) {
-            // Calculate the scaling factor for the block to fit in the cell
-            double scalingFactor = Math.min(cellSize / blockView.getImage().getWidth(), cellSize / blockView.getImage().getHeight());
-            blockView.setFitWidth(blockView.getImage().getWidth() * scalingFactor);
-            blockView.setFitHeight(blockView.getImage().getHeight() * scalingFactor);
-
-            // Adjust block position to align with cell
-            double offsetX = (cellSize - blockView.getFitWidth()) / 2;
-            double offsetY = (cellSize - blockView.getFitHeight()) / 2;
-            blockView.setLayoutX(cellCoords.getX() + offsetX);
-            blockView.setLayoutY(cellCoords.getY() + offsetY);
-
+            blockView.setFitWidth(cellSize);
+            blockView.setFitHeight(cellSize);
+            blockView.setLayoutX(cellCoords.getX());
+            blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
             success = true;
           }
@@ -161,6 +145,17 @@ public class BuilderScene {
     });
   }
 
+  private ImageView createBlockView(String blockType) {
+    String imagePath =
+        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+    File imageFile = new File(imagePath);
+    if (!imageFile.exists()) {
+      System.err.println("Image file not found: " + imagePath);
+      return null; // Or handle this case as needed.
+    }
+    Image image = new Image(imageFile.toURI().toString(), 100, 100, true, true);
+    return new ImageView(image);
+  }
 
   private Point2D getCellCoordinates(double x, double y) {
     for (int i = 0; i < gridWidth; i++) {
