@@ -33,13 +33,17 @@ public class Grid implements Observable<Grid> {
   }
   public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ){
     grid[ToI][ToJ].add(grid[fromI][fromJ].get(fromK));
+    System.out.println("is the issue in Grid.moveBlock? ");
     grid[fromI][fromJ].remove(fromK);
+    System.out.println("ran .remove ");
     if(grid[fromI][fromJ].isEmpty()) {
-      setBlock(fromI, fromJ, 0, "EmptyVisualBlock");
+      System.out.println("about to run setBlock ");
+      addBlock(fromI, fromJ, "EmptyVisualBlock");
     }
+    System.out.println("NOPE");
   }
-  public void setBlock(int i, int j, int k, String BlockType){
-    grid[i][j].set(k, factory.createBlock(BlockType));
+  private void addBlock(int i, int j, String BlockType){
+    grid[i][j].add (factory.createBlock(BlockType));
   }
   public AbstractBlock getBlock(int i, int j, int k){
     return grid[i][j].get(k);
@@ -148,7 +152,7 @@ public class Grid implements Observable<Grid> {
         hasPushable = true;
       }
     }
-    System.out.printf("hasPushable returned " + hasPushable + " and textBlock returned " + textBlock);
+    //System.out.printf("hasPushable returned " + hasPushable + " and textBlock returned " + textBlock);
     return hasPushable || textBlock;
   }
 
@@ -158,12 +162,10 @@ public class Grid implements Observable<Grid> {
 
   public List<Integer> allPushableBlocksIndex(int i, int j) { //Cant use stream and ForEach because we want to ensure order of element in arraylist are kept same way in indiceslist
     List<Integer> indicesList = new ArrayList<>();
-    System.out.print("allPushable Blocks Index is :");
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
-      if (block.getBlockName().endsWith("TextBlock") || !block.hasBehavior(Stoppable.class)) {
+      if (block.getBlockName().endsWith("TextBlock") || block.hasBehavior(Pushable.class)) {
         indicesList.add(index);
-        System.out.print(index);
       }
     }
 
