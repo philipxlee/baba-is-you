@@ -15,6 +15,7 @@ public class GamePlayer extends Application {
    * @param stage primary stage of the application
    */
 
+
   @Override
   public void start(Stage stage) throws Exception {
     // initialize models

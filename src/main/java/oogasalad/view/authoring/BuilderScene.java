@@ -1,7 +1,6 @@
 package oogasalad.view.authoring;
 
 import java.io.File;
-
 import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;

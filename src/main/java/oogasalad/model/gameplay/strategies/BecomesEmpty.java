@@ -1,12 +1,14 @@
 package oogasalad.model.gameplay.strategies;
 
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.model.gameplay.grid.BlockUpdater;
+import oogasalad.model.gameplay.grid.Grid;
 
 public class BecomesEmpty implements Strategy {
 
   @Override
-  public void execute(AbstractVisualBlock block) {
-    // TODO Auto-generated method stub
+  public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
+    updater.updateBlock(i, j, k, "EmptyVisualBlock");
   }
 
   @Override
@@ -15,9 +17,5 @@ public class BecomesEmpty implements Strategy {
     return false;
   }
 
-  @Override
-  public String toString(){
-    return "BecomesEmpty";
-  }
 }
 

@@ -1,18 +1,19 @@
 package oogasalad.model.gameplay.blocks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.grid.BlockUpdater;
+import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
- * Serves as the base class for all block types within the game, defining common properties and behaviors.
- * Subclasses should override methods as necessary to provide specific functionality.
+ * Serves as the base class for all block types within the game, defining common properties and
+ * behaviors. Subclasses should override methods as necessary to provide specific functionality.
  */
 public abstract class AbstractBlock {
 
-  private static final List<String> grammarType = new ArrayList<>();
+  public static final List<String> grammarType = new ArrayList<>();
 
   /**
    * Indicates whether this block is a text block. By default, a block is not a text block.
@@ -28,7 +29,8 @@ public abstract class AbstractBlock {
    * Determines if the block matches a specified descriptor, typically based on its class name.
    * Subclasses can rely on this implementation or override it for custom matching logic.
    *
-   * @param descriptor The descriptor to match against the block, usually related to the block's class.
+   * @param descriptor The descriptor to match against the block, usually related to the block's
+   *                   class.
    * @return true if the descriptor matches the block's class name, false otherwise.
    */
   public boolean matches(String descriptor) {
@@ -36,8 +38,9 @@ public abstract class AbstractBlock {
   }
 
   /**
-   * Checks if the block exhibits a specific behavior. This base implementation always returns false.
-   * Blocks with behaviors should override this method to confirm the presence of a behavior.
+   * Checks if the block exhibits a specific behavior. This base implementation always returns
+   * false. Blocks with behaviors should override this method to confirm the presence of a
+   * behavior.
    *
    * @param behaviorType The behavior class to check against this block.
    * @return false by default, indicating no behavior of the specified type.
@@ -74,10 +77,10 @@ public abstract class AbstractBlock {
   }
 
   /**
-   * Executes the block's behaviors. By default, there are no behaviors to execute.
-   * Blocks with executable behaviors should override this method.
+   * Executes the block's behaviors. By default, there are no behaviors to execute. Blocks with
+   * executable behaviors should override this method.
    */
-  public void executeBehaviors() {
+  public void executeBehaviors(Grid grid, BlockUpdater updater, int i, int j, int k) {
     // Default implementation is intentionally left blank.
   }
 
@@ -90,7 +93,5 @@ public abstract class AbstractBlock {
   public List<String> getBlockGrammar() {
     return grammarType;
   }
-
-  public abstract String behaviorsToString();
 
 }

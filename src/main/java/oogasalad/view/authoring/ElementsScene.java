@@ -21,6 +21,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Pair;
 import oogasalad.view.authoring.MainScene;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+
 
 public class ElementsScene {
 

@@ -3,8 +3,6 @@ package oogasalad.controller.gameplay;
 import javafx.stage.Stage;
 import oogasalad.shared.scene.Scene;
 import oogasalad.view.gameplay.MainScene;
-import oogasalad.view.gameplay.InteractionScene;
-import oogasalad.view.gameplay.GameScene;
 
 /**
  * SceneController is Controller that manages Scenes and the JavaFX Stage.
@@ -31,7 +29,7 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new MainScene());
+    switchToScene(new MainScene(this));
   }
 
   /**
