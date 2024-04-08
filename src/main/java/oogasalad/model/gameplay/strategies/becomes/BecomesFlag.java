@@ -1,12 +1,16 @@
-package oogasalad.model.gameplay.strategies;
+package oogasalad.model.gameplay.strategies.becomes;
 
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.strategies.Strategy;
 
-public class BecomesBaba implements Strategy {
+/**
+ * Strategy for when a block becomes a flag.
+ */
+public class BecomesFlag implements Strategy {
 
   // Need to fix DRY here
   private static boolean isContainsNonEmptyVisualBlock(int j, AbstractBlock targetBlock,
@@ -25,6 +29,7 @@ public class BecomesBaba implements Strategy {
         .anyMatch(AbstractBlock::isTextBlock);
   }
 
+
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
     List<AbstractBlock>[][] gameGrid = grid.getGrid();
@@ -33,7 +38,7 @@ public class BecomesBaba implements Strategy {
     boolean containsNonEmptyVisualBlock = isContainsNonEmptyVisualBlock(j, targetBlock,
         gameGrid[i]);
     if (!containsTextBlock && !containsNonEmptyVisualBlock) {
-      updater.updateBlock(i, j, k, "BabaVisualBlock");
+      updater.updateBlock(i, j, k, "FlagVisualBlock");
     }
   }
 
@@ -42,5 +47,4 @@ public class BecomesBaba implements Strategy {
     // TODO Auto-generated method stub
     return false;
   }
-
 }

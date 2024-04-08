@@ -1,15 +1,13 @@
-package oogasalad.model.gameplay.strategies;
+package oogasalad.model.gameplay.strategies.becomes;
 
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.strategies.Strategy;
 
-/**
- * Strategy for when a block becomes a rock.
- */
-public class BecomesRock implements Strategy {
+public class BecomesBaba implements Strategy {
 
   // Need to fix DRY here
   private static boolean isContainsNonEmptyVisualBlock(int j, AbstractBlock targetBlock,
@@ -28,15 +26,6 @@ public class BecomesRock implements Strategy {
         .anyMatch(AbstractBlock::isTextBlock);
   }
 
-  /**
-   * Executes the strategy for when a block becomes a rock.
-   *
-   * @param grid The grid containing the block to act upon.
-   * @param updater updates the block in the grid.
-   * @param i    The x-coordinate of the block to act upon.
-   * @param j    The y-coordinate of the block to act upon.
-   * @param k    The z-coordinate of the block to act upon.
-   */
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
     List<AbstractBlock>[][] gameGrid = grid.getGrid();
@@ -45,7 +34,7 @@ public class BecomesRock implements Strategy {
     boolean containsNonEmptyVisualBlock = isContainsNonEmptyVisualBlock(j, targetBlock,
         gameGrid[i]);
     if (!containsTextBlock && !containsNonEmptyVisualBlock) {
-      updater.updateBlock(i, j, k, "RockVisualBlock");
+      updater.updateBlock(i, j, k, "BabaVisualBlock");
     }
   }
 

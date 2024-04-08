@@ -5,7 +5,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
-import oogasalad.model.gameplay.strategies.Stoppable;
+import oogasalad.model.gameplay.strategies.attributes.Stoppable;
 
 /**
  * Visitor pattern for the stoppable behavior.

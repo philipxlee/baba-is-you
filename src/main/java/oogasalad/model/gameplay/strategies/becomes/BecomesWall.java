@@ -1,10 +1,11 @@
-package oogasalad.model.gameplay.strategies;
+package oogasalad.model.gameplay.strategies.becomes;
 
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
  * This class is responsible for updating the block in the grid to a wall block.
