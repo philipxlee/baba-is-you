@@ -171,8 +171,8 @@ public class BuilderScene {
         if (boundsInRoot.contains(x, y)) {
           int cellIndexX = (int) ((x - gridPane.getLayoutX() - boundsInRoot.getMinX()) / cellSize);
           int cellIndexY = (int) ((y - gridPane.getLayoutY() - boundsInRoot.getMinY()) / cellSize);
-          double cellX = gridPane.getLayoutX() + boundsInRoot.getMinX() + cellIndexX * cellSize;
-          double cellY = gridPane.getLayoutY() + boundsInRoot.getMinY() + cellIndexY * cellSize;
+          double cellX = gridPane.getLayoutX() + cell.getBoundsInParent().getMinX() + cellIndexX * cellSize;
+          double cellY = gridPane.getLayoutY() + cell.getBoundsInParent().getMinY() + cellIndexY * cellSize;
 //          double cellX = cell.getBoundsInParent().getMinX() + gridPane.getLayoutX();
 //          double cellY = cell.getBoundsInParent().getMinY() + gridPane.getLayoutY();
           return new Point2D(cellX, cellY);
