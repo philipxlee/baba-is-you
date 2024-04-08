@@ -64,6 +64,9 @@ public abstract class KeyHandler {
         while (true) {
             int nextI = i + length * deltaI; //gets next cell
             int nextJ = j + length * deltaJ; // gets next cell
+            AbstractBlock temp = grid.getBlock(nextI, nextJ, 0);
+            System.out.println(temp.behaviorsToString());
+
             if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ) && !grid.cellHasStoppable(nextI, nextJ)) {
                 length++;
             } else {
@@ -73,7 +76,7 @@ public abstract class KeyHandler {
 
         int endI = i + length * deltaI;
         int endJ = j + length * deltaJ;
-        if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)) {
+        if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k) || grid.cellHasStoppable(endI, endJ)) {
             return Optional.empty(); // No space to move the chain
         }
         System.out.println("length of things to push is " + length);

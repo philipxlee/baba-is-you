@@ -145,7 +145,15 @@ public class Grid implements Observable<Grid> {
   }
 
   public boolean cellHasPushable(int i , int j){
-    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Pushable.class));
+    boolean hasPushable = grid[i][j].stream().anyMatch(block -> block.hasBehavior(Pushable.class));
+    boolean textBlock = false;
+    for(AbstractBlock block : grid[i][j]){
+      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class))){
+        textBlock = true;
+      }
+    }
+    return hasPushable || textBlock;
+    //return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Pushable.class));
   }
 
   public boolean cellHasWinning(int i, int j){
@@ -157,7 +165,7 @@ public class Grid implements Observable<Grid> {
     System.out.print("allPushable Blocks Index is :");
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
-      if (block.hasBehavior(Pushable.class)) {
+      if (block.getBlockName().endsWith("TextBlock") || !block.hasBehavior(Stoppable.class)) {
         indicesList.add(index);
         System.out.print(index);
       }
