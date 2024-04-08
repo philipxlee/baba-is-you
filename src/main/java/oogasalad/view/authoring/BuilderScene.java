@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -20,8 +21,8 @@ public class BuilderScene {
   private GridPane gridPane;
   private int gridWidth;
   private int gridHeight;
-  private int cellSize;
-  private final int GRID_MARGIN = 5;
+  private double cellSize;
+  private final int GRID_MARGIN = 10;
 
   public BuilderScene() {
     initializeBuilderScene();
@@ -45,16 +46,16 @@ public class BuilderScene {
     gridPane.getChildren().clear(); // Clear the existing grid
 
     // Adjust the maximum width and height available for the grid, accounting for margins
-    double availableWidth = root.getWidth() - 2 * GRID_MARGIN;
-    double availableHeight = root.getHeight() - 2 * GRID_MARGIN;
+    double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
+    double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
-    double calculatedCellSize = Math.min(availableWidth / gridWidth, availableHeight / gridHeight);
-    this.cellSize = (int) calculatedCellSize;
+    double calculatedCellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);
+    this.cellSize = calculatedCellSize;
 
     // Calculate total size of the grid
-    double totalGridWidth = gridWidth * cellSize;
-    double totalGridHeight = gridHeight * cellSize;
+    double totalGridWidth = gridWidth * (cellSize);
+    double totalGridHeight = gridHeight * (cellSize);
 
     // Calculate the starting positions to center the grid within the root pane, considering margins
     double layoutX = (root.getWidth() - totalGridWidth) / 2;
@@ -68,7 +69,7 @@ public class BuilderScene {
       for (int j = 0; j < gridHeight; j++) {
         Pane cell = new Pane();
         cell.setPrefSize(cellSize, cellSize);
-        cell.setStyle("-fx-border-color: black; -fx-background-color: white;");
+        cell.setStyle("-fx-border-color: black; -fx-background-color: white; -fx-border-width: 1;");
         gridPane.add(cell, i, j);
       }
     }
@@ -78,8 +79,6 @@ public class BuilderScene {
       root.getChildren().add(gridPane);
     }
   }
-
-
 
 
   public void updateGridSize(int width, int height) {
@@ -115,14 +114,14 @@ public class BuilderScene {
 
 
   private void setUpDropHandling() {
-    root.setOnDragOver(event -> {
-      if (event.getGestureSource() != root && event.getDragboard().hasString()) {
+    gridPane.setOnDragOver(event -> {
+      if (event.getGestureSource() != gridPane && event.getDragboard().hasString()) {
         event.acceptTransferModes(TransferMode.MOVE);
       }
       event.consume();
     });
 
-    root.setOnDragDropped(event -> {
+    gridPane.setOnDragDropped(event -> {
       Dragboard db = event.getDragboard();
       boolean success = false;
       if (db.hasString()) {
@@ -145,6 +144,24 @@ public class BuilderScene {
     });
   }
 
+  private Point2D getCellCoordinates(double x, double y) {
+    for (Node node : gridPane.getChildren()) {
+      if (node instanceof Pane) {
+        Pane cell = (Pane) node;
+        Bounds boundsInParent = cell.getBoundsInParent();
+        if (boundsInParent.contains(x, y)) {
+          // Calculate the cell coordinates based on the layout coordinates of the cell
+          double cellX = cell.getLayoutX() + gridPane.getLayoutX();
+          double cellY = cell.getLayoutY() + gridPane.getLayoutY();
+          return new Point2D(cellX, cellY);
+        }
+      }
+    }
+    return null; // Coordinates (x, y) do not fall within any cell
+  }
+
+
+
   private ImageView createBlockView(String blockType) {
     String imagePath =
         "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
@@ -157,22 +174,6 @@ public class BuilderScene {
     return new ImageView(image);
   }
 
-  private Point2D getCellCoordinates(double x, double y) {
-    for (int i = 0; i < gridWidth; i++) {
-      for (int j = 0; j < gridHeight; j++) {
-        double cellX = i * cellSize + gridPane.getLayoutX();
-        double cellY = j * cellSize + gridPane.getLayoutY();
-        double cellWidth = cellSize;
-        double cellHeight = cellSize;
-
-        // Check if the coordinates (x, y) are within the bounds of this cell
-        if (x >= cellX && x <= cellX + cellWidth && y >= cellY && y <= cellY + cellHeight) {
-          return new Point2D(cellX, cellY);
-        }
-      }
-    }
-    return null; // Coordinates (x, y) do not fall within any cell
-  }
 
   public Pane getRoot() {
     return root;
