@@ -5,4 +5,6 @@ package oogasalad.model.authoring.block;
  *
  * @param type The BlockType of the block.
  */
-public record Block(BlockType type) { }
+public record Block(BlockType type) {
+
+}

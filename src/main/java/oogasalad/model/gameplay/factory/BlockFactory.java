@@ -13,7 +13,15 @@ public class BlockFactory {
   /**
    * Creates a new BlockFactory.
    */
-  public BlockFactory() {}
+  public BlockFactory() {
+  }
+
+  private static void validateBlockName(String blockName, Class<?> blockClass) {
+    if (!AbstractBlock.class.isAssignableFrom(blockClass)) {
+      throw new InvalidBlockName(
+          "Block name does not correspond to a valid block type: " + blockName);
+    }
+  }
 
   /**
    * Creates a block instance based on the provided block name using reflection.
@@ -30,12 +38,6 @@ public class BlockFactory {
       return (AbstractBlock) blockClass.getDeclaredConstructor(String.class).newInstance(blockName);
     } catch (ReflectiveOperationException e) {
       throw new InvalidBlockName("Error creating block instance for: " + blockName);
-    }
-  }
-
-  private static void validateBlockName(String blockName, Class<?> blockClass) {
-    if (!AbstractBlock.class.isAssignableFrom(blockClass)) {
-      throw new InvalidBlockName("Block name does not correspond to a valid block type: " + blockName);
     }
   }
 

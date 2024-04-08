@@ -6,11 +6,9 @@ import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.Grid;
 
-/**
- * This class is responsible for updating the block in the grid to a wall block.
- */
-public class BecomesWall implements Strategy {
+public class BecomesBaba implements Strategy {
 
+  // Need to fix DRY here
   private static boolean isContainsNonEmptyVisualBlock(int j, AbstractBlock targetBlock,
       List<AbstractBlock>[] gameGrid) {
     return gameGrid[j]
@@ -27,15 +25,6 @@ public class BecomesWall implements Strategy {
         .anyMatch(AbstractBlock::isTextBlock);
   }
 
-  /**
-   * Update the block in the grid to a wall block if it does not contain any text or non-empty.
-   *
-   * @param grid    The grid containing the block to act upon.
-   * @param updater The object responsible for updating the block in the grid.
-   * @param i       The x-coordinate of the block to act upon.
-   * @param j       The y-coordinate of the block to act upon.
-   * @param k       The z-coordinate of the block to act upon.
-   */
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
     List<AbstractBlock>[][] gameGrid = grid.getGrid();
@@ -44,7 +33,7 @@ public class BecomesWall implements Strategy {
     boolean containsNonEmptyVisualBlock = isContainsNonEmptyVisualBlock(j, targetBlock,
         gameGrid[i]);
     if (!containsTextBlock && !containsNonEmptyVisualBlock) {
-      updater.updateBlock(i, j, k, "WallVisualBlock");
+      updater.updateBlock(i, j, k, "BabaVisualBlock");
     }
   }
 

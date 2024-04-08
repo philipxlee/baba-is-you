@@ -45,7 +45,7 @@ public class YouVisitor implements BlockVisitor {
   /**
    * Adds the controllable behavior to the rock block.
    *
-   * @param rock  the rock block.
+   * @param rock the rock block.
    */
   @Override
   public void visit(RockVisualBlock rock) {

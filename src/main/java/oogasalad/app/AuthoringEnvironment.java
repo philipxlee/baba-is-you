@@ -9,6 +9,10 @@ import oogasalad.model.authoring.block.BlockTypeManager;
 
 public class AuthoringEnvironment extends Application {
 
+  public static void main(String[] args) {
+    launch(args);
+  }
+
   @Override
   public void start(Stage stage) throws Exception {
     // initialize models
@@ -32,9 +36,5 @@ public class AuthoringEnvironment extends Application {
 
     stage.centerOnScreen();
     stage.show();
-  }
-
-  public static void main(String[] args) {
-    launch(args);
   }
 }

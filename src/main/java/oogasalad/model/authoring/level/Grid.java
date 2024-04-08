@@ -17,7 +17,7 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
 
   private final BlockTypeManager blockTypeManager;
   private final Block[][] cells;
-  private List<Observer<Grid>> observers;
+  private final List<Observer<Grid>> observers;
 
   /**
    * Grid constructor. Initialized with number of rows and number of columns.

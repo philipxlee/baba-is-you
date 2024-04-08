@@ -24,7 +24,7 @@ public class FlagTextBlock extends AbstractTextBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return Arrays.asList("NOUN");
+    return List.of("NOUN");
   }
 
 }
