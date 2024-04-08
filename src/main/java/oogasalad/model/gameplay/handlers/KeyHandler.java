@@ -27,9 +27,7 @@ public abstract class KeyHandler {
         grid.checkBehaviors();
         List<int[]> controllableBlockPositions = grid.findControllableBlock();
         if (!controllableBlockPositions.isEmpty()){
-          for(int[] element : controllableBlockPositions){
-            moveBlock(element[0], element[1], element[2], deltaI, deltaJ);
-          }
+            controllableBlockPositions.stream().forEach(element -> moveBlock(element[0], element[1], element[2], deltaI, deltaJ));
         } else {
           gameOverController.displayGameOver(false);
         }
@@ -80,7 +78,7 @@ public abstract class KeyHandler {
         int nextJ = currentJ + deltaJ;
         //move all the pushable stuffs into the next cell
         List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
-        for(int w = 0; w< indicesToMove.size(); w++){
+        for(int w = 0; w< indicesToMove.size(); w++){ //cannot use forEACh in stream, does not guarantee order
             int index = indicesToMove.get(w);
             grid.moveBlock(currentI, currentJ, index, nextI, nextJ);
         }
@@ -90,13 +88,12 @@ public abstract class KeyHandler {
     }
 
 
-
-
   private void nextIsWinningBlock(int nextI, int nextJ){
     if (grid.cellHasWinning(nextI, nextJ)){
       gameOverController.displayGameOver(true);
     }
   }
+
   private boolean isValidMove(int i, int j, int k){
     return grid.isNotOutOfBounds(i, j);
   }
