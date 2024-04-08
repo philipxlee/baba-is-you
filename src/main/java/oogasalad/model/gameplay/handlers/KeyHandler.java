@@ -31,8 +31,9 @@ public abstract class KeyHandler {
         } else {
           gameOverController.displayGameOver(false);
         }
-      grid.checkForRules();
-      grid.notifyObserver();
+        grid.checkForRules();
+        grid.checkBehaviors();
+        grid.notifyObserver();
     }
     private void moveBlock(int i, int j, int k, int deltaI, int deltaJ){
         int nextI = i + deltaI;
@@ -44,12 +45,13 @@ public abstract class KeyHandler {
         calculateLength(i, j, k, deltaI, deltaJ) //calculates length to move and calls perfrom movement on the length
                 .ifPresent(length -> performMovement(i, j, k, deltaI, deltaJ, length));
 
+      grid.checkForRules();
+      grid.checkBehaviors();
+      grid.notifyObserver();
     }
 
     private Optional<Integer> calculateLength(int i, int j, int k, int deltaI, int deltaJ) {
         int length = 1;
-
-
         while (true) {
             int nextI = i + length * deltaI; //gets next cell
             int nextJ = j + length * deltaJ; // gets next cell
@@ -83,6 +85,9 @@ public abstract class KeyHandler {
       }
       // Move controllable block last
       grid.moveBlock(i, j, k, i+deltaI, j+deltaJ);
+      grid.checkForRules();
+      grid.checkBehaviors();
+      grid.notifyObserver();
     }
 
 
