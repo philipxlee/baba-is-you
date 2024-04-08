@@ -14,7 +14,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
  */
 public abstract class AbstractBlock {
 
-  private static final List<String> grammarType = new ArrayList<>();
+  public static final List<String> grammarType = new ArrayList<>();
 
   /**
    * Indicates whether this block is a text block. By default, a block is not a text block.

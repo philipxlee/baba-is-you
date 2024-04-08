@@ -129,10 +129,8 @@ public class Grid implements Observable<Grid> {
   }
 
   public boolean cellHasStoppable(int i, int j){
-    //return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Stoppable.class));
-    for(AbstractBlock block : grid[i][j]){
-      if(block.hasBehavior(Stoppable.class)){
-        System.out.print("cell has stoppable!");
+    for (AbstractBlock block : grid[i][j]) {
+      if (block.hasBehavior(Stoppable.class)) {
         return true;
       }
     }
@@ -211,7 +209,7 @@ public class Grid implements Observable<Grid> {
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"BabaVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock", "BabaVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"FlagTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
