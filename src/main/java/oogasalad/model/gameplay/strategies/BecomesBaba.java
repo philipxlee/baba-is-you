@@ -8,6 +8,7 @@ public class BecomesBaba implements Strategy {
 
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
+    System.out.println("Becoming Baba");
     updater.updateBlock(i, j, k, "BabaVisualBlock");
   }
 
