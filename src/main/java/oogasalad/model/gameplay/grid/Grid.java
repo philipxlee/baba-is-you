@@ -137,12 +137,14 @@ public class Grid implements Observable<Grid> {
   private final RuleInterpreter parser;
   private final BlockFactory factory;
   private final BlockUpdater blockUpdater;
+  private final String[][][] initialConfiguration;
 
-  public Grid(int rows, int cols) throws InvalidBlockName {
+  public Grid(int rows, int cols, String[][][] initialConfiguration) throws InvalidBlockName {
     this.grid = new ArrayList[rows][cols];
     this.parser = new RuleInterpreter();
     this.factory = new BlockFactory();
     this.blockUpdater = new BlockUpdater(this, factory);
+    this.initialConfiguration = initialConfiguration; // Initialize initial configuration
     InitializeGrid();
   }
 
@@ -219,7 +221,6 @@ public class Grid implements Observable<Grid> {
       return true;
     }
     if (!isMovingToMargin(endI, endJ)) {
-      //we are not moving to margin
       return true;
     }
     if ((endI == grid.length - 1 || endI == 0)) {
