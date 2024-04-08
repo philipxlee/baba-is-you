@@ -32,5 +32,4 @@ public interface Strategy {
    */
   boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy);
 
-  public abstract String toString();
 }

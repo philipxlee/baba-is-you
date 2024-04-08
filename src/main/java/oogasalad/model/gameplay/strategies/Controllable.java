@@ -22,10 +22,8 @@ public class Controllable implements Strategy {
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
 
   }
-  @Override
-  public String toString(){
-    return "Controllable";
-  }
+
+
   @Override
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
     return false;

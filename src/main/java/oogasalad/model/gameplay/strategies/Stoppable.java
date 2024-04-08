@@ -21,10 +21,6 @@ public class Stoppable implements Strategy {
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
 
   }
-  @Override
-  public String toString(){
-    return "Stoppable";
-  }
 
   @Override
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {

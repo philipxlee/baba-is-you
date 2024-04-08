@@ -17,8 +17,4 @@ public class BecomesWall implements Strategy {
     return false;
   }
 
-  @Override
-  public String toString(){
-    return "BecomesWall";
-  }
 }

@@ -17,9 +17,5 @@ public class BecomesEmpty implements Strategy {
     return false;
   }
 
-  @Override
-  public String toString(){
-    return "BecomesEmpty";
-  }
 }
 
