@@ -93,9 +93,8 @@ public abstract class KeyHandler {
 
 
   private void nextIsWinningBlock(int nextI, int nextJ){
-    if(grid.cellHasWinning(nextI, nextJ)){
-      System.out.println("Game over, you won!");
-      System.exit(0);
+    if (grid.cellHasWinning(nextI, nextJ)){
+      gameOverController.displayGameOver(true);
     }
   }
   private boolean isValidMove(int i, int j, int k){

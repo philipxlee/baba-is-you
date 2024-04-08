@@ -34,7 +34,7 @@ public class Grid implements Observable<Grid> {
   public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ){
     grid[ToI][ToJ].add(grid[fromI][fromJ].get(fromK));
     grid[fromI][fromJ].remove(fromK);
-    if(grid[fromI][fromJ].size() == 0) {
+    if(grid[fromI][fromJ].isEmpty()) {
       setBlock(fromI, fromJ, 0, "EmptyVisualBlock");
     }
   }
