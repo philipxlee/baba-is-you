@@ -2,7 +2,6 @@ package oogasalad.model.gameplay.blocks.textblocks;
 
 import java.util.Arrays;
 import java.util.List;
-import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "push" property.
@@ -25,6 +24,6 @@ public class PushTextBlock extends AbstractTextBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return Arrays.asList("PROPERTY");
+    return List.of("PROPERTY");
   }
 }

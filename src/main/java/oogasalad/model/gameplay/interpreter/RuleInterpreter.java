@@ -101,7 +101,8 @@ public class RuleInterpreter {
    * @param blockName The name of blocks the visitor is applied to.
    * @param grid      The game grid, a two-dimensional array of lists of AbstractBlocks.
    */
-  private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName, List<AbstractBlock>[][] grid) {
+  private void applyVisitorToMatchingBlocks(BlockVisitor visitor, String blockName,
+      List<AbstractBlock>[][] grid) {
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> cell : row) {
         cell.stream()

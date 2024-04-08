@@ -5,11 +5,12 @@ import oogasalad.model.gameplay.grid.Grid;
 
 public class DownKeyHandler extends KeyHandler {
 
-    public DownKeyHandler(Grid grid, GameOverController gameOverController){
-        super(grid, gameOverController);
-    }
-    @Override
-    public void execute(){
-        handleKeyPress(1, 0);
-    }
+  public DownKeyHandler(Grid grid, GameOverController gameOverController) {
+    super(grid, gameOverController);
+  }
+
+  @Override
+  public void execute() {
+    handleKeyPress(1, 0);
+  }
 }

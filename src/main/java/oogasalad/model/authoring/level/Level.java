@@ -12,9 +12,9 @@ import oogasalad.shared.observer.Observer;
  */
 public class Level implements Observable<Level> {
 
-  private Grid grid;
-  private LevelMetadata levelMetadata;
-  private List<Observer<Level>> observers;
+  private final Grid grid;
+  private final LevelMetadata levelMetadata;
+  private final List<Observer<Level>> observers;
 
   /**
    * Level Constructor. Initialized with LevelMetadata record and BlockTypeManager

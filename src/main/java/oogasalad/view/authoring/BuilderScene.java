@@ -1,7 +1,6 @@
 package oogasalad.view.authoring;
 
 import java.io.File;
-
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -14,8 +13,8 @@ import javafx.scene.layout.Pane;
 public class BuilderScene {
 
   private Pane root; // Your root node for the builder scene
-  private int gridSize = 5; // Set the grid size
-  private int cellSize = 100; // Set the cell size
+  private final int gridSize = 5; // Set the grid size
+  private final int cellSize = 100; // Set the cell size
   private GridPane gridPane;
 
   public BuilderScene() {
