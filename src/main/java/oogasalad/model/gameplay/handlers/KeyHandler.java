@@ -70,23 +70,25 @@ public abstract class KeyHandler {
   private Optional<Integer> calculateLength(int i, int j, int k, int deltaI, int deltaJ) {
     int length = 1;
 
-    while (true) {
-      int nextI = i + length * deltaI; //gets next cell
-      int nextJ = j + length * deltaJ; // gets next cell
-      if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ)) {
-        length++;
-      } else {
-        break;
-      }
-    }
 
-    int endI = i + length * deltaI;
-    int endJ = j + length * deltaJ;
-    if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)) {
-      return Optional.empty(); // No space to move the chain
-    }
-    System.out.println("length of things to push is " + length);
-    return Optional.of(length);
+      while (true) {
+          int nextI = i + length * deltaI; //gets next cell
+          int nextJ = j + length * deltaJ; // gets next cell
+
+          if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ) && !grid.cellHasStoppable(nextI, nextJ)) {
+              length++;
+          } else {
+              break;
+          }
+      }
+
+      int endI = i + length * deltaI;
+      int endJ = j + length * deltaJ;
+      if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k) || grid.cellHasStoppable(endI, endJ)) {
+          return Optional.empty(); // No space to move the chain
+      }
+      System.out.println("length of things to push is " + length);
+      return Optional.of(length);
   }
 
 

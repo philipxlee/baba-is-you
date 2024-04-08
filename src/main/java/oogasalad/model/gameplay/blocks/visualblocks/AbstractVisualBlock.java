@@ -45,6 +45,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    */
   @Override
   public boolean hasBehavior(Class<? extends Strategy> behaviorType) {
+    //System.out.println(behaviors.stream().anyMatch(behaviorType::isInstance));
     return behaviors.stream().anyMatch(behaviorType::isInstance);
   }
 
