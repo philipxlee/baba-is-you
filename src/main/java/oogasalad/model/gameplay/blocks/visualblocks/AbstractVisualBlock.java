@@ -2,8 +2,11 @@ package oogasalad.model.gameplay.blocks.visualblocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import oogasalad.model.authoring.block.Block;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.grid.BlockUpdater;
+import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
@@ -85,31 +88,15 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Executes all behaviors associated with this block, based on the provided direction and grid context.
-   *
+   * Executes all behaviors associated with this block, based on the provided direction and grid
+   * context. This method is typically called by the grid to update the block's state, e.g. turning
+   * an empty block into a wall.
    */
   @Override
-  public void executeBehaviors() {
+  public void executeBehaviors(Grid grid, BlockUpdater updater, int i, int j, int k) {
     for (Strategy behavior : behaviors) {
-      behavior.execute(this);
+      behavior.execute(grid, updater, i, j, k);
     }
-  }
-  public List<Strategy> getBehaviors() {
-    return behaviors;
-  }
-  @Override
-  public String behaviorsToString() {
-    StringBuilder stringBuilder = new StringBuilder();
-    for (Strategy behavior : behaviors) {
-      stringBuilder.append(behavior.toString()).append(", ");
-    }
-
-    // Remove the trailing ", " if there are behaviors
-    if (stringBuilder.length() > 0) {
-      stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-    }
-
-    return stringBuilder.toString();
   }
 
 }

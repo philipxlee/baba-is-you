@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.grid.BlockUpdater;
+import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
@@ -77,7 +79,7 @@ public abstract class AbstractBlock {
    * Executes the block's behaviors. By default, there are no behaviors to execute.
    * Blocks with executable behaviors should override this method.
    */
-  public void executeBehaviors() {
+  public void executeBehaviors(Grid grid, BlockUpdater updater, int i, int j, int k) {
     // Default implementation is intentionally left blank.
   }
 
@@ -90,7 +92,5 @@ public abstract class AbstractBlock {
   public List<String> getBlockGrammar() {
     return grammarType;
   }
-
-  public abstract String behaviorsToString();
 
 }
