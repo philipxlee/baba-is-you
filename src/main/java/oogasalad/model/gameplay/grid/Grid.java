@@ -150,7 +150,7 @@ public class Grid implements Observable<Grid> {
     boolean hasPushable = false;
     boolean textBlock = false;
     for(AbstractBlock block : grid[i][j]){
-      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock") && !block.getBlockName().equals("WallVisualBlock"))){
+      if(block.getBlockName().endsWith("TextBlock")){
         textBlock = true;
       }
       if (block.hasBehavior(Pushable.class)){
