@@ -24,6 +24,6 @@ public class RockTextBlock extends AbstractTextBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return List.of("NOUN");
+    return List.of("NOUN", "PROPERTY");
   }
 }
