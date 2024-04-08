@@ -145,7 +145,7 @@ public class Grid implements Observable<Grid> {
     boolean hasPushable = false;
     boolean textBlock = false;
     for(AbstractBlock block : grid[i][j]){
-      if(block.getBlockName().endsWith("TextBlock")){
+      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock"))){
         textBlock = true;
       }
       if (block.hasBehavior(Pushable.class)){
@@ -164,7 +164,7 @@ public class Grid implements Observable<Grid> {
     List<Integer> indicesList = new ArrayList<>();
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
-      if (block.getBlockName().endsWith("TextBlock") || block.hasBehavior(Pushable.class)) {
+      if (block.getBlockName().endsWith("TextBlock") || block.hasBehavior(Pushable.class) || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock"))) {
         indicesList.add(index);
       }
     }
