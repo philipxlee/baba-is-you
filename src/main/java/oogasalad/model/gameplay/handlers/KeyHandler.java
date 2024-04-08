@@ -20,6 +20,7 @@ public abstract class KeyHandler {
     public abstract void execute();
     protected void handleKeyPress(int deltaI, int deltaJ){
         grid.checkBehaviors();
+        grid.checkForRules();
         List<int[]> controllableBlockPositions = grid.findControllableBlock();
         if(controllableBlockPositions.get(0) != null){
             for(int[] element : controllableBlockPositions){
@@ -35,8 +36,8 @@ public abstract class KeyHandler {
         if(!isValidMove(nextI, nextJ, k)){
             return;
         }
-        nextIsWinningBlock(nextI, nextJ, k);
-        calculateLength(i, j, k, deltaI, deltaJ)
+        nextIsWinningBlock(nextI, nextJ);
+        calculateLength(i, j, k, deltaI, deltaJ) //calculates length to move and calls perfrom movement on the length
                 .ifPresent(length -> performMovement(i, j, k, deltaI, deltaJ, length));
 
     }
@@ -49,13 +50,12 @@ public abstract class KeyHandler {
             int nextJ = currentJ + deltaJ;
             //move all the pushable stuffs into the next cell
             List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
-            indicesToMove.forEach(index -> grid.moveBlock(currentI, currentJ, index, nextI, nextJ));
+            for (Integer index : indicesToMove) {
+                grid.moveBlock(currentI, currentJ, index, nextI, nextJ);
+            }
         }
         // Move controllable block last
         grid.moveBlock(i, j, k, i+deltaI, j+deltaJ);
-        if(grid.getGrid()[i][j].size() == 0) {
-            grid.setBlock(i, j, k, "EmptyVisualBlock");
-        }
     }
 
     private Optional<Integer> calculateLength(int i, int j, int k, int deltaI, int deltaJ) {
@@ -64,7 +64,7 @@ public abstract class KeyHandler {
         while (true) {
             int nextI = i + length * deltaI; //gets next cell
             int nextJ = j + length * deltaJ; // gets next cell
-            if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ)) {
+            if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ) && !grid.cellHasStoppable(nextI, nextJ)) {
                 length++;
             } else {
                 break;
@@ -76,11 +76,11 @@ public abstract class KeyHandler {
         if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)) {
             return Optional.empty(); // No space to move the chain
         }
+        System.out.println("length of things to push is " + length);
         return Optional.of(length);
     }
-    private void nextIsWinningBlock(int nextI, int nextJ, int k){
-        AbstractBlock nextBlock = grid.getBlock(nextI, nextJ, k);
-        if (nextBlock != null && nextBlock.hasBehavior(Winnable.class)) {
+    private void nextIsWinningBlock(int nextI, int nextJ){
+        if(grid.cellHasWinning(nextI, nextJ)){
             System.out.println("Game over, you won!");
             System.exit(0);
         }
