@@ -33,14 +33,10 @@ public class Grid implements Observable<Grid> {
   }
   public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ){
     grid[ToI][ToJ].add(grid[fromI][fromJ].get(fromK));
-    System.out.println("is the issue in Grid.moveBlock? ");
     grid[fromI][fromJ].remove(fromK);
-    System.out.println("ran .remove ");
     if(grid[fromI][fromJ].isEmpty()) {
-      System.out.println("about to run setBlock ");
       addBlock(fromI, fromJ, "EmptyVisualBlock");
     }
-    System.out.println("NOPE");
   }
   private void addBlock(int i, int j, String BlockType){
     grid[i][j].add (factory.createBlock(BlockType));
@@ -101,24 +97,33 @@ public class Grid implements Observable<Grid> {
     if(already_in_margin){
       return true;
     }
+    if(!isMovingToMargin(endI, endJ)){
+      //we are not moving to margin
+      return true;
+    }
     if((endI == grid.length -1 || endI == 0)){
       int indexI;
       indexI = (endI == 0) ? endI + 1 : endI - 1;
 
-      return grid[indexI][endJ].get(controllableinitialK).hasBehavior(Controllable.class);
+      //return grid[indexI][endJ].get(controllableinitialK).hasBehavior(Controllable.class);
+      return grid[indexI][endJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
     }
     else if ((endJ == grid[0].length -1 || endJ == 0)){
       int indexJ;
       indexJ = (endJ == 0) ? endJ + 1 : endJ -1;
-      return grid[endI][indexJ].get(controllableinitialK).hasBehavior(Controllable.class);
+      //return grid[endI][indexJ].get(controllableinitialK).hasBehavior(Controllable.class);
+      return grid[endI][indexJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
     }
     else{
-      return true;
+      return false;
     }
   }
 
   private boolean isAlreadyInMargin(int i, int j){
     return ((i == grid.length -1 || i == 0) || (j == grid[0].length -1 || j == 0));
+  }
+  private boolean isMovingToMargin(int nextI, int nextJ){
+    return ((nextI == grid.length -1 || nextI == 0) || (nextJ == grid[0].length -1 || nextJ == 0));
   }
 
   public void checkBehaviors(){
@@ -145,14 +150,13 @@ public class Grid implements Observable<Grid> {
     boolean hasPushable = false;
     boolean textBlock = false;
     for(AbstractBlock block : grid[i][j]){
-      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock"))){
+      if(block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock") && !block.getBlockName().equals("WallVisualBlock"))){
         textBlock = true;
       }
       if (block.hasBehavior(Pushable.class)){
         hasPushable = true;
       }
     }
-    //System.out.printf("hasPushable returned " + hasPushable + " and textBlock returned " + textBlock);
     return hasPushable || textBlock;
   }
 
@@ -164,7 +168,7 @@ public class Grid implements Observable<Grid> {
     List<Integer> indicesList = new ArrayList<>();
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
-      if (block.getBlockName().endsWith("TextBlock") || block.hasBehavior(Pushable.class) || (block.getBlockName().endsWith("VisualBlock") && !block.hasBehavior(Stoppable.class) && !block.getBlockName().equals("EmptyVisualBlock"))) {
+      if (block.getBlockName().endsWith("TextBlock") || (block.getBlockName().endsWith("VisualBlock") && !block.getBlockName().equals("EmptyVisualBlock") && !block.getBlockName().equals("WallVisualBlock"))) {
         indicesList.add(index);
       }
     }

@@ -57,6 +57,7 @@ public abstract class KeyHandler {
             int nextJ = j + length * deltaJ; // gets next cell
             if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ) && !grid.cellHasStoppable(nextI, nextJ)) {
                 length++;
+                System.out.println("length is: " + length);
             } else {
                 break;
             }
@@ -67,31 +68,25 @@ public abstract class KeyHandler {
         if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k) || grid.cellHasStoppable(endI, endJ)) {
             return Optional.empty(); // No space to move the chain
         }
-        System.out.println("length of things to push is " + length);
         return Optional.of(length);
     }
 
     private void performMovement(int i, int j, int k, int deltaI, int deltaJ, int length) {
       // Move all blocks
       for (int m = length - 1; m > 0; m--) {
-          System.out.println("m is: " + m);
         int currentI = i + m * deltaI;
         int currentJ = j + m * deltaJ;
         int nextI = currentI + deltaI;
         int nextJ = currentJ + deltaJ;
         //move all the pushable stuffs into the next cell
         List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
-        System.out.println("Size of indicesToMove is : " + indicesToMove.size());
         for(int w = 0; w< indicesToMove.size(); w++){
             int index = indicesToMove.get(w);
-            System.out.println("element " + w + " in indicesToMove has index " + index );
             grid.moveBlock(currentI, currentJ, index, nextI, nextJ);
         }
       }
       // Move controllable block last
-        System.out.println("Is the issue here? ");
       grid.moveBlock(i, j, k, i+deltaI, j+deltaJ);
-        System.out.println("No ran it fine ");
     }
 
 
