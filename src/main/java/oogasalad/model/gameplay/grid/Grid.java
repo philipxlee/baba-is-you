@@ -220,7 +220,7 @@ public class Grid implements Observable<Grid> {
       },
       {
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"PushTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
       },
@@ -251,7 +251,7 @@ public class Grid implements Observable<Grid> {
       {
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
         {"IsTextBlock"}, {"YouTextBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+        {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"PushTextBlock"}, {"EmptyVisualBlock"},
         {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}
       },
       {
