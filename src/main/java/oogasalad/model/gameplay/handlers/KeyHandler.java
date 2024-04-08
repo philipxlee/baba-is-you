@@ -73,7 +73,7 @@ public abstract class KeyHandler {
     while (true) {
       int nextI = i + length * deltaI; //gets next cell
       int nextJ = j + length * deltaJ; // gets next cell
-      if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ) && !grid.cellHasStoppable(nextI, nextJ)) {
+      if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ)) {
         length++;
       } else {
         break;
