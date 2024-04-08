@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -75,7 +76,7 @@ public class BuilderScene {
 
   private ImageView createBlockView(String blockType) {
     String imagePath =
-        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+            "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
     File imageFile = new File(imagePath);
     if (!imageFile.exists()) {
       System.err.println("Image file not found: " + imagePath);
@@ -88,7 +89,7 @@ public class BuilderScene {
   private void setUpGrid() {
     gridPane.getChildren().clear(); // Clear the existing grid
 
-    // Adjust the maximum width and height available for the grid, accounting for margins
+    // Calculate the available width and height for the grid, accounting for margins
     double availableWidth = root.getWidth() - 2 * GRID_MARGIN;
     double availableHeight = root.getHeight() - 2 * GRID_MARGIN;
 
@@ -96,7 +97,7 @@ public class BuilderScene {
     double calculatedCellSize = Math.min(availableWidth / gridWidth, availableHeight / gridHeight);
     this.cellSize = (int) calculatedCellSize;
 
-    // Calculate total size of the grid
+    // Calculate the total size of the grid
     double totalGridWidth = gridWidth * cellSize;
     double totalGridHeight = gridHeight * cellSize;
 
@@ -140,16 +141,17 @@ public class BuilderScene {
         if (blockView != null) {
           Point2D cellCoords = getCellCoordinates(event.getX(), event.getY());
           if (cellCoords != null) {
-            // Calculate the scaling factor for the block to fit in the cell
-            double scalingFactor = Math.min(cellSize / blockView.getImage().getWidth(), cellSize / blockView.getImage().getHeight());
-            blockView.setFitWidth(blockView.getImage().getWidth() * scalingFactor);
-            blockView.setFitHeight(blockView.getImage().getHeight() * scalingFactor);
+            // Calculate the position to align the block with the top-left corner of the cell
+            double blockX = cellCoords.getX();
+            double blockY = cellCoords.getY();
 
-            // Adjust block position to align with cell
-            double offsetX = (cellSize - blockView.getFitWidth()) / 2;
-            double offsetY = (cellSize - blockView.getFitHeight()) / 2;
-            blockView.setLayoutX(cellCoords.getX() + offsetX);
-            blockView.setLayoutY(cellCoords.getY() + offsetY);
+            // Set the size of the block to match the size of the cell
+            blockView.setFitWidth(cellSize);
+            blockView.setFitHeight(cellSize);
+
+            // Set the position of the block within the cell
+            blockView.setLayoutX(blockX);
+            blockView.setLayoutY(blockY);
 
             root.getChildren().add(blockView);
             success = true;
@@ -161,23 +163,25 @@ public class BuilderScene {
     });
   }
 
-
   private Point2D getCellCoordinates(double x, double y) {
-    for (int i = 0; i < gridWidth; i++) {
-      for (int j = 0; j < gridHeight; j++) {
-        double cellX = i * cellSize + gridPane.getLayoutX();
-        double cellY = j * cellSize + gridPane.getLayoutY();
-        double cellWidth = cellSize;
-        double cellHeight = cellSize;
-
-        // Check if the coordinates (x, y) are within the bounds of this cell
-        if (x >= cellX && x <= cellX + cellWidth && y >= cellY && y <= cellY + cellHeight) {
+    for (Node node : gridPane.getChildren()) {
+      if (node instanceof Pane) {
+        Pane cell = (Pane) node;
+        Bounds boundsInRoot = cell.localToParent(cell.getBoundsInLocal());
+        if (boundsInRoot.contains(x, y)) {
+          int cellIndexX = (int) ((x - gridPane.getLayoutX() - boundsInRoot.getMinX()) / cellSize);
+          int cellIndexY = (int) ((y - gridPane.getLayoutY() - boundsInRoot.getMinY()) / cellSize);
+          double cellX = gridPane.getLayoutX() + boundsInRoot.getMinX() + cellIndexX * cellSize;
+          double cellY = gridPane.getLayoutY() + boundsInRoot.getMinY() + cellIndexY * cellSize;
+//          double cellX = cell.getBoundsInParent().getMinX() + gridPane.getLayoutX();
+//          double cellY = cell.getBoundsInParent().getMinY() + gridPane.getLayoutY();
           return new Point2D(cellX, cellY);
         }
       }
     }
     return null; // Coordinates (x, y) do not fall within any cell
   }
+
 
   public Pane getRoot() {
     return root;
