@@ -4,14 +4,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
+
 
 public class ElementsScene {
 
@@ -19,8 +26,10 @@ public class ElementsScene {
   private MainScene scene;
   private VBox layout;
   private VBox blocksContainer;
+  private BuilderScene builderScene;
 
-  public ElementsScene() {
+  public ElementsScene(BuilderScene builderScene) {
+    this.builderScene = builderScene;
     initializeElementsLayout();
   }
 
@@ -28,13 +37,13 @@ public class ElementsScene {
     this.layout = new VBox(10); // Adjust spacing as needed
     this.blocksContainer = new VBox(10); // Space between images
     loadBlocksFromDirectory();
+    Button changeGridSizeButton = new Button("Change Grid Size");
+    changeGridSizeDialog(changeGridSizeButton);
     this.scrollPane = new ScrollPane(blocksContainer);
     scrollPane.setFitToWidth(true);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-    Button exampleButton = new Button("Example Button");
-
-    layout.getChildren().addAll(exampleButton, scrollPane);
+    layout.getChildren().addAll(changeGridSizeButton, scrollPane);
     VBox.setVgrow(scrollPane, Priority.ALWAYS); // Allow the scroll pane to grow and fill space
   }
 
@@ -97,4 +106,70 @@ public class ElementsScene {
       event.consume();
     });
   }
+
+  private void changeGridSizeDialog(Button button) {
+    button.setOnAction(event -> {
+      // Create the custom dialog.
+      Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
+      dialog.setTitle("Change Grid Size");
+
+      // Set the button types.
+      ButtonType confirmButtonType = ButtonType.OK;
+      dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
+
+      // Create the width and height labels and fields.
+      GridPane grid = new GridPane();
+      grid.setHgap(10);
+      grid.setVgap(10);
+
+      TextField widthField = new TextField();
+      widthField.setPromptText("Width");
+      TextField heightField = new TextField();
+      heightField.setPromptText("Height");
+
+      grid.add(new Label("Width:"), 0, 0);
+      grid.add(widthField, 1, 0);
+      grid.add(new Label("Height:"), 0, 1);
+      grid.add(heightField, 1, 1);
+
+      // Enable/Disable confirm button depending on whether a width and height were entered.
+      Button confirmButton = (Button) dialog.getDialogPane().lookupButton(confirmButtonType);
+      confirmButton.setDisable(true);
+
+      // Do some validation (using the Java 8 lambda syntax).
+      widthField.textProperty().addListener((observable, oldValue, newValue) -> {
+        confirmButton.setDisable(
+            newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
+      });
+      heightField.textProperty().addListener((observable, oldValue, newValue) -> {
+        confirmButton.setDisable(
+            newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
+      });
+
+      dialog.getDialogPane().setContent(grid);
+
+      // Convert the result to a pair of width and height when the confirm button is clicked.
+      dialog.setResultConverter(dialogButton -> {
+        if (dialogButton == confirmButtonType) {
+          try {
+            int width = Integer.parseInt(widthField.getText());
+            int height = Integer.parseInt(heightField.getText());
+            return new Pair<>(width, height);
+          } catch (NumberFormatException e) {
+            // Handle the case where one or both of the inputs are not valid integers
+            return null;
+          }
+        }
+        return null;
+      });
+
+      dialog.showAndWait().ifPresent(pair -> {
+        int width = pair.getKey();
+        int height = pair.getValue();// Assuming width and height are the same for a grid
+        // Assuming builderScene is a reference to your BuilderScene instance
+        builderScene.updateGridSize(width, height);
+      });
+    });
+  }
+
 }
