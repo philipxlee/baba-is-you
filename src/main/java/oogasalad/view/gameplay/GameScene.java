@@ -105,7 +105,6 @@ public class GameScene implements Observer<Grid> {
     }
   }
 
-
   private void renderGrid() {
     root.getChildren().clear();
     List<AbstractBlock>[][] grid = gameGrid.getGrid();
