@@ -1,26 +1,19 @@
 package oogasalad.view.authoring;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
-import oogasalad.view.authoring.MainScene;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ElementsScene {
 
@@ -38,35 +31,54 @@ public class ElementsScene {
     initializeElementsLayout();
   }
 
-
-
   private void initializeElementsLayout() {
-    this.layout = new VBox(10); // Adjust spacing as needed
-    this.blocksContainer = new VBox(10); // Space between images
+    layout = new VBox(10); // Adjust spacing as needed
+
+    // Load the "babaisyou" block image
+    ImageView babaisyouImage = loadImageFromDirectory("BabaIsYouHeader",300,300);
+
+    // Set the "babaisyou" block image as the graphic for the titleLabel
+    Label titleLabel = new Label();
+    titleLabel.setGraphic(babaisyouImage);
+    titleLabel.setContentDisplay(ContentDisplay.CENTER);
+    titleLabel.setAlignment(Pos.CENTER);
+
+    // Add descriptive text
+    Label descriptionLabel = new Label("Drag blocks from this panel:");
+    descriptionLabel.setStyle("-fx-font-size: 14pt;");
+
+    // Create a container for blocks
+    blocksContainer = new VBox(10); // Space between images
     loadBlocksFromDirectory();
+
+    // Button for changing grid size
     Button changeGridSizeButton = new Button("Change Grid Size");
     changeGridSizeDialog(changeGridSizeButton);
 
+    // Button for toggling remove mode
     Button removeButton = new Button("Remove block");
-
     removeButton.setOnAction(event -> {
-      if (removeMode == false) {
+      removeMode = !removeMode;
+      if (removeMode) {
         removeButton.setText("Removing mode: Press blocks to remove");
-        removeMode = true;
-        builderScene.setRemove(removeMode);
       } else {
         removeButton.setText("Remove block");
-        removeMode = false;
-        builderScene.setRemove(removeMode);
       }
+      builderScene.setRemove(removeMode);
     });
 
-
-    this.scrollPane = new ScrollPane(blocksContainer);
+    // Scroll pane for blocks container
+    scrollPane = new ScrollPane(blocksContainer);
     scrollPane.setFitToWidth(true);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-    layout.getChildren().addAll(changeGridSizeButton, scrollPane, removeButton);
+    // Set background color
+    layout.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null)));
+    scrollPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null)));
+    blocksContainer.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null)));
+
+    // Add components to layout
+    layout.getChildren().addAll(titleLabel, changeGridSizeButton, removeButton, descriptionLabel, scrollPane);
     VBox.setVgrow(scrollPane, Priority.ALWAYS); // Allow the scroll pane to grow and fill space
   }
 
@@ -108,7 +120,7 @@ public class ElementsScene {
     try {
       File imageFile = new File(directory, blockName + ".png");
       ImageView imageView = new ImageView(
-          new Image(imageFile.toURI().toString(), 100, 100, true, true));
+              new Image(imageFile.toURI().toString(), 100, 100, true, true));
       imageView.setFitWidth(100); // Set the image width to 100 for a square shape
       imageView.setFitHeight(100); // Set the image height to 100 for a square shape
       imageView.setPreserveRatio(true);
@@ -119,6 +131,22 @@ public class ElementsScene {
     }
   }
 
+  private ImageView loadImageFromDirectory(String imageName, double width, double height) {
+    String directoryPath = "src/main/resources/images";
+    File selectedDirectory = new File(directoryPath);
+    if (selectedDirectory.exists() && selectedDirectory.isDirectory()) {
+      File imageFile = new File(selectedDirectory, imageName + ".png");
+      if (imageFile.exists()) {
+        Image image = new Image(imageFile.toURI().toString(), width, height, true, true);
+        return new ImageView(image);
+      } else {
+        System.err.println("Image file not found: " + imageName);
+      }
+    } else {
+      System.err.println("Directory not found or is not a valid directory.");
+    }
+    return null;
+  }
 
   private void makeDraggable(ImageView imageView, String blockType) {
     imageView.setOnDragDetected(event -> {
@@ -163,11 +191,11 @@ public class ElementsScene {
       // Do some validation (using the Java 8 lambda syntax).
       widthField.textProperty().addListener((observable, oldValue, newValue) -> {
         confirmButton.setDisable(
-            newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
+                newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
       });
       heightField.textProperty().addListener((observable, oldValue, newValue) -> {
         confirmButton.setDisable(
-            newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
+                newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
       });
 
       dialog.getDialogPane().setContent(grid);
@@ -195,5 +223,8 @@ public class ElementsScene {
       });
     });
   }
-
 }
+
+
+
+
