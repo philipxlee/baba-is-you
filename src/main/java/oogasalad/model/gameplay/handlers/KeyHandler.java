@@ -65,7 +65,7 @@ public abstract class KeyHandler {
     int endI = i + length * deltaI;
     int endJ = j + length * deltaJ;
     if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)
-        || grid.cellHasStoppable(endI, endJ)) {
+        || grid.cellHasStoppable(endI, endJ) || grid.cellHasControllable(endI, endJ)) { //last condition makes sure you cant stack controllables
       return Optional.empty(); // No space to move the chain
     }
     return Optional.of(length);
@@ -84,6 +84,7 @@ public abstract class KeyHandler {
           w++) { //cannot use forEACh in stream, does not guarantee order
         int index = indicesToMove.get(w);
         grid.moveBlock(currentI, currentJ, index, nextI, nextJ);
+        System.out.println("finished perform Movement");
       }
     }
     // Move controllable block last
