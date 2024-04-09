@@ -1,0 +1,47 @@
+{
+  "BabaTextBlock": {
+    "imagePath": "/images/BabaTextBlock.png"
+  },
+  "EmptyTextBlock": {
+    "imagePath": "/images/EmptyTextBlock.png"
+  },
+  "FlagTextBlock": {
+    "imagePath": "/images/FlagTextBlock.png"
+  },
+  "IsTextBlock": {
+    "imagePath": "/images/IsTextBlock.png"
+  },
+  "PushTextBlock": {
+    "imagePath": "/images/PushTextBlock.png"
+  },
+  "RockTextBlock": {
+    "imagePath": "/images/RockTextBlock.png"
+  },
+  "StopTextBlock": {
+    "imagePath": "/images/StopTextBlock.png"
+  },
+  "WallTextBlock": {
+    "imagePath": "/images/WallTextBlock.png"
+  },
+  "WinTextBlock": {
+    "imagePath": "/images/WinTextBlock.png"
+  },
+  "YouTextBlock": {
+    "imagePath": "/images/YouTextBlock.png"
+  },
+  "BabaVisualBlock": {
+    "imagePath": "/images/BabaVisualBlock.png"
+  },
+  "EmptyVisualBlock": {
+    "imagePath": "/images/EmptyVisualBlock.png"
+  },
+  "FlagVisualBlock": {
+    "imagePath": "/images/FlagVisualBlock.png"
+  },
+  "RockVisualBlock": {
+    "imagePath": "/images/RockVisualBlock.png"
+  },
+  "WallVisualBlock": {
+    "imagePath": "/images/WallVisualBlock.png"
+  }
+}

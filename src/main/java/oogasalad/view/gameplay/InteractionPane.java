@@ -14,7 +14,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 
-public class InteractionScene {
+public class InteractionPane {
 
   private static final Color BASE_COLOR = Color.web("#90A4AE");
   private static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
@@ -28,7 +28,8 @@ public class InteractionScene {
   private Group root;
   private MainScene scene;
 
-  public void initializeInteractionPane(int width, int height, MainScene scene) {
+  public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
+      factory) {
     this.scene = scene;
     this.root = new Group();
     root.setOnKeyPressed(this::handleKeyPress);
@@ -40,6 +41,7 @@ public class InteractionScene {
     Stop[] stops = new Stop[]{new Stop(0, start), new Stop(1, end)};
     LinearGradient linearGradient = new LinearGradient(0, 0, 0, 1, true, null, stops);
     background.setFill(linearGradient);
+    //Rectangle background = factory.interactionPanel(width, height;
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
@@ -48,7 +50,7 @@ public class InteractionScene {
     // Load and set up the header image
     HBox hbox = new HBox();
     hbox.setAlignment(Pos.CENTER);
-    InputStream inputStream = InteractionScene.class.getResourceAsStream(
+    InputStream inputStream = InteractionPane.class.getResourceAsStream(
         "/images/BabaIsYouHeader.png");
     if (inputStream != null) {
       Image image = new Image(inputStream);
@@ -113,4 +115,3 @@ public class InteractionScene {
     return this.root;
   }
 }
-

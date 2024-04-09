@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import oogasalad.model.authoring.block.Block;
-import oogasalad.model.authoring.block.BlockType;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
@@ -15,15 +14,15 @@ import oogasalad.shared.observer.Observer;
  */
 public class Grid implements Observable<Grid>, Iterable<Block> {
 
-  private final BlockTypeManager blockTypeManager;
+  private final BlockFactory blockFactory;
   private final Block[][] cells;
   private final List<Observer<Grid>> observers;
 
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
    */
-  public Grid(int rows, int cols, BlockTypeManager blockTypeManager) {
-    this.blockTypeManager = blockTypeManager;
+  public Grid(int rows, int cols, BlockFactory blockFactory) {
+    this.blockFactory = blockFactory;
     cells = new Block[rows][cols];
     observers = new ArrayList<>();
     initializeGrid();
@@ -34,10 +33,9 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
    */
   private void initializeGrid() {
     try {
-      BlockType emptyType = blockTypeManager.findBlockTypeByName("Empty");
       for (int row = 0; row < cells.length; row++) {
         for (int col = 0; col < cells[row].length; col++) {
-          cells[row][col] = new Block(emptyType);
+          cells[row][col] = blockFactory.createBlock("EmptyVisualBlock");
         }
       }
     } catch (Exception e) {
@@ -48,17 +46,16 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
   /**
    * Adds a Block of a specific type to the grid. Type must be in block type properties file.
    *
-   * @param row  Row position of new block.
-   * @param col  Column position of new block.
-   * @param name The name of the new block type.
+   * @param row       Row position of new block.
+   * @param col       Column position of new block.
+   * @param blockType The block type as a string.
    * @throws Exception Throws exception if the block type or cell position is invalid.
    */
-  public void setCell(int row, int col, String name) throws Exception {
+  public void setCell(int row, int col, String blockType) throws Exception {
     if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
       throw new Exception("Invalid Row/Col Position: " + row + " " + col);
     }
-    BlockType blockType = blockTypeManager.findBlockTypeByName(name);
-    cells[row][col] = new Block(blockType);
+    cells[row][col] = blockFactory.createBlock(blockType);
     notifyObserver();
   }
 

@@ -76,10 +76,17 @@ public class ElementsScene {
     scrollPane.setFitToWidth(true);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
+    layout.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
+    blocksContainer.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
+
     // Set background color
-    layout.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null)));
-    scrollPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null)));
-    blocksContainer.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null)));
+//    layout.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null))); // Adjust the color as needed
+//    scrollPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null))); // Adjust the color as needed
+//    blocksContainer.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null))); // Adjust the color as needed
+//    titleLabel.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null))); // Adjust the color as needed
+//    descriptionLabel.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null))); // Adjust the color as needed
+//
+
 
     // Add components to layout
     layout.getChildren().addAll(titleLabel, changeGridSizeButton, removeButton, descriptionLabel, scrollPane);

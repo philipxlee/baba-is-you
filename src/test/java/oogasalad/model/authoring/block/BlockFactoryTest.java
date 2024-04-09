@@ -9,36 +9,36 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class BlockTypeManagerTest {
+public class BlockFactoryTest {
 
   @TempDir
   Path tempDir;
 
-  String validPropertiesFilePath = "/blocktypes/blocktypes.properties";
-  String invalidPropertiesFilePath = "nonexistent.properties";
+  String validPropertiesFilePath = "/blocktypes/blocktypes.json";
+  String invalidPropertiesFilePath = "nonexistent.json";
 
   @Test
   void loadBlockTypesSuccessfully() {
-    assertDoesNotThrow(() -> new BlockTypeManager(validPropertiesFilePath));
+    assertDoesNotThrow(() -> new BlockFactory(validPropertiesFilePath));
   }
 
   @Test
   void loadBlockTypesWithInvalidPath() {
     Exception exception = assertThrows(RuntimeException.class,
-        () -> new BlockTypeManager(invalidPropertiesFilePath));
-    assertTrue(exception.getMessage().contains("Properties file not found"));
+        () -> new BlockFactory(invalidPropertiesFilePath));
+    assertTrue(exception.getMessage().contains("JSON file not found"));
   }
 
   @Test
   void findBlockTypeByNameSuccessfully() throws Exception {
-    BlockTypeManager manager = new BlockTypeManager(validPropertiesFilePath);
-    assertNotNull(manager.findBlockTypeByName("Empty"));
+    BlockFactory manager = new BlockFactory(validPropertiesFilePath);
+    assertNotNull(manager.createBlock("EmptyVisualBlock"));
   }
 
   @Test
   void findBlockTypeByNameNotFound() {
-    BlockTypeManager manager = assertDoesNotThrow(
-        () -> new BlockTypeManager(validPropertiesFilePath));
+    BlockFactory manager = assertDoesNotThrow(
+        () -> new BlockFactory(validPropertiesFilePath));
     Exception exception = assertThrows(Exception.class,
         () -> manager.findBlockTypeByName("NonexistentType"));
     assertTrue(exception.getMessage().contains("Invalid block type"));

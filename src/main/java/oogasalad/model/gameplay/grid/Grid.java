@@ -324,5 +324,18 @@ public class Grid implements Observable<Grid> {
     }
   }
 
+  public void resetAllBlocks() {
+    List<AbstractBlock>[][] grid = getGrid();
+    for (List<AbstractBlock>[] blocksRow : grid) {
+      for (List<AbstractBlock> cell : blocksRow) {
+        for (AbstractBlock block : cell) {
+          if (!block.isTextBlock()) {
+            block.resetAllBehaviors();
+          }
+        }
+      }
+    }
+  }
+
 
 }
