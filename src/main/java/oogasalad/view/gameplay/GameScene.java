@@ -71,10 +71,12 @@ public class GameScene implements Observer<Grid> {
     return pane;
   }
 
+  String [][][] empty = {};
+
   private void createGrid() {
     try {
       int n = 15;
-      this.gameGrid = new Grid(n, n);
+      this.gameGrid = new Grid(n, n, empty);
       int w = width / n;
       int h = height / n;
       cellSize = Math.min(w, h);
