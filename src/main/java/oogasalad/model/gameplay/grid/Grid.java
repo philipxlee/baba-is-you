@@ -137,12 +137,14 @@ public class Grid implements Observable<Grid> {
   private final RuleInterpreter parser;
   private final BlockFactory factory;
   private final BlockUpdater blockUpdater;
+  private final String[][][] initialConfiguration;
 
-  public Grid(int rows, int cols) throws InvalidBlockName {
+  public Grid(int rows, int cols, String[][][] initialConfiguration) throws InvalidBlockName {
     this.grid = new ArrayList[rows][cols];
     this.parser = new RuleInterpreter();
     this.factory = new BlockFactory();
     this.blockUpdater = new BlockUpdater(this, factory);
+    this.initialConfiguration = initialConfiguration; // Initialize initial configuration
     InitializeGrid();
   }
 
@@ -196,19 +198,19 @@ public class Grid implements Observable<Grid> {
   }
 
   public List<int[]> findControllableBlock() { //record class
-    List<int[]> AllControllableBlocks = new ArrayList<>();
+    List<int[]> allControllableBlocks = new ArrayList<>();
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
           if (block != null && block.hasBehavior(Controllable.class)) {
             int[] a = {i, j, k};
-            AllControllableBlocks.add(a);
+            allControllableBlocks.add(a);
           }
         }
       }
     }
-    return AllControllableBlocks;
+    return allControllableBlocks;
   }
 
   public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI,
@@ -219,7 +221,6 @@ public class Grid implements Observable<Grid> {
       return true;
     }
     if (!isMovingToMargin(endI, endJ)) {
-      //we are not moving to margin
       return true;
     }
     if ((endI == grid.length - 1 || endI == 0)) {
@@ -279,6 +280,10 @@ public class Grid implements Observable<Grid> {
       }
     }
     return hasPushable || textBlock;
+  }
+
+  public boolean cellHasControllable(int i, int j){
+    return grid[i][j].stream().anyMatch(block->block.hasBehavior(Controllable.class));
   }
 
   public boolean cellHasWinning(int i, int j) {
