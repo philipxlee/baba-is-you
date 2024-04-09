@@ -3,7 +3,7 @@ package oogasalad.model.gameplay.grid;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.strategies.Controllable;
+import oogasalad.model.gameplay.strategies.attributes.Controllable;
 
 public class GridHelper {
 

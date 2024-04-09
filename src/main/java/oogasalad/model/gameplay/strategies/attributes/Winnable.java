@@ -1,17 +1,17 @@
-package oogasalad.model.gameplay.strategies;
+package oogasalad.model.gameplay.strategies.attributes;
 
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
- * This class is a strategy that is used to control the behavior of a block. It is used to implement
- * the Strategy design pattern.
+ * Strategy for blocks that can be won by the player.
  */
-public class Controllable implements Strategy {
+public class Winnable implements Strategy {
 
   /**
-   * This method is used to execute the behavior of the block.
+   * Executes the winnable strategy.
    *
    * @param grid The grid containing the block to act upon.
    * @param i    The x-coordinate of the block to act upon.
@@ -20,12 +20,12 @@ public class Controllable implements Strategy {
    */
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
-
+    // TODO Auto-generated method stub
   }
-
 
   @Override
   public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
     return false;
   }
+
 }
