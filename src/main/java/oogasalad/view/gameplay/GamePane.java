@@ -15,6 +15,10 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
 
+/**
+ * Class that encapsulates the grid interactions from the model and displays them. Uses the Observer
+ * and Controller paradigms.
+ */
 public class GamePane implements Observer<Grid> {
 
   private int cellSize;
@@ -27,7 +31,7 @@ public class GamePane implements Observer<Grid> {
   private int height;
   private BlockViewFactory blockFactory;
   //Change below to dynamically respond to user input
-  private int n = 15;
+  private final int n = 15;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController) {

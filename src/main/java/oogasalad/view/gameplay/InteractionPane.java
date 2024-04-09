@@ -1,19 +1,19 @@
 package oogasalad.view.gameplay;
 
-import java.io.InputStream;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
+/**
+ * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
+ */
 public class InteractionPane {
 
   private static final Color BASE_COLOR = Color.web("#90A4AE");
@@ -35,35 +35,24 @@ public class InteractionPane {
     root.setOnKeyPressed(this::handleKeyPress);
     root.setOnKeyReleased(this::handleKeyRelease);
     root.setFocusTraversable(true);
-    Rectangle background = new Rectangle(0, 0, width, height);
-    Color start = Color.web("#777DA1");
-    Color end = Color.web("#9773FD");
-    Stop[] stops = new Stop[]{new Stop(0, start), new Stop(1, end)};
-    LinearGradient linearGradient = new LinearGradient(0, 0, 0, 1, true, null, stops);
-    background.setFill(linearGradient);
-    //Rectangle background = factory.interactionPanel(width, height;
+
+    Rectangle background = factory.interactionPanel(width, height);
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
     arrowKeys.setAlignment(Pos.CENTER);
 
-    // Load and set up the header image
-    HBox hbox = new HBox();
-    hbox.setAlignment(Pos.CENTER);
-    InputStream inputStream = InteractionPane.class.getResourceAsStream(
-        "/images/BabaIsYouHeader.png");
-    if (inputStream != null) {
-      Image image = new Image(inputStream);
-      ImageView imageView = new ImageView(image);
-      hbox.getChildren().add(imageView);
-    }
+    Text title = factory.generateHeader("Baba Is You");
+    HBox header = factory.wrapInHBox(title, width);
 
     // Combine the header and arrow keys into a single display layout
     VBox display = new VBox(10);
-    display.getChildren().addAll(hbox, arrowKeys);
+    display.getChildren().addAll(header, arrowKeys);
     display.setAlignment(Pos.TOP_CENTER);
+    display.prefWidth(width);
+    header.setAlignment(Pos.CENTER);
+
     root.getChildren().addAll(background, display);
-    display.setLayoutX((width - display.getBoundsInParent().getWidth()) / 2);
   }
 
   private VBox setupArrowKeys() {

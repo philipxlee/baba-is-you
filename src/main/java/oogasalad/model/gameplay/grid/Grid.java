@@ -282,8 +282,8 @@ public class Grid implements Observable<Grid> {
     return hasPushable || textBlock;
   }
 
-  public boolean cellHasControllable(int i, int j){
-    return grid[i][j].stream().anyMatch(block->block.hasBehavior(Controllable.class));
+  public boolean cellHasControllable(int i, int j) {
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
   }
 
   public boolean cellHasWinning(int i, int j) {

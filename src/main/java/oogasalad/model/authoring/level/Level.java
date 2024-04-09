@@ -19,8 +19,8 @@ public class Level implements Observable<Level> {
   /**
    * Level Constructor. Initialized with LevelMetadata record and BlockTypeManager
    *
-   * @param levelMetadata    The levelMetadata record representing the level.
-   * @param blockFactory The blockTypeManager being used in the application.
+   * @param levelMetadata The levelMetadata record representing the level.
+   * @param blockFactory  The blockTypeManager being used in the application.
    */
   public Level(LevelMetadata levelMetadata, BlockFactory blockFactory) {
     this.levelMetadata = levelMetadata;

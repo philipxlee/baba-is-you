@@ -57,7 +57,8 @@ public class GridTest {
   @Test
   public void testSetCellWithInvalidPosition() {
     // Test setting a cell with an invalid position (out of bounds)
-    Exception exception = assertThrows(Exception.class, () -> grid.setCell(ROWS, COLS, "Invalid Row/Col Position"));
+    Exception exception = assertThrows(Exception.class,
+        () -> grid.setCell(ROWS, COLS, "Invalid Row/Col Position"));
     assertNotNull(exception);
   }
 

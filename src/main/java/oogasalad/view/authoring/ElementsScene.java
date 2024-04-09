@@ -1,19 +1,26 @@
 package oogasalad.view.authoring;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ElementsScene {
 
@@ -24,7 +31,7 @@ public class ElementsScene {
   private boolean removeMode = false;
 
   private VBox blocksContainer;
-  private BuilderScene builderScene;
+  private final BuilderScene builderScene;
 
   public ElementsScene(BuilderScene builderScene) {
     this.builderScene = builderScene;
@@ -35,7 +42,7 @@ public class ElementsScene {
     layout = new VBox(10); // Adjust spacing as needed
 
     // Load the "babaisyou" block image
-    ImageView babaisyouImage = loadImageFromDirectory("BabaIsYouHeader",300,300);
+    ImageView babaisyouImage = loadImageFromDirectory("BabaIsYouHeader", 300, 300);
 
     // Set the "babaisyou" block image as the graphic for the titleLabel
     Label titleLabel = new Label();
@@ -87,9 +94,9 @@ public class ElementsScene {
 //    descriptionLabel.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null))); // Adjust the color as needed
 //
 
-
     // Add components to layout
-    layout.getChildren().addAll(titleLabel, changeGridSizeButton, removeButton, descriptionLabel, scrollPane);
+    layout.getChildren()
+        .addAll(titleLabel, changeGridSizeButton, removeButton, descriptionLabel, scrollPane);
     VBox.setVgrow(scrollPane, Priority.ALWAYS); // Allow the scroll pane to grow and fill space
   }
 
@@ -120,7 +127,8 @@ public class ElementsScene {
     if (selectedDirectory.exists() && selectedDirectory.isDirectory()) {
       List<String> blockNames = getBlockNamesFromDirectory(selectedDirectory);
       for (String blockName : blockNames) {
-        addBlockViewToRoot(selectedDirectory, blockName, blocksContainer); // Pass blocksContainer to the method
+        addBlockViewToRoot(selectedDirectory, blockName,
+            blocksContainer); // Pass blocksContainer to the method
       }
     } else {
       System.err.println("Directory not found or is not a valid directory.");
@@ -131,7 +139,7 @@ public class ElementsScene {
     try {
       File imageFile = new File(directory, blockName + ".png");
       ImageView imageView = new ImageView(
-              new Image(imageFile.toURI().toString(), 100, 100, true, true));
+          new Image(imageFile.toURI().toString(), 100, 100, true, true));
       imageView.setFitWidth(75); // Set the image width to 100 for a square shape
       imageView.setFitHeight(75); // Set the image height to 100 for a square shape
       imageView.setPreserveRatio(true);
@@ -202,11 +210,11 @@ public class ElementsScene {
       // Do some validation (using the Java 8 lambda syntax).
       widthField.textProperty().addListener((observable, oldValue, newValue) -> {
         confirmButton.setDisable(
-                newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
+            newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
       });
       heightField.textProperty().addListener((observable, oldValue, newValue) -> {
         confirmButton.setDisable(
-                newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
+            newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
       });
 
       dialog.getDialogPane().setContent(grid);

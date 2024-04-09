@@ -1,9 +1,13 @@
 package oogasalad.view.gameplay;
 
+import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
+import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
+
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class MainScene implements Scene {
 
@@ -25,7 +29,6 @@ public class MainScene implements Scene {
     this.root = new HBox();
     this.root.setAlignment(Pos.TOP_LEFT);
     this.scene = new javafx.scene.Scene(root, width, height);
-    scene.getRoot().setStyle("-fx-background-color: #191A20;");
 
     //Initialize widget factor
     WidgetFactory factory = new WidgetFactory();
@@ -42,6 +45,8 @@ public class MainScene implements Scene {
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
+    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
+        .toExternalForm());
     //factory.addScene(this);
   }
 
