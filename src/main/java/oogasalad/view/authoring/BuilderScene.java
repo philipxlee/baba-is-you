@@ -139,7 +139,8 @@ public class BuilderScene {
             blockView.setLayoutX(cellCoords.getX());
             blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
-            setRemoveModeEventHandlers();
+
+            setRemoveModeEventHandlers(); //allows removing after adding blocks
             success = true;
           }
         }
