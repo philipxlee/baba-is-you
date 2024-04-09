@@ -48,8 +48,12 @@ public class ElementsScene {
     descriptionLabel.setStyle("-fx-font-size: 14pt;");
 
     // Create a container for blocks
-    blocksContainer = new VBox(10); // Space between images
-    loadBlocksFromDirectory();
+    FlowPane blocksContainer = new FlowPane(); // FlowPane instead of VBox
+    blocksContainer.setHgap(30); // Adjust spacing between blocks
+    blocksContainer.setVgap(30); // Adjust spacing between rows
+    blocksContainer.setAlignment(Pos.CENTER); // Center the blocks horizontally
+
+    loadBlocksFromDirectory(blocksContainer);
 
     // Button for changing grid size
     Button changeGridSizeButton = new Button("Change Grid Size");
@@ -99,7 +103,7 @@ public class ElementsScene {
     return blockNames;
   }
 
-  private void loadBlocksFromDirectory() {
+  private void loadBlocksFromDirectory(FlowPane blocksContainer) {
     String directoryPath = "src/main/resources/images";
 
     // Create a File object for the directory
@@ -109,20 +113,20 @@ public class ElementsScene {
     if (selectedDirectory.exists() && selectedDirectory.isDirectory()) {
       List<String> blockNames = getBlockNamesFromDirectory(selectedDirectory);
       for (String blockName : blockNames) {
-        addBlockViewToRoot(selectedDirectory, blockName);
+        addBlockViewToRoot(selectedDirectory, blockName, blocksContainer); // Pass blocksContainer to the method
       }
     } else {
       System.err.println("Directory not found or is not a valid directory.");
     }
   }
 
-  private void addBlockViewToRoot(File directory, String blockName) {
+  private void addBlockViewToRoot(File directory, String blockName, FlowPane blocksContainer) {
     try {
       File imageFile = new File(directory, blockName + ".png");
       ImageView imageView = new ImageView(
               new Image(imageFile.toURI().toString(), 100, 100, true, true));
-      imageView.setFitWidth(100); // Set the image width to 100 for a square shape
-      imageView.setFitHeight(100); // Set the image height to 100 for a square shape
+      imageView.setFitWidth(75); // Set the image width to 100 for a square shape
+      imageView.setFitHeight(75); // Set the image height to 100 for a square shape
       imageView.setPreserveRatio(true);
       blocksContainer.getChildren().add(imageView);
       makeDraggable(imageView, blockName);
