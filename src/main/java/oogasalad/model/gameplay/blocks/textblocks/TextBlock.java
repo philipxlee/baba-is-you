@@ -4,6 +4,11 @@ import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.GrammarLoader;
 
+/**
+ * Represents a text block within the game, providing text-specific functionality.
+ * This class encapsulates the concept of a text block, including its name and
+ * associated grammar.
+ */
 public class TextBlock extends AbstractBlock {
 
   private static final GrammarLoader GRAMMAR_LOADER = new GrammarLoader();
@@ -13,17 +18,17 @@ public class TextBlock extends AbstractBlock {
   /**
    * Creates a new text block with the given type.
    *
-   * @param type The type of the text block.
+   * @param type The type of the text block, not including the 'TextBlock' suffix.
    */
   public TextBlock(String type) {
     super();
-    this.name = type + TEXT_BLOCK_SUFFIX;  // Use the type as the name
+    this.name = type + TEXT_BLOCK_SUFFIX;
   }
 
   /**
-   * Gets the grammar for this text block.
+   * Gets the grammar associated with this text block.
    *
-   * @return The grammar for this text block.
+   * @return A list of grammatical elements associated with this text block.
    */
   @Override
   public List<String> getBlockGrammar() {
@@ -31,9 +36,9 @@ public class TextBlock extends AbstractBlock {
   }
 
   /**
-   * Indicates that this block is a text block.
+   * Confirms that this instance represents a text block.
    *
-   * @return Always true for text blocks.
+   * @return Always true, indicating this is a text block.
    */
   @Override
   public boolean isTextBlock() {
@@ -41,9 +46,9 @@ public class TextBlock extends AbstractBlock {
   }
 
   /**
-   * Gets the name of the text block.
+   * Retrieves the name of the text block.
    *
-   * @return The name of the text block.
+   * @return The name of this text block, incorporating its type.
    */
   @Override
   public String getBlockName() {

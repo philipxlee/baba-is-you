@@ -36,7 +36,9 @@ public class BlockFactory {
         String className = PACKAGE_PREFIX + determinePackageSuffix(blockName) + blockName;
         Class<?> blockClass = Class.forName(className);
         validateBlockName(blockName, blockClass);
-        return (AbstractBlock) blockClass.getDeclaredConstructor(String.class).newInstance(blockName);
+        return (AbstractBlock) blockClass
+            .getDeclaredConstructor(String.class)
+            .newInstance(blockName);
       }
     } catch (ReflectiveOperationException e) {
       throw new InvalidBlockName("Invalid Block Name");
