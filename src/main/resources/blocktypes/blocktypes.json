@@ -11,6 +11,42 @@
   "EmptyText": {
     "imagePath": "path/to/EmptyText.png"
   },
+  "FlagText": {
+    "imagePath": "path/to/FlagText.png"
+  },
+  "IsText": {
+    "imagePath": "path/to/IsText.png"
+  },
+  "PushText": {
+    "imagePath": "path/to/PushText.png"
+  },
+  "RockText": {
+    "imagePath": "path/to/RockText.png"
+  },
+  "StopText": {
+    "imagePath": "path/to/StopText.png"
+  },
+  "WallText": {
+    "imagePath": "path/to/WallText.png"
+  },
+  "WinText": {
+    "imagePath": "path/to/WinText.png"
+  },
+  "YouText": {
+    "imagePath": "path/to/YouText.png"
+  },
+  "BabaVisual": {
+    "imagePath": "path/to/BabaVisual.png"
+  },
+  "EmptyVisual": {
+    "imagePath": "path/to/EmptyVisual.png"
+  },
+  "FlagVisual": {
+    "imagePath": "path/to/FlagVisual.png"
+  },
+  "RockVisual": {
+    "imagePath": "path/to/RockVisual.png"
+  },
   "WallVisual": {
     "imagePath": "path/to/WallVisual.png"
   }
