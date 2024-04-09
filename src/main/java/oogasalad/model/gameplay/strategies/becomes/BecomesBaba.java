@@ -1,47 +1,30 @@
 package oogasalad.model.gameplay.strategies.becomes;
 
-import java.util.List;
-import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.strategies.Strategy;
 
-public class BecomesBaba implements Strategy {
+/**
+ * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
+ * behavior of a block when it becomes Baba.
+ */
+public class BecomesBaba extends AbstractBecomesBehavior {
 
-  // Need to fix DRY here
-  private static boolean isContainsNonEmptyVisualBlock(int j, AbstractBlock targetBlock,
-      List<AbstractBlock>[] gameGrid) {
-    return gameGrid[j]
-        .stream()
-        .anyMatch(block ->
-            !block.isTextBlock() &&
-                !block.getBlockName().equals("EmptyVisualBlock") &&
-                !block.equals(targetBlock));
-  }
+  private static final String BABA_VISUAL_BLOCK = "BabaVisualBlock";
 
-  private static boolean isContainsTextBlock(int j, List<AbstractBlock>[] gameGrid) {
-    return gameGrid[j]
-        .stream()
-        .anyMatch(AbstractBlock::isTextBlock);
-  }
-
+  /**
+   * This method updates the block at the given coordinates to be a BabaVisualBlock.
+   *
+   * @param grid The grid containing the block to act upon.
+   * @param updater The utility to update the block within the grid.
+   * @param i The x-coordinate of the block to act upon.
+   * @param j The y-coordinate of the block to act upon.
+   * @param k The z-coordinate of the block to act upon.
+   */
   @Override
   public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
-    List<AbstractBlock>[][] gameGrid = grid.getGrid();
-    AbstractBlock targetBlock = gameGrid[i][j].get(k);
-    boolean containsTextBlock = isContainsTextBlock(j, gameGrid[i]);
-    boolean containsNonEmptyVisualBlock = isContainsNonEmptyVisualBlock(j, targetBlock,
-        gameGrid[i]);
-    if (!containsTextBlock && !containsNonEmptyVisualBlock) {
-      updater.updateBlock(i, j, k, "BabaVisualBlock");
+    if (!containsTextBlock(grid.getGrid()[i][j]) &&
+        !containsNonEmptyVisualBlock(grid.getGrid()[i][j], grid.getGrid()[i][j].get(k))) {
+      updater.updateBlock(i, j, k, BABA_VISUAL_BLOCK);
     }
   }
-
-  @Override
-  public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
 }
