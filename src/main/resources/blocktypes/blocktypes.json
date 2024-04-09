@@ -1,0 +1,17 @@
+{
+  "Is": {
+    "imagePath": "path/to/Is.png"
+  },
+  "Empty": {
+    "imagePath": "path/to/Empty.png"
+  },
+  "BabaText": {
+    "imagePath": "path/to/BabaText.png"
+  },
+  "EmptyText": {
+    "imagePath": "path/to/EmptyText.png"
+  },
+  "WallVisual": {
+    "imagePath": "path/to/WallVisual.png"
+  }
+}

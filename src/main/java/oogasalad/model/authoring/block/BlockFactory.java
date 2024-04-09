@@ -1,10 +1,16 @@
 package oogasalad.model.authoring.block;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
+
 
 /**
  * BlockTypeManager loads the block types from a properties file and returns a list of block types.
@@ -30,16 +36,21 @@ public class BlockFactory {
   private void loadBlockTypes(String propertiesFilePath) throws Exception {
     try (InputStream input = getClass().getResourceAsStream(propertiesFilePath)) {
       if (input == null) {
-        throw new IllegalArgumentException("Properties file not found: " + propertiesFilePath);
+        throw new IllegalArgumentException("JSON file not found: " + propertiesFilePath);
       }
-      Properties properties = new Properties();
-      properties.load(input);
-      String[] types = properties.getProperty("block.types", "").split(",");
-      for (String typeName : types) {
-        blockTypes.add(new BlockType(typeName.trim()));
-      }
+
+      // Parse the JSON file
+      Gson gson = new Gson();
+      Type type = new TypeToken<Map<String, JsonObject>>() {
+      }.getType();
+      Map<String, JsonObject> blockTypesMap = gson.fromJson(new InputStreamReader(input), type);
+
+      // Iterate over the map and create BlockType objects
+      blockTypesMap.forEach((name, blockTypeJson) -> {
+        blockTypes.add(new BlockType(name.trim()));
+      });
     } catch (IOException e) {
-      throw new Exception("Failed to load block types from properties file");
+      throw new Exception("Failed to load block types from JSON file", e);
     }
   }
 
