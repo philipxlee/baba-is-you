@@ -12,8 +12,8 @@ public class MainScene implements Scene {
   private final int HEIGHT = 800;
   private javafx.scene.Scene scene;
   private HBox root;
-  private GameScene gameScene;
-  private InteractionScene interactionScene;
+  private GamePane gameScene;
+  private InteractionPane interactionScene;
   private final SceneController sceneController;
 
   public MainScene(SceneController sceneController) {
@@ -27,17 +27,22 @@ public class MainScene implements Scene {
     this.scene = new javafx.scene.Scene(root, width, height);
     scene.getRoot().setStyle("-fx-background-color: #191A20;");
 
+    //Initialize widget factor
+    WidgetFactory factory = new WidgetFactory();
+
     //Initialize game grid
-    this.gameScene = new GameScene();
+    this.gameScene = new GamePane();
     gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController);
     gameScene.getGrid().setLayoutX(1000);
 
     //Initialize interaction pane1
-    this.interactionScene = new InteractionScene();
-    interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this);
+    this.interactionScene = new InteractionPane();
+    interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this,
+        factory);
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
+    //factory.addScene(this);
 
   }
 

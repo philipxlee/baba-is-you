@@ -3,53 +3,59 @@ package oogasalad.view.gameplay;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.GameOverController;
 import oogasalad.controller.gameplay.KeyHandlerController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.blockviews.AbstractBlockView;
 import oogasalad.shared.observer.Observer;
 
-public class GameScene implements Observer<Grid> {
+public class GamePane implements Observer<Grid> {
 
-  String[][][] empty = {};
   private int cellSize;
-  private Grid gameGrid;
   private Group root;
   private KeyHandlerController keyHandlerController;
   private SceneController sceneController;
+  private GameGridController gridController;
   private MainScene scene;
   private int width;
   private int height;
+  //Change below to dynamically respond to user input
+  private int n = 15;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController) {
     this.width = width;
     this.height = height;
-    createGrid();
+    calculateCellSize();
     this.root = new Group();
     this.scene = scene;
-    this.gameGrid.addObserver(this);
     this.keyHandlerController = new KeyHandlerController(new GameOverController(sceneController));
+    this.gridController = new GameGridController(this, keyHandlerController);
 
     this.scene.getScene().setOnKeyPressed(event -> {
       try {
-        gameGrid.checkForRules(); // Check for rules
-        keyHandlerController.executeKey(gameGrid, event.getCode()); // Handle key press
+        gridController.sendPlayToModel(event.getCode());
         renderGrid(); // Render grid
-        resetAllBlocks(); // Reset all blocks
+        gridController.resetBlocks(); // Reset all blocks
       } catch (Exception e) {
-        showErrorDialog(e.getClass().getName());
+        gridController.showError("ERROR", e.getClass().getName());
       }
     });
 
     renderGrid(); // Initial grid rendering
+  }
+
+  public int getWidth() {
+    return this.width;
+  }
+  public int getHeight() {
+    return this.height;
   }
 
   public Group getGrid() {
@@ -72,43 +78,9 @@ public class GameScene implements Observer<Grid> {
     return pane;
   }
 
-  private void createGrid() {
-    try {
-      int n = 15;
-      this.gameGrid = new Grid(n, n, empty);
-      int w = width / n;
-      int h = height / n;
-      cellSize = Math.min(w, h);
-    } catch (InvalidBlockName e) {
-      showErrorDialog(e.getMessage());
-    }
-  }
-
-  private void showErrorDialog(String message) {
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(null);
-    alert.setContentText(message);
-    alert.showAndWait();
-  }
-
-  private void resetAllBlocks() {
-    List<AbstractBlock>[][] grid = gameGrid.getGrid();
-    for (List<AbstractBlock>[] blocksRow : grid) {
-      for (List<AbstractBlock> cell : blocksRow) {
-        for (AbstractBlock block : cell) {
-          if (!block.isTextBlock()) {
-            block.resetAllBehaviors();
-          }
-        }
-      }
-    }
-  }
-
-
   private void renderGrid() {
     root.getChildren().clear();
-    List<AbstractBlock>[][] grid = gameGrid.getGrid();
+    List<AbstractBlock>[][] grid = gridController.getGameGrid().getGrid();
     double blockOffset = 0; // Offset for displaying stacked blocks
 
     for (int i = 0; i < grid.length; i++) {
@@ -129,11 +101,11 @@ public class GameScene implements Observer<Grid> {
             AbstractBlockView obj = reflect(block);
             //Fix below to throw an exception or smth
             if (obj == null) {
-              throw new NullPointerException("AbstractBlockView is null");
+              gridController.showError("ERROR", "AbstractBlockView is null");
             }
             ImageView visualObj = obj.getView();
             if (visualObj == null) {
-              throw new NullPointerException("ImageView in AbstractBlockView is null");
+              gridController.showError("ERROR", "ImageView in AbstractBlockView is null");
             }
             visualObj.setFitWidth(cellSize - k * blockOffset);
             visualObj.setFitHeight(cellSize - k * blockOffset);
@@ -150,6 +122,12 @@ public class GameScene implements Observer<Grid> {
     }
   }
 
+  private void calculateCellSize() {
+    int w = width / n;
+    int h = height / n;
+    this.cellSize = Math.min(w, h);
+  }
+
   private AbstractBlockView reflect(AbstractBlock block) {
     try {
       String path = "/images/" + block.getBlockName() + ".png";
@@ -162,10 +140,6 @@ public class GameScene implements Observer<Grid> {
       else if (className.contains("Text")) {
         source += "textblocksview.";
       }
-      //temporary, delete below when implementation is done
-//          Rectangle rect = new Rectangle(offsetX, offsetY, CELL_SIZE - k * blockOffset, CELL_SIZE - k * blockOffset);
-//          rect.setFill(getColorForBlock(block.getBlockName()));
-//          root.getChildren().add(rect);
       Class<?> clazz = Class.forName(source + className);
       AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
           .newInstance(path);
