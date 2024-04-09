@@ -14,13 +14,17 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+
 public class BuilderScene {
 
   private Pane root; // Your root node for the builder scene
+  private final int gridSize = 5; // Set the grid size
+  private double cellSize; // Set the cell size
   private GridPane gridPane;
   private int gridWidth;
+
+  private boolean removeMode;
   private int gridHeight;
-  private double cellSize;
   private final int GRID_MARGIN = 10;
 
   public BuilderScene() {
@@ -69,7 +73,7 @@ public class BuilderScene {
       for (int j = 0; j < gridHeight; j++) {
         Pane cell = new Pane();
         cell.setPrefSize(cellSize, cellSize);
-        cell.setStyle("-fx-border-color: black; -fx-background-color: white; -fx-border-width: 1;");
+        cell.setStyle("-fx-border-color: #6c1e1e; -fx-background-color: rgba(47,5,119,0.89); -fx-border-width: 1;");
         gridPane.add(cell, i, j);
       }
     }
@@ -110,7 +114,6 @@ public class BuilderScene {
     }
   }
 
-
   private void setUpDropHandling() {
     gridPane.setOnDragOver(event -> {
       if (event.getGestureSource() != gridPane && event.getDragboard().hasString()) {
@@ -133,6 +136,8 @@ public class BuilderScene {
             blockView.setLayoutX(cellCoords.getX());
             blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
+
+            setRemoveModeEventHandlers(); //allows removing after adding blocks
             success = true;
           }
         }
@@ -158,10 +163,9 @@ public class BuilderScene {
     return null; // Coordinates (x, y) do not fall within any cell
   }
 
-
   private ImageView createBlockView(String blockType) {
     String imagePath =
-        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+            "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
     File imageFile = new File(imagePath);
     if (!imageFile.exists()) {
       System.err.println("Image file not found: " + imagePath);
@@ -174,5 +178,23 @@ public class BuilderScene {
 
   public Pane getRoot() {
     return root;
+  }
+
+  private void setRemoveModeEventHandlers() {
+    root.getChildren().forEach(node -> {
+      if (node instanceof ImageView) {
+        node.setOnMouseClicked(event -> {
+          if (removeMode) {
+            root.getChildren().remove(node);
+          }
+        });
+      }
+    });
+  }
+
+
+  public void setRemove(boolean remove_bool) {
+      removeMode = remove_bool;
+      setRemoveModeEventHandlers();
   }
 }
