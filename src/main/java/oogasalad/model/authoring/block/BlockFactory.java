@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * BlockTypeManager loads the block types from a properties file and returns a list of block types.
  */
-public class BlockTypeManager {
+public class BlockFactory {
 
   private static final List<BlockType> blockTypes = new ArrayList<>();
 
@@ -18,7 +18,7 @@ public class BlockTypeManager {
    *
    * @param propertiesFilePath The file path of block type properties file.
    */
-  public BlockTypeManager(String propertiesFilePath) throws Exception {
+  public BlockFactory(String propertiesFilePath) throws Exception {
     loadBlockTypes(propertiesFilePath);
   }
 

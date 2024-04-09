@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import oogasalad.model.authoring.block.Block;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
@@ -14,15 +14,15 @@ import oogasalad.shared.observer.Observer;
  */
 public class Grid implements Observable<Grid>, Iterable<Block> {
 
-  private final BlockTypeManager blockTypeManager;
+  private final BlockFactory blockFactory;
   private final Block[][] cells;
   private final List<Observer<Grid>> observers;
 
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
    */
-  public Grid(int rows, int cols, BlockTypeManager blockTypeManager) {
-    this.blockTypeManager = blockTypeManager;
+  public Grid(int rows, int cols, BlockFactory blockFactory) {
+    this.blockFactory = blockFactory;
     cells = new Block[rows][cols];
     observers = new ArrayList<>();
     initializeGrid();
@@ -35,7 +35,7 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
     try {
       for (int row = 0; row < cells.length; row++) {
         for (int col = 0; col < cells[row].length; col++) {
-          cells[row][col] = blockTypeManager.createBlock("Empty");
+          cells[row][col] = blockFactory.createBlock("Empty");
         }
       }
     } catch (Exception e) {
@@ -55,7 +55,7 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
     if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
       throw new Exception("Invalid Row/Col Position: " + row + " " + col);
     }
-    cells[row][col] = blockTypeManager.createBlock(blockType);
+    cells[row][col] = blockFactory.createBlock(blockType);
     notifyObserver();
   }
 

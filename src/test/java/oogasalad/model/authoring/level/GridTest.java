@@ -5,13 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import oogasalad.model.authoring.block.Block;
-import oogasalad.model.authoring.block.BlockType;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observer;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,15 +19,15 @@ public class GridTest {
   private final static int ROWS = 3;
   private final static int COLS = 3;
   private Grid grid;
-  private BlockTypeManager blockTypeManager;
+  private BlockFactory blockFactory;
 
   @Before
   public void setUp() throws Exception {
     // Initialize the BlockTypeManager
-    blockTypeManager = new BlockTypeManager("/blocktypes/blocktypes.properties");
+    blockFactory = new BlockFactory("/blocktypes/blocktypes.properties");
 
     // Initialize the grid
-    grid = new Grid(ROWS, COLS, blockTypeManager);
+    grid = new Grid(ROWS, COLS, blockFactory);
   }
 
   @Test

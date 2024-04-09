@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class BlockTypeManagerTest {
+public class BlockFactoryTest {
 
   @TempDir
   Path tempDir;
@@ -19,26 +19,26 @@ public class BlockTypeManagerTest {
 
   @Test
   void loadBlockTypesSuccessfully() {
-    assertDoesNotThrow(() -> new BlockTypeManager(validPropertiesFilePath));
+    assertDoesNotThrow(() -> new BlockFactory(validPropertiesFilePath));
   }
 
   @Test
   void loadBlockTypesWithInvalidPath() {
     Exception exception = assertThrows(RuntimeException.class,
-        () -> new BlockTypeManager(invalidPropertiesFilePath));
+        () -> new BlockFactory(invalidPropertiesFilePath));
     assertTrue(exception.getMessage().contains("Properties file not found"));
   }
 
   @Test
   void findBlockTypeByNameSuccessfully() throws Exception {
-    BlockTypeManager manager = new BlockTypeManager(validPropertiesFilePath);
+    BlockFactory manager = new BlockFactory(validPropertiesFilePath);
     assertNotNull(manager.findBlockTypeByName("Empty"));
   }
 
   @Test
   void findBlockTypeByNameNotFound() {
-    BlockTypeManager manager = assertDoesNotThrow(
-        () -> new BlockTypeManager(validPropertiesFilePath));
+    BlockFactory manager = assertDoesNotThrow(
+        () -> new BlockFactory(validPropertiesFilePath));
     Exception exception = assertThrows(Exception.class,
         () -> manager.findBlockTypeByName("NonexistentType"));
     assertTrue(exception.getMessage().contains("Invalid block type"));

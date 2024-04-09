@@ -11,20 +11,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LevelControllerTest {
 
-  private BlockTypeManager blockTypeManager;
+  private BlockFactory blockFactory;
   private LevelController levelController;
 
   @Before
   public void setUp() throws Exception {
     // Setup mock BlockTypeManager
-    blockTypeManager = new BlockTypeManager("/blocktypes/blocktypes.properties");
-    levelController = new LevelController(blockTypeManager);
+    blockFactory = new BlockFactory("/blocktypes/blocktypes.properties");
+    levelController = new LevelController(blockFactory);
   }
 
   @Test
