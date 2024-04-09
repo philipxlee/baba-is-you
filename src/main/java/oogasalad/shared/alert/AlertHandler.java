@@ -1,4 +1,4 @@
-package oogasalad.shared.alerthandler;
+package oogasalad.shared.alert;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
