@@ -19,6 +19,10 @@ import oogasalad.shared.scene.Scene;
 public class WidgetFactory {
   private oogasalad.shared.scene.Scene scene;
   private Font bahianaFont;
+  public static final String STYLESHEET = "gameplay.css";
+  public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
+  public static final String DEFAULT_RESOURCE_FOLDER =
+      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
 
   public WidgetFactory() {
     this.bahianaFont = Font.loadFont(
@@ -43,7 +47,7 @@ public class WidgetFactory {
     return line;
   }
 
-  protected HBox wrapInHBox(List<Node> toBeWrapped, int width) {
+  public HBox wrapInHBox(List<Node> toBeWrapped, int width) {
     HBox hbox = new HBox();
     hbox.getChildren().addAll(toBeWrapped);
     hbox.setPrefWidth(width);
@@ -57,7 +61,7 @@ public class WidgetFactory {
    * @param width
    * @return
    */
-  protected HBox wrapInHBox(Node toBeWrapped, int width) {
+  public HBox wrapInHBox(Node toBeWrapped, int width) {
     HBox hbox = new HBox(10);
     hbox.getChildren().add(toBeWrapped);
     hbox.setPrefWidth(width);
@@ -65,7 +69,7 @@ public class WidgetFactory {
     return hbox;
   }
 
-  protected VBox wrapInVBox(List<Node> toBeWrapped, int height) {
+  public VBox wrapInVBox(List<Node> toBeWrapped, int height) {
     VBox vbox = new VBox(10);
     vbox.getChildren().addAll(toBeWrapped);
     vbox.setPrefHeight(height);

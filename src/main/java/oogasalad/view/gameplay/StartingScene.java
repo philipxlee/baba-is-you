@@ -1,5 +1,8 @@
 package oogasalad.view.gameplay;
 
+import static oogasalad.view.gameplay.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
+import static oogasalad.view.gameplay.WidgetFactory.STYLESHEET;
+
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Pos;
@@ -23,10 +26,6 @@ public class StartingScene implements Scene {
   private WidgetFactory factory;
   private int width;
   private int height;
-  public static final String STYLESHEET = "gameplay.css";
-  public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
-  public static final String DEFAULT_RESOURCE_FOLDER =
-      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
 
   private final static String rules = "Baba Is You is a puzzle game where players manipulate the game's\n "
       + "rules to solve puzzles and progress. Players control Baba, a character, and aim to reach specific\n"

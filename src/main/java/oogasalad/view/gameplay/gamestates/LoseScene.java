@@ -1,11 +1,18 @@
 package oogasalad.view.gameplay.gamestates;
 
+import static oogasalad.view.gameplay.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
+import static oogasalad.view.gameplay.WidgetFactory.STYLESHEET;
+
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
+import oogasalad.view.gameplay.WidgetFactory;
 
 /**
  * Scene that displays when the player loses the game.
@@ -14,6 +21,14 @@ public class LoseScene implements Scene {
 
   private javafx.scene.Scene scene;
   private VBox root;
+  private WidgetFactory factory;
+  private SceneController sceneController;
+  private int width;
+  private int height;
+
+  public LoseScene(SceneController sceneController) {
+    this.sceneController = sceneController;
+  }
 
   /**
    * Initialize the scene.
@@ -23,9 +38,14 @@ public class LoseScene implements Scene {
    */
   @Override
   public void initializeScene(int width, int height) {
+    this.width = width;
+    this.height = height;
+    this.factory = new WidgetFactory();
     this.root = new VBox();
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
+    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
+        .toExternalForm());
     showLoseMessage();
   }
 
@@ -43,10 +63,18 @@ public class LoseScene implements Scene {
    * Show the lose message.
    */
   private void showLoseMessage() {
-    root.setStyle("-fx-background-color: #191A20;");
-    Label winLabel = new Label("YOU LOST!");
-    winLabel.setFont(Font.font("Arial", FontWeight.BOLD, 72));
-    winLabel.setTextFill(javafx.scene.paint.Color.RED);
-    root.getChildren().add(winLabel);
+    Text header = factory.generateHeader("You Lost :(");
+    Text content = factory.generateLine("Better luck next time...");
+
+    List<Node> texts = new ArrayList<>();
+    texts.add(header);
+    texts.add(content);
+
+    Button start = factory.makeButton("Try Again", 200, 40);
+    texts.add(start);
+    start.setOnAction(event -> { sceneController.beginGame();});
+
+    VBox textContainer = factory.wrapInVBox(texts, height);
+    root.getChildren().add(textContainer);
   }
 }
