@@ -28,7 +28,8 @@ public class InteractionPane {
   private Group root;
   private MainScene scene;
 
-  public void initializeInteractionPane(int width, int height, MainScene scene) {
+  public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
+      factory) {
     this.scene = scene;
     this.root = new Group();
     root.setOnKeyPressed(this::handleKeyPress);
@@ -40,6 +41,7 @@ public class InteractionPane {
     Stop[] stops = new Stop[]{new Stop(0, start), new Stop(1, end)};
     LinearGradient linearGradient = new LinearGradient(0, 0, 0, 1, true, null, stops);
     background.setFill(linearGradient);
+    //Rectangle background = factory.interactionPanel(width, height;
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();

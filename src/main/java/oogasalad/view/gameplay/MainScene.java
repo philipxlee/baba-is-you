@@ -27,6 +27,9 @@ public class MainScene implements Scene {
     this.scene = new javafx.scene.Scene(root, width, height);
     scene.getRoot().setStyle("-fx-background-color: #191A20;");
 
+    //Initialize widget factor
+    WidgetFactory factory = new WidgetFactory();
+
     //Initialize game grid
     this.gameScene = new GamePane();
     gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController);
@@ -34,10 +37,12 @@ public class MainScene implements Scene {
 
     //Initialize interaction pane1
     this.interactionScene = new InteractionPane();
-    interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this);
+    interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this,
+        factory);
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
+    //factory.addScene(this);
 
   }
 
