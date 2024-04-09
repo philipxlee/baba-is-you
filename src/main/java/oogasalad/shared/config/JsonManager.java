@@ -1,6 +1,7 @@
 package oogasalad.shared.config;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -95,6 +96,17 @@ public class JsonManager {
   }
 
   /**
+   * Adds a JsonArray to a JsonObject under a specified key.
+   *
+   * @param jsonObject the JsonObject to which the array should be added.
+   * @param key the key under which the array will be added to the object.
+   * @param jsonArray the JsonArray to add.
+   */
+  public void addArrayToJson(JsonObject jsonObject, String key, JsonArray jsonArray) {
+    jsonObject.add(key, jsonArray);
+  }
+
+  /**
    * Get the value associated with a key from a JsonObject.
    *
    * @param jsonObject the JsonObject from which to retrieve the value.
@@ -123,6 +135,21 @@ public class JsonManager {
       return parentJsonObject.getAsJsonObject(key);
     }
     return null;
+  }
+
+  /**
+   * Retrieves a JsonArray from a JsonObject using the specified key.
+   *
+   * @param jsonObject the JsonObject from which to retrieve the array.
+   * @param key the key corresponding to the JsonArray.
+   * @return the JsonArray if it exists and is a JsonArray, or an empty jsonArray..
+   */
+  public JsonArray getJsonArray(JsonObject jsonObject, String key) {
+    JsonElement element = jsonObject.get(key);
+    if (element != null && element.isJsonArray()) {
+      return element.getAsJsonArray();
+    }
+    return new JsonArray();
   }
 
   /**

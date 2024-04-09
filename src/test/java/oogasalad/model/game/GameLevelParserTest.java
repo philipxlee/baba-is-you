@@ -2,6 +2,7 @@ package oogasalad.model.game;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import oogasalad.model.gameplay.level.GameLevelParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
@@ -40,15 +41,16 @@ class GameLevelParserTest {
     assertEquals(2, Integer.parseInt(jsonManager.getValue(jsonManager.getJsonObject
         (levelJson, "gridSize"), "columns")));
 
-    JsonArray initialConfig = levelJson.getAsJsonArray("initialConfiguration");
+    JsonArray initialConfig = jsonManager.getJsonArray(jsonManager.getJsonObject(levelJson,
+        "grid"), "cells");
     assertNotNull(initialConfig);
     assertEquals(2, initialConfig.size());
 
-    JsonArray firstLayer = initialConfig.get(0).getAsJsonArray();
-    JsonArray firstRow = firstLayer.get(0).getAsJsonArray();
-    JsonArray firstCell = firstRow.get(0).getAsJsonArray();
-    assertEquals("EmptyVisualBlock", firstCell.get(0).getAsString());
-    assertEquals("RockVisualBlock", firstCell.get(1).getAsString());
+    JsonArray firstRow = initialConfig.get(0).getAsJsonArray();
+    String firstCell = String.valueOf(firstRow.get(0));
+    String secondCell = String.valueOf(firstRow.get(1));
+    assertEquals("[\"EmptyVisualBlock\",\"RockVisualBlock\"]", firstCell);
+    assertEquals("[\"EmptyVisualBlock\"]", secondCell);
 
   }
 }
