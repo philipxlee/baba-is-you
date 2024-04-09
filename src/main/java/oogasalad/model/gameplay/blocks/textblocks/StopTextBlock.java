@@ -17,14 +17,5 @@ public class StopTextBlock extends AbstractTextBlock {
     super(name);
   }
 
-  /**
-   * Gets the grammar of the block.
-   *
-   * @return The grammar of the block.
-   */
-  @Override
-  public List<String> getBlockGrammar() {
-    return List.of("PROPERTY");
-  }
 
 }
