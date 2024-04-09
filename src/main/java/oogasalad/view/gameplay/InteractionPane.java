@@ -14,7 +14,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 
-public class InteractionScene {
+public class InteractionPane {
 
   private static final Color BASE_COLOR = Color.web("#90A4AE");
   private static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
@@ -48,7 +48,7 @@ public class InteractionScene {
     // Load and set up the header image
     HBox hbox = new HBox();
     hbox.setAlignment(Pos.CENTER);
-    InputStream inputStream = InteractionScene.class.getResourceAsStream(
+    InputStream inputStream = InteractionPane.class.getResourceAsStream(
         "/images/BabaIsYouHeader.png");
     if (inputStream != null) {
       Image image = new Image(inputStream);
