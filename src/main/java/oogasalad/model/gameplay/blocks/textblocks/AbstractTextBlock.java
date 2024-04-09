@@ -10,10 +10,12 @@ public abstract class AbstractTextBlock extends AbstractBlock {
   private final String name;
   private final String grammar = "default";
 
+
   public AbstractTextBlock(String name) {
     super();
     this.name = name;
   }
+
 
   /**
    * Indicates that this block is a text block.
@@ -35,8 +37,5 @@ public abstract class AbstractTextBlock extends AbstractBlock {
     return this.name;
   }
 
-  @Override
-  public String behaviorsToString(){
-    return "I dont need this";
-  }
+
 }

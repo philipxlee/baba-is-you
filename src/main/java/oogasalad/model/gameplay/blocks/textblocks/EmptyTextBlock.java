@@ -2,7 +2,6 @@ package oogasalad.model.gameplay.blocks.textblocks;
 
 import java.util.Arrays;
 import java.util.List;
-import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "empty" noun.

@@ -7,22 +7,19 @@ import oogasalad.shared.scene.Scene;
 public class MainScene implements Scene {
 
   private javafx.scene.Scene scene;
-  private SplitPane root;
-  private BuilderScene builderScene;
-  private ElementsScene elementsScene;
 
   @Override
   public void initializeScene(int width, int height) {
-    root = new SplitPane();
+    SplitPane root = new SplitPane();
 
     // Initialize builder scene with 60% of width
-    this.builderScene = new BuilderScene();
+    BuilderScene builderScene = new BuilderScene();
 
     // Initialize elements scene with 40% of width
-    this.elementsScene = new ElementsScene();
+    ElementsScene elementsScene = new ElementsScene(builderScene);
 
     // Set up left and right sides of SplitPane
-    root.getItems().addAll(builderScene.getRoot(), elementsScene.getLayout());
+    root.getItems().addAll(elementsScene.getLayout(), builderScene.getRoot());
     root.setDividerPositions(0.4);
 
     this.scene = new javafx.scene.Scene(root, width, height);
@@ -33,7 +30,3 @@ public class MainScene implements Scene {
     return this.scene;
   }
 }
-
-
-
-

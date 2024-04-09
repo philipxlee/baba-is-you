@@ -16,7 +16,7 @@ import oogasalad.model.authoring.level.LevelMetadata;
  */
 public class LevelController {
 
-  private Level currentLevel;
+  private final Level currentLevel;
 
   /**
    * LevelController constructor. Creates default level of 7x7 grid.

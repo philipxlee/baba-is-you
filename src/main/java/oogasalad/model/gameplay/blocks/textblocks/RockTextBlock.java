@@ -2,7 +2,6 @@ package oogasalad.model.gameplay.blocks.textblocks;
 
 import java.util.Arrays;
 import java.util.List;
-import oogasalad.model.gameplay.blocks.textblocks.AbstractTextBlock;
 
 /**
  * A text block that represents the "rock" noun.
@@ -25,6 +24,6 @@ public class RockTextBlock extends AbstractTextBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return Arrays.asList("NOUN");
+    return List.of("NOUN");
   }
 }
