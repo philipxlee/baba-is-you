@@ -15,6 +15,11 @@ public class MainScene implements Scene {
   private HBox root;
   private GamePane gameScene;
   private InteractionPane interactionScene;
+  public static final String STYLESHEET = "gameplay.css";
+  public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
+  public static final String DEFAULT_RESOURCE_FOLDER =
+      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+
 
   public MainScene(SceneController sceneController) {
     this.sceneController = sceneController;
@@ -42,6 +47,8 @@ public class MainScene implements Scene {
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
+    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
+        .toExternalForm());
     //factory.addScene(this);
   }
 

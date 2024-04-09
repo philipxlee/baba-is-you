@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'Bahiana';
+  src: url('fonts/Bahiana-Regular.ttf');
+}
+
+.root {
+    -fx-font-family: 'Bahiana';
+}
+.interaction-background {
+  -fx-fill: linear-gradient(to bottom, #777DA1, #9773FD);
+}
+.header {
+  -fx-font-size: 100px;
+  -fx-fill: #F5F5F5;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
+}
