@@ -18,6 +18,7 @@ import oogasalad.shared.observer.Observer;
 
 public class GameScene implements Observer<Grid> {
 
+  String[][][] empty = {};
   private int cellSize;
   private Grid gameGrid;
   private Group root;
@@ -70,8 +71,6 @@ public class GameScene implements Observer<Grid> {
     pane.getChildren().add(gameScreen);
     return pane;
   }
-
-  String [][][] empty = {};
 
   private void createGrid() {
     try {
