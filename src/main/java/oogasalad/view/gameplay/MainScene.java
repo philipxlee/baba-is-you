@@ -50,4 +50,3 @@ public class MainScene implements Scene {
     return this.scene;
   }
 }
-

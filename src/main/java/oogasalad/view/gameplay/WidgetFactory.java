@@ -1,6 +1,5 @@
 package oogasalad.view.gameplay;
 
-import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import oogasalad.shared.scene.Scene;
 
