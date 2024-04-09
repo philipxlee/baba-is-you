@@ -198,19 +198,19 @@ public class Grid implements Observable<Grid> {
   }
 
   public List<int[]> findControllableBlock() { //record class
-    List<int[]> AllControllableBlocks = new ArrayList<>();
+    List<int[]> allControllableBlocks = new ArrayList<>();
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
           if (block != null && block.hasBehavior(Controllable.class)) {
             int[] a = {i, j, k};
-            AllControllableBlocks.add(a);
+            allControllableBlocks.add(a);
           }
         }
       }
     }
-    return AllControllableBlocks;
+    return allControllableBlocks;
   }
 
   public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI,
