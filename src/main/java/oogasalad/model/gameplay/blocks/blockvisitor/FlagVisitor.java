@@ -5,61 +5,60 @@ import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
-import oogasalad.model.gameplay.strategies.attributes.Stoppable;
+import oogasalad.model.gameplay.strategies.becomes.BecomesFlag;
 
 /**
- * Visitor pattern for the stoppable behavior.
+ * Visitor pattern for the flag behavior.
  */
-public class StopVisitor implements BlockVisitor {
+public class FlagVisitor implements BlockVisitor {
 
   /**
-   * Adds the stoppable behavior to the baba block.
+   * Adds the flag behavior to the baba block.
    *
-   * @param baba the baba block.
+   * @param baba the baba block
    */
   @Override
   public void visit(BabaVisualBlock baba) {
-    baba.addBehavior(new Stoppable());
+    baba.addBehavior(new BecomesFlag());
   }
 
   /**
-   * Adds the stoppable behavior to the wall block.
+   * Adds the flag behavior to the wall block.
    *
    * @param wall the wall block.
    */
   @Override
   public void visit(WallVisualBlock wall) {
-    wall.addBehavior(new Stoppable());
+    wall.addBehavior(new BecomesFlag());
   }
 
   /**
-   * Adds the stoppable behavior to the flag block.
+   * Adds the flag behavior to the flag block.
    *
    * @param flag the flag block.
    */
   @Override
   public void visit(FlagVisualBlock flag) {
-    flag.addBehavior(new Stoppable());
+    flag.addBehavior(new BecomesFlag());
   }
 
   /**
-   * Adds the stoppable behavior to the rock block.
+   * Adds the flag behavior to the rock block.
    *
    * @param rock the rock block.
    */
   @Override
   public void visit(RockVisualBlock rock) {
-    rock.addBehavior(new Stoppable());
+    rock.addBehavior(new BecomesFlag());
   }
 
   /**
-   * Adds the stoppable behavior to the empty block.
+   * Adds the flag behavior to the empty block.
    *
    * @param empty the empty block.
    */
   @Override
   public void visit(EmptyVisualBlock empty) {
-    empty.addBehavior(new Stoppable());
+    empty.addBehavior(new BecomesFlag());
   }
-
 }
