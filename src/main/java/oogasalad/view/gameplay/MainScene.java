@@ -30,7 +30,7 @@ public class MainScene implements Scene {
     this.root = new HBox();
     this.root.setAlignment(Pos.TOP_LEFT);
     this.scene = new javafx.scene.Scene(root, width, height);
-    scene.getRoot().setStyle("-fx-background-color: #191A20;");
+    //scene.getRoot().setStyle("-fx-background-color: #191A20;");
 
     //Initialize widget factor
     WidgetFactory factory = new WidgetFactory();

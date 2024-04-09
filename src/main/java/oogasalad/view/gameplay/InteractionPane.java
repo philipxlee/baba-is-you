@@ -1,9 +1,12 @@
 package oogasalad.view.gameplay;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -14,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 public class InteractionPane {
 
@@ -28,6 +32,7 @@ public class InteractionPane {
   Rectangle down = createRectangle(false);
   private Group root;
   private MainScene scene;
+
   public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
       factory) {
     this.scene = scene;
@@ -42,7 +47,8 @@ public class InteractionPane {
     VBox arrowKeys = setupArrowKeys();
     arrowKeys.setAlignment(Pos.CENTER);
 
-    HBox header = factory.generateHeader(width);
+    Text title = factory.generateHeader("Baba Is You");
+    HBox header = factory.wrapInHBox(title, width);
 
     // Combine the header and arrow keys into a single display layout
     VBox display = new VBox(10);
