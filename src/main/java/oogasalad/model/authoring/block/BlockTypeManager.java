@@ -17,9 +17,8 @@ public class BlockTypeManager {
    * BlockTypeManager constructor. Initialized with the Block Type properties filepath.
    *
    * @param propertiesFilePath The file path of block type properties file.
-   * @throws IOException Exception thrown if file path is invalid.
    */
-  public BlockTypeManager(String propertiesFilePath) throws IOException {
+  public BlockTypeManager(String propertiesFilePath) throws Exception {
     loadBlockTypes(propertiesFilePath);
   }
 
@@ -28,7 +27,7 @@ public class BlockTypeManager {
    *
    * @param propertiesFilePath The file path of block type properties file.
    */
-  private boolean loadBlockTypes(String propertiesFilePath) {
+  private void loadBlockTypes(String propertiesFilePath) throws Exception {
     try (InputStream input = getClass().getResourceAsStream(propertiesFilePath)) {
       if (input == null) {
         throw new IllegalArgumentException("Properties file not found: " + propertiesFilePath);
@@ -39,9 +38,8 @@ public class BlockTypeManager {
       for (String typeName : types) {
         blockTypes.add(new BlockType(typeName.trim()));
       }
-      return true;
     } catch (IOException e) {
-      throw new RuntimeException("Failed to load block types from properties file");
+      throw new Exception("Failed to load block types from properties file");
     }
   }
 
