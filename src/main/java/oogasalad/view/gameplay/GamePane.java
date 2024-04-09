@@ -12,7 +12,7 @@ import oogasalad.controller.gameplay.KeyHandlerController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.shared.blockviews.AbstractBlockView;
+import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
 
 public class GamePane implements Observer<Grid> {
@@ -25,35 +25,38 @@ public class GamePane implements Observer<Grid> {
   private MainScene scene;
   private int width;
   private int height;
+  private BlockViewFactory blockFactory;
   //Change below to dynamically respond to user input
   private int n = 15;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController) {
-    this.width = width;
-    this.height = height;
-    calculateCellSize();
-    this.root = new Group();
-    this.scene = scene;
-    this.keyHandlerController = new KeyHandlerController(new GameOverController(sceneController));
-    this.gridController = new GameGridController(this, keyHandlerController);
+    try {
+      this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
+      this.width = width;
+      this.height = height;
+      calculateCellSize();
+      this.root = new Group();
+      this.scene = scene;
+      this.keyHandlerController = new KeyHandlerController(new GameOverController(sceneController));
+      this.gridController = new GameGridController(this, keyHandlerController);
 
-    this.scene.getScene().setOnKeyPressed(event -> {
-      try {
+      this.scene.getScene().setOnKeyPressed(event -> {
+
         gridController.sendPlayToModel(event.getCode());
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks
-      } catch (Exception e) {
-        gridController.showError("ERROR", e.getClass().getName());
-      }
-    });
-
+      });
+    } catch (Exception e) {
+      gridController.showError("ERROR", e.getClass().getName());
+    }
     renderGrid(); // Initial grid rendering
   }
 
   public int getWidth() {
     return this.width;
   }
+
   public int getHeight() {
     return this.height;
   }
@@ -98,12 +101,8 @@ public class GamePane implements Observer<Grid> {
             offsetX = Math.min(offsetX, j * cellSize + cellSize - blockOffset);
             offsetY = Math.min(offsetY, i * cellSize + cellSize - blockOffset);
 
-            AbstractBlockView obj = reflect(block);
-            //Fix below to throw an exception or smth
-            if (obj == null) {
-              gridController.showError("ERROR", "AbstractBlockView is null");
-            }
-            ImageView visualObj = obj.getView();
+            ImageView visualObj = blockFactory.createBlockView(block.getBlockName());
+
             if (visualObj == null) {
               gridController.showError("ERROR", "ImageView in AbstractBlockView is null");
             }
@@ -128,26 +127,25 @@ public class GamePane implements Observer<Grid> {
     this.cellSize = Math.min(w, h);
   }
 
-  private AbstractBlockView reflect(AbstractBlock block) {
-    try {
-      String path = "/images/" + block.getBlockName() + ".png";
-      String className = block.getBlockName() + "View";
-      String source = "oogasalad.shared.blockviews.";
-      if (className.contains("Visual")) {
-        source += "visualblocksview.";
-      }
-      //do this for the rest
-      else if (className.contains("Text")) {
-        source += "textblocksview.";
-      }
-      Class<?> clazz = Class.forName(source + className);
-      AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
-          .newInstance(path);
-      return obj;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
+//  private AbstractBlockView reflect(String blockType) {
+//    try {
+//      String path = "/images/" + blockType + ".png";
+//      String className = blockType + "View";
+//      String source = "oogasalad.shared.blockviews.";
+//      if (className.contains("Visual")) {
+//        source += "visualblocksview.";
+//      }
+//      //do this for the rest
+//      else if (className.contains("Text")) {
+//        source += "textblocksview.";
+//      }
+//      Class<?> clazz = Class.forName(source + className);
+//      AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
+//          .newInstance(path);
+//      return obj;
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//      return null;
+//    }
+//  }
 }

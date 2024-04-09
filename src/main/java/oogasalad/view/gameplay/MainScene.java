@@ -10,11 +10,11 @@ public class MainScene implements Scene {
   private final int GAMEPLAY_WIDTH = 1000;
   private final int INTERACTION_WIDTH = 500;
   private final int HEIGHT = 800;
+  private final SceneController sceneController;
   private javafx.scene.Scene scene;
   private HBox root;
   private GamePane gameScene;
   private InteractionPane interactionScene;
-  private final SceneController sceneController;
 
   public MainScene(SceneController sceneController) {
     this.sceneController = sceneController;
@@ -43,7 +43,6 @@ public class MainScene implements Scene {
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
     //factory.addScene(this);
-
   }
 
   @Override
