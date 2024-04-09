@@ -1,5 +1,6 @@
 package oogasalad.model.gameplay.handlers;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import oogasalad.controller.gameplay.GameOverController;
@@ -80,11 +81,11 @@ public abstract class KeyHandler {
       int nextJ = currentJ + deltaJ;
       //move all the pushable stuffs into the next cell
       List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
-      for (int w = 0; w < indicesToMove.size();
-          w++) { //cannot use forEACh in stream, does not guarantee order
-        int index = indicesToMove.get(w);
-        grid.moveBlock(currentI, currentJ, index, nextI, nextJ);
-        System.out.println("finished perform Movement");
+      if(!indicesToMove.isEmpty()){
+        int minIndex = Collections.min(indicesToMove);
+        for(int w = 0; w < indicesToMove.size(); w++){
+          grid.moveBlock(currentI, currentJ, minIndex, nextI, nextJ);
+        }
       }
     }
     // Move controllable block last
