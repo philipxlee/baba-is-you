@@ -51,7 +51,7 @@ public class BlockTypeManager {
    * @throws Exception Throws exception if the blockType string is invalid.
    */
   public Block createBlock(String blockType) throws Exception {
-    BlockType type = new BlockType(blockType);
+    BlockType type = findBlockTypeByName(blockType);
     return new Block(type);
   }
 
