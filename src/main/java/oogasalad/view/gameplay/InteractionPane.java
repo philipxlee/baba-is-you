@@ -1,24 +1,19 @@
 package oogasalad.view.gameplay;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
+/**
+ * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
+ */
 public class InteractionPane {
 
   private static final Color BASE_COLOR = Color.web("#90A4AE");

@@ -1,21 +1,18 @@
 package oogasalad.view.gameplay.gamestates;
 
-import static oogasalad.view.gameplay.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
-import static oogasalad.view.gameplay.WidgetFactory.STYLESHEET;
+import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
+import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
-import oogasalad.view.gameplay.WidgetFactory;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
  * Scene that displays when the player wins the game.
@@ -25,7 +22,7 @@ public class WinScene implements Scene {
   private javafx.scene.Scene scene;
   private VBox root;
   private WidgetFactory factory;
-  private SceneController sceneController;
+  private final SceneController sceneController;
   private int width;
   private int height;
 
@@ -77,7 +74,9 @@ public class WinScene implements Scene {
 
     Button start = factory.makeButton("Play Again", 200, 40);
     texts.add(start);
-    start.setOnAction(event -> { sceneController.beginGame();});
+    start.setOnAction(event -> {
+      sceneController.beginGame();
+    });
 
     VBox textContainer = factory.wrapInVBox(texts, height);
     root.getChildren().add(textContainer);

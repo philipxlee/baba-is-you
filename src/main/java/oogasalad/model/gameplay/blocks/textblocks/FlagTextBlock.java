@@ -1,6 +1,5 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

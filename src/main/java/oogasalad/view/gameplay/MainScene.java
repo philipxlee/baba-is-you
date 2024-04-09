@@ -1,12 +1,13 @@
 package oogasalad.view.gameplay;
 
-import static oogasalad.view.gameplay.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
-import static oogasalad.view.gameplay.WidgetFactory.STYLESHEET;
+import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
+import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class MainScene implements Scene {
 

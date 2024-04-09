@@ -1,7 +1,7 @@
 package oogasalad.view.gameplay.gamestates;
 
-import static oogasalad.view.gameplay.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
-import static oogasalad.view.gameplay.WidgetFactory.STYLESHEET;
+import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
+import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
-import oogasalad.view.gameplay.WidgetFactory;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
  * Scene that displays when the player loses the game.
@@ -22,7 +22,7 @@ public class LoseScene implements Scene {
   private javafx.scene.Scene scene;
   private VBox root;
   private WidgetFactory factory;
-  private SceneController sceneController;
+  private final SceneController sceneController;
   private int width;
   private int height;
 
@@ -72,7 +72,9 @@ public class LoseScene implements Scene {
 
     Button start = factory.makeButton("Try Again", 200, 40);
     texts.add(start);
-    start.setOnAction(event -> { sceneController.beginGame();});
+    start.setOnAction(event -> {
+      sceneController.beginGame();
+    });
 
     VBox textContainer = factory.wrapInVBox(texts, height);
     root.getChildren().add(textContainer);

@@ -1,7 +1,7 @@
 package oogasalad.view.gameplay;
 
-import static oogasalad.view.gameplay.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
-import static oogasalad.view.gameplay.WidgetFactory.STYLESHEET;
+import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
+import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,27 +13,28 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
-import oogasalad.view.gameplay.WidgetFactory;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
  * Splash screen class for beginning the GamePlay.
  */
 public class StartingScene implements Scene {
 
-  private SceneController sceneController;
+  private final SceneController sceneController;
   private javafx.scene.Scene scene;
   private HBox root;
   private WidgetFactory factory;
   private int width;
   private int height;
 
-  private final static String rules = "Baba Is You is a puzzle game where players manipulate the game's\n "
-      + "rules to solve puzzles and progress. Players control Baba, a character, and aim to reach specific\n"
-      + " goals like touching flags or objects. The game world consists of blocks with words defining\n"
-      + " rules like 'Baba Is You' or 'Flag Is Win.' By moving blocks, players change rules to create\n"
-      + " win conditions or alter the game's logic. For example, by arranging 'Flag Is You' near a \n"
-      + "flag, Baba becomes the flag and wins. Players must think logically, as changing rules can\n"
-      + " have unintended consequences. Through experimentation, players solve increasingly complex puzzles.";
+  private final static String rules =
+      "Baba Is You is a puzzle game where players manipulate the game's\n "
+          + "rules to solve puzzles and progress. Players control Baba, a character, and aim to reach specific\n"
+          + " goals like touching flags or objects. The game world consists of blocks with words defining\n"
+          + " rules like 'Baba Is You' or 'Flag Is Win.' By moving blocks, players change rules to create\n"
+          + " win conditions or alter the game's logic. For example, by arranging 'Flag Is You' near a \n"
+          + "flag, Baba becomes the flag and wins. Players must think logically, as changing rules can\n"
+          + " have unintended consequences. Through experimentation, players solve increasingly complex puzzles.";
 
   public StartingScene(SceneController sceneController) {
     this.sceneController = sceneController;
@@ -70,7 +71,9 @@ public class StartingScene implements Scene {
   }
 
   private void setStartButtonAction(Button start) {
-    start.setOnAction(event -> { sceneController.beginGame(); });
+    start.setOnAction(event -> {
+      sceneController.beginGame();
+    });
   }
 
   @Override

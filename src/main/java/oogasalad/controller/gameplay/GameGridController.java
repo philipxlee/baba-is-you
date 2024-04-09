@@ -7,13 +7,14 @@ import oogasalad.shared.alert.AlertHandler;
 import oogasalad.view.gameplay.GamePane;
 
 /**
- * Controller that manages state changes from the GamePlay View to the Model, specifically the grid.x
+ * Controller that manages state changes from the GamePlay View to the Model, specifically the
+ * grid.x
  */
 public class GameGridController implements AlertHandler {
 
   private Grid gameGrid;
-  private GamePane gamePane;
-  private KeyHandlerController keyHandlerController;
+  private final GamePane gamePane;
+  private final KeyHandlerController keyHandlerController;
   String[][][] empty = {};
 
   public GameGridController(GamePane gamePane, KeyHandlerController keyHandlerController) {

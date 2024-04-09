@@ -1,4 +1,4 @@
-package oogasalad.view.gameplay;
+package oogasalad.shared.widgetfactory;
 
 import java.util.List;
 import javafx.geometry.Insets;
@@ -7,18 +7,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import oogasalad.shared.scene.Scene;
 
 /**
  * Factory class for making general UI widgets.
  */
 public class WidgetFactory {
+
   private oogasalad.shared.scene.Scene scene;
-  private Font bahianaFont;
+  private final Font bahianaFont;
   public static final String STYLESHEET = "gameplay.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
@@ -57,6 +56,7 @@ public class WidgetFactory {
 
   /**
    * The single node usage.
+   *
    * @param toBeWrapped
    * @param width
    * @return

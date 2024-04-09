@@ -1,7 +1,5 @@
 package oogasalad.model.gameplay.blocks;
 
-import oogasalad.model.gameplay.grid.Grid;
-
 //public class Level {
 //    public Level(Grid grid){
 //        this.grid = grid;
