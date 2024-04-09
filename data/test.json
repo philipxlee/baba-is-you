@@ -1,0 +1,27 @@
+{
+  "levelName": "The Dungeon of Doom",
+  "gridSize": {
+    "rows": 5,
+    "columns": 10
+  },
+  "grid": {
+    "cells": [
+      ["0", "0", "1", "1", "0", "0", "0", "1", "1", "0"],
+      ["0", "0", "1", "0", "0", "1", "0", "0", "1", "0"],
+      ["2", "0", "0", "0", "3", "0", "0", "0", "0", "0"],
+      ["0", "1", "0", "0", "1", "1", "0", "0", "1", "0"],
+      ["0", "1", "1", "0", "0", "0", "0", "1", "1", "0"]
+    ],
+    "metadata": {
+      "difficulty": "Easy",
+      "author": "GameDev123",
+      "language": "English",
+      "special-mode": "Normal"
+    },
+    "graphic": {
+      "Baba": "images/baba.png",
+      "Wall": "images/wall.png",
+      "Rock": "images/rock.png"
+    }
+  }
+}
