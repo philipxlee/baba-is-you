@@ -29,6 +29,9 @@ public class ElementsScene {
   private ScrollPane scrollPane;
   private MainScene scene;
   private VBox layout;
+
+  private boolean removeMode = false;
+
   private VBox blocksContainer;
   private BuilderScene builderScene;
 
@@ -37,17 +40,35 @@ public class ElementsScene {
     initializeElementsLayout();
   }
 
+
+
   private void initializeElementsLayout() {
     this.layout = new VBox(10); // Adjust spacing as needed
     this.blocksContainer = new VBox(10); // Space between images
     loadBlocksFromDirectory();
     Button changeGridSizeButton = new Button("Change Grid Size");
     changeGridSizeDialog(changeGridSizeButton);
+
+    Button removeButton = new Button("Remove block");
+
+    removeButton.setOnAction(event -> {
+      if (removeMode == false) {
+        removeButton.setText("Removing mode: Press blocks to remove");
+        removeMode = true;
+        builderScene.setRemove(removeMode);
+      } else {
+        removeButton.setText("Remove block");
+        removeMode = false;
+        builderScene.setRemove(removeMode);
+      }
+    });
+
+
     this.scrollPane = new ScrollPane(blocksContainer);
     scrollPane.setFitToWidth(true);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-    layout.getChildren().addAll(changeGridSizeButton, scrollPane);
+    layout.getChildren().addAll(changeGridSizeButton, scrollPane, removeButton);
     VBox.setVgrow(scrollPane, Priority.ALWAYS); // Allow the scroll pane to grow and fill space
   }
 
@@ -99,6 +120,7 @@ public class ElementsScene {
       e.printStackTrace(); // Handle exception appropriately
     }
   }
+
 
   private void makeDraggable(ImageView imageView, String blockType) {
     imageView.setOnDragDetected(event -> {

@@ -16,6 +16,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+
 public class BuilderScene {
 
   private Pane root; // Your root node for the builder scene
@@ -23,6 +24,8 @@ public class BuilderScene {
   private double cellSize; // Set the cell size
   private GridPane gridPane;
   private int gridWidth;
+
+  private boolean removeMode;
   private int gridHeight;
   private final int GRID_MARGIN = 10;
 
@@ -173,7 +176,26 @@ public class BuilderScene {
     return new ImageView(image);
   }
 
+
   public Pane getRoot() {
     return root;
+  }
+
+  private void setRemoveModeEventHandlers() {
+    root.getChildren().forEach(node -> {
+      if (node instanceof ImageView) {
+        node.setOnMouseClicked(event -> {
+          if (removeMode) {
+            root.getChildren().remove(node);
+          }
+        });
+      }
+    });
+  }
+
+
+  public void setRemove(boolean remove_bool) {
+      removeMode = remove_bool;
+      setRemoveModeEventHandlers();
   }
 }
