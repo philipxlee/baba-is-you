@@ -1,17 +1,12 @@
 package oogasalad.app;
 
 import javafx.application.Application;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.controller.authoring.SceneController;
 import oogasalad.model.authoring.block.BlockTypeManager;
 
 public class AuthoringEnvironment extends Application {
-
-  public static void main(String[] args) {
-    launch(args);
-  }
 
   @Override
   public void start(Stage stage) throws Exception {
