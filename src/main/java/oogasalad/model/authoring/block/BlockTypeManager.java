@@ -44,16 +44,28 @@ public class BlockTypeManager {
   }
 
   /**
+   * Factory method to create a new block of block type.
+   *
+   * @param blockType The block type as a string.
+   * @return A new Block object configured with the correct BlockType.
+   * @throws Exception Throws exception if the blockType string is invalid.
+   */
+  public Block createBlock(String blockType) throws Exception {
+    BlockType type = new BlockType(blockType);
+    return new Block(type);
+  }
+
+  /**
    * Utility method to find BlockType by name.
    *
-   * @param name The name of the block. Must be in block type properties file.
-   * @return The BlockType object corresponding to the name.
+   * @param blockType The type of the block. Must be in block type properties file.
+   * @return The BlockType object corresponding to the block type.
    * @throws Exception Thrown when the name is invalid (not in properties file).
    */
-  public BlockType findBlockTypeByName(String name) throws Exception {
+  public BlockType findBlockTypeByName(String blockType) throws Exception {
     return blockTypes.stream()
-        .filter(bt -> bt.name().equalsIgnoreCase(name))
+        .filter(bt -> bt.name().equalsIgnoreCase(blockType))
         .findFirst()
-        .orElseThrow(() -> new Exception("Invalid block type: " + name));
+        .orElseThrow(() -> new Exception("Invalid block type: " + blockType));
   }
 }
