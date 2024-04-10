@@ -5,13 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import oogasalad.model.authoring.block.Block;
-import oogasalad.model.authoring.block.BlockType;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observer;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,22 +19,22 @@ public class GridTest {
   private final static int ROWS = 3;
   private final static int COLS = 3;
   private Grid grid;
-  private BlockTypeManager blockTypeManager;
+  private BlockFactory blockFactory;
 
   @Before
   public void setUp() throws Exception {
     // Initialize the BlockTypeManager
-    blockTypeManager = new BlockTypeManager("/blocktypes/blocktypes.properties");
+    blockFactory = new BlockFactory("/blocktypes/blocktypes.json");
 
     // Initialize the grid
-    grid = new Grid(ROWS, COLS, blockTypeManager);
+    grid = new Grid(ROWS, COLS, blockFactory);
   }
 
   @Test
   public void testGridInitialization() {
     // Test that all cells are initialized with "Empty" blocks
     for (Block block : grid) {
-      assertEquals("Empty", block.type().name());
+      assertEquals("EmptyVisualBlock", block.type().name());
     }
   }
 
@@ -52,15 +49,16 @@ public class GridTest {
 
   @Test
   public void testSetCellWithValidName() throws Exception {
-    grid.setCell(0, 0, "Is");
+    grid.setCell(0, 0, "BabaVisualBlock");
     Block block = grid.iterator().next();
-    assertEquals("Is", block.type().name());
+    assertEquals("BabaVisualBlock", block.type().name());
   }
 
   @Test
   public void testSetCellWithInvalidPosition() {
     // Test setting a cell with an invalid position (out of bounds)
-    Exception exception = assertThrows(Exception.class, () -> grid.setCell(ROWS, COLS, "Invalid Row/Col Position"));
+    Exception exception = assertThrows(Exception.class,
+        () -> grid.setCell(ROWS, COLS, "Invalid Row/Col Position"));
     assertNotNull(exception);
   }
 

@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 
@@ -16,16 +16,16 @@ import oogasalad.model.authoring.level.LevelMetadata;
  */
 public class LevelController {
 
-  private Level currentLevel;
+  private final Level currentLevel;
 
   /**
    * LevelController constructor. Creates default level of 7x7 grid.
    *
-   * @param blockTypeManager The blockTypeManager used in the application.
+   * @param blockFactory The blockTypeManager used in the application.
    */
-  public LevelController(BlockTypeManager blockTypeManager) {
+  public LevelController(BlockFactory blockFactory) {
     LevelMetadata levelMetadata = new LevelMetadata("", "", 7, 7);
-    currentLevel = new Level(levelMetadata, blockTypeManager);
+    currentLevel = new Level(levelMetadata, blockFactory);
   }
 
   /**

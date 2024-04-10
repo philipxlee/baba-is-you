@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observer;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,18 +15,18 @@ import org.junit.Test;
 public class LevelTest {
 
   private Level level;
-  private BlockTypeManager blockTypeManager;
+  private BlockFactory blockFactory;
   private LevelMetadata levelMetadata;
   private Observer<Level> observer;
 
   @Before
   public void setUp() throws Exception {
     // Mock the BlockTypeManager
-    blockTypeManager = new BlockTypeManager("/blocktypes/blocktypes.properties");
+    blockFactory = new BlockFactory("/blocktypes/blocktypes.json");
     // Create LevelMetadata instance
     levelMetadata = new LevelMetadata("Level1", "First Level", 5, 5);
     // Initialize Level
-    level = new Level(levelMetadata, blockTypeManager);
+    level = new Level(levelMetadata, blockFactory);
     // Mock the Observer
     observer = (Observer<Level>) mock(Observer.class);
   }
@@ -40,7 +40,7 @@ public class LevelTest {
   @Test
   public void testSetCellValidBlock() throws Exception {
     // Assuming the blockTypeManager can handle the blockName without throwing an exception
-    level.setCell(1, 1, "Is");
+    level.setCell(1, 1, "EmptyVisualBlock");
     // Success if no exception is thrown
   }
 
