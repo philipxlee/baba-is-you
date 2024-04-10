@@ -35,10 +35,10 @@ public class BlockLoader {
   }
 
   /**
-   * Dummy method to mimic adding blocks to the UI. This should be replaced
-   * with the actual implementation that adds block images to the FlowPane.
+   * Dummy method to mimic adding blocks to the UI. This should be replaced with the actual
+   * implementation that adds block images to the FlowPane.
    *
-   * @param blockName      The name of the block to add.
+   * @param blockName       The name of the block to add.
    * @param blocksContainer The container to add the block view to.
    */
   private void addBlockViewToRoot(String blockName, FlowPane blocksContainer) {

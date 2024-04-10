@@ -59,8 +59,7 @@ public class BuilderScene {
     double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
-    this.cellSize = Math.min((availableWidth) / gridWidth,
-        (availableHeight) / gridHeight);
+    this.cellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);
 
     // Calculate total size of the grid
     double totalGridWidth = gridWidth * (cellSize);
@@ -173,11 +172,11 @@ public class BuilderScene {
     try {
       return blockViewFactory.createBlockView(blockType);
     } catch (Exception e) {
-      System.err.println("Failed to create block view for type: " + blockType + " with error: " + e.getMessage());
+      System.err.println(
+          "Failed to create block view for type: " + blockType + " with error: " + e.getMessage());
       return null; // Or handle this case as needed.
     }
   }
-
 
 
   public Pane getRoot() {
