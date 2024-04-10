@@ -1,9 +1,10 @@
 package oogasalad.model.gameplay.grid;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.attributes.Controllable;
@@ -58,7 +59,7 @@ public class Grid implements Observable<Grid> {
           {"EmptyVisualBlock", "WallVisualBlock"},
           {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
           {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
+          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
           {"EmptyVisualBlock", "StopTextBlock"},
           {"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}
       },
@@ -154,20 +155,28 @@ public class Grid implements Observable<Grid> {
     parser.interpretRules(grid);
   }
 
-  public Iterator<AbstractBlock> iterator() {
-    return new GridIterator(grid);
+  public CellIterator iterator(int row, int col) {
+    return new CellIterator(grid, row, col);
   }
 
   public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ) {
-    grid[ToI][ToJ].add(grid[fromI][fromJ].get(fromK));
+    AbstractBlock block = grid[fromI][fromJ].get(fromK);
+    grid[ToI][ToJ].add(block);
     grid[fromI][fromJ].remove(fromK);
+
+    // Important: Set the row and col of visual blocks to the new position if moved
+    if (!block.isTextBlock()) {
+      block.setRow(ToI);
+      block.setCol(ToJ);
+    }
+
     if (grid[fromI][fromJ].isEmpty()) {
       addBlock(fromI, fromJ, "EmptyVisualBlock");
     }
   }
 
   private void addBlock(int i, int j, String BlockType) {
-    grid[i][j].add(factory.createBlock(BlockType));
+    grid[i][j].add(factory.createBlock(BlockType, i, j));
   }
 
   public AbstractBlock getBlock(int i, int j, int k) {
@@ -175,6 +184,7 @@ public class Grid implements Observable<Grid> {
   }
 
   public List<AbstractBlock>[][] getGrid() {
+    sortCellsForRender();
     return this.grid;
   }
 
@@ -218,6 +228,29 @@ public class Grid implements Observable<Grid> {
     return allControllableBlocks;
   }
 
+  /**
+   * This method sorts each cell's list so that EmptyVisualBlock instances come first.
+   */
+  public void sortCellsForRender() {
+    for (List<AbstractBlock>[] row : grid) {
+      for (List<AbstractBlock> cell : row) {
+        cell.sort(new Comparator<AbstractBlock>() {
+          @Override
+          public int compare(AbstractBlock block1, AbstractBlock block2) {
+
+            if (block1 instanceof EmptyVisualBlock && !(block2 instanceof EmptyVisualBlock)) {
+              return -1;
+            } else if (!(block1 instanceof EmptyVisualBlock)
+                && block2 instanceof EmptyVisualBlock) {
+              return 1;
+            }
+            return 0;
+          }
+        });
+      }
+    }
+  }
+
   public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI,
       int controllableintialJ, int controllableinitialK) {
     //grid.isMovableToMargin(endI, endJ, k, i, j, k)
@@ -258,7 +291,7 @@ public class Grid implements Observable<Grid> {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
-          block.executeBehaviors(this, blockUpdater, i, j, k);
+          block.executeBehaviors(block, blockUpdater, iterator(i, j));
         }
       }
     }
@@ -313,9 +346,10 @@ public class Grid implements Observable<Grid> {
     return i >= 0 && i < grid.length && j >= 0 && j < grid[i].length;
   }
 
-  private void createBlocks(List<AbstractBlock> AbstractBlocks, String[] Blocktypes) {
+  private void createBlocks(List<AbstractBlock> AbstractBlocks, String[] Blocktypes, int row,
+      int col) {
     for (int i = 0; i < Blocktypes.length; i++) {
-      AbstractBlocks.add(factory.createBlock(Blocktypes[i]));
+      AbstractBlocks.add(factory.createBlock(Blocktypes[i], row, col));
     }
   }
 
@@ -324,7 +358,7 @@ public class Grid implements Observable<Grid> {
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         grid[i][j] = new ArrayList<AbstractBlock>();
-        createBlocks(grid[i][j], tempConfiguration[i][j]);
+        createBlocks(grid[i][j], tempConfiguration[i][j], i, j);
       }
     }
   }

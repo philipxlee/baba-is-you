@@ -13,8 +13,8 @@ public class EmptyVisualBlock extends AbstractVisualBlock {
    *
    * @param name the name of the block.
    */
-  public EmptyVisualBlock(String name) {
-    super(name);
+  public EmptyVisualBlock(String name, int row, int col) {
+    super(name, row, col);
   }
 
   /**

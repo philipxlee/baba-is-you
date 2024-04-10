@@ -12,8 +12,8 @@ public class BabaVisualBlock extends AbstractVisualBlock {
    *
    * @param name the name of the block
    */
-  public BabaVisualBlock(String name) {
-    super(name);
+  public BabaVisualBlock(String name, int row, int col) {
+    super(name, row, col);
   }
 
   /**
