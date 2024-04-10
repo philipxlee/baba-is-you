@@ -1,30 +1,28 @@
 package oogasalad.controller.authoring;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doThrow;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LevelControllerTest {
 
-  private BlockTypeManager blockTypeManager;
+  private BlockFactory blockFactory;
   private LevelController levelController;
 
   @Before
   public void setUp() throws Exception {
     // Setup mock BlockTypeManager
-    blockTypeManager = new BlockTypeManager("/blocktypes/blocktypes.properties");
-    levelController = new LevelController(blockTypeManager);
+    blockFactory = new BlockFactory("/blocktypes/blocktypes.json");
+    levelController = new LevelController(blockFactory);
   }
 
   @Test
@@ -36,7 +34,7 @@ public class LevelControllerTest {
   @Test
   public void testSetCellValidBlock() {
     // Assuming "validBlockName" is considered valid by the mocked BlockTypeManager
-    assertDoesNotThrow(() -> levelController.setCell(1, 1, "Empty"));
+    assertDoesNotThrow(() -> levelController.setCell(1, 1, "EmptyVisualBlock"));
   }
 
   @Test

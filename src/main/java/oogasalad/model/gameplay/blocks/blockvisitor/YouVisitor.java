@@ -5,7 +5,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
-import oogasalad.model.gameplay.strategies.Controllable;
+import oogasalad.model.gameplay.strategies.attributes.Controllable;
 
 /**
  * Visitor pattern for the "you" behavior.

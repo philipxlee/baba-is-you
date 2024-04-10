@@ -5,7 +5,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
-import oogasalad.model.gameplay.strategies.BecomesBaba;
+import oogasalad.model.gameplay.strategies.becomes.BecomesBaba;
 
 /**
  * Visitor pattern for the baba behavior.

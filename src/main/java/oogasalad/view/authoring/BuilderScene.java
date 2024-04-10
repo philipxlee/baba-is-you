@@ -73,7 +73,8 @@ public class BuilderScene {
       for (int j = 0; j < gridHeight; j++) {
         Pane cell = new Pane();
         cell.setPrefSize(cellSize, cellSize);
-        cell.setStyle("-fx-border-color: #6c1e1e; -fx-background-color: rgba(47,5,119,0.89); -fx-border-width: 1;");
+        cell.setStyle(
+            "-fx-border-color: rgba(95,91,103,0.89); -fx-background-color: rgba(2,0,0,0.89); -fx-border-width: 1;");
         gridPane.add(cell, i, j);
       }
     }
@@ -149,8 +150,7 @@ public class BuilderScene {
 
   private Point2D getCellCoordinates(double x, double y) {
     for (Node node : gridPane.getChildren()) {
-      if (node instanceof Pane) {
-        Pane cell = (Pane) node;
+      if (node instanceof Pane cell) {
         Bounds boundsInParent = cell.getBoundsInParent();
         if (boundsInParent.contains(x, y)) {
           // Calculate the cell coordinates based on the layout coordinates of the cell
@@ -165,7 +165,7 @@ public class BuilderScene {
 
   private ImageView createBlockView(String blockType) {
     String imagePath =
-            "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
+        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
     File imageFile = new File(imagePath);
     if (!imageFile.exists()) {
       System.err.println("Image file not found: " + imagePath);
@@ -194,7 +194,7 @@ public class BuilderScene {
 
 
   public void setRemove(boolean remove_bool) {
-      removeMode = remove_bool;
-      setRemoveModeEventHandlers();
+    removeMode = remove_bool;
+    setRemoveModeEventHandlers();
   }
 }

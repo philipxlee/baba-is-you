@@ -26,9 +26,9 @@ public class GameOverController {
    */
   public void displayGameOver(boolean isWin) {
     if (isWin) {
-      sceneController.switchToScene(new WinScene());
+      sceneController.switchToScene(new WinScene(sceneController));
     } else {
-      sceneController.switchToScene(new LoseScene());
+      sceneController.switchToScene(new LoseScene(sceneController));
     }
   }
 }

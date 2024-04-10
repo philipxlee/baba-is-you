@@ -5,10 +5,10 @@ import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.strategies.Controllable;
-import oogasalad.model.gameplay.strategies.Pushable;
-import oogasalad.model.gameplay.strategies.Stoppable;
-import oogasalad.model.gameplay.strategies.Winnable;
+import oogasalad.model.gameplay.strategies.attributes.Controllable;
+import oogasalad.model.gameplay.strategies.attributes.Pushable;
+import oogasalad.model.gameplay.strategies.attributes.Stoppable;
+import oogasalad.model.gameplay.strategies.attributes.Winnable;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
 import oogasalad.shared.observer.Observable;
@@ -282,8 +282,8 @@ public class Grid implements Observable<Grid> {
     return hasPushable || textBlock;
   }
 
-  public boolean cellHasControllable(int i, int j){
-    return grid[i][j].stream().anyMatch(block->block.hasBehavior(Controllable.class));
+  public boolean cellHasControllable(int i, int j) {
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
   }
 
   public boolean cellHasWinning(int i, int j) {
@@ -320,6 +320,19 @@ public class Grid implements Observable<Grid> {
       for (int j = 0; j < grid[i].length; j++) {
         grid[i][j] = new ArrayList<AbstractBlock>();
         createBlocks(grid[i][j], tempConfiguration[i][j]);
+      }
+    }
+  }
+
+  public void resetAllBlocks() {
+    List<AbstractBlock>[][] grid = getGrid();
+    for (List<AbstractBlock>[] blocksRow : grid) {
+      for (List<AbstractBlock> cell : blocksRow) {
+        for (AbstractBlock block : cell) {
+          if (!block.isTextBlock()) {
+            block.resetAllBehaviors();
+          }
+        }
       }
     }
   }
