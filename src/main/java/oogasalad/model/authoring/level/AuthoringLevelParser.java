@@ -1,5 +1,6 @@
 package oogasalad.model.authoring.level;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import oogasalad.shared.config.JsonManager;
 
@@ -32,9 +33,29 @@ public class AuthoringLevelParser {
 
     JsonObject gridSizeObject = new JsonObject();
 
+    JsonObject grid = new JsonObject();
+
     buildJsonObject(metadataJson, metadata, gridSizeObject);
 
+    JsonArray gridArray = turnGridToJson(level);
+
+    jsonManager.addArrayToJson(grid, "cells", gridArray);
+
+    jsonManager.addArrayToJson(metadataJson, "grid", gridArray);
+
     return metadataJson;
+  }
+
+  /**
+   * Converts the 2D grid of the level into a JsonArray.
+   *
+   * @param level The Level object containing the grid to be converted.
+   * @return A JsonArray representing the grid of the level.
+   */
+  private JsonArray turnGridToJson(Level level) {
+    String[][] levelGrid = level.getParsedGrid();
+
+    return convertGridToJsonArray(levelGrid);
   }
 
   /**
@@ -54,4 +75,30 @@ public class AuthoringLevelParser {
 
     jsonManager.addObject(metadataJson, "gridSize", gridSizeObject);
   }
+
+  /**
+   * Converts a 2D String array representing a grid into a JsonArray with a similar structure to
+   * what is produced for a 3D array, effectively wrapping the 2D grid as a single-layer grid.
+   *
+   * @param grid The 2D String array representing the level grid in the authoring environment.
+   * @return A JsonArray where the first element is a JsonArray representing the single layer of the
+   * grid.
+   */
+  private JsonArray convertGridToJsonArray(String[][] grid) {
+    JsonArray singleLayerArray = new JsonArray();
+
+    for (String[] row : grid) {
+      JsonArray rowArray = new JsonArray();
+      for (String cell : row) {
+        rowArray.add(cell);
+      }
+      singleLayerArray.add(rowArray);
+    }
+
+    JsonArray layersArray = new JsonArray();
+    layersArray.add(singleLayerArray);
+
+    return layersArray;
+  }
+
 }

@@ -1,8 +1,8 @@
 package oogasalad.model.authoring.parser;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import java.io.IOException;
-import oogasalad.model.authoring.block.BlockTypeManager;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.model.authoring.level.AuthoringLevelParser;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
@@ -16,14 +16,15 @@ class AuthoringLevelParserTest {
 
   private AuthoringLevelParser parser;
   private Level testLevel;
-  private final String validPropertiesFilePath = "/blocktypes/blocktypes.properties";
+  private final String validPropertiesFilePath = "/blocktypes/blocktypes.json";
   private final JsonManager jsonManager = new JsonManager();
 
   @BeforeEach
-  void setUp() throws IOException {
-    BlockTypeManager blockTypeManager = new BlockTypeManager(validPropertiesFilePath);
+  void setUp() throws Exception {
+
+    BlockFactory blockTypeManager = new BlockFactory(validPropertiesFilePath);
     LevelMetadata metadata = new LevelMetadata("TestLevel",
-        "This is a test level", 10, 15);
+        "This is a test level", 3, 3);
     testLevel = new Level(metadata, blockTypeManager);
 
     parser = new AuthoringLevelParser(jsonManager);
@@ -39,11 +40,23 @@ class AuthoringLevelParserTest {
         () -> assertEquals("TestLevel", jsonManager.getValue(metadataJson,
             "levelName"), "Name should match"),
         () -> assertNotNull(jsonManager.getJsonObject(metadataJson, "gridSize")),
-        () -> assertEquals("10", jsonManager.getValue(jsonManager.getJsonObject
+        () -> assertEquals("3", jsonManager.getValue(jsonManager.getJsonObject
             (metadataJson, "gridSize"), "rows"), "Rows should match"),
-        () -> assertEquals("15", jsonManager.getValue(jsonManager.getJsonObject
+        () -> assertEquals("3", jsonManager.getValue(jsonManager.getJsonObject
                 (metadataJson, "gridSize"), "cols"),
             "Columns should match")
     );
+
+    JsonArray jsonArray = jsonManager.getJsonArray(metadataJson, "grid");
+    JsonArray firstLayer = jsonArray.get(0).getAsJsonArray();
+    JsonArray firstRow = firstLayer.get(0).getAsJsonArray();
+
+    String firstCell = firstRow.get(0).getAsString();
+    String secondCell = firstRow.get(1).getAsString();
+
+    assertEquals("EmptyVisualBlock", firstCell, "The first cell is not an"
+        + " EmptyVisualBlock");
+    assertEquals("EmptyVisualBlock", secondCell, "The second cell is not an"
+        + " EmptyVisualBlock");
   }
 }
