@@ -26,6 +26,13 @@
   -fx-text-alignment: center;
 }
 
+.caption {
+  -fx-font-size: 20px;
+  -fx-fill: #FF7171;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
+}
+
 .button {
   -fx-background-color: #777DA1;
   -fx-border-radius: 20;
