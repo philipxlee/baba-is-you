@@ -22,8 +22,7 @@ public class BecomesRock extends AbstractBecomesBehavior {
    */
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
-    if (!containsTextBlock(iterator) && !containsNonEmptyVisualBlock(iterator, block)
-        && onlyEmptyVisualBlock(block, iterator)) {
+    if (onlyEmptyVisualBlock(block, iterator)) {
       updater.updateBlock(block, ROCK_VISUAL_BLOCK);
     }
   }

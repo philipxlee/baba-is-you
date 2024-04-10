@@ -27,40 +27,6 @@ public abstract class AbstractBecomesBehavior implements Strategy {
   /**
    * Checks if the grid cell contains a non-empty visual block.
    *
-   * @param iterator iterator to control.
-   * @param targetBlock block to ignore.
-   * @return true if the cell contains a non-empty visual block, false otherwise.
-   */
-  public boolean containsNonEmptyVisualBlock(CellIterator iterator, AbstractBlock targetBlock) {
-    while (iterator.hasNext()) {
-      AbstractBlock currentBlock = iterator.next();
-      if (!currentBlock.isTextBlock() &&
-          !currentBlock.getBlockName().equals(EMPTY_VISUAL_BLOCK) &&
-          !currentBlock.equals(targetBlock)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Checks if the grid cell contains a text block.
-   *
-   * @param iterator iterator to control.
-   * @return true if the cell contains a text block, false otherwise.
-   */
-  public boolean containsTextBlock(CellIterator iterator) {
-    while (iterator.hasNext()) {
-      if (iterator.next().isTextBlock()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Checks if the grid cell contains a non-empty visual block.
-   *
    * @param block block to ignore.
    * @param iterator iterator to control.
    * @return true if the cell contains a non-empty visual block, false otherwise.

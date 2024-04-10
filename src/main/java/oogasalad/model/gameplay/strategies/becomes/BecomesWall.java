@@ -21,10 +21,7 @@ public class BecomesWall extends AbstractBecomesBehavior {
    */
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
-    if (!containsTextBlock(iterator) && !containsNonEmptyVisualBlock(iterator, block)
-        && onlyEmptyVisualBlock(block, iterator)) {
-      System.out.println(block.getBlockName() + " becomes wall");
-      System.out.println("Baba position: " + block.getRow() + " " + block.getCol());
+    if (onlyEmptyVisualBlock(block, iterator)) {
       updater.updateBlock(block, WALL_VISUAL_BLOCK);
     }
   }

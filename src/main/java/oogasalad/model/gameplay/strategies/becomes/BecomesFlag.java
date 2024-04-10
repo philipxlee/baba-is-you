@@ -21,8 +21,7 @@ public class BecomesFlag extends AbstractBecomesBehavior {
    */
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
-    if (!containsTextBlock(iterator) && !containsNonEmptyVisualBlock(iterator, block)
-        && onlyEmptyVisualBlock(block, iterator)) {
+    if (onlyEmptyVisualBlock(block, iterator)) {
       updater.updateBlock(block, FLAG_VISUAL_BLOCK);
     }
   }
