@@ -55,8 +55,8 @@ public class BlockLoader {
 
         // Create ImageView with the retrieved imagePath
         ImageView imageView = new ImageView(new Image(imagePath));
-        imageView.setFitWidth(75);
-        imageView.setFitHeight(75);
+        imageView.setFitWidth(60);
+        imageView.setFitHeight(60);
         imageView.setPreserveRatio(true);
 
         // Add the ImageView to the blocksContainer
