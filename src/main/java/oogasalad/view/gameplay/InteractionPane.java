@@ -1,9 +1,16 @@
 package oogasalad.view.gameplay;
 
+import javafx.scene.control.ScrollPane;
+import java.io.InputStream;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,11 +34,29 @@ public class InteractionPane {
   Rectangle down = createRectangle(false);
   private Group root;
   private MainScene scene;
+  private int width;
+  private int height;
+  private WidgetFactory factory;
+  private Image fileIcon;
 
+  /**
+   * Sets up all widgets within the interaction pane.
+   * @param width the width of the pane
+   * @param height height of the pane
+   * @param scene the scene this pane belongs to (in its case, the MainScene
+   * @param factory an instance of the WidgetFactory used for UI widget creation
+   */
   public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
       factory) {
+    this.factory = factory;
     this.scene = scene;
     this.root = new Group();
+    this.width = width;
+    this.height = height;
+
+    InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
+    fileIcon = new Image(stream);
+
     root.setOnKeyPressed(this::handleKeyPress);
     root.setOnKeyReleased(this::handleKeyRelease);
     root.setFocusTraversable(true);
@@ -47,12 +72,64 @@ public class InteractionPane {
 
     // Combine the header and arrow keys into a single display layout
     VBox display = new VBox(10);
-    display.getChildren().addAll(header, arrowKeys);
+    display.getChildren().addAll(header, arrowKeys, setUpFileChooser());
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
 
     root.getChildren().addAll(background, display);
+  }
+
+  /**
+   * Sets up the scrollpane used for selecting files.
+   * @return a scrollpane with populated image icons representing JSON level files.
+   */
+  private VBox setUpFileChooser() {
+    FlowPane flowPane = new FlowPane();
+    flowPane.setPrefSize(width-50, height/4);
+    flowPane.setPadding(new Insets(10));
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
+    flowPane.setFocusTraversable(false);
+
+    //TODO: change to actual file #
+    populateFiles(10, flowPane);
+    ScrollPane pane = factory.makeScrollPane(flowPane, width-50);
+    Text paneLabel = factory.generateLine("Available Games");
+    VBox labelAndChooser = factory.wrapInVBox(paneLabel, height/3);
+    labelAndChooser.getChildren().add(pane);
+    return labelAndChooser;
+
+  }
+
+  /**
+   * Iterates through default game files and populates them within a flowpane. When the file icons
+   * representing each game file are clicked, an individual popup dialog window appears with their
+   * information.
+   * @param numFiles number of default game level JSON files
+   * @param flowPane javafx object containing the clickable file icons
+   */
+  private void populateFiles(int numFiles, FlowPane flowPane) {
+    for (int i = 1; i <= numFiles; i++) {
+      ImageView imageView = new ImageView(fileIcon);
+      imageView.setFitWidth(80);
+      imageView.setFitHeight(80);
+
+      Text fileName = factory.generateCaption("File: " + i);
+      VBox imageAndLabel = new VBox(10);
+      imageAndLabel.getChildren().addAll(imageView, fileName);
+
+      // Make each file icon clickable: TODO: connect to json
+      imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          Text text = new Text("TEMPORARY: file info goes here");
+          VBox vbox = new VBox(text);
+          factory.createPopUpWindow(width-100, height/4, vbox, "File Information");
+        }
+      });
+      flowPane.getChildren().add(imageAndLabel);
+    }
   }
 
   private VBox setupArrowKeys() {
