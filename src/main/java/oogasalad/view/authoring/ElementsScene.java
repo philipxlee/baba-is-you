@@ -1,7 +1,12 @@
 package oogasalad.view.authoring;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContentDisplay;
@@ -13,9 +18,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Pair;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class ElementsScene {
 
@@ -25,42 +35,41 @@ public class ElementsScene {
   private boolean removeMode = false;
   private final BuilderScene builderScene;
   private final BlockLoader blockLoader = new BlockLoader();
+  private WidgetFactory factory;
 
   public ElementsScene(BuilderScene builderScene) {
+    this.factory = new WidgetFactory();
     this.builderScene = builderScene;
     initializeElementsLayout();
   }
 
   private void initializeElementsLayout() {
-    layout = new VBox(10); // Adjust spacing as needed
+    layout = new VBox(30);
+//    layout.setMinHeight(builderScene.getRoot().getHeight());
 
-    // Load the "babaisyou" block image
-    ImageView babaisyouImage = loadImageFromDirectory("BabaIsYouHeader", 300, 300);
+    Text title = factory.generateHeader("Baba Is You");
+    HBox header = factory.wrapInHBox(title, (int)layout.getWidth());
 
-    // Set the "babaisyou" block image as the graphic for the titleLabel
-    Label titleLabel = new Label();
-    titleLabel.setGraphic(babaisyouImage);
-    titleLabel.setContentDisplay(ContentDisplay.CENTER);
-    titleLabel.setAlignment(Pos.CENTER);
-
-    // Add descriptive text
-    Label descriptionLabel = new Label("Drag blocks from this panel:");
-    descriptionLabel.setStyle("-fx-font-size: 14pt;");
+    Text descriptionLabel = factory.generateLine("Drag blocks from this panel:");
+    HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int)layout.getWidth());
 
     // Create a container for blocks
     FlowPane blocksContainer = new FlowPane(); // FlowPane instead of VBox
     blocksContainer.setHgap(30); // Adjust spacing between blocks
     blocksContainer.setVgap(30); // Adjust spacing between rows
     blocksContainer.setAlignment(Pos.CENTER); // Center the blocks horizontally
+    blocksContainer.getStyleClass().add("flowpane");
+    blocksContainer.setMinHeight(350);
+    blocksContainer.setPadding(new Insets(20));
 
     loadBlocks(blocksContainer);
 
     // Button for changing grid size
-    Button changeGridSizeButton = new Button("Change Grid Size");
+    Button changeGridSizeButton = factory.makeAuthoringButton("Change Grid Size", 200, 30);
     changeGridSizeDialog(changeGridSizeButton);
 
     // Button for toggling remove mode
-    Button removeButton = new Button("Remove block");
+    Button removeButton = factory.makeAuthoringButton("Remove Block", 200, 30);
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
       if (removeMode) {
@@ -71,17 +80,30 @@ public class ElementsScene {
       builderScene.setRemove(removeMode);
     });
 
+    List<Node> buttons = new ArrayList<>();
+    buttons.add(changeGridSizeButton);
+    buttons.add(removeButton);
+    HBox buttonsHBox = factory.wrapInHBox(buttons, (int)layout.getWidth());
+    buttonsHBox.setSpacing(50);
+
     // Scroll pane for blocks container
     scrollPane = new ScrollPane(blocksContainer);
     scrollPane.setFitToWidth(true);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    scrollPane.getStyleClass().add("flowpane");
 
-    layout.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
-    blocksContainer.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
+    scrollPane.setPadding(new Insets(20));
+    scrollPane.setMaxHeight(350);
+
+    Button saveJson = factory.makeAuthoringButton("Save to JSON", 200, 40);
+    HBox jsonBox = factory.wrapInHBox(saveJson, (int)layout.getWidth());
+
+    layout.getStyleClass().add("elements-background");
+//    blocksContainer.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
 
     // Add components to layout
     layout.getChildren()
-        .addAll(titleLabel, changeGridSizeButton, removeButton, descriptionLabel, scrollPane);
+        .addAll(header, buttonsHBox, descriptionBox, scrollPane, jsonBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS); // Allow the scroll pane to grow and fill space
   }
 
