@@ -77,8 +77,7 @@ public class BuilderScene {
       for (int j = 0; j < gridHeight; j++) {
         Pane cell = new Pane();
         cell.setPrefSize(cellSize, cellSize);
-        cell.setStyle(
-            "-fx-border-color: rgba(95,91,103,0.89); -fx-background-color: rgba(2,0,0,0.89); -fx-border-width: 1;");
+        cell.getStyleClass().add("grid");
         gridPane.add(cell, i, j);
       }
     }
