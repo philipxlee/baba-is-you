@@ -107,6 +107,15 @@ public class WidgetFactory {
     return button;
   }
 
+  public Button makeAuthoringButton(String label, int width, int height) {
+    Button button = new Button(label);
+    button.setPrefWidth(width);
+    button.setPrefHeight(height);
+    button.setPadding(new Insets(10));
+    button.getStyleClass().add("authoring-button");
+    return button;
+  }
+
   public ScrollPane makeScrollPane(FlowPane flowPane, int maxWidth) {
     ScrollPane pane = new ScrollPane(flowPane);
     pane.setFitToWidth(true);
