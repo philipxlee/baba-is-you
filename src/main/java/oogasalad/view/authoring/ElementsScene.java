@@ -1,8 +1,6 @@
 package oogasalad.view.authoring;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -13,9 +11,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -25,13 +20,11 @@ import javafx.util.Pair;
 public class ElementsScene {
 
   private ScrollPane scrollPane;
-  private MainScene scene;
   private VBox layout;
-
+  private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private boolean removeMode = false;
-
-  private VBox blocksContainer;
   private final BuilderScene builderScene;
+  private final BlockLoader blockLoader = new BlockLoader();
 
   public ElementsScene(BuilderScene builderScene) {
     this.builderScene = builderScene;
@@ -60,7 +53,7 @@ public class ElementsScene {
     blocksContainer.setVgap(30); // Adjust spacing between rows
     blocksContainer.setAlignment(Pos.CENTER); // Center the blocks horizontally
 
-    loadBlocksFromDirectory(blocksContainer);
+    loadBlocks(blocksContainer);
 
     // Button for changing grid size
     Button changeGridSizeButton = new Button("Change Grid Size");
@@ -86,14 +79,6 @@ public class ElementsScene {
     layout.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
     blocksContainer.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
 
-    // Set background color
-//    layout.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null))); // Adjust the color as needed
-//    scrollPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null))); // Adjust the color as needed
-//    blocksContainer.setBackground(new Background(new BackgroundFill(Color.rgb(200, 150, 250), null, null))); // Adjust the color as needed
-//    titleLabel.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null))); // Adjust the color as needed
-//    descriptionLabel.setBackground(new Background(new BackgroundFill(Color.rgb(127, 100, 204), null, null))); // Adjust the color as needed
-//
-
     // Add components to layout
     layout.getChildren()
         .addAll(titleLabel, changeGridSizeButton, removeButton, descriptionLabel, scrollPane);
@@ -105,50 +90,11 @@ public class ElementsScene {
     return layout;
   }
 
-  private List<String> getBlockNamesFromDirectory(File directory) {
-    List<String> blockNames = new ArrayList<>();
-    File[] imageFiles = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".png"));
-    if (imageFiles != null) {
-      for (File imageFile : imageFiles) {
-        String blockName = imageFile.getName().replace(".png", "");
-        blockNames.add(blockName);
-      }
-    }
-    return blockNames;
+
+  private void loadBlocks(FlowPane blocksContainer) {
+    blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH);
   }
 
-  private void loadBlocksFromDirectory(FlowPane blocksContainer) {
-    String directoryPath = "src/main/resources/images";
-
-    // Create a File object for the directory
-    File selectedDirectory = new File(directoryPath);
-
-    // Check if the directory exists
-    if (selectedDirectory.exists() && selectedDirectory.isDirectory()) {
-      List<String> blockNames = getBlockNamesFromDirectory(selectedDirectory);
-      for (String blockName : blockNames) {
-        addBlockViewToRoot(selectedDirectory, blockName,
-            blocksContainer); // Pass blocksContainer to the method
-      }
-    } else {
-      System.err.println("Directory not found or is not a valid directory.");
-    }
-  }
-
-  private void addBlockViewToRoot(File directory, String blockName, FlowPane blocksContainer) {
-    try {
-      File imageFile = new File(directory, blockName + ".png");
-      ImageView imageView = new ImageView(
-          new Image(imageFile.toURI().toString(), 100, 100, true, true));
-      imageView.setFitWidth(75); // Set the image width to 100 for a square shape
-      imageView.setFitHeight(75); // Set the image height to 100 for a square shape
-      imageView.setPreserveRatio(true);
-      blocksContainer.getChildren().add(imageView);
-      makeDraggable(imageView, blockName);
-    } catch (Exception e) {
-      e.printStackTrace(); // Handle exception appropriately
-    }
-  }
 
   private ImageView loadImageFromDirectory(String imageName, double width, double height) {
     String directoryPath = "src/main/resources/images";
@@ -165,17 +111,6 @@ public class ElementsScene {
       System.err.println("Directory not found or is not a valid directory.");
     }
     return null;
-  }
-
-  private void makeDraggable(ImageView imageView, String blockType) {
-    imageView.setOnDragDetected(event -> {
-      Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-      ClipboardContent content = new ClipboardContent();
-      content.putString(blockType); // Use blockType as the identifier for the dragged object
-      db.setContent(content);
-      db.setDragView(imageView.snapshot(null, null));
-      event.consume();
-    });
   }
 
   private void changeGridSizeDialog(Button button) {

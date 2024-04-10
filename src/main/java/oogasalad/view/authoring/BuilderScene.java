@@ -1,13 +1,12 @@
 package oogasalad.view.authoring;
 
-import java.io.File;
+import oogasalad.shared.blockview.BlockViewFactory;
 import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -18,16 +17,23 @@ import javafx.scene.layout.Pane;
 public class BuilderScene {
 
   private Pane root; // Your root node for the builder scene
-  private final int gridSize = 5; // Set the grid size
   private double cellSize; // Set the cell size
   private GridPane gridPane;
   private int gridWidth;
+  private BlockViewFactory blockViewFactory;
 
   private boolean removeMode;
   private int gridHeight;
   private final int GRID_MARGIN = 10;
+  private final String IMAGE_FILE_PATH = "/blocktypes/blocktypes.json";
 
   public BuilderScene() {
+    initializeBuilderScene();
+    try {
+      this.blockViewFactory = new BlockViewFactory(IMAGE_FILE_PATH); // Adjust the path accordingly
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     initializeBuilderScene();
   }
 
@@ -53,9 +59,8 @@ public class BuilderScene {
     double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
-    double calculatedCellSize = Math.min((availableWidth) / gridWidth,
+    this.cellSize = Math.min((availableWidth) / gridWidth,
         (availableHeight) / gridHeight);
-    this.cellSize = calculatedCellSize;
 
     // Calculate total size of the grid
     double totalGridWidth = gridWidth * (cellSize);
@@ -163,17 +168,16 @@ public class BuilderScene {
     return null; // Coordinates (x, y) do not fall within any cell
   }
 
+
   private ImageView createBlockView(String blockType) {
-    String imagePath =
-        "src/main/resources/images/" + blockType + ".png"; // Adjust path as necessary
-    File imageFile = new File(imagePath);
-    if (!imageFile.exists()) {
-      System.err.println("Image file not found: " + imagePath);
+    try {
+      return blockViewFactory.createBlockView(blockType);
+    } catch (Exception e) {
+      System.err.println("Failed to create block view for type: " + blockType + " with error: " + e.getMessage());
       return null; // Or handle this case as needed.
     }
-    Image image = new Image(imageFile.toURI().toString(), 100, 100, true, true);
-    return new ImageView(image);
   }
+
 
 
   public Pane getRoot() {
