@@ -4,12 +4,19 @@ import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import oogasalad.shared.scene.Scene;
 
 /**
  * Factory class for making general UI widgets.
@@ -46,6 +53,12 @@ public class WidgetFactory {
     return line;
   }
 
+  public Text generateCaption(String content) {
+    Text line = new Text(content);
+    line.getStyleClass().add("caption");
+    return line;
+  }
+
   public HBox wrapInHBox(List<Node> toBeWrapped, int width) {
     HBox hbox = new HBox();
     hbox.getChildren().addAll(toBeWrapped);
@@ -77,6 +90,14 @@ public class WidgetFactory {
     return vbox;
   }
 
+  public VBox wrapInVBox(Node toBeWrapped, int height) {
+    VBox vbox = new VBox(10);
+    vbox.getChildren().add(toBeWrapped);
+    vbox.setPrefHeight(height);
+    vbox.setAlignment(Pos.CENTER);
+    return vbox;
+  }
+
   public Button makeButton(String label, int width, int height) {
     Button button = new Button(label);
     button.setPrefWidth(width);
@@ -84,6 +105,30 @@ public class WidgetFactory {
     button.setPadding(new Insets(10));
     button.getStyleClass().add("button");
     return button;
+  }
+
+  public ScrollPane makeScrollPane(FlowPane flowPane, int maxWidth) {
+    ScrollPane pane = new ScrollPane(flowPane);
+    pane.setFitToWidth(true);
+    pane.setFitToHeight(true);
+    pane.setMaxWidth(maxWidth);
+    pane.setPannable(false);
+    pane.setFocusTraversable(false);
+    pane.setOnKeyPressed(event -> {
+      if(event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP
+          || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT)
+        event.consume();
+    });
+    return pane;
+  }
+
+  public void createPopUpWindow(int width, int height, Parent root, String title) {
+    Stage popup = new Stage();
+    javafx.scene.Scene scene = new javafx.scene.Scene(root, width, height);
+    popup.setScene(scene);
+    popup.setTitle(title);
+    popup.show();
+
   }
 
 }

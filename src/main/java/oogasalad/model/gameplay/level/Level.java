@@ -13,6 +13,16 @@ public class Level {
         levelMetadata.initialConfiguration());
   }
 
+  /**
+   * Returns the metadata for this level.
+   *
+   * @return The metadata of the level, including details like name, difficulty, and grid
+   * configuration.
+   */
+  public LevelMetadata getLevelMetadata() {
+    return levelMetadata;
+  }
+
 
 }
 
