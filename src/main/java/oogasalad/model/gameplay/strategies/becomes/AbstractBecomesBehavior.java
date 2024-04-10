@@ -2,9 +2,8 @@ package oogasalad.model.gameplay.strategies.becomes;
 
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
-import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.grid.BlockUpdater;
+import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
@@ -27,19 +26,6 @@ public abstract class AbstractBecomesBehavior implements Strategy {
    */
   @Override
   public abstract void execute(Grid grid, BlockUpdater updater, int i, int j, int k);
-
-  /**
-   * Interacts with the target block using the initiating block strategy.
-   *
-   * @param targetBlock             The block that is the target of the interaction.
-   * @param initiatingBlockStrategy The strategy that is acting upon the target block.
-   * @return true if the interaction is successful; false otherwise.
-   */
-  @Override
-  public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
-    // Implementation can vary or stay abstract if necessary.
-    return false;
-  }
 
   /**
    * Checks if the specified list of blocks contains a non-empty visual block other than the target block.
