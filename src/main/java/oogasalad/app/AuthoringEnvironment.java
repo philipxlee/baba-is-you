@@ -12,7 +12,7 @@ public class AuthoringEnvironment extends Application {
   @Override
   public void start(Stage stage) {
     // initialize models
-    LevelMetadata levelMetadata = new LevelMetadata("", "", 10, 10);
+    LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", 10, 10);
     Level level = new Level(levelMetadata);
 
     // initialize controllers
