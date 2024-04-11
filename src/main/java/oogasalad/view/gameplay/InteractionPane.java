@@ -10,6 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -176,24 +177,40 @@ public class InteractionPane {
 
   private void handleKeyPress(javafx.scene.input.KeyEvent event) {
     switch (event.getCode()) {
-      case UP -> up.setFill(HIGHLIGHT_COLOR);
-      case DOWN -> down.setFill(HIGHLIGHT_COLOR);
-      case LEFT -> left.setFill(HIGHLIGHT_COLOR);
-      case RIGHT -> right.setFill(HIGHLIGHT_COLOR);
-      default -> {
-        // Do nothing
+      case UP, DOWN, LEFT, RIGHT -> {
+        updateArrowKeyVisual(event.getCode(), HIGHLIGHT_COLOR);
+        event.consume();  // Prevent further processing by other controls.
       }
+      default -> { /* Do nothing */ }
     }
   }
 
   private void handleKeyRelease(javafx.scene.input.KeyEvent event) {
-    up.setFill(BASE_COLOR);
-    down.setFill(BASE_COLOR);
-    left.setFill(BASE_COLOR);
-    right.setFill(BASE_COLOR);
+    if (event.getCode().isArrowKey()) {
+      updateArrowKeyVisual(event.getCode(), BASE_COLOR);
+      event.consume();
+    }
+  }
+
+  private void updateArrowKeyVisual(KeyCode code, Color color) {
+    switch (code) {
+      case UP -> up.setFill(color);
+      case DOWN -> down.setFill(color);
+      case LEFT -> left.setFill(color);
+      case RIGHT -> right.setFill(color);
+      default -> {}
+    }
   }
 
   public Group getPane() {
     return this.root;
+  }
+
+  public void updateKeyPress(KeyCode code) {
+    updateArrowKeyVisual(code, HIGHLIGHT_COLOR);
+  }
+
+  public void updateKeyRelease(KeyCode code) {
+    updateArrowKeyVisual(code, BASE_COLOR);
   }
 }
