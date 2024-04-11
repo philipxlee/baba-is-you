@@ -30,8 +30,6 @@ public class GamePane implements Observer<Grid> {
   private int width;
   private int height;
   private BlockViewFactory blockFactory;
-  //Change below to dynamically respond to user input
-  private final int n = 15;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController) {
@@ -39,7 +37,6 @@ public class GamePane implements Observer<Grid> {
       this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
       this.width = width;
       this.height = height;
-      calculateCellSize();
       this.root = new Group();
       this.scene = scene;
       this.keyHandlerController = new KeyHandlerController(
@@ -85,6 +82,7 @@ public class GamePane implements Observer<Grid> {
   private void renderGrid() {
     root.getChildren().clear();
     List<AbstractBlock>[][] grid = gridController.getGameGrid().getGrid();
+    calculateCellSize(grid.length, grid[0].length);
     double blockOffset = 0; // Offset for displaying stacked blocks
 
     for (int i = 0; i < grid.length; i++) {
@@ -122,10 +120,9 @@ public class GamePane implements Observer<Grid> {
     }
   }
 
-  private void calculateCellSize() {
-    int w = width / n;
-    int h = height / n;
-    this.cellSize = Math.min(w, h);
+  private void calculateCellSize(int r, int c) {
+    int smallerDimension = Math.min(r, c);
+    this.cellSize = Math.min(width/smallerDimension, height/smallerDimension);
   }
 
   private void handleKeyPresses(MainScene scene) {
