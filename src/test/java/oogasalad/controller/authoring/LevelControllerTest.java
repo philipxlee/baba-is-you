@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import oogasalad.model.authoring.level.Level;
+import oogasalad.model.authoring.level.LevelMetadata;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,9 +20,10 @@ public class LevelControllerTest {
 
   @Before
   public void setUp() throws Exception {
-    // Setup mock BlockTypeManager
-    levelController = new LevelController();
-    levelController.initializeLevel("testLevel", "", 10, 10);
+    // Setup mock LevelController
+    LevelMetadata levelMetadata = new LevelMetadata("testLevel", "testDesc", 7, 7);
+    Level level = new Level(levelMetadata);
+    levelController = new LevelController(level);
   }
 
   @Test
