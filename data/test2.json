@@ -1,0 +1,17 @@
+{
+  "levelName":"TestLevel",
+  "gridSize":{
+    "rows":"2",
+    "columns":"2"
+  },
+  "grid":{
+    "cells":[
+    [["EmptyVisualBlock","RockVisualBlock"], ["EmptyVisualBlock"]],
+    [["EmptyVisualBlock"],["EmptyVisualBlock","BabaVisualBlock"]]
+  ],
+    "metadata":{
+      "difficulty":"Easy",
+      "health":"3"
+    }
+  }
+}
