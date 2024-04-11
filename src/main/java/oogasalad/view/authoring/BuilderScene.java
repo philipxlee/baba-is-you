@@ -149,7 +149,8 @@ public class BuilderScene {
             blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
             try {
-              levelController.setCell((int) cellIndices.getX(), (int) cellIndices.getY(),
+              // x corresponds to column, y corresponds to row
+              levelController.setCell((int) cellIndices.getY(), (int) cellIndices.getX(),
                   blockType);
             } catch (Exception e) {
               e.printStackTrace();
