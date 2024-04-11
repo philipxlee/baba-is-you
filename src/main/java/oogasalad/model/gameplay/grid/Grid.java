@@ -137,7 +137,6 @@ public class Grid implements Observable<Grid> {
   };
   private final List<Observer<Grid>> observers = new ArrayList<>();
   private final List<AbstractBlock>[][] grid;
-  private final List<AbstractBlock>[][] originalGrid;
   private final RuleInterpreter parser;
   private final BlockFactory factory;
   private final BlockUpdater blockUpdater;
@@ -145,7 +144,6 @@ public class Grid implements Observable<Grid> {
 
   public Grid(int rows, int cols, String[][][] initialConfiguration) throws InvalidBlockName {
     this.grid = new ArrayList[rows][cols];
-    this.originalGrid = new ArrayList[rows][cols];
     this.parser = new RuleInterpreter();
     this.factory = new BlockFactory();
     this.blockUpdater = new BlockUpdater(this, factory);
@@ -191,21 +189,6 @@ public class Grid implements Observable<Grid> {
     return this.grid;
   }
 
-  public void resetGrid() {
-    IntStream.range(0, grid.length).forEach(i ->
-        IntStream.range(0, grid[i].length).forEach(j -> {
-          grid[i][j].clear();
-          originalGrid[i][j].forEach(block -> {
-            grid[i][j].add(block);
-            block.setRow(i);
-            block.setCol(j);
-          });
-        })
-    );
-
-    // Notify observers about the grid reset
-    notifyObserver();
-  }
 
   @Override
   public void addObserver(Observer<Grid> o) {
@@ -379,7 +362,6 @@ public class Grid implements Observable<Grid> {
         createBlocks(grid[i][j], tempConfiguration[i][j], i, j);
       }
     }
-    storeOriginalGrid();
   }
 
   public void resetAllBlocks() {
@@ -391,14 +373,6 @@ public class Grid implements Observable<Grid> {
             block.resetAllBehaviors();
           }
         }
-      }
-    }
-  }
-
-  private void storeOriginalGrid() {
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[i].length; j++) {
-        originalGrid[i][j] = new ArrayList<>(grid[i][j]); // Shallow copy of the list
       }
     }
   }
