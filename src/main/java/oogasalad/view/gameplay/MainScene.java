@@ -50,6 +50,10 @@ public class MainScene implements Scene {
     //factory.addScene(this);
   }
 
+  public void resetGame() {
+    sceneController.beginGame();
+  }
+
   @Override
   public javafx.scene.Scene getScene() {
     return this.scene;

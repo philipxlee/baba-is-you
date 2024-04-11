@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import java.io.InputStream;
 import javafx.event.EventHandler;
@@ -65,14 +66,18 @@ public class InteractionPane {
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
-    arrowKeys.setAlignment(Pos.CENTER);
+    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width);
+    arrowKeysBox.setAlignment(Pos.CENTER);
 
     Text title = factory.generateHeader("Baba Is You");
     HBox header = factory.wrapInHBox(title, width);
 
+    Button reset = factory.makeAuthoringButton("Reset", 150, 40);
+    reset.setOnAction(event -> { scene.resetGame(); });
+
     // Combine the header and arrow keys into a single display layout
-    VBox display = new VBox(10);
-    display.getChildren().addAll(header, arrowKeys, setUpFileChooser());
+    VBox display = new VBox(20);
+    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), reset);
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
@@ -85,13 +90,7 @@ public class InteractionPane {
    * @return a scrollpane with populated image icons representing JSON level files.
    */
   private VBox setUpFileChooser() {
-    FlowPane flowPane = new FlowPane();
-    flowPane.setPrefSize(width-50, height/4);
-    flowPane.setPadding(new Insets(10));
-    flowPane.setHgap(10);
-    flowPane.setVgap(10);
-    flowPane.setFocusTraversable(false);
-    flowPane.getStyleClass().add("flowpane");
+    FlowPane flowPane = setUpFlowPane(width-50, height/4);
 
     //TODO: change to actual file #
     populateFiles(10, flowPane);
@@ -100,7 +99,18 @@ public class InteractionPane {
     VBox labelAndChooser = factory.wrapInVBox(paneLabel, height/3);
     labelAndChooser.getChildren().add(pane);
     return labelAndChooser;
+  }
 
+  private FlowPane setUpFlowPane(int width, int height) {
+    FlowPane flowPane = new FlowPane();
+    flowPane.setPrefSize(width, height);
+    flowPane.setPadding(new Insets(10));
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
+    flowPane.setAlignment(Pos.CENTER);
+    flowPane.setFocusTraversable(false);
+    flowPane.getStyleClass().add("flowpane");
+    return flowPane;
   }
 
   /**
