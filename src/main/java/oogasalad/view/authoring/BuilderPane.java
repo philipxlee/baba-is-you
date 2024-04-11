@@ -1,6 +1,5 @@
 package oogasalad.view.authoring;
 
-import oogasalad.shared.blockview.BlockViewFactory;
 import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -12,25 +11,30 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.block.BlockFactory;
+import oogasalad.shared.blockview.BlockViewFactory;
 
 
-public class BuilderScene {
+public class BuilderPane {
 
+  private final int GRID_MARGIN = 10;
+  private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
   private Pane root; // Your root node for the builder scene
   private double cellSize; // Set the cell size
   private GridPane gridPane;
   private int gridWidth;
   private BlockViewFactory blockViewFactory;
-
+  private BlockFactory blockFactory;
+  private LevelController levelController;
   private boolean removeMode;
   private int gridHeight;
-  private final int GRID_MARGIN = 10;
-  private final String IMAGE_FILE_PATH = "/blocktypes/blocktypes.json";
 
-  public BuilderScene() {
-    initializeBuilderScene();
+  public BuilderPane() {
     try {
-      this.blockViewFactory = new BlockViewFactory(IMAGE_FILE_PATH); // Adjust the path accordingly
+      this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
+      this.blockFactory = new BlockFactory(BLOCK_CONFIG_FILE_PATH);
+      this.levelController = new LevelController(blockFactory);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -46,6 +50,9 @@ public class BuilderScene {
     // Listen for size changes on root to re-setup the grid
     root.widthProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
     root.heightProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
+
+    // Initialize Level
+    levelController.initializeLevel("", "", gridHeight, gridWidth);
 
     setUpGrid();
     setUpDropHandling();
@@ -134,13 +141,20 @@ public class BuilderScene {
         ImageView blockView = createBlockView(blockType);
         if (blockView != null) {
           Point2D cellCoords = getCellCoordinates(event.getX(), event.getY());
-          if (cellCoords != null) {
+          Point2D cellIndices = getCellIndices(event.getX(), event.getY());
+          if (cellCoords != null && cellIndices != null) {
             blockView.setFitWidth(cellSize);
             blockView.setFitHeight(cellSize);
             blockView.setLayoutX(cellCoords.getX());
             blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
-
+            try {
+              // x corresponds to column, y corresponds to row
+              levelController.setCell((int) cellIndices.getY(), (int) cellIndices.getX(),
+                  blockType);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
             setRemoveModeEventHandlers(); //allows removing after adding blocks
             success = true;
           }
@@ -150,6 +164,27 @@ public class BuilderScene {
       event.consume();
     });
   }
+
+  private Point2D getCellIndices(double x, double y) {
+    for (Node node : gridPane.getChildren()) {
+      if (node instanceof Pane cell) {
+        Bounds boundsInParent = cell.getBoundsInParent();
+        if (boundsInParent.contains(x, y)) {
+          // Assuming you know the row and column due to how you added the cell
+          Integer colIndex = GridPane.getColumnIndex(cell);
+          Integer rowIndex = GridPane.getRowIndex(cell);
+
+          // These can be null if not set; defaulting to 0
+          colIndex = colIndex == null ? 0 : colIndex;
+          rowIndex = rowIndex == null ? 0 : rowIndex;
+
+          return new Point2D(colIndex, rowIndex);
+        }
+      }
+    }
+    return null; // Position does not fall within any cell
+  }
+
 
   private Point2D getCellCoordinates(double x, double y) {
     for (Node node : gridPane.getChildren()) {
@@ -193,7 +228,6 @@ public class BuilderScene {
       }
     });
   }
-
 
   public void setRemove(boolean remove_bool) {
     removeMode = remove_bool;

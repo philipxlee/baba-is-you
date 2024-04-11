@@ -4,7 +4,6 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLD
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import javafx.scene.control.SplitPane;
-import javafx.scene.paint.Color;
 import oogasalad.shared.scene.Scene;
 
 public class MainScene implements Scene {
@@ -17,13 +16,13 @@ public class MainScene implements Scene {
     SplitPane root = new SplitPane();
 
     // Initialize builder scene with 60% of width
-    BuilderScene builderScene = new BuilderScene();
+    BuilderPane builderPane = new BuilderPane();
 
     // Initialize elements scene with 40% of width
-    ElementsScene elementsScene = new ElementsScene(builderScene);
+    ElementsPane elementsPane = new ElementsPane(builderPane);
 
     // Set up left and right sides of SplitPane
-    root.getItems().addAll(elementsScene.getLayout(), builderScene.getRoot());
+    root.getItems().addAll(elementsPane.getLayout(), builderPane.getRoot());
     root.setDividerPositions(0.4);
 
     this.scene = new javafx.scene.Scene(root, width, height);

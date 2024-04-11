@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -21,25 +19,23 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.util.Pair;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
-public class ElementsScene {
+public class ElementsPane {
 
+  private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
+  private final BuilderPane builderPane;
+  private final BlockLoader blockLoader = new BlockLoader();
   private ScrollPane scrollPane;
   private VBox layout;
-  private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private boolean removeMode = false;
-  private final BuilderScene builderScene;
-  private final BlockLoader blockLoader = new BlockLoader();
   private WidgetFactory factory;
 
-  public ElementsScene(BuilderScene builderScene) {
+  public ElementsPane(BuilderPane builderPane) {
     this.factory = new WidgetFactory();
-    this.builderScene = builderScene;
+    this.builderPane = builderPane;
     initializeElementsLayout();
   }
 
@@ -48,10 +44,10 @@ public class ElementsScene {
 //    layout.setMinHeight(builderScene.getRoot().getHeight());
 
     Text title = factory.generateHeader("Baba Is You");
-    HBox header = factory.wrapInHBox(title, (int)layout.getWidth());
+    HBox header = factory.wrapInHBox(title, (int) layout.getWidth());
 
     Text descriptionLabel = factory.generateLine("Drag blocks from this panel:");
-    HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int)layout.getWidth());
+    HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth());
 
     // Create a container for blocks
     FlowPane blocksContainer = new FlowPane(); // FlowPane instead of VBox
@@ -77,13 +73,13 @@ public class ElementsScene {
       } else {
         removeButton.setText("Remove block");
       }
-      builderScene.setRemove(removeMode);
+      builderPane.setRemove(removeMode);
     });
 
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
     buttons.add(removeButton);
-    HBox buttonsHBox = factory.wrapInHBox(buttons, (int)layout.getWidth());
+    HBox buttonsHBox = factory.wrapInHBox(buttons, (int) layout.getWidth());
     buttonsHBox.setSpacing(50);
 
     // Scroll pane for blocks container
@@ -96,10 +92,9 @@ public class ElementsScene {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeAuthoringButton("Save to JSON", 200, 40);
-    HBox jsonBox = factory.wrapInHBox(saveJson, (int)layout.getWidth());
+    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
 
     layout.getStyleClass().add("elements-background");
-//    blocksContainer.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
 
     // Add components to layout
     layout.getChildren()
@@ -195,7 +190,7 @@ public class ElementsScene {
         int width = pair.getKey();
         int height = pair.getValue();// Assuming width and height are the same for a grid
         // Assuming builderScene is a reference to your BuilderScene instance
-        builderScene.updateGridSize(width, height);
+        builderPane.updateGridSize(width, height);
       });
     });
   }
