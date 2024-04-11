@@ -46,14 +46,8 @@ public class GamePane implements Observer<Grid> {
           new GameStateController(sceneController));
       this.gridController = new GameGridController(this, keyHandlerController);
 
-      // Use an event filter to listen for key presses regardless of focus
-      this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
-        if (keyHandlerController.executeKey(gridController.getGameGrid(), event.getCode())) {
-          renderGrid();
-          gridController.resetBlocks();
-          event.consume(); // Prevent the event from propagating if it was processed.
-        }
-      });
+      handleKeyPresses(scene);
+
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());
     }
@@ -132,6 +126,27 @@ public class GamePane implements Observer<Grid> {
     int w = width / n;
     int h = height / n;
     this.cellSize = Math.min(w, h);
+  }
+
+  private void handleKeyPresses(MainScene scene) {
+    // For grid movement
+    this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+      if (event.getCode().isArrowKey()) {
+        gridController.sendPlayToModel(event.getCode());
+        renderGrid(); // Render grid
+        gridController.resetBlocks(); // Reset all blocks
+        scene.getInteractionPane().updateKeyPress(event.getCode());
+        event.consume();
+      }
+    });
+
+    // For key press visualizer
+    this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_RELEASED, event -> {
+      if (event.getCode().isArrowKey()) {
+        scene.getInteractionPane().updateKeyRelease(event.getCode());
+        event.consume();
+      }
+    });
   }
 
 //  private AbstractBlockView reflect(String blockType) {
