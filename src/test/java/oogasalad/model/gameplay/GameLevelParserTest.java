@@ -1,5 +1,8 @@
 package oogasalad.model.gameplay;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import oogasalad.model.gameplay.level.GameLevelParser;
@@ -8,9 +11,9 @@ import oogasalad.model.gameplay.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameLevelParserTest {
+
   private GameLevelParser parser;
   private Level testLevel;
   private JsonManager jsonManager;

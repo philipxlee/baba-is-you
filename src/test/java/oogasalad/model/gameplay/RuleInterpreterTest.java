@@ -1,19 +1,19 @@
 package oogasalad.model.gameplay;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
-import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.attributes.Controllable;
 import oogasalad.model.gameplay.strategies.attributes.Pushable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RuleInterpreterTest {
 
@@ -50,14 +50,18 @@ public class RuleInterpreterTest {
   @Test
   void testHorizontalInterpretRules() throws Exception {
     ruleInterpreter.interpretRules(grid);
-    assertTrue(grid[2][0].get(0) instanceof BabaVisualBlock, "BabaVisualBlock should recognize the 'Baba Is You' rule.");
-    assertTrue(grid[2][0].get(0).hasBehavior(Controllable.class), "BabaVisualBlock should have the Controllable behavior.");
+    assertInstanceOf(BabaVisualBlock.class, grid[2][0].get(0),
+        "BabaVisualBlock should recognize the 'Baba Is You' rule.");
+    assertTrue(grid[2][0].get(0).hasBehavior(Controllable.class),
+        "BabaVisualBlock should have the Controllable behavior.");
   }
 
   @Test
   void testVerticalInterpretRules() throws Exception {
     ruleInterpreter.interpretRules(grid);
-    assertTrue(grid[2][0].get(1) instanceof RockVisualBlock, "RockVisualBlock should recognize the 'Rock Is Push' rule.");
-    assertTrue(grid[2][0].get(1).hasBehavior(Pushable.class), "RockVisualBlock should have the Pushable behavior.");
+    assertInstanceOf(RockVisualBlock.class, grid[2][0].get(1),
+        "RockVisualBlock should recognize the 'Rock Is Push' rule.");
+    assertTrue(grid[2][0].get(1).hasBehavior(Pushable.class),
+        "RockVisualBlock should have the Pushable behavior.");
   }
 }

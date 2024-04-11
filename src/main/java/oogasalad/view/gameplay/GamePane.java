@@ -42,7 +42,8 @@ public class GamePane implements Observer<Grid> {
       calculateCellSize();
       this.root = new Group();
       this.scene = scene;
-      this.keyHandlerController = new KeyHandlerController(new GameStateController(sceneController));
+      this.keyHandlerController = new KeyHandlerController(
+          new GameStateController(sceneController));
       this.gridController = new GameGridController(this, keyHandlerController);
 
       this.scene.getScene().setOnKeyPressed(event -> {

@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Properties;
 
 public class GrammarLoader {
+
   private static final String GRAMMAR_FILE = "/grammar/grammar.properties";
-  private Properties grammarProperties;
+  private final Properties grammarProperties;
 
   public GrammarLoader() {
     grammarProperties = new Properties();
