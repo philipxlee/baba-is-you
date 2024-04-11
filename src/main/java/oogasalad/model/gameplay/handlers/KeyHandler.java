@@ -3,7 +3,7 @@ package oogasalad.model.gameplay.handlers;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import oogasalad.controller.gameplay.GameOverController;
+import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.grid.GridHelper;
 
@@ -11,11 +11,11 @@ public abstract class KeyHandler {
 
   private final Grid grid;
   private GridHelper gridHelper;
-  private final GameOverController gameOverController;
+  private final GameStateController gameStateController;
 
-  public KeyHandler(Grid grid, GameOverController gameOverController) {
+  public KeyHandler(Grid grid, GameStateController gameStateController) {
     this.grid = grid;
-    this.gameOverController = gameOverController;
+    this.gameStateController = gameStateController;
     grid.checkForRules();
   }
 
@@ -28,7 +28,7 @@ public abstract class KeyHandler {
       controllableBlockPositions.stream()
           .forEach(element -> moveBlock(element[0], element[1], element[2], deltaI, deltaJ));
     } else {
-      gameOverController.displayGameOver(false);
+      gameStateController.displayGameOver(false);
     }
     grid.checkForRules();
     grid.checkBehaviors();
@@ -99,7 +99,7 @@ public abstract class KeyHandler {
 
   private void nextIsWinningBlock(int nextI, int nextJ) {
     if (grid.cellHasWinning(nextI, nextJ)) {
-      gameOverController.displayGameOver(true);
+      gameStateController.displayGameOver(true);
     }
   }
 

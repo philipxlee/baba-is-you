@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import oogasalad.controller.gameplay.GameGridController;
-import oogasalad.controller.gameplay.GameOverController;
+import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -42,7 +42,7 @@ public class GamePane implements Observer<Grid> {
       calculateCellSize();
       this.root = new Group();
       this.scene = scene;
-      this.keyHandlerController = new KeyHandlerController(new GameOverController(sceneController));
+      this.keyHandlerController = new KeyHandlerController(new GameStateController(sceneController));
       this.gridController = new GameGridController(this, keyHandlerController);
 
       this.scene.getScene().setOnKeyPressed(event -> {
