@@ -11,25 +11,30 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.blockview.BlockViewFactory;
 
 
 public class BuilderScene {
 
   private final int GRID_MARGIN = 10;
-  private final String IMAGE_FILE_PATH = "/blocktypes/blocktypes.json";
+  private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
   private Pane root; // Your root node for the builder scene
   private double cellSize; // Set the cell size
   private GridPane gridPane;
   private int gridWidth;
   private BlockViewFactory blockViewFactory;
+  private BlockFactory blockFactory;
+  private LevelController levelController;
   private boolean removeMode;
   private int gridHeight;
 
   public BuilderScene() {
-    initializeBuilderScene();
     try {
-      this.blockViewFactory = new BlockViewFactory(IMAGE_FILE_PATH); // Adjust the path accordingly
+      this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
+      this.blockFactory = new BlockFactory(BLOCK_CONFIG_FILE_PATH);
+      this.levelController = new LevelController(blockFactory);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -45,6 +50,9 @@ public class BuilderScene {
     // Listen for size changes on root to re-setup the grid
     root.widthProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
     root.heightProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
+
+    // Initialize Level
+    levelController.initializeLevel("", "", gridHeight, gridWidth);
 
     setUpGrid();
     setUpDropHandling();
@@ -140,6 +148,12 @@ public class BuilderScene {
             blockView.setLayoutX(cellCoords.getX());
             blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
+            try {
+              levelController.setCell((int) cellIndices.getX(), (int) cellIndices.getY(),
+                  blockType);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
             setRemoveModeEventHandlers(); //allows removing after adding blocks
             success = true;
           }
@@ -213,7 +227,6 @@ public class BuilderScene {
       }
     });
   }
-
 
   public void setRemove(boolean remove_bool) {
     removeMode = remove_bool;
