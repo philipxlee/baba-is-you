@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import oogasalad.controller.authoring.LevelParser;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;

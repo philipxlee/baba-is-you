@@ -26,7 +26,7 @@ public class BlockUpdater {
   /**
    * Updates the block in the grid.
    *
-   * @param block      block to update.
+   * @param block        block to update.
    * @param newBlockType new block type.
    */
   public void updateBlock(AbstractBlock block, String newBlockType) {

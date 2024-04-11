@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import oogasalad.controller.gameplay.GameGridController;
-import oogasalad.controller.gameplay.GameOverController;
+import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -42,14 +42,17 @@ public class GamePane implements Observer<Grid> {
       calculateCellSize();
       this.root = new Group();
       this.scene = scene;
-      this.keyHandlerController = new KeyHandlerController(new GameOverController(sceneController));
+      this.keyHandlerController = new KeyHandlerController(
+          new GameStateController(sceneController));
       this.gridController = new GameGridController(this, keyHandlerController);
 
-      this.scene.getScene().setOnKeyPressed(event -> {
-
-        gridController.sendPlayToModel(event.getCode());
-        renderGrid(); // Render grid
-        gridController.resetBlocks(); // Reset all blocks
+      // Use an event filter to listen for key presses regardless of focus
+      this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+        if (keyHandlerController.executeKey(gridController.getGameGrid(), event.getCode())) {
+          renderGrid();
+          gridController.resetBlocks();
+          event.consume(); // Prevent the event from propagating if it was processed.
+        }
       });
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());

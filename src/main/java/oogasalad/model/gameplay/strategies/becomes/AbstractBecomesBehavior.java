@@ -6,9 +6,8 @@ import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
- * Abstract class that provides common behaviors for 'becomes' strategies.
- * This class encapsulates methods to check the presence of non-empty visual
- * blocks and text blocks within a grid cell.
+ * Abstract class that provides common behaviors for 'becomes' strategies. This class encapsulates
+ * methods to check the presence of non-empty visual blocks and text blocks within a grid cell.
  */
 public abstract class AbstractBecomesBehavior implements Strategy {
 
@@ -17,8 +16,8 @@ public abstract class AbstractBecomesBehavior implements Strategy {
   /**
    * Executes the behavior of the block.
    *
-   * @param block block to control.
-   * @param updater updater to update block.
+   * @param block    block to control.
+   * @param updater  updater to update block.
    * @param iterator iterator to control.
    */
   @Override
@@ -27,7 +26,7 @@ public abstract class AbstractBecomesBehavior implements Strategy {
   /**
    * Checks if the grid cell contains a non-empty visual block.
    *
-   * @param block block to ignore.
+   * @param block    block to ignore.
    * @param iterator iterator to control.
    * @return true if the cell contains a non-empty visual block, false otherwise.
    */

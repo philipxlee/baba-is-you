@@ -14,9 +14,9 @@ public class Controllable implements Strategy {
   /**
    * Constructor for Controllable.
    *
-   * @param block block to control.
-   * @param updater updater to update block.
-   * @param iterator  iterator to control.
+   * @param block    block to control.
+   * @param updater  updater to update block.
+   * @param iterator iterator to control.
    */
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
