@@ -32,7 +32,6 @@ public class GameStateControllerTest {
       stage.getScene().getRoot();
       fail();
     });
-    Thread.sleep(1000);
   }
 
   @Test
@@ -42,6 +41,5 @@ public class GameStateControllerTest {
       stage.getScene().getRoot();
       fail();
     });
-    Thread.sleep(1000);
   }
 }
