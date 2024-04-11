@@ -3,6 +3,7 @@ package oogasalad.controller.authoring;
 import com.google.gson.JsonObject;
 import java.io.FileWriter;
 import oogasalad.model.authoring.level.Level;
+import oogasalad.model.authoring.level.LevelMetadata;
 
 /**
  * LevelController handles user input to modify the current level. Provides methods to interface
@@ -44,5 +45,14 @@ public class LevelController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Return the current level's metadata.
+   *
+   * @return Level Metadata of current level.
+   */
+  public LevelMetadata getLevelMetadata() {
+    return currentLevel.getLevelMetadata();
   }
 }

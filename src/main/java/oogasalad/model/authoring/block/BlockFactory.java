@@ -13,8 +13,8 @@ import java.util.Map;
 
 
 /**
- * BlockFactory singleton loads the block types from a properties file and returns a list of
- * block types.
+ * BlockFactory singleton loads the block types from a properties file and returns a list of block
+ * types.
  */
 public class BlockFactory {
 

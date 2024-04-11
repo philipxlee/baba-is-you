@@ -15,9 +15,10 @@ public class SceneController {
   private final LevelController levelController;
 
   /**
-   * ViewController constructor. Initialized with a JavaFX stage.
+   * ViewController constructor. Initialized with a JavaFX stage and LevelController.
    *
-   * @param stage primary stage of JavaFX application
+   * @param stage           The primary stage of JavaFX application
+   * @param levelController The level controller being used in the application.
    */
   public SceneController(Stage stage, LevelController levelController) {
     this.stage = stage;
