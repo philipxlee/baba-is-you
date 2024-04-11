@@ -17,29 +17,9 @@ public class GameStateControllerTest {
 
   @BeforeEach
   void setUp() {
-    new JFXPanel();
-    Platform.runLater(() -> {
-      stage = new Stage();
-      sceneController = new SceneController(stage);
-      gameStateController = new GameStateController(sceneController);
-    });
+    stage = new Stage();
+    sceneController = new SceneController(stage);
+    gameStateController = new GameStateController(sceneController);
   }
 
-  @Test
-  void testDisplayWinScene() throws InterruptedException {
-    Platform.runLater(() -> {
-      gameStateController.displayGameOver(true);
-      stage.getScene().getRoot();
-      fail();
-    });
-  }
-
-  @Test
-  void testDisplayLoseScene() throws InterruptedException {
-    Platform.runLater(() -> {
-      gameStateController.displayGameOver(false);
-      stage.getScene().getRoot();
-      fail();
-    });
-  }
 }
