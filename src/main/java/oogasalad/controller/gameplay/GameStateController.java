@@ -5,7 +5,7 @@ import oogasalad.view.gameplay.gamestates.WinScene;
 /**
  * Controller that manages the game over screen.
  */
-public class GameOverController {
+public class GameStateController {
 
   private final SceneController sceneController;
 
@@ -14,7 +14,7 @@ public class GameOverController {
    *
    * @param sceneController SceneController that manages the scenes.
    */
-  public GameOverController(SceneController sceneController) {
+  public GameStateController(SceneController sceneController) {
     this.sceneController = sceneController;
   }
 

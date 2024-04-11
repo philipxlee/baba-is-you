@@ -3,6 +3,7 @@ package oogasalad.model.gameplay.grid;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
@@ -136,6 +137,7 @@ public class Grid implements Observable<Grid> {
   };
   private final List<Observer<Grid>> observers = new ArrayList<>();
   private final List<AbstractBlock>[][] grid;
+  private final List<AbstractBlock>[][] originalGrid;
   private final RuleInterpreter parser;
   private final BlockFactory factory;
   private final BlockUpdater blockUpdater;
@@ -143,6 +145,7 @@ public class Grid implements Observable<Grid> {
 
   public Grid(int rows, int cols, String[][][] initialConfiguration) throws InvalidBlockName {
     this.grid = new ArrayList[rows][cols];
+    this.originalGrid = new ArrayList[rows][cols];
     this.parser = new RuleInterpreter();
     this.factory = new BlockFactory();
     this.blockUpdater = new BlockUpdater(this, factory);
@@ -188,6 +191,22 @@ public class Grid implements Observable<Grid> {
     return this.grid;
   }
 
+  public void resetGrid() {
+    IntStream.range(0, grid.length).forEach(i ->
+        IntStream.range(0, grid[i].length).forEach(j -> {
+          grid[i][j].clear();
+          originalGrid[i][j].forEach(block -> {
+            grid[i][j].add(block);
+            block.setRow(i);
+            block.setCol(j);
+          });
+        })
+    );
+
+    // Notify observers about the grid reset
+    notifyObserver();
+  }
+
   @Override
   public void addObserver(Observer<Grid> o) {
     observers.add(o);
@@ -231,17 +250,16 @@ public class Grid implements Observable<Grid> {
   /**
    * This method sorts each cell's list so that EmptyVisualBlock instances come first.
    */
-  public void sortCellsForRender() {
+  private void sortCellsForRender() {
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> cell : row) {
         cell.sort(new Comparator<AbstractBlock>() {
           @Override
           public int compare(AbstractBlock block1, AbstractBlock block2) {
-
-            if (block1 instanceof EmptyVisualBlock && !(block2 instanceof EmptyVisualBlock)) {
+            if (block1.getBlockName().equals("EmptyVisualBlock") && !(block2.getBlockName().equals("EmptyVisualBlock") )) {
               return -1;
-            } else if (!(block1 instanceof EmptyVisualBlock)
-                && block2 instanceof EmptyVisualBlock) {
+            } else if (!(block1.getBlockName().equals("EmptyVisualBlock") )
+                && block2.getBlockName().equals("EmptyVisualBlock")) {
               return 1;
             }
             return 0;
@@ -361,6 +379,7 @@ public class Grid implements Observable<Grid> {
         createBlocks(grid[i][j], tempConfiguration[i][j], i, j);
       }
     }
+    storeOriginalGrid();
   }
 
   public void resetAllBlocks() {
@@ -376,5 +395,12 @@ public class Grid implements Observable<Grid> {
     }
   }
 
+  private void storeOriginalGrid() {
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        originalGrid[i][j] = new ArrayList<>(grid[i][j]); // Shallow copy of the list
+      }
+    }
+  }
 
 }
