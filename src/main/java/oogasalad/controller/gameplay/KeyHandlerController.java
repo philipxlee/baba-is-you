@@ -17,7 +17,7 @@ public class KeyHandlerController {
     this.gameStateController = gameStateController;
   }
 
-  public void executeKey(Grid grid, KeyCode code) {
+  public boolean executeKey(Grid grid, KeyCode code) {
     keyHandler = switch (code) {
       case UP -> new UpKeyHandler(grid, gameStateController);
       case DOWN -> new DownKeyHandler(grid, gameStateController);
@@ -28,7 +28,9 @@ public class KeyHandlerController {
 
     if (keyHandler != null) {
       keyHandler.execute();
+      return true;
     }
+    return false;
   }
 }
 

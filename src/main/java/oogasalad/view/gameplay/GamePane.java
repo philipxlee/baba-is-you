@@ -46,11 +46,13 @@ public class GamePane implements Observer<Grid> {
           new GameStateController(sceneController));
       this.gridController = new GameGridController(this, keyHandlerController);
 
-      this.scene.getScene().setOnKeyPressed(event -> {
-
-        gridController.sendPlayToModel(event.getCode());
-        renderGrid(); // Render grid
-        gridController.resetBlocks(); // Reset all blocks
+      // Use an event filter to listen for key presses regardless of focus
+      this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+        if (keyHandlerController.executeKey(gridController.getGameGrid(), event.getCode())) {
+          renderGrid();
+          gridController.resetBlocks();
+          event.consume(); // Prevent the event from propagating if it was processed.
+        }
       });
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());
