@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
+import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Strategy;
 
@@ -80,7 +81,7 @@ public abstract class AbstractBlock {
    * Executes the block's behaviors. By default, there are no behaviors to execute. Blocks with
    * executable behaviors should override this method.
    */
-  public void executeBehaviors(Grid grid, BlockUpdater updater, int i, int j, int k) {
+  public void executeBehaviors(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
     // Default implementation is intentionally left blank.
   }
 
@@ -92,6 +93,37 @@ public abstract class AbstractBlock {
    */
   public List<String> getBlockGrammar() {
     return grammarType;
+  }
+
+  /**
+   * Gets the row of the block.
+   *
+   * @return The row of the block.
+   */
+  public int getRow() {
+    return 0;
+  }
+
+  /**
+   * Gets the column of the block.
+   *
+   * @return The column of the block.
+   */
+  public int getCol() {
+    return 0;
+  }
+
+  /**
+   * Sets the row of the block.
+   *
+   * @param row The row to set.
+   */
+  public void setRow(int row) {
+    // Default implementation is intentionally left blank.
+  }
+
+  public void setCol(int col) {
+    // Default implementation is intentionally left blank.
   }
 
 }

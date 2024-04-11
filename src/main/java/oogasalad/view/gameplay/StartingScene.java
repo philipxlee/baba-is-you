@@ -62,8 +62,9 @@ public class StartingScene implements Scene {
     texts.add(header);
     texts.add(content);
 
-    Button start = factory.makeButton("Click To Begin", 200, 40);
+    Button start = factory.makeButton("Click Enter or Here To Begin", 300, 40);
     texts.add(start);
+    start.setDefaultButton(true); // Allows enter key to trigger button
     setStartButtonAction(start);
 
     VBox textContainer = factory.wrapInVBox(texts, height);

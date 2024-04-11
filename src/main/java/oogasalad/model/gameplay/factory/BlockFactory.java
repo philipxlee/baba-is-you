@@ -26,7 +26,7 @@ public class BlockFactory {
    * @return An instance of AbstractBlock corresponding to the block name.
    * @throws InvalidBlockName If no valid block class corresponds to the block name.
    */
-  public AbstractBlock createBlock(String blockName) throws InvalidBlockName {
+  public AbstractBlock createBlock(String blockName, int row, int col) throws InvalidBlockName {
     try {
       if (blockName.endsWith(TEXT_BLOCK_SUFFIX)) {
         // Direct instantiation for text blocks.
@@ -37,8 +37,8 @@ public class BlockFactory {
         Class<?> blockClass = Class.forName(className);
         validateBlockName(blockName, blockClass);
         return (AbstractBlock) blockClass
-            .getDeclaredConstructor(String.class)
-            .newInstance(blockName);
+            .getDeclaredConstructor(String.class, int.class, int.class)
+            .newInstance(blockName, row, col);
       }
     } catch (ReflectiveOperationException e) {
       throw new InvalidBlockName("Invalid Block Name");

@@ -24,15 +24,18 @@ public class BlockUpdater {
   }
 
   /**
-   * Update the block in the grid.
+   * Updates the block in the grid.
    *
-   * @param i            row index.
-   * @param j            column index.
-   * @param k            index of block in the list.
+   * @param block      block to update.
    * @param newBlockType new block type.
    */
-  public void updateBlock(int i, int j, int k, String newBlockType) {
-    List<AbstractBlock>[][] gameGrid = grid.getGrid();
-    gameGrid[i][j].set(k, factory.createBlock(newBlockType));
+  public void updateBlock(AbstractBlock block, String newBlockType) {
+    int i = block.getRow();
+    int j = block.getCol();
+    List<AbstractBlock> cellBlocks = grid.getGrid()[i][j];
+    int k = cellBlocks.indexOf(block);
+    if (k != -1) {  // If the block is found
+      cellBlocks.set(k, factory.createBlock(newBlockType, i, j));
+    }
   }
 }

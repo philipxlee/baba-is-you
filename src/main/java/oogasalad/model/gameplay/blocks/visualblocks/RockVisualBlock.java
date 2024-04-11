@@ -12,8 +12,8 @@ public class RockVisualBlock extends AbstractVisualBlock {
    *
    * @param name the name of the block.
    */
-  public RockVisualBlock(String name) {
-    super(name);
+  public RockVisualBlock(String name, int row, int col) {
+    super(name, row, col);
   }
 
   /**

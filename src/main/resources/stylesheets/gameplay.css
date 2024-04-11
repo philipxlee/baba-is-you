@@ -6,6 +6,7 @@
 .root {
   -fx-font-family: 'Bahiana';
   -fx-background-color: #191A20;
+  /*-fx-background-image: white;*/
 }
 
 .interaction-background {

@@ -1,7 +1,8 @@
 package oogasalad.model.gameplay.strategies.becomes;
 
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
-import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.grid.CellIterator;
 
 /**
  * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
@@ -12,17 +13,15 @@ public class BecomesEmpty extends AbstractBecomesBehavior {
   private static final String EMPTY_VISUAL_BLOCK = "EmptyVisualBlock";
 
   /**
-   * This method updates the block at the given coordinates to be an EmptyVisualBlock.
+   * Constructor for BecomesEmpty.
    *
-   * @param grid The grid containing the block to act upon.
-   * @param updater The utility to update the block within the grid.
-   * @param i The x-coordinate of the block to act upon.
-   * @param j The y-coordinate of the block to act upon.
-   * @param k The z-coordinate of the block to act upon.
+   * @param block block to control.
+   * @param updater updater to update block.
+   * @param iterator iterator to control.
    */
   @Override
-  public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
-    updater.updateBlock(i, j, k, EMPTY_VISUAL_BLOCK);
+  public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
+    updater.updateBlock(block, EMPTY_VISUAL_BLOCK);
   }
 
 }
