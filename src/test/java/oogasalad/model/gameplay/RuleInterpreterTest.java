@@ -1,4 +1,4 @@
-package oogasalad.model.game;
+package oogasalad.model.gameplay;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;

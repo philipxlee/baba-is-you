@@ -1,4 +1,4 @@
-package oogasalad.model.game;
+package oogasalad.model.gameplay;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

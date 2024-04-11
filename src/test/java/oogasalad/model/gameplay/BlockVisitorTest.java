@@ -1,4 +1,4 @@
-package oogasalad.model.game;
+package oogasalad.model.gameplay;
 
 import oogasalad.model.gameplay.strategies.attributes.Controllable;
 import oogasalad.model.gameplay.strategies.attributes.Pushable;
