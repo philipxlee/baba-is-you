@@ -1,23 +1,23 @@
-package oogasalad.model.authoring.level;
+package oogasalad.controller.authoring;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import oogasalad.model.authoring.level.Level;
+import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
 
 /**
  * A class for parsing Authoring Level metadata into a JsonObject.
  */
-public class AuthoringLevelParser {
+public class LevelParser {
 
   private final JsonManager jsonManager;
 
   /**
    * Constructs an AuthoringLevelParser object with the specified JsonManager.
-   *
-   * @param jsonManager The JsonManager used for JSON operations.
    */
-  public AuthoringLevelParser(JsonManager jsonManager) {
-    this.jsonManager = jsonManager;
+  public LevelParser() {
+    jsonManager = new JsonManager();
   }
 
   /**
@@ -26,23 +26,15 @@ public class AuthoringLevelParser {
    * @param level The Level object to be parsed.
    * @return A JsonObject representing the level's metadata.
    */
-  public JsonObject parseLevelMetadata(Level level) {
+  public JsonObject parseLevelToJSON(Level level) {
     LevelMetadata metadata = level.getLevelMetadata();
-
     JsonObject metadataJson = new JsonObject();
-
     JsonObject gridSizeObject = new JsonObject();
-
     JsonObject grid = new JsonObject();
-
     buildJsonObject(metadataJson, metadata, gridSizeObject);
-
     JsonArray gridArray = turnGridToJson(level);
-
     jsonManager.addArrayToJson(grid, "cells", gridArray);
-
     jsonManager.addArrayToJson(metadataJson, "grid", gridArray);
-
     return metadataJson;
   }
 

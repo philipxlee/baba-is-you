@@ -21,8 +21,8 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
    */
-  public Grid(int rows, int cols, BlockFactory blockFactory) {
-    this.blockFactory = blockFactory;
+  public Grid(int rows, int cols) {
+    this.blockFactory = BlockFactory.getInstance();
     cells = new Block[rows][cols];
     observers = new ArrayList<>();
     initializeGrid();

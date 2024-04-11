@@ -11,24 +11,26 @@ import oogasalad.model.gameplay.handlers.UpKeyHandler;
 public class KeyHandlerController {
 
   private KeyHandler keyHandler;
-  private final GameOverController gameOverController;
+  private final GameStateController gameStateController;
 
-  public KeyHandlerController(GameOverController gameOverController) {
-    this.gameOverController = gameOverController;
+  public KeyHandlerController(GameStateController gameStateController) {
+    this.gameStateController = gameStateController;
   }
 
-  public void executeKey(Grid grid, KeyCode code) {
+  public boolean executeKey(Grid grid, KeyCode code) {
     keyHandler = switch (code) {
-      case UP -> new UpKeyHandler(grid, gameOverController);
-      case DOWN -> new DownKeyHandler(grid, gameOverController);
-      case LEFT -> new LeftKeyHandler(grid, gameOverController);
-      case RIGHT -> new RightKeyHandler(grid, gameOverController);
+      case UP -> new UpKeyHandler(grid, gameStateController);
+      case DOWN -> new DownKeyHandler(grid, gameStateController);
+      case LEFT -> new LeftKeyHandler(grid, gameStateController);
+      case RIGHT -> new RightKeyHandler(grid, gameStateController);
       default -> null;
     };
 
     if (keyHandler != null) {
       keyHandler.execute();
+      return true;
     }
+    return false;
   }
 }
 

@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import oogasalad.controller.gameplay.GameGridController;
-import oogasalad.controller.gameplay.GameOverController;
+import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -30,8 +30,6 @@ public class GamePane implements Observer<Grid> {
   private int width;
   private int height;
   private BlockViewFactory blockFactory;
-  //Change below to dynamically respond to user input
-  private final int n = 15;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController) {
@@ -39,18 +37,14 @@ public class GamePane implements Observer<Grid> {
       this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
       this.width = width;
       this.height = height;
-      calculateCellSize();
       this.root = new Group();
       this.scene = scene;
-      this.keyHandlerController = new KeyHandlerController(new GameOverController(sceneController));
+      this.keyHandlerController = new KeyHandlerController(
+          new GameStateController(sceneController));
       this.gridController = new GameGridController(this, keyHandlerController);
 
-      this.scene.getScene().setOnKeyPressed(event -> {
+      handleKeyPresses(scene);
 
-        gridController.sendPlayToModel(event.getCode());
-        renderGrid(); // Render grid
-        gridController.resetBlocks(); // Reset all blocks
-      });
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());
     }
@@ -88,6 +82,7 @@ public class GamePane implements Observer<Grid> {
   private void renderGrid() {
     root.getChildren().clear();
     List<AbstractBlock>[][] grid = gridController.getGameGrid().getGrid();
+    calculateCellSize(grid.length, grid[0].length);
     double blockOffset = 0; // Offset for displaying stacked blocks
 
     for (int i = 0; i < grid.length; i++) {
@@ -125,10 +120,30 @@ public class GamePane implements Observer<Grid> {
     }
   }
 
-  private void calculateCellSize() {
-    int w = width / n;
-    int h = height / n;
-    this.cellSize = Math.min(w, h);
+  private void calculateCellSize(int r, int c) {
+    int smallerDimension = Math.min(r, c);
+    this.cellSize = Math.min(width/smallerDimension, height/smallerDimension);
+  }
+
+  private void handleKeyPresses(MainScene scene) {
+    // For grid movement
+    this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+      if (event.getCode().isArrowKey()) {
+        gridController.sendPlayToModel(event.getCode());
+        renderGrid(); // Render grid
+        gridController.resetBlocks(); // Reset all blocks
+        scene.getInteractionPane().updateKeyPress(event.getCode());
+        event.consume();
+      }
+    });
+
+    // For key press visualizer
+    this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_RELEASED, event -> {
+      if (event.getCode().isArrowKey()) {
+        scene.getInteractionPane().updateKeyRelease(event.getCode());
+        event.consume();
+      }
+    });
   }
 
 //  private AbstractBlockView reflect(String blockType) {

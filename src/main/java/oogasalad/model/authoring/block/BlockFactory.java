@@ -13,19 +13,36 @@ import java.util.Map;
 
 
 /**
- * BlockTypeManager loads the block types from a properties file and returns a list of block types.
+ * BlockFactory singleton loads the block types from a properties file and returns a list of block
+ * types.
  */
 public class BlockFactory {
 
-  private static final List<BlockType> blockTypes = new ArrayList<>();
+  private static final String BLOCKTYPES_CONFIG_PATH = "/blocktypes/blocktypes.json";
+  private static BlockFactory instance;
+  private List<BlockType> blockTypes;
 
   /**
-   * BlockTypeManager constructor. Initialized with the Block Type properties filepath.
-   *
-   * @param propertiesFilePath The file path of block type properties file.
+   * BlockFactory private constructor.
    */
-  public BlockFactory(String propertiesFilePath) throws Exception {
-    loadBlockTypes(propertiesFilePath);
+  private BlockFactory() {
+    try {
+      loadBlockTypes(BLOCKTYPES_CONFIG_PATH);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Singleton instance accessor. Initializes the instance if not already done.
+   *
+   * @return Static instance of BlockFactory.
+   */
+  public static synchronized BlockFactory getInstance() {
+    if (instance == null) {
+      instance = new BlockFactory();
+    }
+    return instance;
   }
 
   /**
@@ -34,6 +51,7 @@ public class BlockFactory {
    * @param propertiesFilePath The file path of block type properties file.
    */
   private void loadBlockTypes(String propertiesFilePath) throws Exception {
+    blockTypes = new ArrayList<>();
     try (InputStream input = getClass().getResourceAsStream(propertiesFilePath)) {
       if (input == null) {
         throw new IllegalArgumentException("JSON file not found: " + propertiesFilePath);

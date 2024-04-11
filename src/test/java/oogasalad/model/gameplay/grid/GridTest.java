@@ -1,6 +1,5 @@
-package oogasalad.model.game.grid;
+package oogasalad.model.gameplay.grid;
 
-import oogasalad.model.gameplay.grid.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

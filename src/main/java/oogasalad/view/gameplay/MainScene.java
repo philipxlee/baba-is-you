@@ -50,6 +50,15 @@ public class MainScene implements Scene {
     //factory.addScene(this);
   }
 
+  public void resetGame() {
+    sceneController.beginGame();
+  }
+
+  public InteractionPane getInteractionPane() {
+    // Assuming you have a reference to InteractionPane in MainScene
+    return this.interactionScene;
+  }
+
   @Override
   public javafx.scene.Scene getScene() {
     return this.scene;

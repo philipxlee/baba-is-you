@@ -1,14 +1,16 @@
 package oogasalad.view.gameplay;
 
-import javafx.scene.control.ScrollPane;
 import java.io.InputStream;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -23,8 +25,8 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
  */
 public class InteractionPane {
 
-  private static final Color BASE_COLOR = Color.web("#90A4AE");
-  private static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
+  public static final Color BASE_COLOR = Color.web("#90A4AE");
+  public static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
   private static final int ROUNDED_CORNER = 10;
   private static final int RECTANGLE_SIZE = 50;
   private static final DropShadow DROP_SHADOW = new DropShadow(5, Color.GRAY);
@@ -41,9 +43,10 @@ public class InteractionPane {
 
   /**
    * Sets up all widgets within the interaction pane.
-   * @param width the width of the pane
-   * @param height height of the pane
-   * @param scene the scene this pane belongs to (in its case, the MainScene
+   *
+   * @param width   the width of the pane
+   * @param height  height of the pane
+   * @param scene   the scene this pane belongs to (in its case, the MainScene
    * @param factory an instance of the WidgetFactory used for UI widget creation
    */
   public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
@@ -65,14 +68,20 @@ public class InteractionPane {
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
-    arrowKeys.setAlignment(Pos.CENTER);
+    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width);
+    arrowKeysBox.setAlignment(Pos.CENTER);
 
     Text title = factory.generateHeader("Baba Is You");
     HBox header = factory.wrapInHBox(title, width);
 
+    Button reset = factory.makeAuthoringButton("Reset", 150, 40);
+    reset.setOnAction(event -> {
+      scene.resetGame();
+    });
+
     // Combine the header and arrow keys into a single display layout
-    VBox display = new VBox(10);
-    display.getChildren().addAll(header, arrowKeys, setUpFileChooser());
+    VBox display = new VBox(20);
+    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), reset);
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
@@ -82,31 +91,38 @@ public class InteractionPane {
 
   /**
    * Sets up the scrollpane used for selecting files.
+   *
    * @return a scrollpane with populated image icons representing JSON level files.
    */
   private VBox setUpFileChooser() {
-    FlowPane flowPane = new FlowPane();
-    flowPane.setPrefSize(width-50, height/4);
-    flowPane.setPadding(new Insets(10));
-    flowPane.setHgap(10);
-    flowPane.setVgap(10);
-    flowPane.setFocusTraversable(false);
-    flowPane.getStyleClass().add("flowpane");
+    FlowPane flowPane = setUpFlowPane(width - 50, height / 4);
 
     //TODO: change to actual file #
     populateFiles(10, flowPane);
-    ScrollPane pane = factory.makeScrollPane(flowPane, width-50);
+    ScrollPane pane = factory.makeScrollPane(flowPane, width - 50);
     Text paneLabel = factory.generateLine("Available Games");
-    VBox labelAndChooser = factory.wrapInVBox(paneLabel, height/3);
+    VBox labelAndChooser = factory.wrapInVBox(paneLabel, height / 3);
     labelAndChooser.getChildren().add(pane);
     return labelAndChooser;
+  }
 
+  private FlowPane setUpFlowPane(int width, int height) {
+    FlowPane flowPane = new FlowPane();
+    flowPane.setPrefSize(width, height);
+    flowPane.setPadding(new Insets(10));
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
+    flowPane.setAlignment(Pos.CENTER);
+    flowPane.setFocusTraversable(false);
+    flowPane.getStyleClass().add("flowpane");
+    return flowPane;
   }
 
   /**
    * Iterates through default game files and populates them within a flowpane. When the file icons
    * representing each game file are clicked, an individual popup dialog window appears with their
    * information.
+   *
    * @param numFiles number of default game level JSON files
    * @param flowPane javafx object containing the clickable file icons
    */
@@ -126,7 +142,7 @@ public class InteractionPane {
         public void handle(MouseEvent event) {
           Text text = new Text("TEMPORARY: file info goes here");
           VBox vbox = new VBox(text);
-          factory.createPopUpWindow(width-100, height/4, vbox, "File Information");
+          factory.createPopUpWindow(width - 100, height / 4, vbox, "File Information");
         }
       });
       flowPane.getChildren().add(imageAndLabel);
@@ -159,26 +175,48 @@ public class InteractionPane {
     return rectangle;
   }
 
-  private void handleKeyPress(javafx.scene.input.KeyEvent event) {
+  public void handleKeyPress(javafx.scene.input.KeyEvent event) {
     switch (event.getCode()) {
-      case UP -> up.setFill(HIGHLIGHT_COLOR);
-      case DOWN -> down.setFill(HIGHLIGHT_COLOR);
-      case LEFT -> left.setFill(HIGHLIGHT_COLOR);
-      case RIGHT -> right.setFill(HIGHLIGHT_COLOR);
+      case UP, DOWN, LEFT, RIGHT -> {
+        updateArrowKeyVisual(event.getCode(), HIGHLIGHT_COLOR);
+        event.consume();  // Prevent further processing by other controls.
+      }
+      default -> { /* Do nothing */ }
+    }
+  }
+
+  public void handleKeyRelease(javafx.scene.input.KeyEvent event) {
+    if (event.getCode().isArrowKey()) {
+      updateArrowKeyVisual(event.getCode(), BASE_COLOR);
+      event.consume();
+    }
+  }
+
+  private void updateArrowKeyVisual(KeyCode code, Color color) {
+    switch (code) {
+      case UP -> up.setFill(color);
+      case DOWN -> down.setFill(color);
+      case LEFT -> left.setFill(color);
+      case RIGHT -> right.setFill(color);
       default -> {
-        // Do nothing
       }
     }
   }
 
-  private void handleKeyRelease(javafx.scene.input.KeyEvent event) {
-    up.setFill(BASE_COLOR);
-    down.setFill(BASE_COLOR);
-    left.setFill(BASE_COLOR);
-    right.setFill(BASE_COLOR);
-  }
-
   public Group getPane() {
     return this.root;
+  }
+
+  public void updateKeyPress(KeyCode code) {
+    updateArrowKeyVisual(code, HIGHLIGHT_COLOR);
+  }
+
+  public void updateKeyRelease(KeyCode code) {
+    updateArrowKeyVisual(code, BASE_COLOR);
+  }
+
+  //For testing
+  public Rectangle getUpRectangle() {
+    return up;
   }
 }

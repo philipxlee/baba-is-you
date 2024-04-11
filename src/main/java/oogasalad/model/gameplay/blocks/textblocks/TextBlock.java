@@ -5,9 +5,8 @@ import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.GrammarLoader;
 
 /**
- * Represents a text block within the game, providing text-specific functionality.
- * This class encapsulates the concept of a text block, including its name and
- * associated grammar.
+ * Represents a text block within the game, providing text-specific functionality. This class
+ * encapsulates the concept of a text block, including its name and associated grammar.
  */
 public class TextBlock extends AbstractBlock {
 

@@ -1,40 +1,40 @@
 package oogasalad.model.authoring.parser;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import oogasalad.model.authoring.block.BlockFactory;
-import oogasalad.model.authoring.level.AuthoringLevelParser;
+import oogasalad.controller.authoring.LevelParser;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+class LevelParserTest {
 
-class AuthoringLevelParserTest {
-
-  private AuthoringLevelParser parser;
-  private Level testLevel;
   private final String validPropertiesFilePath = "/blocktypes/blocktypes.json";
   private final JsonManager jsonManager = new JsonManager();
+  private LevelParser parser;
+  private Level testLevel;
 
   @BeforeEach
   void setUp() throws Exception {
 
-    BlockFactory blockTypeManager = new BlockFactory(validPropertiesFilePath);
     LevelMetadata metadata = new LevelMetadata("TestLevel",
         "This is a test level", 3, 3);
-    testLevel = new Level(metadata, blockTypeManager);
+    testLevel = new Level(metadata);
 
-    parser = new AuthoringLevelParser(jsonManager);
+    parser = new LevelParser();
   }
 
   @Test
   void testParseLevelMetadata() {
     //GIVEN the AuthoringLevelParser is working
     //WHEN the parser gets a level
-    JsonObject metadataJson = parser.parseLevelMetadata(testLevel);
+    JsonObject metadataJson = parser.parseLevelToJSON(testLevel);
     //THEN it will turn the information into a corresponding JsonObject
     assertAll("Level metadata should be correctly parsed",
         () -> assertEquals("TestLevel", jsonManager.getValue(metadataJson,

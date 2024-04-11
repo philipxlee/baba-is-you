@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,7 +15,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import oogasalad.shared.scene.Scene;
 
 /**
  * Factory class for making general UI widgets.
@@ -124,9 +122,10 @@ public class WidgetFactory {
     pane.setPannable(false);
     pane.setFocusTraversable(false);
     pane.setOnKeyPressed(event -> {
-      if(event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP
-          || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT)
+      if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP
+          || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
         event.consume();
+      }
     });
     return pane;
   }
