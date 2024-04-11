@@ -2,7 +2,6 @@ package oogasalad.controller.authoring;
 
 import com.google.gson.JsonObject;
 import java.io.FileWriter;
-import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
@@ -13,17 +12,13 @@ import oogasalad.shared.config.JsonManager;
  */
 public class LevelController {
 
-  private final BlockFactory blockFactory;
   private final LevelParser levelParser;
   private Level currentLevel;
 
   /**
-   * LevelController constructor. Initialized with BlockFactory.
-   *
-   * @param blockFactory The blockFactory used in the application.
+   * LevelController constructor.
    */
-  public LevelController(BlockFactory blockFactory) {
-    this.blockFactory = blockFactory;
+  public LevelController() {
     levelParser = new LevelParser(new JsonManager());
   }
 
@@ -37,7 +32,7 @@ public class LevelController {
    */
   public void initializeLevel(String levelName, String levelDesc, int rows, int cols) {
     LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDesc, rows, cols);
-    currentLevel = new Level(levelMetadata, blockFactory);
+    currentLevel = new Level(levelMetadata);
   }
 
   /**

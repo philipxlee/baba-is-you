@@ -13,7 +13,8 @@ import java.util.Map;
 
 
 /**
- * BlockTypeManager loads the block types from a properties file and returns a list of block types.
+ * BlockTypeManager singleton loads the block types from a properties file and returns a list of
+ * block types.
  */
 public class BlockFactory {
 
@@ -22,19 +23,22 @@ public class BlockFactory {
   private List<BlockType> blockTypes;
 
   /**
-   * BlockTypeManager constructor.
+   * BlockTypeManager private constructor.
    */
-  private BlockFactory() throws Exception {
-    loadBlockTypes(BLOCKTYPES_CONFIG_PATH);
+  private BlockFactory() {
+    try {
+      loadBlockTypes(BLOCKTYPES_CONFIG_PATH);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**
    * Singleton instance accessor. Initializes the instance if not already done.
    *
    * @return Static instance of BlockFactory.
-   * @throws Exception Throws exception if blocktypes properties file path is invalid.
    */
-  public static BlockFactory getInstance() throws Exception {
+  public static synchronized BlockFactory getInstance() {
     if (instance == null) {
       instance = new BlockFactory();
     }

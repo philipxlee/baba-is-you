@@ -33,8 +33,7 @@ public class BuilderPane {
   public BuilderPane() {
     try {
       this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
-      this.blockFactory = new BlockFactory(BLOCK_CONFIG_FILE_PATH);
-      this.levelController = new LevelController(blockFactory);
+      this.levelController = new LevelController();
     } catch (Exception e) {
       e.printStackTrace();
     }

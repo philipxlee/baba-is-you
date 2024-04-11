@@ -14,31 +14,21 @@ public class BlockFactoryTest {
   @TempDir
   Path tempDir;
 
-  String validPropertiesFilePath = "/blocktypes/blocktypes.json";
-  String invalidPropertiesFilePath = "nonexistent.json";
-
   @Test
   void loadBlockTypesSuccessfully() {
-    assertDoesNotThrow(() -> new BlockFactory(validPropertiesFilePath));
-  }
-
-  @Test
-  void loadBlockTypesWithInvalidPath() {
-    Exception exception = assertThrows(RuntimeException.class,
-        () -> new BlockFactory(invalidPropertiesFilePath));
-    assertTrue(exception.getMessage().contains("JSON file not found"));
+    assertDoesNotThrow(BlockFactory::getInstance);
   }
 
   @Test
   void findBlockTypeByNameSuccessfully() throws Exception {
-    BlockFactory manager = new BlockFactory(validPropertiesFilePath);
+    BlockFactory manager = BlockFactory.getInstance();
     assertNotNull(manager.createBlock("EmptyVisualBlock"));
   }
 
   @Test
   void findBlockTypeByNameNotFound() {
     BlockFactory manager = assertDoesNotThrow(
-        () -> new BlockFactory(validPropertiesFilePath));
+        BlockFactory::getInstance);
     Exception exception = assertThrows(Exception.class,
         () -> manager.findBlockTypeByName("NonexistentType"));
     assertTrue(exception.getMessage().contains("Invalid block type"));

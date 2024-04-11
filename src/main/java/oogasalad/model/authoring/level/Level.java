@@ -3,7 +3,6 @@ package oogasalad.model.authoring.level;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.model.authoring.block.Block;
-import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
@@ -13,19 +12,18 @@ import oogasalad.shared.observer.Observer;
  */
 public class Level implements Observable<Level> {
 
-  private final Grid grid;
   private final LevelMetadata levelMetadata;
+  private final Grid grid;
   private final List<Observer<Level>> observers;
 
   /**
    * Level Constructor. Initialized with LevelMetadata record and BlockTypeManager
    *
    * @param levelMetadata The levelMetadata record representing the level.
-   * @param blockFactory  The blockTypeManager being used in the application.
    */
-  public Level(LevelMetadata levelMetadata, BlockFactory blockFactory) {
+  public Level(LevelMetadata levelMetadata) {
     this.levelMetadata = levelMetadata;
-    grid = new Grid(levelMetadata.rows(), levelMetadata.cols(), blockFactory);
+    grid = new Grid(levelMetadata.rows(), levelMetadata.cols());
     observers = new ArrayList<>();
   }
 
