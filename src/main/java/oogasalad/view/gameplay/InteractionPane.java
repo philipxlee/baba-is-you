@@ -25,8 +25,8 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
  */
 public class InteractionPane {
 
-  private static final Color BASE_COLOR = Color.web("#90A4AE");
-  private static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
+  public static final Color BASE_COLOR = Color.web("#90A4AE");
+  public static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
   private static final int ROUNDED_CORNER = 10;
   private static final int RECTANGLE_SIZE = 50;
   private static final DropShadow DROP_SHADOW = new DropShadow(5, Color.GRAY);
@@ -175,7 +175,7 @@ public class InteractionPane {
     return rectangle;
   }
 
-  private void handleKeyPress(javafx.scene.input.KeyEvent event) {
+  public void handleKeyPress(javafx.scene.input.KeyEvent event) {
     switch (event.getCode()) {
       case UP, DOWN, LEFT, RIGHT -> {
         updateArrowKeyVisual(event.getCode(), HIGHLIGHT_COLOR);
@@ -185,7 +185,7 @@ public class InteractionPane {
     }
   }
 
-  private void handleKeyRelease(javafx.scene.input.KeyEvent event) {
+  public void handleKeyRelease(javafx.scene.input.KeyEvent event) {
     if (event.getCode().isArrowKey()) {
       updateArrowKeyVisual(event.getCode(), BASE_COLOR);
       event.consume();
@@ -198,7 +198,8 @@ public class InteractionPane {
       case DOWN -> down.setFill(color);
       case LEFT -> left.setFill(color);
       case RIGHT -> right.setFill(color);
-      default -> {}
+      default -> {
+      }
     }
   }
 
@@ -212,5 +213,10 @@ public class InteractionPane {
 
   public void updateKeyRelease(KeyCode code) {
     updateArrowKeyVisual(code, BASE_COLOR);
+  }
+
+  //For testing
+  public Rectangle getUpRectangle() {
+    return up;
   }
 }
