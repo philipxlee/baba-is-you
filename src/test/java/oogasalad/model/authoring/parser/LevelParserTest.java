@@ -3,7 +3,7 @@ package oogasalad.model.authoring.parser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import oogasalad.model.authoring.block.BlockFactory;
-import oogasalad.controller.authoring.AuthoringLevelParser;
+import oogasalad.controller.authoring.LevelParser;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AuthoringLevelParserTest {
+class LevelParserTest {
 
-  private AuthoringLevelParser parser;
+  private LevelParser parser;
   private Level testLevel;
   private final String validPropertiesFilePath = "/blocktypes/blocktypes.json";
   private final JsonManager jsonManager = new JsonManager();
@@ -27,7 +27,7 @@ class AuthoringLevelParserTest {
         "This is a test level", 3, 3);
     testLevel = new Level(metadata, blockTypeManager);
 
-    parser = new AuthoringLevelParser(jsonManager);
+    parser = new LevelParser(jsonManager);
   }
 
   @Test

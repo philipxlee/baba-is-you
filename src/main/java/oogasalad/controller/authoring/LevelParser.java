@@ -9,7 +9,7 @@ import oogasalad.shared.config.JsonManager;
 /**
  * A class for parsing Authoring Level metadata into a JsonObject.
  */
-public class AuthoringLevelParser {
+public class LevelParser {
 
   private final JsonManager jsonManager;
 
@@ -18,7 +18,7 @@ public class AuthoringLevelParser {
    *
    * @param jsonManager The JsonManager used for JSON operations.
    */
-  public AuthoringLevelParser(JsonManager jsonManager) {
+  public LevelParser(JsonManager jsonManager) {
     this.jsonManager = jsonManager;
   }
 
