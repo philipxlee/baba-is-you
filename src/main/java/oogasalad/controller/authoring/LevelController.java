@@ -3,13 +3,11 @@ package oogasalad.controller.authoring;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
-
 
 /**
  * LevelController handles user input to modify the current level. Provides methods to interface

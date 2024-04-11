@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -21,25 +19,23 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.util.Pair;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
-public class ElementsScene {
+public class ElementsPane {
 
   private ScrollPane scrollPane;
   private VBox layout;
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private boolean removeMode = false;
-  private final BuilderScene builderScene;
+  private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
   private WidgetFactory factory;
 
-  public ElementsScene(BuilderScene builderScene) {
+  public ElementsPane(BuilderPane builderPane) {
     this.factory = new WidgetFactory();
-    this.builderScene = builderScene;
+    this.builderPane = builderPane;
     initializeElementsLayout();
   }
 
@@ -77,7 +73,7 @@ public class ElementsScene {
       } else {
         removeButton.setText("Remove block");
       }
-      builderScene.setRemove(removeMode);
+      builderPane.setRemove(removeMode);
     });
 
     List<Node> buttons = new ArrayList<>();
@@ -195,7 +191,7 @@ public class ElementsScene {
         int width = pair.getKey();
         int height = pair.getValue();// Assuming width and height are the same for a grid
         // Assuming builderScene is a reference to your BuilderScene instance
-        builderScene.updateGridSize(width, height);
+        builderPane.updateGridSize(width, height);
       });
     });
   }

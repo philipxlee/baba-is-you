@@ -16,7 +16,7 @@ import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.blockview.BlockViewFactory;
 
 
-public class BuilderScene {
+public class BuilderPane {
 
   private final int GRID_MARGIN = 10;
   private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
@@ -30,7 +30,7 @@ public class BuilderScene {
   private boolean removeMode;
   private int gridHeight;
 
-  public BuilderScene() {
+  public BuilderPane() {
     try {
       this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
       this.blockFactory = new BlockFactory(BLOCK_CONFIG_FILE_PATH);
