@@ -99,8 +99,8 @@ public class JsonManager {
    * Adds a JsonArray to a JsonObject under a specified key.
    *
    * @param jsonObject the JsonObject to which the array should be added.
-   * @param key the key under which the array will be added to the object.
-   * @param jsonArray the JsonArray to add.
+   * @param key        the key under which the array will be added to the object.
+   * @param jsonArray  the JsonArray to add.
    */
   public void addArrayToJson(JsonObject jsonObject, String key, JsonArray jsonArray) {
     jsonObject.add(key, jsonArray);
@@ -141,7 +141,7 @@ public class JsonManager {
    * Retrieves a JsonArray from a JsonObject using the specified key.
    *
    * @param jsonObject the JsonObject from which to retrieve the array.
-   * @param key the key corresponding to the JsonArray.
+   * @param key        the key corresponding to the JsonArray.
    * @return the JsonArray if it exists and is a JsonArray, or an empty jsonArray..
    */
   public JsonArray getJsonArray(JsonObject jsonObject, String key) {

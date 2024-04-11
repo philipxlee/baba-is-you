@@ -1,16 +1,18 @@
 package oogasalad.model.authoring.parser;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.controller.authoring.LevelParser;
+import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LevelParserTest {
 

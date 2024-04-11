@@ -10,7 +10,7 @@ import oogasalad.model.gameplay.strategies.becomes.BecomesRock;
 /**
  * Visitor pattern for the rock behavior.
  */
-public class RockVisitor implements  BlockVisitor {
+public class RockVisitor implements BlockVisitor {
 
   /**
    * Adds the rock behavior to the baba block.

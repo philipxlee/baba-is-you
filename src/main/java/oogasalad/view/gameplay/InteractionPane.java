@@ -1,11 +1,12 @@
 package oogasalad.view.gameplay;
 
-import javafx.scene.control.ScrollPane;
 import java.io.InputStream;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,9 +42,10 @@ public class InteractionPane {
 
   /**
    * Sets up all widgets within the interaction pane.
-   * @param width the width of the pane
-   * @param height height of the pane
-   * @param scene the scene this pane belongs to (in its case, the MainScene
+   *
+   * @param width   the width of the pane
+   * @param height  height of the pane
+   * @param scene   the scene this pane belongs to (in its case, the MainScene
    * @param factory an instance of the WidgetFactory used for UI widget creation
    */
   public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
@@ -65,14 +67,20 @@ public class InteractionPane {
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
-    arrowKeys.setAlignment(Pos.CENTER);
+    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width);
+    arrowKeysBox.setAlignment(Pos.CENTER);
 
     Text title = factory.generateHeader("Baba Is You");
     HBox header = factory.wrapInHBox(title, width);
 
+    Button reset = factory.makeAuthoringButton("Reset", 150, 40);
+    reset.setOnAction(event -> {
+      scene.resetGame();
+    });
+
     // Combine the header and arrow keys into a single display layout
-    VBox display = new VBox(10);
-    display.getChildren().addAll(header, arrowKeys, setUpFileChooser());
+    VBox display = new VBox(20);
+    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), reset);
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
@@ -82,31 +90,38 @@ public class InteractionPane {
 
   /**
    * Sets up the scrollpane used for selecting files.
+   *
    * @return a scrollpane with populated image icons representing JSON level files.
    */
   private VBox setUpFileChooser() {
-    FlowPane flowPane = new FlowPane();
-    flowPane.setPrefSize(width-50, height/4);
-    flowPane.setPadding(new Insets(10));
-    flowPane.setHgap(10);
-    flowPane.setVgap(10);
-    flowPane.setFocusTraversable(false);
-    flowPane.getStyleClass().add("flowpane");
+    FlowPane flowPane = setUpFlowPane(width - 50, height / 4);
 
     //TODO: change to actual file #
     populateFiles(10, flowPane);
-    ScrollPane pane = factory.makeScrollPane(flowPane, width-50);
+    ScrollPane pane = factory.makeScrollPane(flowPane, width - 50);
     Text paneLabel = factory.generateLine("Available Games");
-    VBox labelAndChooser = factory.wrapInVBox(paneLabel, height/3);
+    VBox labelAndChooser = factory.wrapInVBox(paneLabel, height / 3);
     labelAndChooser.getChildren().add(pane);
     return labelAndChooser;
+  }
 
+  private FlowPane setUpFlowPane(int width, int height) {
+    FlowPane flowPane = new FlowPane();
+    flowPane.setPrefSize(width, height);
+    flowPane.setPadding(new Insets(10));
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
+    flowPane.setAlignment(Pos.CENTER);
+    flowPane.setFocusTraversable(false);
+    flowPane.getStyleClass().add("flowpane");
+    return flowPane;
   }
 
   /**
    * Iterates through default game files and populates them within a flowpane. When the file icons
    * representing each game file are clicked, an individual popup dialog window appears with their
    * information.
+   *
    * @param numFiles number of default game level JSON files
    * @param flowPane javafx object containing the clickable file icons
    */
@@ -126,7 +141,7 @@ public class InteractionPane {
         public void handle(MouseEvent event) {
           Text text = new Text("TEMPORARY: file info goes here");
           VBox vbox = new VBox(text);
-          factory.createPopUpWindow(width-100, height/4, vbox, "File Information");
+          factory.createPopUpWindow(width - 100, height / 4, vbox, "File Information");
         }
       });
       flowPane.getChildren().add(imageAndLabel);
