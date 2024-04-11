@@ -31,7 +31,7 @@ public class ElementsPane {
   private ScrollPane scrollPane;
   private VBox layout;
   private boolean removeMode = false;
-  private WidgetFactory factory;
+  private final WidgetFactory factory;
 
   public ElementsPane(BuilderPane builderPane) {
     this.factory = new WidgetFactory();

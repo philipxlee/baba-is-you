@@ -12,6 +12,7 @@
 .interaction-background {
   -fx-fill: linear-gradient(to bottom, #777DA1, #9773FD);
 }
+
 .elements-background {
   -fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD);
 }
@@ -58,6 +59,7 @@
 .button:hover, .authoring-button:hover {
   -fx-background-color: #9773FD;
 }
+
 .authoring-button:hover {
   -fx-background-color: #FF7171;
 }
@@ -67,6 +69,7 @@
   -fx-background-color: #191A20;
   -fx-border-width: 2;
 }
+
 .flowpane {
   /*-fx-background-color: transparent;*/
   -fx-background-color: #343342;

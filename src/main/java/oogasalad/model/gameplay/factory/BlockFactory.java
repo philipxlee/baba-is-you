@@ -5,10 +5,10 @@ import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 
 /**
- * Factory class for creating block instances.
- * This class supports the creation of both text and visual block types through
- * a unified interface. It uses reflection for visual blocks and direct instantiation
- * for text blocks, abstracting the block creation process and enhancing extensibility.
+ * Factory class for creating block instances. This class supports the creation of both text and
+ * visual block types through a unified interface. It uses reflection for visual blocks and direct
+ * instantiation for text blocks, abstracting the block creation process and enhancing
+ * extensibility.
  */
 public class BlockFactory {
 
@@ -18,9 +18,9 @@ public class BlockFactory {
   private static final String TEXT_BLOCK_LOCATION_SUFFIX = "textblocks.";
 
   /**
-   * Creates a block instance based on the provided block name.
-   * If the block name ends with 'TextBlock', it creates a TextBlock instance.
-   * Otherwise, it uses reflection to create an instance of the visual block.
+   * Creates a block instance based on the provided block name. If the block name ends with
+   * 'TextBlock', it creates a TextBlock instance. Otherwise, it uses reflection to create an
+   * instance of the visual block.
    *
    * @param blockName The name of the block to create, which should match a class name.
    * @return An instance of AbstractBlock corresponding to the block name.
@@ -48,7 +48,7 @@ public class BlockFactory {
   /**
    * Validates that the identified block class extends AbstractBlock.
    *
-   * @param blockName The name of the block being validated.
+   * @param blockName  The name of the block being validated.
    * @param blockClass The class object corresponding to the block name.
    * @throws InvalidBlockName If the class does not extend AbstractBlock.
    */

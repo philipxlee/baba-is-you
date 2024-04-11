@@ -1,14 +1,22 @@
 package oogasalad.model.gameplay;
 
-import oogasalad.model.gameplay.blocks.AbstractBlock;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import oogasalad.model.gameplay.blocks.visualblocks.*;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BlockCreationTest {
 
@@ -22,7 +30,7 @@ public class BlockCreationTest {
   @Test
   public void testBabaVisualBlockCreation() throws InvalidBlockName {
     AbstractBlock babaBlock = blockFactory.createBlock("BabaVisualBlock", 1, 2);
-    assertTrue(babaBlock instanceof BabaVisualBlock);
+    assertInstanceOf(BabaVisualBlock.class, babaBlock);
     assertEquals(1, babaBlock.getRow());
     assertEquals(2, babaBlock.getCol());
     assertEquals("BabaVisualBlock", babaBlock.getBlockName());
@@ -31,7 +39,7 @@ public class BlockCreationTest {
   @Test
   public void testEmptyVisualBlockCreation() throws InvalidBlockName {
     AbstractBlock emptyBlock = blockFactory.createBlock("EmptyVisualBlock", 0, 0);
-    assertTrue(emptyBlock instanceof EmptyVisualBlock);
+    assertInstanceOf(EmptyVisualBlock.class, emptyBlock);
     assertEquals(0, emptyBlock.getRow());
     assertEquals(0, emptyBlock.getCol());
     assertEquals("EmptyVisualBlock", emptyBlock.getBlockName());
@@ -40,7 +48,7 @@ public class BlockCreationTest {
   @Test
   public void testFlagVisualBlockCreation() throws InvalidBlockName {
     AbstractBlock flagBlock = blockFactory.createBlock("FlagVisualBlock", 3, 4);
-    assertTrue(flagBlock instanceof FlagVisualBlock);
+    assertInstanceOf(FlagVisualBlock.class, flagBlock);
     assertEquals(3, flagBlock.getRow());
     assertEquals(4, flagBlock.getCol());
     assertEquals("FlagVisualBlock", flagBlock.getBlockName());
@@ -49,7 +57,7 @@ public class BlockCreationTest {
   @Test
   public void testRockVisualBlockCreation() throws InvalidBlockName {
     AbstractBlock rockBlock = blockFactory.createBlock("RockVisualBlock", 5, 6);
-    assertTrue(rockBlock instanceof RockVisualBlock);
+    assertInstanceOf(RockVisualBlock.class, rockBlock);
     assertEquals(5, rockBlock.getRow());
     assertEquals(6, rockBlock.getCol());
     assertEquals("RockVisualBlock", rockBlock.getBlockName());
@@ -58,7 +66,7 @@ public class BlockCreationTest {
   @Test
   public void testWallVisualBlockCreation() throws InvalidBlockName {
     AbstractBlock wallBlock = blockFactory.createBlock("WallVisualBlock", 7, 8);
-    assertTrue(wallBlock instanceof WallVisualBlock);
+    assertInstanceOf(WallVisualBlock.class, wallBlock);
     assertEquals(7, wallBlock.getRow());
     assertEquals(8, wallBlock.getCol());
     assertEquals("WallVisualBlock", wallBlock.getBlockName());
