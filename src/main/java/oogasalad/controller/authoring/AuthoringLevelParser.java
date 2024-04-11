@@ -1,7 +1,9 @@
-package oogasalad.model.authoring.level;
+package oogasalad.controller.authoring;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import oogasalad.model.authoring.level.Level;
+import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
 
 /**

@@ -3,7 +3,7 @@ package oogasalad.model.authoring.parser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import oogasalad.model.authoring.block.BlockFactory;
-import oogasalad.model.authoring.level.AuthoringLevelParser;
+import oogasalad.controller.authoring.AuthoringLevelParser;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
