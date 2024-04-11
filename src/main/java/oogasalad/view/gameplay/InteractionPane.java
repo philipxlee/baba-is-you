@@ -91,6 +91,7 @@ public class InteractionPane {
     flowPane.setHgap(10);
     flowPane.setVgap(10);
     flowPane.setFocusTraversable(false);
+    flowPane.getStyleClass().add("flowpane");
 
     //TODO: change to actual file #
     populateFiles(10, flowPane);

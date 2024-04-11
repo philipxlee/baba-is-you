@@ -12,8 +12,8 @@ public class WallVisualBlock extends AbstractVisualBlock {
    *
    * @param name the name of the block.
    */
-  public WallVisualBlock(String name) {
-    super(name);
+  public WallVisualBlock(String name, int row, int col) {
+    super(name, row, col);
   }
 
   /**

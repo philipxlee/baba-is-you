@@ -13,8 +13,8 @@ public class FlagVisualBlock extends AbstractVisualBlock {
    *
    * @param name the name of the block.
    */
-  public FlagVisualBlock(String name) {
-    super(name);
+  public FlagVisualBlock(String name, int row, int col) {
+    super(name, row, col);
   }
 
   /**

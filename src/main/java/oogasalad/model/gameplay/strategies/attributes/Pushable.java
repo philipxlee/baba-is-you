@@ -1,19 +1,22 @@
 package oogasalad.model.gameplay.strategies.attributes;
 
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
-import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 public class Pushable implements Strategy {
 
+  /**
+   * Constructor for Pushable.
+   *
+   * @param block    block to control.
+   * @param updater  updater to update block.
+   * @param iterator iterator to control.
+   */
   @Override
-  public void execute(Grid grid, BlockUpdater updater, int i, int j, int k) {
+  public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
 
   }
 
-  @Override
-  public boolean interactWith(AbstractVisualBlock targetBlock, Strategy initiatingBlockStrategy) {
-    return false;
-  }
 }

@@ -100,5 +100,4 @@ public class AuthoringLevelParser {
 
     return layersArray;
   }
-
 }
