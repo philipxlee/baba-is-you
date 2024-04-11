@@ -34,7 +34,7 @@ class LevelParserTest {
   void testParseLevelMetadata() {
     //GIVEN the AuthoringLevelParser is working
     //WHEN the parser gets a level
-    JsonObject metadataJson = parser.parseLevelMetadata(testLevel);
+    JsonObject metadataJson = parser.parseLevelToJSON(testLevel);
     //THEN it will turn the information into a corresponding JsonObject
     assertAll("Level metadata should be correctly parsed",
         () -> assertEquals("TestLevel", jsonManager.getValue(metadataJson,

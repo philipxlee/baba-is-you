@@ -1,13 +1,11 @@
 package oogasalad.controller.authoring;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import java.io.FileWriter;
-import java.util.HashMap;
-import java.util.Map;
 import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
+import oogasalad.shared.config.JsonManager;
 
 /**
  * LevelController handles user input to modify the current level. Provides methods to interface
@@ -16,6 +14,7 @@ import oogasalad.model.authoring.level.LevelMetadata;
 public class LevelController {
 
   private final BlockFactory blockFactory;
+  private final LevelParser levelParser;
   private Level currentLevel;
 
   /**
@@ -25,6 +24,7 @@ public class LevelController {
    */
   public LevelController(BlockFactory blockFactory) {
     this.blockFactory = blockFactory;
+    levelParser = new LevelParser(new JsonManager());
   }
 
   /**
@@ -59,18 +59,10 @@ public class LevelController {
    * Serialize current level to JSON using Gson library. Parse according to configuration format.
    */
   public void serializeLevel() {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-    Map<String, Object> levelPropertiesMap = new HashMap<>();
-    levelPropertiesMap.put("levelName", currentLevel.getLevelMetadata().levelName());
-    Map<String, Integer> gridSize = new HashMap<>();
-    gridSize.put("rows", currentLevel.getLevelMetadata().rows());
-    gridSize.put("columns", currentLevel.getLevelMetadata().cols());
-    levelPropertiesMap.put("gridSize", gridSize);
-
-    String json = gson.toJson(levelPropertiesMap);
-    try (FileWriter writer = new FileWriter("level.json")) {
-      writer.write(json);
+    JsonObject levelJson = levelParser.parseLevelToJSON(currentLevel);
+    String fileName = currentLevel.getLevelMetadata().levelName() + ".json";
+    try (FileWriter writer = new FileWriter(fileName)) {
+      writer.write(levelJson.toString());
     } catch (Exception e) {
       e.printStackTrace();
     }

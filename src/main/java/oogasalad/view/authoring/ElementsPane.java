@@ -25,12 +25,12 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class ElementsPane {
 
-  private ScrollPane scrollPane;
-  private VBox layout;
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
-  private boolean removeMode = false;
   private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
+  private ScrollPane scrollPane;
+  private VBox layout;
+  private boolean removeMode = false;
   private WidgetFactory factory;
 
   public ElementsPane(BuilderPane builderPane) {
@@ -44,10 +44,10 @@ public class ElementsPane {
 //    layout.setMinHeight(builderScene.getRoot().getHeight());
 
     Text title = factory.generateHeader("Baba Is You");
-    HBox header = factory.wrapInHBox(title, (int)layout.getWidth());
+    HBox header = factory.wrapInHBox(title, (int) layout.getWidth());
 
     Text descriptionLabel = factory.generateLine("Drag blocks from this panel:");
-    HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int)layout.getWidth());
+    HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth());
 
     // Create a container for blocks
     FlowPane blocksContainer = new FlowPane(); // FlowPane instead of VBox
@@ -79,7 +79,7 @@ public class ElementsPane {
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
     buttons.add(removeButton);
-    HBox buttonsHBox = factory.wrapInHBox(buttons, (int)layout.getWidth());
+    HBox buttonsHBox = factory.wrapInHBox(buttons, (int) layout.getWidth());
     buttonsHBox.setSpacing(50);
 
     // Scroll pane for blocks container
@@ -92,10 +92,9 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeAuthoringButton("Save to JSON", 200, 40);
-    HBox jsonBox = factory.wrapInHBox(saveJson, (int)layout.getWidth());
+    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
 
     layout.getStyleClass().add("elements-background");
-//    blocksContainer.setStyle("-fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD)");
 
     // Add components to layout
     layout.getChildren()
