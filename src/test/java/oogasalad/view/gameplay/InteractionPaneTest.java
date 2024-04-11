@@ -18,14 +18,11 @@ public class InteractionPaneTest extends DukeApplicationTest {
 
   private InteractionPane interactionPane;
   private WidgetFactory factory;
-  private MainScene scene;
-  private Stage stage;
   private SceneController sceneController;
 
   @Override
   public void start(Stage stage) throws Exception {
     this.factory = new WidgetFactory();
-    this.stage = stage;
     this.sceneController = new SceneController(stage);
     this.interactionPane = new InteractionPane();
     interactionPane.initializeInteractionPane(800, 600,
@@ -45,6 +42,9 @@ public class InteractionPaneTest extends DukeApplicationTest {
     assertEquals(2, interactionPane.getPane().getChildren().size());
   }
 
+  /**
+   * Simulates an up arrow key press and ensures the up arrow key is highlighted
+   */
   @Test
   public void testHandleKeyPress() {
     press(KeyCode.UP);
@@ -56,9 +56,12 @@ public class InteractionPaneTest extends DukeApplicationTest {
     assertEquals(InteractionPane.HIGHLIGHT_COLOR, upRectangle.getFill());
   }
 
+  /**
+   * Simulates an up arrow key press and release ensures the up arrow key isn't highlighted
+   * anymore
+   */
   @Test
   public void testHandleKeyRelease() {
-    // Simulate pressing and releasing the DOWN arrow key
     interactionPane.handleKeyPress(new javafx.scene.input.KeyEvent(
         javafx.scene.input.KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false));
     interactionPane.handleKeyRelease(new javafx.scene.input.KeyEvent(
@@ -77,7 +80,6 @@ public class InteractionPaneTest extends DukeApplicationTest {
 //    interactionPane.populateFiles(1, interactionPane.setUpFlowPane(800, 600));
 //    interactionPane.getPane().lookup("#fileIcon").fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseEvent.MOUSE_CLICKED, 1, true, true, true, true, true, true, true, true, true, true, null));
 //
-//    // Verify that the expected method calls were made
 //    verify(factory, times(1)).generateCaption(anyString());
 //    verify(factory, times(1)).createPopUpWindow(anyInt(), anyInt(), any(), anyString());
 //  }

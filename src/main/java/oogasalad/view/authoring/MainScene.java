@@ -9,8 +9,8 @@ import oogasalad.shared.scene.Scene;
 
 public class MainScene implements Scene {
 
+  private final LevelController levelController;
   private javafx.scene.Scene scene;
-  private LevelController levelController;
 
   public MainScene(LevelController levelController) {
     this.levelController = levelController;
