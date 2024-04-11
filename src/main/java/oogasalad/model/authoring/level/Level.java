@@ -17,7 +17,7 @@ public class Level implements Observable<Level> {
   private final List<Observer<Level>> observers;
 
   /**
-   * Level Constructor. Initialized with LevelMetadata record and BlockTypeManager
+   * Level Constructor. Initialized with LevelMetadata record.
    *
    * @param levelMetadata The levelMetadata record representing the level.
    */
@@ -32,11 +32,11 @@ public class Level implements Observable<Level> {
    *
    * @param row       The row position to be modified.
    * @param col       The column position to be modified.
-   * @param blockName New block type.
+   * @param blockType New block type.
    * @throws Exception Throws exception if block type is invalid (not in properties file).
    */
-  public void setCell(int row, int col, String blockName) throws Exception {
-    grid.setCell(row, col, blockName);
+  public void setCell(int row, int col, String blockType) throws Exception {
+    grid.setCell(row, col, blockType);
   }
 
   /**

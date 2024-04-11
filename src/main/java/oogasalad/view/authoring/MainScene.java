@@ -4,22 +4,27 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLD
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import javafx.scene.control.SplitPane;
+import oogasalad.controller.authoring.LevelController;
 import oogasalad.shared.scene.Scene;
 
 public class MainScene implements Scene {
 
   private javafx.scene.Scene scene;
+  private LevelController levelController;
+
+  public MainScene(LevelController levelController) {
+    this.levelController = levelController;
+  }
 
   @Override
   public void initializeScene(int width, int height) {
-
     SplitPane root = new SplitPane();
 
     // Initialize builder scene with 60% of width
-    BuilderPane builderPane = new BuilderPane();
+    BuilderPane builderPane = new BuilderPane(levelController);
 
     // Initialize elements scene with 40% of width
-    ElementsPane elementsPane = new ElementsPane(builderPane);
+    ElementsPane elementsPane = new ElementsPane(builderPane, levelController);
 
     // Set up left and right sides of SplitPane
     root.getItems().addAll(elementsPane.getLayout(), builderPane.getRoot());

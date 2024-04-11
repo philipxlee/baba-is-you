@@ -12,7 +12,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.blockview.BlockViewFactory;
 
 
@@ -25,15 +24,14 @@ public class BuilderPane {
   private GridPane gridPane;
   private int gridWidth;
   private BlockViewFactory blockViewFactory;
-  private BlockFactory blockFactory;
   private LevelController levelController;
   private boolean removeMode;
   private int gridHeight;
 
-  public BuilderPane() {
+  public BuilderPane(LevelController levelController) {
+    this.levelController = levelController;
     try {
       this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
-      this.levelController = new LevelController();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -49,9 +47,6 @@ public class BuilderPane {
     // Listen for size changes on root to re-setup the grid
     root.widthProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
     root.heightProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
-
-    // Initialize Level
-    levelController.initializeLevel("", "", gridHeight, gridWidth);
 
     setUpGrid();
     setUpDropHandling();

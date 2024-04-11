@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 /**
- * BlockTypeManager singleton loads the block types from a properties file and returns a list of
+ * BlockFactory singleton loads the block types from a properties file and returns a list of
  * block types.
  */
 public class BlockFactory {
@@ -23,7 +23,7 @@ public class BlockFactory {
   private List<BlockType> blockTypes;
 
   /**
-   * BlockTypeManager private constructor.
+   * BlockFactory private constructor.
    */
   private BlockFactory() {
     try {
