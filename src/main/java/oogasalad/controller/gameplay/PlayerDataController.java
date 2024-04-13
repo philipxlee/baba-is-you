@@ -1,7 +1,9 @@
 package oogasalad.controller.gameplay;
 
+import java.util.Date;
 import oogasalad.database.DataManager;
 import oogasalad.model.gameplay.player.PlayerData;
+import java.util.List;
 
 /**
  * Controller class for managing player data, including starting and ending player sessions and
@@ -31,7 +33,7 @@ public class PlayerDataController {
    */
   public boolean startNewPlayer(String username) {
     if (dataManager.isUsernameAvailable(username)) {
-      this.playerData = new PlayerData(username);
+      this.playerData = new PlayerData(username, 0, "", new Date());
       this.startTime = System.currentTimeMillis();
       System.out.printf("username available: %s\n", username);
       return true;
@@ -41,8 +43,23 @@ public class PlayerDataController {
     }
   }
 
+  /**
+   * Checks if a username is available in the database.
+   *
+   * @param username The username to check.
+   * @return True if the username is available, false otherwise.
+   */
   public boolean isUsernameAvailable(String username) {
     return dataManager.isUsernameAvailable(username);
+  }
+
+  /**
+   * Retrieves top player statistics for leaderboard display.
+   *
+   * @return a list of PlayerData objects for the top players.
+   */
+  public List<PlayerData> getTopPlayers() {
+    return dataManager.getTopPlayers();
   }
 
   /**

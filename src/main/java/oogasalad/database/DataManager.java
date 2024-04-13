@@ -1,8 +1,13 @@
 package oogasalad.database;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import oogasalad.model.gameplay.player.PlayerData;
 import org.bson.Document;
 
@@ -28,6 +33,31 @@ public class DataManager {
     MongoCollection<Document> collection = database.getCollection("data");
     long count = collection.countDocuments(Filters.eq("username", username));
     return count == 0; // Return true if no documents found with that username
+  }
+
+  /**
+   * Retrieves the top 10 players based on their time spent.
+   *
+   * @return a list of PlayerData objects representing the top players.
+   */
+  public List<PlayerData> getTopPlayers() {
+    MongoCollection<Document> collection = database.getCollection("data");
+    FindIterable<Document> result = collection.find()
+        .sort(Sorts.ascending("timeSpent"))
+        .limit(10);
+    List<PlayerData> topPlayers = new ArrayList<>();
+    for (Document doc : result) {
+      // Default values assigned if fields are null
+      String username = doc.getString("username") != null ? doc.getString("username") : "Unknown";
+      String comments = doc.getString("comments") != null ? doc.getString("comments") : "No comments";
+      Date date = doc.getDate("date") != null ? doc.getDate("date") : new Date();  // Use current date as default
+      // Handling potential null values for timeSpent
+      Long timeSpentObj = doc.getLong("timeSpent");
+      long timeSpent = (timeSpentObj != null) ? timeSpentObj : 0;  // Default to 0 if null
+
+      topPlayers.add(new PlayerData(username, timeSpent, comments, date));
+    }
+    return topPlayers;
   }
 
   /**
