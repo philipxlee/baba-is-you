@@ -8,7 +8,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-public class DatabaseConnection {
+public class DatabaseConfig {
 
   private static MongoClient mongoClient;
 
