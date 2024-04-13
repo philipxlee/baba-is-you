@@ -13,7 +13,7 @@ public class PlayerDataController {
 
   private DataManager dataManager;
   private PlayerData playerData;
-  private long startTime;
+  private int startTime;
 
 
   /**
@@ -34,11 +34,9 @@ public class PlayerDataController {
   public boolean startNewPlayer(String username) {
     if (dataManager.isUsernameAvailable(username)) {
       this.playerData = new PlayerData(username, 0, "", new Date());
-      this.startTime = System.currentTimeMillis();
-      System.out.printf("username available: %s\n", username);
+      this.startTime = (int) (System.currentTimeMillis() / 1000); // make to seconds
       return true;
     } else {
-      System.err.printf("username not available: %s\n", username);
       return false;
     }
   }
@@ -69,12 +67,11 @@ public class PlayerDataController {
    */
   public void endPlayerSession(String comments) {
     if (playerData != null) {
-      long endTime = System.currentTimeMillis();
+      long endTime = System.currentTimeMillis() / 1000;
       long timeSpent = endTime - startTime;
       playerData.setTimeSpent(timeSpent);
       playerData.setComments(comments);
       dataManager.savePlayerData(playerData); // Persist player data to MongoDB
-      System.out.println("Session ended and data saved for " + playerData.getUsername());
     } else {
       System.err.println("No player session started.");
     }

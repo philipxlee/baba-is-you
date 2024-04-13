@@ -48,10 +48,9 @@ public class DataManager {
     List<PlayerData> topPlayers = new ArrayList<>();
     for (Document doc : result) {
       // Default values assigned if fields are null
-      String username = doc.getString("username") != null ? doc.getString("username") : "Unknown";
+      String username = doc.getString("username");
       String comments = doc.getString("comments") != null ? doc.getString("comments") : "No comments";
       Date date = doc.getDate("date") != null ? doc.getDate("date") : new Date();  // Use current date as default
-      // Handling potential null values for timeSpent
       Long timeSpentObj = doc.getLong("timeSpent");
       long timeSpent = (timeSpentObj != null) ? timeSpentObj : 0;  // Default to 0 if null
 

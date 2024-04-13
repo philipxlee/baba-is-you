@@ -67,23 +67,31 @@ public class LeaderboardScene implements Scene {
    */
   private void populateLeaderboard() {
     Text header = new Text("Leaderboard");
-    header.setFont(Font.font(24));
+    header.setFont(Font.font(50));
+    header.setStyle("-fx-fill: WHITE");
 
     List<PlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
     VBox leaderboardList = new VBox(5);
-    for (PlayerData player : topPlayers) {
-      Text playerInfo = new Text(String.format("%s - %d sec - %s",
-          player.getUsername(), player.getTimeSpent() / 1000, player.getComments()));
-      leaderboardList.getChildren().add(playerInfo);
-    }
+    leaderboardList.setAlignment(Pos.CENTER);
 
-    ScrollPane scrollPane = new ScrollPane(leaderboardList);
-    scrollPane.setFitToWidth(true);
+    for (PlayerData player : topPlayers) {
+      String playerInfoText = String.format("%s - %d sec - %s",
+          player.getUsername(), player.getTimeSpent() / 1000, player.getComments());
+
+      // Create a button with the player information, make it unpressable
+      Button playerInfoButton = factory.makeAuthoringButton(playerInfoText, 300, 20);
+      playerInfoButton.setDisable(true);  // Make the button unpressable
+      playerInfoButton.setMaxWidth(500);  // Extend the button width to the full width of its container
+
+      // Add the styled button to the leaderboard list
+      leaderboardList.getChildren().add(playerInfoButton);
+    }
 
     Button backButton = factory.makeButton("Back", 200, 40);
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController)));
 
-    root.getChildren().addAll(header, scrollPane, backButton);
+    root.getChildren().addAll(header, leaderboardList, backButton);
   }
+
 
 }
