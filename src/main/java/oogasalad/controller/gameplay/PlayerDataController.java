@@ -13,7 +13,7 @@ public class PlayerDataController {
 
   private DataManager dataManager;
   private PlayerData playerData;
-  private int startTime;
+  private long startTime;
 
 
   /**
@@ -34,7 +34,7 @@ public class PlayerDataController {
   public boolean startNewPlayer(String username) {
     if (dataManager.isUsernameAvailable(username)) {
       this.playerData = new PlayerData(username, 0, "", new Date());
-      this.startTime = (int) (System.currentTimeMillis() / 1000); // make to seconds
+      this.startTime = System.currentTimeMillis() / 1000; // make to seconds
       return true;
     } else {
       return false;
