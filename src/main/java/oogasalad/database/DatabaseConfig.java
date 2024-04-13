@@ -16,7 +16,6 @@ public class DatabaseConfig {
 
   private MongoClient mongoClient;
   private String databaseName;
-  private DataManager dataManager;
   private static String DATABASE_PROPERTIES_PATH = "database/database.properties";
 
   /**

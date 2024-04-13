@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
@@ -40,6 +41,7 @@ public class InteractionPane {
   private int height;
   private WidgetFactory factory;
   private Image fileIcon;
+  private SceneController sceneController;
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -50,8 +52,9 @@ public class InteractionPane {
    * @param factory an instance of the WidgetFactory used for UI widget creation
    */
   public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
-      factory) {
+      factory, SceneController sceneController) {
     this.factory = factory;
+    this.sceneController = sceneController;
     this.scene = scene;
     this.root = new Group();
     this.width = width;
@@ -79,9 +82,12 @@ public class InteractionPane {
       scene.resetGame();
     });
 
+    // Setup leaderboard display
+    VBox leaderboardButton = setupLeaderboardButton();
+
     // Combine the header and arrow keys into a single display layout
     VBox display = new VBox(20);
-    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), reset);
+    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), reset, leaderboardButton);
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
@@ -201,6 +207,15 @@ public class InteractionPane {
       default -> {
       }
     }
+  }
+
+  private VBox setupLeaderboardButton() {
+    Button leaderboardButton = factory.makeAuthoringButton("Visit Leaderboard", 200, 40);
+    leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
+    VBox buttonContainer = new VBox(leaderboardButton);
+    buttonContainer.setAlignment(Pos.CENTER);
+    buttonContainer.setPadding(new Insets(15, 0, 0, 0));
+    return buttonContainer;
   }
 
   public Group getPane() {

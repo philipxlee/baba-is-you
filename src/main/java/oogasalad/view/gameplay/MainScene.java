@@ -41,7 +41,7 @@ public class MainScene implements Scene {
     //Initialize interaction pane1
     this.interactionScene = new InteractionPane();
     interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this,
-        factory);
+        factory, sceneController);
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
