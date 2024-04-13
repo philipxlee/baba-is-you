@@ -61,6 +61,17 @@ log/
 *.sql
 *.sqlite
 
+# Ignore specific configuration file in Maven Java project
+src/main/resources/database/database.properties
+resources/database.properties
+resources/database/database.properties
+/resources/database.properties
+/resources/database/database.properties
+database/database.properties
+database/
+database.properties
+
+
 # OS generated files #
 ######################
 .DS_Store

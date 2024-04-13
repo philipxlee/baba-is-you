@@ -13,14 +13,16 @@ public class SceneController {
   private static final int WIDTH = 1500;
   private static final int HEIGHT = 800;
   private final Stage stage;
+  private final PlayerDataController playerDataController;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
    *
    * @param stage primary stage of JavaFX application
    */
-  public SceneController(Stage stage) {
+  public SceneController(Stage stage, PlayerDataController playerDataController) {
     this.stage = stage;
+    this.playerDataController = playerDataController;
     stage.setTitle("Baba is Us: Game Player");
     stage.setResizable(false);
     stage.show();
@@ -30,7 +32,7 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new StartingScene(this));
+    switchToScene(new StartingScene(this, playerDataController));
   }
 
   /**
@@ -43,7 +45,17 @@ public class SceneController {
     stage.setScene(scene.getScene());
   }
 
+  /**
+   * Begin the game.
+   */
   public void beginGame() {
     switchToScene(new MainScene(this));
+  }
+
+  /**
+   * Get player data controller.
+   */
+  public PlayerDataController getPlayerDataController() {
+    return playerDataController;
   }
 }

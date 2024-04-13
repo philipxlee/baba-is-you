@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
@@ -25,6 +26,7 @@ public class WinScene implements Scene {
   private final SceneController sceneController;
   private int width;
   private int height;
+  private boolean statsSaved = false;
 
   public WinScene(SceneController sceneController) {
     this.sceneController = sceneController;
@@ -66,13 +68,35 @@ public class WinScene implements Scene {
     Text header = factory.generateHeader("You Won!");
     Text content = factory.generateLine("You're great at this game! :)");
 
+    // Add a text area for the player to enter comments about their gameplay
+    Text commentsLabel = factory.generateLine("Enter any comments about your gameplay or the level:");
+    TextArea commentField = new TextArea();
+    commentField.setPromptText("Enter comments here...");
+    commentField.setPrefHeight(100);
+    commentField.setMinWidth(300);
+    commentField.setMaxWidth(400);
+    commentField.setWrapText(true);
+    Button saveStatsButton = factory.makeButton("Save Stats", 200, 40);
+
+    saveStatsButton.setOnAction(event -> {
+      if (!statsSaved) {
+        String comments = commentField.getText();
+        sceneController.getPlayerDataController().endPlayerSession(comments);
+        saveStatsButton.setText("Stats Saved!");
+        saveStatsButton.setDisable(true);
+        statsSaved = true; // Ensure stats can only be saved once
+      }
+    });
+
     //Generate win stats here, eventually
 
+    Button start = factory.makeButton("Play Again", 200, 40);
     List<Node> texts = new ArrayList<>();
     texts.add(header);
     texts.add(content);
-
-    Button start = factory.makeButton("Play Again", 200, 40);
+    texts.add(commentsLabel);
+    texts.add(commentField);
+    texts.add(saveStatsButton);
     texts.add(start);
     start.setOnAction(event -> {
       sceneController.beginGame();
