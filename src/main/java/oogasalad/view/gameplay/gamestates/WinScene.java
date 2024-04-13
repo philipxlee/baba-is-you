@@ -20,6 +20,8 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
  */
 public class WinScene implements Scene {
 
+  private static final int MILLISECOND_OFFSET = 1000;
+
   private javafx.scene.Scene scene;
   private VBox root;
   private WidgetFactory factory;
@@ -81,7 +83,8 @@ public class WinScene implements Scene {
     saveStatsButton.setOnAction(event -> {
       if (!statsSaved) {
         String comments = commentField.getText();
-        sceneController.getPlayerDataController().endPlayerSession(comments);
+        long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
+        sceneController.getPlayerDataController().endPlayerSession(comments, endTime);
         saveStatsButton.setText("Stats Saved!");
         saveStatsButton.setDisable(true);
         statsSaved = true; // Ensure stats can only be saved once

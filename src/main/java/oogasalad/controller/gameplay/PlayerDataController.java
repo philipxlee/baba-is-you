@@ -68,9 +68,8 @@ public class PlayerDataController {
    *
    * @param comments comments provided by the player about the level
    */
-  public void endPlayerSession(String comments) {
+  public void endPlayerSession(String comments, long endTime) {
     if (playerData != null) {
-      long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
       long timeSpent = endTime - startTime;
       playerData.setTimeSpent(timeSpent);
       playerData.setComments(comments);
