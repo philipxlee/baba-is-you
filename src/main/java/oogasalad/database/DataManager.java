@@ -7,8 +7,7 @@ import org.bson.Document;
 
 public class DataManager {
 
-  private MongoDatabase database;
-
+  private final MongoDatabase database;
   /**
    * Constructs a new DataManager object with the given database.
    *

@@ -8,53 +8,55 @@ import com.mongodb.client.MongoDatabase;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import oogasalad.controller.gameplay.PlayerDataController;
 
 /**
- * Configuration class for the MongoDB database connection.
+ * DatabaseConfig is a class that manages the connection to the MongoDB database.
  */
 public class DatabaseConfig {
 
-  private static final String PATH_TO_DATABASE_PROPERTIES = "database/database.properties";
-  private static final Properties properties = loadProperties();
-  private static final String DEFAULT_DATABASE_NAME = "BabaData";
-  private static final MongoClient mongoClient;
+  private MongoClient mongoClient;
+  private String databaseName;
+  private DataManager dataManager;
+  private static String DATABASE_PROPERTIES_PATH = "database/database.properties";
 
   /**
-   * Static block to initialize the MongoDB connection.
+   * Constructs a new DatabaseConfig object.
    */
-  static {
-    String connectionString = properties.getProperty("mongo.connection.string");
-    MongoClientSettings settings = MongoClientSettings.builder()
-        .applyConnectionString(new ConnectionString(connectionString))
-        .build();
-    mongoClient = MongoClients.create(settings);
+  public DatabaseConfig() {
+    createDatabaseConnection();
   }
 
   /**
-   * Get the database instance.
+   * Returns the DataManager object for this DatabaseConfig.
    *
-   * @return The database instance.
+   * @return The DataManager object for this DatabaseConfig.
    */
-  public static MongoDatabase getDatabase() {
-    String dbName = properties.getProperty("mongo.database.name",
-        DEFAULT_DATABASE_NAME);
-    return mongoClient.getDatabase(dbName);
+  public MongoDatabase getDatabase() {
+    return mongoClient.getDatabase(databaseName);
   }
 
   /**
-   * Close the MongoDB connection.
+   * Returns the DataManager object for this DatabaseConfig.
    */
-  public static void closeConnection() {
+  public void close() {
     if (mongoClient != null) {
       mongoClient.close();
     }
   }
 
-  private static Properties loadProperties() {
+  private void createDatabaseConnection() {
+    Properties properties = loadProperties();
+    String connectionString = properties.getProperty("mongo.connection.string");
+    this.databaseName = properties.getProperty("mongo.database.name");
+    MongoClientSettings settings = MongoClientSettings.builder()
+        .applyConnectionString(new ConnectionString(connectionString))
+        .build();
+    this.mongoClient = MongoClients.create(settings);
+  }
+
+  private Properties loadProperties() {
     Properties properties = new Properties();
-    try (InputStream input = DatabaseConfig.class.getClassLoader()
-        .getResourceAsStream(PATH_TO_DATABASE_PROPERTIES)) {
+    try (InputStream input = getClass().getClassLoader().getResourceAsStream(DATABASE_PROPERTIES_PATH)) {
       if (input == null) {
         throw new IllegalStateException("Failed to load database properties file.");
       }
@@ -64,17 +66,4 @@ public class DatabaseConfig {
     }
     return properties;
   }
-
-  /**
-   * Temporary main method to test the database connection.
-   */
-  public static void main(String[] args) {
-    MongoDatabase db = getDatabase();
-    DataManager manager = new DataManager(db);
-    PlayerDataController controller = new PlayerDataController(manager);
-    controller.startNewPlayer("Bobby");
-    controller.endPlayerSession("Great level!");
-    DatabaseConfig.closeConnection();
-  }
-
 }

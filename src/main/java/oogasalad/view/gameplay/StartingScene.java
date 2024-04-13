@@ -8,9 +8,11 @@ import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -21,9 +23,11 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 public class StartingScene implements Scene {
 
   private final SceneController sceneController;
+  private final PlayerDataController playerDataController;
   private javafx.scene.Scene scene;
   private HBox root;
   private WidgetFactory factory;
+  private TextField usernameField;
   private int width;
   private int height;
 
@@ -36,8 +40,9 @@ public class StartingScene implements Scene {
           + "flag, Baba becomes the flag and wins. Players must think logically, as changing rules can\n"
           + " have unintended consequences. Through experimentation, players solve increasingly complex puzzles.";
 
-  public StartingScene(SceneController sceneController) {
+  public StartingScene(SceneController sceneController, PlayerDataController playerDataController) {
     this.sceneController = sceneController;
+    this.playerDataController = playerDataController;
   }
 
   @Override
@@ -57,15 +62,30 @@ public class StartingScene implements Scene {
   private void generateContent() {
     Text header = factory.generateHeader("Welcome to Baba Is You!");
     Text content = factory.generateLine(rules);
+    Text commentsLabel = factory.generateLine("Enter your username:");
+
+    usernameField = new TextField();
+    usernameField.setPromptText("Enter username here...");
+    usernameField.setMinWidth(200);
+    usernameField.setMaxWidth(300);
+
+    Button start = factory.makeButton("Click Enter or Here To Begin", 300, 40);
+    start.setDefaultButton(true); // Allows enter key to trigger button
+    start.setDisable(true); // Make button disabled until username is entered
+
+    // Listener to enable the button when username is not empty
+    usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
+      start.setDisable(newValue.trim().isEmpty());
+    });
+
+    setStartButtonAction(start);
 
     List<Node> texts = new ArrayList<>();
     texts.add(header);
     texts.add(content);
-
-    Button start = factory.makeButton("Click Enter or Here To Begin", 300, 40);
+    texts.add(commentsLabel);
+    texts.add(usernameField);
     texts.add(start);
-    start.setDefaultButton(true); // Allows enter key to trigger button
-    setStartButtonAction(start);
 
     VBox textContainer = factory.wrapInVBox(texts, height);
     root.getChildren().add(textContainer);
@@ -73,7 +93,11 @@ public class StartingScene implements Scene {
 
   private void setStartButtonAction(Button start) {
     start.setOnAction(event -> {
-      sceneController.beginGame();
+      String username = usernameField.getText().trim();
+      if (!username.isEmpty()) {
+        playerDataController.startNewPlayer(username);
+        sceneController.beginGame();
+      }
     });
   }
 
