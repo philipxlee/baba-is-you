@@ -6,12 +6,11 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.model.gameplay.player.PlayerData;
+import oogasalad.database.PlayerData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
@@ -76,7 +75,7 @@ public class LeaderboardScene implements Scene {
 
     for (PlayerData player : topPlayers) {
       String playerInfoText = String.format("%s - %d sec - %s",
-          player.getUsername(), player.getTimeSpent() / 1000, player.getComments());
+          player.getUsername(), player.getTimeSpent(), player.getComments());
 
       // Create a button with the player information, make it unpressable
       Button playerInfoButton = factory.makeAuthoringButton(playerInfoText, 300, 20);

@@ -2,7 +2,7 @@ package oogasalad.controller.gameplay;
 
 import java.util.Date;
 import oogasalad.database.DataManager;
-import oogasalad.model.gameplay.player.PlayerData;
+import oogasalad.database.PlayerData;
 import java.util.List;
 
 /**
@@ -11,10 +11,13 @@ import java.util.List;
  */
 public class PlayerDataController {
 
+  private static final int MILLISECOND_OFFSET = 1000;
+  private static final long DEFAULT_TIME_SPENT = 0;
+  private static final String DEFAULT_COMMENTS = "No comments";
+  private static final Date DEFAULT_DATE = new Date();
   private DataManager dataManager;
   private PlayerData playerData;
   private long startTime;
-
 
   /**
    * Constructs a new PlayerDataController with the given DataManager.
@@ -29,12 +32,12 @@ public class PlayerDataController {
    * Initializes a new player session with a given username.
    *
    * @param username the username of the player
-   * @return
+   * @return true if the player session was successfully started, false otherwise
    */
   public boolean startNewPlayer(String username) {
     if (dataManager.isUsernameAvailable(username)) {
-      this.playerData = new PlayerData(username, 0, "", new Date());
-      this.startTime = System.currentTimeMillis() / 1000; // make to seconds
+      this.playerData = new PlayerData(username, DEFAULT_TIME_SPENT, DEFAULT_COMMENTS, DEFAULT_DATE);
+      this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // make to seconds
       return true;
     } else {
       return false;
@@ -67,7 +70,7 @@ public class PlayerDataController {
    */
   public void endPlayerSession(String comments) {
     if (playerData != null) {
-      long endTime = System.currentTimeMillis() / 1000;
+      long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
       long timeSpent = endTime - startTime;
       playerData.setTimeSpent(timeSpent);
       playerData.setComments(comments);

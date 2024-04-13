@@ -60,6 +60,8 @@ log/
 *.log
 *.sql
 *.sqlite
+/database/database.properties
+/resources/database/database.properties
 
 # OS generated files #
 ######################

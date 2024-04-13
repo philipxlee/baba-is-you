@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay.player;
+package oogasalad.database;
 
 import java.util.Date;
 import org.bson.Document;

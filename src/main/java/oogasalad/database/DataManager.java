@@ -8,11 +8,12 @@ import com.mongodb.client.model.Sorts;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import oogasalad.model.gameplay.player.PlayerData;
 import org.bson.Document;
 
 public class DataManager {
 
+  private static final Integer LEADERBOARD_SIZE = 10;
+  private static final String TIME_SPENT = "timeSpent";
   private final MongoDatabase database;
   /**
    * Constructs a new DataManager object with the given database.
@@ -43,17 +44,15 @@ public class DataManager {
   public List<PlayerData> getTopPlayers() {
     MongoCollection<Document> collection = database.getCollection("data");
     FindIterable<Document> result = collection.find()
-        .sort(Sorts.ascending("timeSpent"))
-        .limit(10);
+        .sort(Sorts.ascending(TIME_SPENT))
+        .limit(LEADERBOARD_SIZE);
     List<PlayerData> topPlayers = new ArrayList<>();
     for (Document doc : result) {
       // Default values assigned if fields are null
       String username = doc.getString("username");
       String comments = doc.getString("comments") != null ? doc.getString("comments") : "No comments";
       Date date = doc.getDate("date") != null ? doc.getDate("date") : new Date();  // Use current date as default
-      Long timeSpentObj = doc.getLong("timeSpent");
-      long timeSpent = (timeSpentObj != null) ? timeSpentObj : 0;  // Default to 0 if null
-
+      long timeSpent = doc.getLong("timeSpent");
       topPlayers.add(new PlayerData(username, timeSpent, comments, date));
     }
     return topPlayers;

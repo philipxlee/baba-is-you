@@ -210,7 +210,7 @@ public class InteractionPane {
   }
 
   private VBox setupLeaderboardButton() {
-    Button leaderboardButton = factory.makeAuthoringButton("Visit Leaderboard", 200, 40);
+    Button leaderboardButton = factory.makeAuthoringButton("View Leaderboard", 200, 40);
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);
