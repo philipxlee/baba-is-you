@@ -27,10 +27,22 @@ public class PlayerDataController {
    * Initializes a new player session with a given username.
    *
    * @param username the username of the player
+   * @return
    */
-  public void startNewPlayer(String username) {
-    this.playerData = new PlayerData(username);
-    this.startTime = System.currentTimeMillis(); // Capture the start time of the level or session
+  public boolean startNewPlayer(String username) {
+    if (dataManager.isUsernameAvailable(username)) {
+      this.playerData = new PlayerData(username);
+      this.startTime = System.currentTimeMillis();
+      System.out.printf("username available: %s\n", username);
+      return true;
+    } else {
+      System.err.printf("username not available: %s\n", username);
+      return false;
+    }
+  }
+
+  public boolean isUsernameAvailable(String username) {
+    return dataManager.isUsernameAvailable(username);
   }
 
   /**
