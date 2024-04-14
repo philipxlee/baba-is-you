@@ -21,6 +21,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
+import oogasalad.controller.authoring.LevelController;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class ElementsPane {
@@ -28,14 +29,16 @@ public class ElementsPane {
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
+  private final WidgetFactory factory;
+  private final LevelController levelController;
   private ScrollPane scrollPane;
   private VBox layout;
   private boolean removeMode = false;
-  private WidgetFactory factory;
 
-  public ElementsPane(BuilderPane builderPane) {
+  public ElementsPane(BuilderPane builderPane, LevelController levelController) {
     this.factory = new WidgetFactory();
     this.builderPane = builderPane;
+    this.levelController = levelController;
     initializeElementsLayout();
   }
 
@@ -92,6 +95,9 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeAuthoringButton("Save to JSON", 200, 40);
+    saveJson.setOnAction(event -> {
+      levelController.serializeLevel();
+    });
     HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
 
     layout.getStyleClass().add("elements-background");
@@ -111,7 +117,6 @@ public class ElementsPane {
   private void loadBlocks(FlowPane blocksContainer) {
     blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH);
   }
-
 
   private ImageView loadImageFromDirectory(String imageName, double width, double height) {
     String directoryPath = "src/main/resources/images";

@@ -41,13 +41,22 @@ public class MainScene implements Scene {
     //Initialize interaction pane1
     this.interactionScene = new InteractionPane();
     interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this,
-        factory);
+        factory, sceneController);
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
     //factory.addScene(this);
+  }
+
+  public void resetGame() {
+    sceneController.beginGame(sceneController.isGuestSession());
+  }
+
+  public InteractionPane getInteractionPane() {
+    // Assuming you have a reference to InteractionPane in MainScene
+    return this.interactionScene;
   }
 
   @Override

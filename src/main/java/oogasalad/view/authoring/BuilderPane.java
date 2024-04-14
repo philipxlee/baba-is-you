@@ -12,7 +12,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.model.authoring.block.BlockFactory;
+import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
 
 
@@ -20,21 +20,19 @@ public class BuilderPane {
 
   private final int GRID_MARGIN = 10;
   private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
-  private Pane root; // Your root node for the builder scene
+  protected Pane root; // Your root node for the builder scene
   private double cellSize; // Set the cell size
-  private GridPane gridPane;
-  private int gridWidth;
+  protected GridPane gridPane;
+  protected int gridWidth;
   private BlockViewFactory blockViewFactory;
-  private BlockFactory blockFactory;
   private LevelController levelController;
-  private boolean removeMode;
-  private int gridHeight;
+  protected boolean removeMode;
+  protected int gridHeight;
 
-  public BuilderPane() {
+  public BuilderPane(LevelController levelController) {
+    this.levelController = levelController;
     try {
       this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
-      this.blockFactory = new BlockFactory(BLOCK_CONFIG_FILE_PATH);
-      this.levelController = new LevelController(blockFactory);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -44,15 +42,13 @@ public class BuilderPane {
   public void initializeBuilderScene() {
     this.root = new Pane();
     this.gridPane = new GridPane();
-    this.gridWidth = 10;
-    this.gridHeight = 10;
+    LevelMetadata levelMetadata = levelController.getLevelMetadata();
+    this.gridWidth = levelMetadata.cols();
+    this.gridHeight = levelMetadata.rows();
 
     // Listen for size changes on root to re-setup the grid
     root.widthProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
     root.heightProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
-
-    // Initialize Level
-    levelController.initializeLevel("", "", gridHeight, gridWidth);
 
     setUpGrid();
     setUpDropHandling();
@@ -165,7 +161,7 @@ public class BuilderPane {
     });
   }
 
-  private Point2D getCellIndices(double x, double y) {
+  protected Point2D getCellIndices(double x, double y) {
     for (Node node : gridPane.getChildren()) {
       if (node instanceof Pane cell) {
         Bounds boundsInParent = cell.getBoundsInParent();
@@ -186,7 +182,7 @@ public class BuilderPane {
   }
 
 
-  private Point2D getCellCoordinates(double x, double y) {
+  protected Point2D getCellCoordinates(double x, double y) {
     for (Node node : gridPane.getChildren()) {
       if (node instanceof Pane cell) {
         Bounds boundsInParent = cell.getBoundsInParent();
@@ -202,7 +198,7 @@ public class BuilderPane {
   }
 
 
-  private ImageView createBlockView(String blockType) {
+  protected ImageView createBlockView(String blockType) {
     try {
       return blockViewFactory.createBlockView(blockType);
     } catch (Exception e) {
@@ -217,7 +213,7 @@ public class BuilderPane {
     return root;
   }
 
-  private void setRemoveModeEventHandlers() {
+  protected void setRemoveModeEventHandlers() {
     root.getChildren().forEach(node -> {
       if (node instanceof ImageView) {
         node.setOnMouseClicked(event -> {

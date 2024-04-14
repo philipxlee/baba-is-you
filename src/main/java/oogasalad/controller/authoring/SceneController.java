@@ -12,14 +12,17 @@ public class SceneController {
   private static final int WIDTH = 1500;
   private static final int HEIGHT = 800;
   private final Stage stage;
+  private final LevelController levelController;
 
   /**
-   * ViewController constructor. Initialized with a JavaFX stage.
+   * ViewController constructor. Initialized with a JavaFX stage and LevelController.
    *
-   * @param stage primary stage of JavaFX application
+   * @param stage           The primary stage of JavaFX application
+   * @param levelController The level controller being used in the application.
    */
-  public SceneController(Stage stage) {
+  public SceneController(Stage stage, LevelController levelController) {
     this.stage = stage;
+    this.levelController = levelController;
     stage.setTitle("Baba is Us: Authoring Environment");
     stage.setResizable(false);
     stage.show();
@@ -29,7 +32,7 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new MainScene());
+    switchToScene(new MainScene(levelController));
   }
 
   /**

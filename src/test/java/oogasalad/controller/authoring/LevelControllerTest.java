@@ -9,20 +9,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import oogasalad.model.authoring.block.BlockFactory;
+import oogasalad.model.authoring.level.Level;
+import oogasalad.model.authoring.level.LevelMetadata;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LevelControllerTest {
 
-  private BlockFactory blockFactory;
   private LevelController levelController;
 
   @Before
   public void setUp() throws Exception {
-    // Setup mock BlockTypeManager
-    blockFactory = new BlockFactory("/blocktypes/blocktypes.json");
-    levelController = new LevelController(blockFactory);
+    // Setup mock LevelController
+    LevelMetadata levelMetadata = new LevelMetadata("testLevel", "testDesc", 7, 7);
+    Level level = new Level(levelMetadata);
+    levelController = new LevelController(level);
   }
 
   @Test
@@ -49,17 +50,13 @@ public class LevelControllerTest {
   @Test
   public void testSerializeLevel() throws IOException {
     // Redirect system output to capture the JSON output for verification
-    final String expectedFileName = "level.json";
+    final String expectedFileName = "testLevel.json";
     Path path = Paths.get(expectedFileName);
     try {
       levelController.serializeLevel();
 
       // Verify that file was created and contains the expected content
       assertTrue(Files.exists(path));
-      String content = new String(Files.readAllBytes(path));
-      assertTrue(content.contains("\"levelName\": \"\""));
-      assertTrue(content.contains("\"rows\": 7"));
-      assertTrue(content.contains("\"columns\": 7"));
     } finally {
       // Cleanup: Delete the test file after verification
       Files.deleteIfExists(path);

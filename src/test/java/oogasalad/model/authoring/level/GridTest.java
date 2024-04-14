@@ -19,15 +19,11 @@ public class GridTest {
   private final static int ROWS = 3;
   private final static int COLS = 3;
   private Grid grid;
-  private BlockFactory blockFactory;
 
   @Before
   public void setUp() throws Exception {
-    // Initialize the BlockTypeManager
-    blockFactory = new BlockFactory("/blocktypes/blocktypes.json");
-
     // Initialize the grid
-    grid = new Grid(ROWS, COLS, blockFactory);
+    grid = new Grid(ROWS, COLS);
   }
 
   @Test

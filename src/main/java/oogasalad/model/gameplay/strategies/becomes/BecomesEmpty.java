@@ -15,8 +15,8 @@ public class BecomesEmpty extends AbstractBecomesBehavior {
   /**
    * Constructor for BecomesEmpty.
    *
-   * @param block block to control.
-   * @param updater updater to update block.
+   * @param block    block to control.
+   * @param updater  updater to update block.
    * @param iterator iterator to control.
    */
   @Override

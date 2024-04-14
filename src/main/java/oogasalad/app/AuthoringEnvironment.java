@@ -1,26 +1,25 @@
 package oogasalad.app;
 
 import javafx.application.Application;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.controller.authoring.SceneController;
-import oogasalad.model.authoring.block.BlockFactory;
-import oogasalad.shared.blockview.BlockViewFactory;
+import oogasalad.model.authoring.level.Level;
+import oogasalad.model.authoring.level.LevelMetadata;
 
 public class AuthoringEnvironment extends Application {
 
   @Override
-  public void start(Stage stage) throws Exception {
+  public void start(Stage stage) {
     // initialize models
-    BlockFactory blockFactory = new BlockFactory("/blocktypes/blocktypes.json");
-    BlockViewFactory blockViewFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
+    LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", 10, 10);
+    Level level = new Level(levelMetadata);
 
     // initialize controllers
-    LevelController levelController = new LevelController(blockFactory);
-    SceneController sceneController = new SceneController(stage);
+    LevelController levelController = new LevelController(level);
+    SceneController sceneController = new SceneController(stage, levelController);
 
-    // Initialize views
+    // initialize views
     sceneController.initializeViews();
   }
 }

@@ -15,11 +15,9 @@ public class LevelParser {
 
   /**
    * Constructs an AuthoringLevelParser object with the specified JsonManager.
-   *
-   * @param jsonManager The JsonManager used for JSON operations.
    */
-  public LevelParser(JsonManager jsonManager) {
-    this.jsonManager = jsonManager;
+  public LevelParser() {
+    jsonManager = new JsonManager();
   }
 
   /**

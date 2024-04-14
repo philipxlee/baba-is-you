@@ -5,7 +5,6 @@ import java.util.List;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
-import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**

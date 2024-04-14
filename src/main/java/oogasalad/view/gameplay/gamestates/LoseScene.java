@@ -73,7 +73,7 @@ public class LoseScene implements Scene {
     Button start = factory.makeButton("Try Again", 200, 40);
     texts.add(start);
     start.setOnAction(event -> {
-      sceneController.beginGame();
+      sceneController.beginGame(sceneController.isGuestSession());
     });
 
     VBox textContainer = factory.wrapInVBox(texts, height);

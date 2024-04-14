@@ -3,9 +3,7 @@ package oogasalad.model.gameplay.grid;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.attributes.Controllable;
@@ -239,9 +237,10 @@ public class Grid implements Observable<Grid> {
         cell.sort(new Comparator<AbstractBlock>() {
           @Override
           public int compare(AbstractBlock block1, AbstractBlock block2) {
-            if (block1.getBlockName().equals("EmptyVisualBlock") && !(block2.getBlockName().equals("EmptyVisualBlock") )) {
+            if (block1.getBlockName().equals("EmptyVisualBlock") && !(block2.getBlockName()
+                .equals("EmptyVisualBlock"))) {
               return -1;
-            } else if (!(block1.getBlockName().equals("EmptyVisualBlock") )
+            } else if (!(block1.getBlockName().equals("EmptyVisualBlock"))
                 && block2.getBlockName().equals("EmptyVisualBlock")) {
               return 1;
             }

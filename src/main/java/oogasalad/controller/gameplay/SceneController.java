@@ -13,14 +13,18 @@ public class SceneController {
   private static final int WIDTH = 1500;
   private static final int HEIGHT = 800;
   private final Stage stage;
+  private final PlayerDataController playerDataController;
+  private boolean isGuestSession;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
    *
    * @param stage primary stage of JavaFX application
    */
-  public SceneController(Stage stage) {
+  public SceneController(Stage stage, PlayerDataController playerDataController) {
     this.stage = stage;
+    this.playerDataController = playerDataController;
+    this.isGuestSession = false;
     stage.setTitle("Baba is Us: Game Player");
     stage.setResizable(false);
     stage.show();
@@ -30,7 +34,7 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new StartingScene(this));
+    switchToScene(new StartingScene(this, playerDataController));
   }
 
   /**
@@ -43,7 +47,26 @@ public class SceneController {
     stage.setScene(scene.getScene());
   }
 
-  public void beginGame() {
+  /**
+   * Begin the game.
+   */
+  public void beginGame(boolean isGuest) {
+    this.isGuestSession = isGuest;
     switchToScene(new MainScene(this));
+  }
+
+  /**
+   * Check if the current session is a guest session.
+   * @return true if it's a guest session, false otherwise.
+   */
+  public boolean isGuestSession() {
+    return isGuestSession;
+  }
+
+  /**
+   * Get player data controller.
+   */
+  public PlayerDataController getPlayerDataController() {
+    return playerDataController;
   }
 }
