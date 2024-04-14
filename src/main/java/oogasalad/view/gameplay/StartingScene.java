@@ -92,10 +92,13 @@ public class StartingScene implements Scene {
 
     createUsernamePromptField();
     Button start = factory.makeButton("Click Enter To Begin", 300, 40);
+    Button guestButton = factory.makeButton("Play as Guest", 300, 40);
     usernameField.textProperty().addListener((obs, old, newValue) -> {
       checkUsernameValidity(newValue, feedbackLabel, start);
     });
     startGame(start);
+
+    guestButton.setOnAction(event -> sceneController.beginGame(true));
 
     List<Node> texts = new ArrayList<>();
     texts.add(header);
@@ -104,6 +107,7 @@ public class StartingScene implements Scene {
     texts.add(usernameField);
     texts.add(feedbackLabel);
     texts.add(start);
+    texts.add(guestButton);
 
     VBox textContainer = factory.wrapInVBox(texts, height);
     root.getChildren().add(textContainer);
@@ -120,7 +124,7 @@ public class StartingScene implements Scene {
     start.setOnAction(event -> {
       if (!usernameField.getText().trim().isEmpty()) {
         if (playerDataController.startNewPlayer(usernameField.getText().trim())) {
-          sceneController.beginGame();
+          sceneController.beginGame(false);
         }
       }
     });

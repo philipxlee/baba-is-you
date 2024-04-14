@@ -51,7 +51,7 @@ public class MainScene implements Scene {
   }
 
   public void resetGame() {
-    sceneController.beginGame();
+    sceneController.beginGame(sceneController.isGuestSession());
   }
 
   public InteractionPane getInteractionPane() {
