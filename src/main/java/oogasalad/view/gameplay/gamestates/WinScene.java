@@ -113,7 +113,7 @@ public class WinScene implements Scene {
 
     Button playAgainButton = factory.makeButton("Play Again", 200, 40);
     playAgainButton.setOnAction(event -> {
-      sceneController.beginGame(sceneController.isGuestSession());
+      sceneController.initializeViews();
     });
     texts.add(playAgainButton);
     texts.add(guestMessage);
