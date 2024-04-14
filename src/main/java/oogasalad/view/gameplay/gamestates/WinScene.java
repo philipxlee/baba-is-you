@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.MainScene;
 
 /**
  * Scene that displays when the player wins the game.
@@ -70,7 +71,7 @@ public class WinScene implements Scene {
     Text header = factory.generateHeader("You Won!");
     Text content = factory.generateLine("You're great at this game! :)");
 
-    // Add a text area for the player to enter comments about their gameplay
+    // Create UI components that are conditional
     Text commentsLabel = factory.generateLine("Enter any comments about your gameplay or the level:");
     TextArea commentField = new TextArea();
     commentField.setPromptText("Enter comments here...");
@@ -78,34 +79,49 @@ public class WinScene implements Scene {
     commentField.setMinWidth(300);
     commentField.setMaxWidth(400);
     commentField.setWrapText(true);
+
     Button saveStatsButton = factory.makeButton("Save Stats", 200, 40);
+    Text guestMessage = factory.generateLine("Stats cannot be saved for guest sessions.");
+    guestMessage.setVisible(false); // Default to not visible
 
-    saveStatsButton.setOnAction(event -> {
-      if (!statsSaved) {
-        String comments = commentField.getText();
-        long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
-        sceneController.getPlayerDataController().endPlayerSession(comments, endTime);
-        saveStatsButton.setText("Stats Saved!");
-        saveStatsButton.setDisable(true);
-        statsSaved = true; // Ensure stats can only be saved once
-      }
-    });
-
-    //Generate win stats here, eventually
-
-    Button start = factory.makeButton("Play Again", 200, 40);
     List<Node> texts = new ArrayList<>();
     texts.add(header);
     texts.add(content);
-    texts.add(commentsLabel);
-    texts.add(commentField);
+
+    // Only add comment elements if not a guest
+    if (!sceneController.isGuestSession()) {
+      saveStatsButton.setOnAction(event -> {
+        if (!statsSaved) {
+          String comments = commentField.getText();
+          long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
+          sceneController.getPlayerDataController().endPlayerSession(comments, endTime);
+          saveStatsButton.setText("Stats Saved!");
+          saveStatsButton.setDisable(true);
+          statsSaved = true; // Ensure stats can only be saved once
+        }
+      });
+
+      texts.add(commentsLabel);
+      texts.add(commentField);
+    } else {
+      saveStatsButton.setDisable(true); // Disable save button for guests
+      guestMessage.setVisible(true); // Show guest message for guests
+    }
+
     texts.add(saveStatsButton);
-    texts.add(start);
-    start.setOnAction(event -> {
-      sceneController.beginGame();
+
+
+    Button playAgainButton = factory.makeButton("Play Again", 200, 40);
+    playAgainButton.setOnAction(event -> {
+      sceneController.initializeViews();
     });
+    texts.add(playAgainButton);
+    texts.add(guestMessage);
 
     VBox textContainer = factory.wrapInVBox(texts, height);
     root.getChildren().add(textContainer);
   }
+
+
+
 }
