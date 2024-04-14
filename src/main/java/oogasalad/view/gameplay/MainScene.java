@@ -41,7 +41,7 @@ public class MainScene implements Scene {
     //Initialize interaction pane1
     this.interactionScene = new InteractionPane();
     interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this,
-        factory);
+        factory, sceneController);
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
@@ -51,7 +51,7 @@ public class MainScene implements Scene {
   }
 
   public void resetGame() {
-    sceneController.beginGame();
+    sceneController.beginGame(sceneController.isGuestSession());
   }
 
   public InteractionPane getInteractionPane() {

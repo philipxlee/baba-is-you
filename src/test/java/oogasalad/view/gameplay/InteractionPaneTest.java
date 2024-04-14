@@ -23,10 +23,10 @@ public class InteractionPaneTest extends DukeApplicationTest {
   @Override
   public void start(Stage stage) throws Exception {
     this.factory = new WidgetFactory();
-    this.sceneController = new SceneController(stage);
+//    this.sceneController = new SceneController(stage, new DatabaseManager);
     this.interactionPane = new InteractionPane();
     interactionPane.initializeInteractionPane(800, 600,
-        new MainScene(sceneController), factory);
+        new MainScene(sceneController), factory, sceneController);
 
     javafx.scene.Scene scene = new javafx.scene.Scene(interactionPane.getPane(), 800, 600);
     stage.setScene(scene);

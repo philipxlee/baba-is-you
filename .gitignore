@@ -61,6 +61,10 @@ log/
 *.sql
 *.sqlite
 
+# Ignore database property file
+src/main/resources/database/database.properties
+
+
 # OS generated files #
 ######################
 .DS_Store
