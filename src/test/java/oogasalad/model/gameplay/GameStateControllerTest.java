@@ -16,11 +16,11 @@ public class GameStateControllerTest {
   private SceneController sceneController;
   private Stage stage;
 
-  @BeforeEach
-  void setUp() {
-    stage = new Stage();
-    sceneController = new SceneController(stage);
-    gameStateController = new GameStateController(sceneController);
-  }
+//  @BeforeEach
+//  void setUp() {
+//    stage = new Stage();
+//    sceneController = new SceneController(stage);
+//    gameStateController = new GameStateController(sceneController);
+//  }
 
 }

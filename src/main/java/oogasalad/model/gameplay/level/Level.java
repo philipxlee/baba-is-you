@@ -13,6 +13,10 @@ public class Level {
         levelMetadata.initialConfiguration());
   }
 
+  public Grid getGrid(){
+    return this.grid;
+  }
+
   /**
    * Returns the metadata for this level.
    *
