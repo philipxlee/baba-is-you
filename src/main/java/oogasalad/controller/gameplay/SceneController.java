@@ -72,4 +72,8 @@ public class SceneController {
   public PlayerDataController getPlayerDataController() {
     return playerDataController;
   }
+
+  public Stage getStage() {
+    return stage;
+  }
 }

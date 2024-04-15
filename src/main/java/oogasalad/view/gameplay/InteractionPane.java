@@ -19,12 +19,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.DataManager;
-import oogasalad.model.gameplay.level.GameLevelParser;
+import oogasalad.database.DatabaseConfig;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.config.JsonManager;
@@ -96,7 +94,7 @@ public class InteractionPane {
     Button load = factory.makeAuthoringButton("Load", 150, 40);
     load.setOnAction(event -> {
       try {
-        Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
+        loadNewLevel(sceneController);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -114,6 +112,18 @@ public class InteractionPane {
     header.setAlignment(Pos.CENTER);
 
     root.getChildren().addAll(background, display);
+  }
+
+  private void loadNewLevel(SceneController sceneController) throws IOException {
+    Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
+    DatabaseConfig databaseConfig = new DatabaseConfig();
+    DataManager dataManager = new DataManager(databaseConfig.getDatabase());
+    PlayerDataController playerDataController = new PlayerDataController(dataManager);
+
+    this.sceneController = new SceneController(sceneController.getStage(), playerDataController,
+        newLevel);
+
+    this.sceneController.initializeViews();
   }
 
   /**
