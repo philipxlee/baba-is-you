@@ -1,6 +1,7 @@
 package oogasalad.controller.gameplay;
 
 import javafx.stage.Stage;
+import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.scene.Scene;
 import oogasalad.view.gameplay.MainScene;
 import oogasalad.view.gameplay.StartingScene;
@@ -15,16 +16,18 @@ public class SceneController {
   private final Stage stage;
   private final PlayerDataController playerDataController;
   private boolean isGuestSession;
+  private Level level;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
    *
    * @param stage primary stage of JavaFX application
    */
-  public SceneController(Stage stage, PlayerDataController playerDataController) {
+  public SceneController(Stage stage, PlayerDataController playerDataController, Level level) {
     this.stage = stage;
     this.playerDataController = playerDataController;
     this.isGuestSession = false;
+    this.level = level;
     stage.setTitle("Baba is Us: Game Player");
     stage.setResizable(false);
     stage.show();
@@ -52,7 +55,7 @@ public class SceneController {
    */
   public void beginGame(boolean isGuest) {
     this.isGuestSession = isGuest;
-    switchToScene(new MainScene(this));
+    switchToScene(new MainScene(this, level));
   }
 
   /**

@@ -16,123 +16,6 @@ import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
 public class Grid implements Observable<Grid> {
-
-  String[][][] tempConfiguration = {
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "EmptyTextBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "RockVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "IsTextBlock"},
-          {"EmptyVisualBlock", "WallTextBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaTextBlock"},
-          {"EmptyVisualBlock", "IsTextBlock"}, {"EmptyVisualBlock", "YouTextBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WinTextBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "StopTextBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "PushTextBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock", "BabaVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "FlagTextBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "FlagVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "IsTextBlock"}, {"EmptyVisualBlock", "YouTextBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "PushTextBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock", "RockTextBlock"},
-          {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock", "WallVisualBlock"}, {"EmptyVisualBlock", "WallVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock", "WallTextBlock"},
-          {"EmptyVisualBlock", "IsTextBlock"}, {"EmptyVisualBlock", "StopTextBlock"},
-          {"EmptyVisualBlock"}
-      },
-      {
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
-          {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}
-      }
-  };
   private final List<Observer<Grid>> observers = new ArrayList<>();
   private final List<AbstractBlock>[][] grid;
   private final RuleInterpreter parser;
@@ -358,7 +241,7 @@ public class Grid implements Observable<Grid> {
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         grid[i][j] = new ArrayList<AbstractBlock>();
-        createBlocks(grid[i][j], tempConfiguration[i][j], i, j);
+        createBlocks(grid[i][j], initialConfiguration[i][j], i, j);
       }
     }
   }

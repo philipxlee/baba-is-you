@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import oogasalad.model.gameplay.level.Level;
 import oogasalad.util.DukeApplicationTest;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetFactory;

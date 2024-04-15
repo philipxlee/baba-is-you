@@ -1,9 +1,15 @@
 package oogasalad.controller.gameplay;
 
+import com.google.gson.JsonObject;
 import javafx.scene.input.KeyCode;
 import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.level.GameLevelParser;
+import oogasalad.model.gameplay.level.JsonGameParser;
+import oogasalad.model.gameplay.level.Level;
+import oogasalad.model.gameplay.level.LevelMetadata;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.alert.AlertHandler;
+import oogasalad.shared.config.JsonManager;
 import oogasalad.view.gameplay.GamePane;
 
 /**
@@ -16,18 +22,23 @@ public class GameGridController implements AlertHandler {
   private final GamePane gamePane;
   private final KeyHandlerController keyHandlerController;
   String[][][] empty = {};
+  private Level level;
+  private final JsonGameParser jsonGameParser = new JsonGameParser();
 
-  public GameGridController(GamePane gamePane, KeyHandlerController keyHandlerController) {
+  public GameGridController(GamePane gamePane, KeyHandlerController keyHandlerController,
+      Level level) {
     this.gamePane = gamePane;
+    this.keyHandlerController = keyHandlerController;
+    this.level = level;
     createGrid();
     gameGrid.addObserver(gamePane);
-    this.keyHandlerController = keyHandlerController;
   }
 
   private void createGrid() {
+    LevelMetadata metadata = level.getLevelMetadata();
     try {
-      int n = 15;
-      this.gameGrid = new Grid(n, n, empty);
+      this.gameGrid = new Grid(metadata.rows(), metadata.columns(),
+          metadata.initialConfiguration());
     } catch (InvalidBlockName e) {
       showError("ERROR", e.getMessage());
     }
@@ -49,6 +60,10 @@ public class GameGridController implements AlertHandler {
   //Access only method
   public Grid getGameGrid() {
     return this.gameGrid;
+  }
+
+  public Level parseJson(JsonObject jsonObject) {
+    return jsonGameParser.parseLevel(jsonObject);
   }
 
 }

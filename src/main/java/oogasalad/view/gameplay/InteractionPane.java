@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay;
 
+import java.io.IOException;
 import java.io.InputStream;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,7 +19,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import oogasalad.controller.gameplay.GameGridController;
+import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
+import oogasalad.database.DataManager;
+import oogasalad.model.gameplay.level.GameLevelParser;
+import oogasalad.model.gameplay.level.JsonGameParser;
+import oogasalad.model.gameplay.level.Level;
+import oogasalad.shared.config.JsonManager;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
@@ -42,6 +51,8 @@ public class InteractionPane {
   private WidgetFactory factory;
   private Image fileIcon;
   private SceneController sceneController;
+  private final JsonManager jsonManager = new JsonManager();
+  private final JsonGameParser jsonGameParser = new JsonGameParser();
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -82,12 +93,22 @@ public class InteractionPane {
       scene.resetGame();
     });
 
+    Button load = factory.makeAuthoringButton("Load", 150, 40);
+    load.setOnAction(event -> {
+      try {
+        Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+
     // Setup leaderboard display
     VBox leaderboardButton = setupLeaderboardButton();
 
     // Combine the header and arrow keys into a single display layout
     VBox display = new VBox(20);
-    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), reset, leaderboardButton);
+    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), load, reset,
+        leaderboardButton);
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);

@@ -1,5 +1,6 @@
 package oogasalad.app;
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.PlayerDataController;
@@ -7,11 +8,18 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.DataManager;
 import oogasalad.database.DatabaseConfig;
 import javafx.application.Platform;
+import oogasalad.model.gameplay.level.JsonGameParser;
+import oogasalad.model.gameplay.level.Level;
+import oogasalad.model.gameplay.level.LevelMetadata;
+import oogasalad.shared.config.JsonManager;
 
 /**
  * MainController is the entrypoint for the Game Player.
  */
 public class GamePlayer extends Application {
+  private JsonManager jsonManager = new JsonManager();
+  private JsonGameParser jsonGameParser = new JsonGameParser();
+  private final File defaultJson = new File("data/defaultJson.json");
 
 
   /**
@@ -22,13 +30,16 @@ public class GamePlayer extends Application {
   @Override
   public void start(Stage stage) throws Exception {
 
+    Level defaultLevel = jsonGameParser.parseLevel(jsonManager.loadJsonFromFile(defaultJson));
+
     // Set up database
     DatabaseConfig databaseConfig = new DatabaseConfig();
     DataManager dataManager = new DataManager(databaseConfig.getDatabase());
     PlayerDataController playerDataController = new PlayerDataController(dataManager);
 
     // initialize controllers
-    SceneController sceneController = new SceneController(stage, playerDataController);
+    SceneController sceneController = new SceneController(stage, playerDataController,
+        defaultLevel);
 
     // initialize views
     sceneController.initializeViews();
