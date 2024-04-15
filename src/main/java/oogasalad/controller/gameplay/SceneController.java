@@ -60,6 +60,7 @@ public class SceneController {
 
   /**
    * Check if the current session is a guest session.
+   *
    * @return true if it's a guest session, false otherwise.
    */
   public boolean isGuestSession() {
@@ -73,7 +74,17 @@ public class SceneController {
     return playerDataController;
   }
 
+  /**
+   * Return stage.
+   */
   public Stage getStage() {
     return stage;
+  }
+
+  /**
+   * Return level.
+   */
+  public Level getLevel() {
+    return level;
   }
 }

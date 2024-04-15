@@ -35,6 +35,7 @@ public class LeaderboardScene implements Scene {
   public LeaderboardScene(WidgetFactory factory, SceneController sceneController) {
     this.factory = factory;
     this.sceneController = sceneController;
+    this.level = sceneController.getLevel();
   }
 
   /**
