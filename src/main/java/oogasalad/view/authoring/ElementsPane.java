@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class ElementsPane {
@@ -45,15 +46,18 @@ public class ElementsPane {
 
   private void initializeElementsLayout() {
     layout = new VBox(30);
-    Text title = factory.generateHeader("Baba Is You");
+
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
     HBox header = factory.wrapInHBox(title, (int) layout.getWidth());
+
+    Text descriptionLabel = factory.generateLine(new WidgetConfiguration
+        ("DragInstructions"));
 
     // Category selection setup
     ComboBox<String> categoryComboBox = new ComboBox<>();
     categoryComboBox.getItems().addAll("Visual", "Text", "Logic", "All"); // Example categories
     categoryComboBox.setValue("All"); // Default value
 
-    Text descriptionLabel = factory.generateLine("Drag blocks from this panel:");
     HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth());
 
     // Create a container for blocks
@@ -77,10 +81,24 @@ public class ElementsPane {
     categoryComboBox.setOnAction(event -> updateBlocksDisplay(categoryComboBox.getValue()));
     updateBlocksDisplay(categoryComboBox.getValue());
 
-    Button changeGridSizeButton = factory.makeAuthoringButton("Change Grid Size", 200, 30);
+    // Button for changing grid size
+    Button changeGridSizeButton = factory.makeButton(new WidgetConfiguration(
+        200, 40, "ChangeGridSize","white-button"));
     changeGridSizeDialog(changeGridSizeButton);
-    Button removeButton = factory.makeAuthoringButton("Remove Block", 200, 30);
-    removeButton.setOnAction(event -> toggleRemoveMode(removeButton));
+
+    // Button for toggling remove mode
+    Button removeButton = factory.makeButton(new WidgetConfiguration (
+        200, 30, "RemoveBlock","white-button"));
+
+    removeButton.setOnAction(event -> {
+      removeMode = !removeMode;
+      if (removeMode) {
+        removeButton.setText("Removing mode: Press blocks to remove");
+      } else {
+        removeButton.setText("Remove block");
+      }
+      builderPane.setRemove(removeMode);
+    });
 
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
@@ -88,8 +106,21 @@ public class ElementsPane {
     HBox buttonsHBox = factory.wrapInHBox(buttons, (int) layout.getWidth());
     buttonsHBox.setSpacing(50);
 
-    Button saveJson = factory.makeAuthoringButton("Save to JSON", 200, 40);
-    saveJson.setOnAction(event -> levelController.serializeLevel());
+    // Scroll pane for blocks container
+    scrollPane = new ScrollPane(blocksContainer);
+    scrollPane.setFitToWidth(true);
+    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    scrollPane.getStyleClass().add("flowpane");
+
+    scrollPane.setPadding(new Insets(20));
+    scrollPane.setMaxHeight(350);
+
+    Button saveJson = factory.makeButton(new WidgetConfiguration(
+        200, 40, "SaveJson","white-button"));
+    saveJson.setOnAction(event -> {
+      levelController.serializeLevel();
+    });
+
     HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
 
     layout.getStyleClass().add("elements-background");

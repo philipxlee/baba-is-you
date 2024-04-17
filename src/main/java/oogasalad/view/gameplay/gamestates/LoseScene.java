@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
@@ -63,14 +64,15 @@ public class LoseScene implements Scene {
    * Show the lose message.
    */
   private void showLoseMessage() {
-    Text header = factory.generateHeader("You Lost :(");
-    Text content = factory.generateLine("Better luck next time...");
+    Text header = factory.generateHeader(new WidgetConfiguration("LostHeader"));
+    Text content = factory.generateLine(new WidgetConfiguration("LostContent"));
 
     List<Node> texts = new ArrayList<>();
     texts.add(header);
     texts.add(content);
 
-    Button start = factory.makeButton("Try Again", 200, 40);
+    Button start = factory.makeButton(new WidgetConfiguration(200, 40,
+        "TryAgain", "button"));
     texts.add(start);
     start.setOnAction(event -> {
       sceneController.beginGame(sceneController.isGuestSession());

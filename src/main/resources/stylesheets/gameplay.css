@@ -6,7 +6,6 @@
 .root {
   -fx-font-family: 'Bahiana';
   -fx-background-color: #191A20;
-  /*-fx-background-image: white;*/
 }
 
 .interaction-background {
@@ -47,7 +46,7 @@
   -fx-fill: #191A20;
 }
 
-.authoring-button {
+.white-button {
   -fx-background-color: #F5F5F5;
   -fx-border-radius: 20;
   -fx-background-radius: 20;
@@ -60,7 +59,7 @@
   -fx-background-color: #9773FD;
 }
 
-.authoring-button:hover {
+.white-button:hover {
   -fx-background-color: #FF7171;
 }
 
@@ -71,6 +70,22 @@
 }
 
 .flowpane {
-  /*-fx-background-color: transparent;*/
   -fx-background-color: #343342;
+}
+
+.text-field {
+  -fx-background-color: #F5F5F5;
+  -fx-text-fill: #FF7171;
+  -fx-font-size: 16px;
+}
+
+.label {
+  -fx-text-fill: #FF7171;
+  -fx-font-size: 20px;
+}
+
+.combo-box {
+  -fx-text-fill: #191A20;
+  -fx-font-size: 25px;
+  -fx-background-color: #777DA1
 }
