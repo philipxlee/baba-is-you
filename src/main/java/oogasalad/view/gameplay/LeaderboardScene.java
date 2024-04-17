@@ -66,7 +66,7 @@ public class LeaderboardScene implements Scene {
    * Populate the leaderboard.
    */
   private void populateLeaderboard() {
-    Text header = factory.generateHeader(new WidgetConfiguration("Leaderboard"));
+    Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard"));
 
     List<PlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
     VBox leaderboardList = new VBox(5);
