@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
@@ -67,17 +68,19 @@ public class InteractionPane {
     root.setOnKeyReleased(this::handleKeyRelease);
     root.setFocusTraversable(true);
 
-    Rectangle background = factory.interactionPanel(width, height);
+    Rectangle background = factory.interactionPanel(new WidgetConfiguration(width, height,
+        "interaction-background"));
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
     HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width);
     arrowKeysBox.setAlignment(Pos.CENTER);
 
-    Text title = factory.generateHeader("Baba Is You");
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
     HBox header = factory.wrapInHBox(title, width);
 
-    Button reset = factory.makeAuthoringButton("Reset", 150, 40);
+    Button reset = factory.makeButton(new WidgetConfiguration(150, 40,
+        "Reset", "white-button"));
     reset.setOnAction(event -> {
       scene.resetGame();
     });
@@ -106,7 +109,7 @@ public class InteractionPane {
     //TODO: change to actual file #
     populateFiles(10, flowPane);
     ScrollPane pane = factory.makeScrollPane(flowPane, width - 50);
-    Text paneLabel = factory.generateLine("Available Games");
+    Text paneLabel = factory.generateLine(new WidgetConfiguration("Games"));
     VBox labelAndChooser = factory.wrapInVBox(paneLabel, height / 3);
     labelAndChooser.getChildren().add(pane);
     return labelAndChooser;
@@ -210,7 +213,8 @@ public class InteractionPane {
   }
 
   private VBox setupLeaderboardButton() {
-    Button leaderboardButton = factory.makeAuthoringButton("View Leaderboard", 200, 40);
+    Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
+        "ViewBoard", "white-button"));
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);

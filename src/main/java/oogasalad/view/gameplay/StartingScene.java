@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
@@ -84,15 +85,17 @@ public class StartingScene implements Scene {
   }
 
   private void generateContent() {
-    Text header = factory.generateHeader("Welcome to Baba Is You!");
-    Text content = factory.generateLine(rules);
-    Text enterPrompt = factory.generateLine("Enter your username:");
+    Text header = factory.generateHeader(new WidgetConfiguration("BabaHeader"));
+    Text content = factory.generateLine(new WidgetConfiguration("BabaRules"));
+    Text enterPrompt = factory.generateLine(new WidgetConfiguration("EnterPrompt"));
     Label feedbackLabel = new Label();
     feedbackLabel.setStyle("-fx-text-fill: red;");
 
     createUsernamePromptField();
-    Button start = factory.makeButton("Click Enter To Begin", 300, 40);
-    Button guestButton = factory.makeButton("Play as Guest", 300, 40);
+    Button start = factory.makeButton(new WidgetConfiguration(300, 40,
+        "Enter", "button"));
+    Button guestButton = factory.makeButton(new WidgetConfiguration(300, 40,
+        "PlayAsGuest", "button"));
     usernameField.textProperty().addListener((obs, old, newValue) -> {
       checkUsernameValidity(newValue, feedbackLabel, start);
     });

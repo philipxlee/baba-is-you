@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.MainScene;
 
@@ -68,11 +69,11 @@ public class WinScene implements Scene {
    * Show the win message.
    */
   private void showWinMessage() {
-    Text header = factory.generateHeader("You Won!");
-    Text content = factory.generateLine("You're great at this game! :)");
+    Text header = factory.generateHeader(new WidgetConfiguration("WinHeader"));
+    Text content = factory.generateLine(new WidgetConfiguration("WinContent"));
 
     // Create UI components that are conditional
-    Text commentsLabel = factory.generateLine("Enter any comments about your gameplay or the level:");
+    Text commentsLabel = factory.generateLine(new WidgetConfiguration("CommentMessage"));
     TextArea commentField = new TextArea();
     commentField.setPromptText("Enter comments here...");
     commentField.setPrefHeight(100);
@@ -80,8 +81,9 @@ public class WinScene implements Scene {
     commentField.setMaxWidth(400);
     commentField.setWrapText(true);
 
-    Button saveStatsButton = factory.makeButton("Save Stats", 200, 40);
-    Text guestMessage = factory.generateLine("Stats cannot be saved for guest sessions.");
+    Button saveStatsButton = factory.makeButton(new WidgetConfiguration(
+        200, 40, "SaveStats", "button"));
+    Text guestMessage = factory.generateLine(new WidgetConfiguration("GuestMessage"));
     guestMessage.setVisible(false); // Default to not visible
 
     List<Node> texts = new ArrayList<>();
@@ -111,7 +113,8 @@ public class WinScene implements Scene {
     texts.add(saveStatsButton);
 
 
-    Button playAgainButton = factory.makeButton("Play Again", 200, 40);
+    Button playAgainButton = factory.makeButton(new WidgetConfiguration(200, 40,
+        "PlayAgain","button"));
     playAgainButton.setOnAction(event -> {
       sceneController.initializeViews();
     });

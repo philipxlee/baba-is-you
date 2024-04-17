@@ -22,32 +22,35 @@ import javafx.stage.Stage;
 public class WidgetFactory {
 
   private oogasalad.shared.scene.Scene scene;
-  private final Font bahianaFont;
   public static final String STYLESHEET = "gameplay.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
 
   public WidgetFactory() {
-    this.bahianaFont = Font.loadFont(
-        getClass().getResourceAsStream("/fonts/Bahiana-Regular.ttf"), 12);
   }
 
-  public Rectangle interactionPanel(int width, int height) {
-    Rectangle panel = new Rectangle(0, 0, width, height);
-    panel.getStyleClass().add("interaction-background");
+  public Rectangle interactionPanel(WidgetConfiguration configuration) {
+    Rectangle panel = new Rectangle(0, 0, configuration.getWidth(), configuration.getHeight());
+    panel.getStyleClass().add(configuration.getCssMatch());
     return panel;
   }
 
-  public Text generateHeader(String title) {
-    Text header = new Text(title);
+  public Text generateHeader(WidgetConfiguration configuration) {
+    Text header = new Text(configuration.getPropertyContents());
     header.getStyleClass().add("header");
     return header;
   }
 
-  public Text generateLine(String content) {
-    Text line = new Text(content);
+  public Text generateLine(WidgetConfiguration configuration) {
+    Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("paragraph");
+    return line;
+  }
+
+  public Text generateCaption(WidgetConfiguration configuration) {
+    Text line = new Text(configuration.getPropertyContents());
+    line.getStyleClass().add("caption");
     return line;
   }
 
@@ -96,21 +99,12 @@ public class WidgetFactory {
     return vbox;
   }
 
-  public Button makeButton(String label, int width, int height) {
-    Button button = new Button(label);
-    button.setPrefWidth(width);
-    button.setPrefHeight(height);
+  public Button makeButton(WidgetConfiguration configuration) {
+    Button button = new Button(configuration.getPropertyContents());
+    button.setPrefWidth(configuration.getWidth());
+    button.setPrefHeight(configuration.getHeight());
     button.setPadding(new Insets(10));
-    button.getStyleClass().add("button");
-    return button;
-  }
-
-  public Button makeAuthoringButton(String label, int width, int height) {
-    Button button = new Button(label);
-    button.setPrefWidth(width);
-    button.setPrefHeight(height);
-    button.setPadding(new Insets(10));
-    button.getStyleClass().add("authoring-button");
+    button.getStyleClass().add(configuration.getCssMatch());
     return button;
   }
 

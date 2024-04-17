@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class ElementsPane {
@@ -46,10 +47,11 @@ public class ElementsPane {
     layout = new VBox(30);
 //    layout.setMinHeight(builderScene.getRoot().getHeight());
 
-    Text title = factory.generateHeader("Baba Is You");
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
     HBox header = factory.wrapInHBox(title, (int) layout.getWidth());
 
-    Text descriptionLabel = factory.generateLine("Drag blocks from this panel:");
+    Text descriptionLabel = factory.generateLine(new WidgetConfiguration
+        ("DragInstructions"));
     HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth());
 
     // Create a container for blocks
@@ -64,11 +66,14 @@ public class ElementsPane {
     loadBlocks(blocksContainer);
 
     // Button for changing grid size
-    Button changeGridSizeButton = factory.makeAuthoringButton("Change Grid Size", 200, 30);
+    Button changeGridSizeButton = factory.makeButton(new WidgetConfiguration(
+        200, 40, "ChangeGridSize","white-button"));
     changeGridSizeDialog(changeGridSizeButton);
 
     // Button for toggling remove mode
-    Button removeButton = factory.makeAuthoringButton("Remove Block", 200, 30);
+    Button removeButton = factory.makeButton(new WidgetConfiguration (
+        200, 30, "RemoveBlock","white-button"));
+
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
       if (removeMode) {
@@ -94,7 +99,8 @@ public class ElementsPane {
     scrollPane.setPadding(new Insets(20));
     scrollPane.setMaxHeight(350);
 
-    Button saveJson = factory.makeAuthoringButton("Save to JSON", 200, 40);
+    Button saveJson = factory.makeButton(new WidgetConfiguration(
+        200, 40, "SaveJson","white-button"));
     saveJson.setOnAction(event -> {
       levelController.serializeLevel();
     });
