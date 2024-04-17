@@ -1,7 +1,8 @@
-package oogasalad.model.gameplay.grid;
+package oogasalad.model.gameplay;
 
 import oogasalad.model.gameplay.blocks.blockvisitor.*;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
+import oogasalad.model.gameplay.grid.Grid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,10 +36,9 @@ public class GridTest {
 
     /**
      * Initialize test data and objects.
-     * @throws Exception if an error occurs during setup.
      */
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp()  {
         pushVisitor = new PushVisitor();
         stopVisitor = new StopVisitor();
         winVisitor = new WinVisitor();
