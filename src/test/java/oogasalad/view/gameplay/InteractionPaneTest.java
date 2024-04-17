@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import oogasalad.model.gameplay.level.Level;
+import oogasalad.model.gameplay.level.LevelMetadata;
 import oogasalad.util.DukeApplicationTest;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -20,6 +21,13 @@ public class InteractionPaneTest extends DukeApplicationTest {
   private InteractionPane interactionPane;
   private WidgetFactory factory;
   private SceneController sceneController;
+  private final String[][][] initialConfiguration = {
+      {{"EmptyVisualBlock", "RockVisualBlock"}, {"EmptyVisualBlock"}},
+      {{"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaVisualBlock"}}
+  };
+  private final LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", "3",
+      2, 2, initialConfiguration);
+  private final Level level = new Level(metadata);
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -27,7 +35,7 @@ public class InteractionPaneTest extends DukeApplicationTest {
 //    this.sceneController = new SceneController(stage, new DatabaseManager);
     this.interactionPane = new InteractionPane();
     interactionPane.initializeInteractionPane(800, 600,
-        new MainScene(sceneController), factory, sceneController);
+        new MainScene(sceneController, level), factory, sceneController);
 
     javafx.scene.Scene scene = new javafx.scene.Scene(interactionPane.getPane(), 800, 600);
     stage.setScene(scene);

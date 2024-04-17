@@ -31,19 +31,18 @@ public class JsonGameParser {
    * @return A LevelMetadata object containing the extracted metadata from the JSON.
    */
   private LevelMetadata parseLevelMetadata(JsonObject levelJson) {
-    String levelName = jsonManager.getValue(levelJson, "levelName");
-    JsonObject gridSize = jsonManager.getJsonObject(levelJson, "gridSize");
-    int rows = Integer.parseInt(jsonManager.getValue(gridSize, "rows"));
-    int columns = Integer.parseInt(jsonManager.getValue(gridSize, "columns"));
-    JsonObject gridObject = jsonManager.getJsonObject(levelJson, "grid");
-    JsonObject metadataJson = jsonManager.getJsonObject(gridObject, "metadata");
-    String difficulty = jsonManager.getValue(metadataJson, "difficulty");
-    String health = jsonManager.getValue(metadataJson, "health");
+    String levelName = getValue(levelJson, "levelName");
+    JsonObject gridSize = getObject(levelJson, "gridSize");
+    int rows = Integer.parseInt(getValue(gridSize, "rows"));
+    int columns = Integer.parseInt(getValue(gridSize, "columns"));
+    JsonObject gridObject = getObject(levelJson, "grid");
+    JsonObject metadataJson = getObject(gridObject, "metadata");
+    String difficulty = getValue(metadataJson, "difficulty");
+    String health = getValue(metadataJson, "health");
 
-    String[][][] grid = parseGrid(jsonManager.getJsonObject(levelJson, "grid"));
+    String[][][] grid = parseGrid(getObject(levelJson, "grid"));
     return new LevelMetadata(levelName, difficulty, health, rows, columns, grid);
   }
-
 
   /**
    * Converts the grid data from a JsonArray into a 3D array of Strings.
@@ -70,6 +69,28 @@ public class JsonGameParser {
     }
 
     return cells;
+  }
+
+  /**
+   * Gets the value for a specified key from a JSON object as a string.
+   *
+   * @param jsonObject The JSON object from which the value is to be retrieved.
+   * @param string     The key corresponding to the desired value.
+   * @return The string value associated with the specified key in the JSON object.
+   */
+  private String getValue(JsonObject jsonObject, String string) {
+    return jsonManager.getValue(jsonObject, string);
+  }
+
+  /**
+   * Gets a JSON object associated with the specified key from a parent JSON object.
+   *
+   * @param jsonObject The parent JSON object from which the nested JSON object is to be retrieved.
+   * @param string     The key corresponding to the nested JSON object.
+   * @return The JSON object associated with the specified key.
+   */
+  private JsonObject getObject(JsonObject jsonObject, String string) {
+    return jsonManager.getJsonObject(jsonObject, string);
   }
 }
 
