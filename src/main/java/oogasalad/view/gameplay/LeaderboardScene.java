@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.PlayerData;
 import oogasalad.shared.scene.Scene;
@@ -23,6 +24,7 @@ public class LeaderboardScene implements Scene {
   private final SceneController sceneController;
   private javafx.scene.Scene scene;
   private VBox root;
+  private LevelController levelController;
 
   /**
    * Constructor for LeaderboardScene.
@@ -33,6 +35,7 @@ public class LeaderboardScene implements Scene {
   public LeaderboardScene(WidgetFactory factory, SceneController sceneController) {
     this.factory = factory;
     this.sceneController = sceneController;
+    this.levelController = sceneController.getLevelController();
   }
 
   /**
@@ -87,7 +90,8 @@ public class LeaderboardScene implements Scene {
     }
 
     Button backButton = factory.makeButton("Back", 200, 40);
-    backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController)));
+    backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController,
+        levelController)));
 
     root.getChildren().addAll(header, leaderboardList, backButton);
   }

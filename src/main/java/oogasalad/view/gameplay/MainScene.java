@@ -5,7 +5,9 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
+import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
@@ -19,9 +21,13 @@ public class MainScene implements Scene {
   private HBox root;
   private GamePane gameScene;
   private InteractionPane interactionScene;
+  private Level level;
+  private LevelController levelController;
 
-  public MainScene(SceneController sceneController) {
+  public MainScene(SceneController sceneController, LevelController levelController) {
     this.sceneController = sceneController;
+    this.levelController = levelController;
+    this.level = levelController.getLevel();
   }
 
   @Override
@@ -35,13 +41,13 @@ public class MainScene implements Scene {
 
     //Initialize game grid
     this.gameScene = new GamePane();
-    gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController);
+    gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController, level);
     gameScene.getGrid().setLayoutX(1000);
 
     //Initialize interaction pane1
     this.interactionScene = new InteractionPane();
     interactionScene.initializeInteractionPane(INTERACTION_WIDTH, HEIGHT, this,
-        factory, sceneController);
+        factory, sceneController, levelController);
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
