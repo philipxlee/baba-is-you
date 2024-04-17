@@ -83,3 +83,9 @@
   -fx-text-fill: #FF7171;
   -fx-font-size: 20px;
 }
+
+.combo-box {
+  -fx-text-fill: #191A20;
+  -fx-font-size: 25px;
+  -fx-background-color: #777DA1
+}

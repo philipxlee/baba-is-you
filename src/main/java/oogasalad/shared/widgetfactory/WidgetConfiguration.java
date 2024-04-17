@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import javafx.scene.text.Font;
 import oogasalad.shared.alert.AlertHandler;
+import oogasalad.view.gameplay.StartingScene;
 
 /**
  * Configuration object class for use within the WidgetFactory
@@ -17,6 +18,7 @@ public class WidgetConfiguration implements AlertHandler {
   private String cssMatch;
   private String propertyContents;
   private Font propertyFont;
+  private String language = StartingScene.language;
 
   /**
    * Constructor with a property files match.
@@ -30,7 +32,7 @@ public class WidgetConfiguration implements AlertHandler {
     this.width = width;
     this.height = height;
     this.cssMatch = cssMatch;
-    this.styleProperties = loadProperties();
+    this.styleProperties = loadProperties(language);
     this.propertyContents = styleProperties.getProperty(propertyName);
     this.propertyFont = Font.loadFont(
         getClass().getResourceAsStream(styleProperties.getProperty("Font")), 12);
@@ -40,7 +42,7 @@ public class WidgetConfiguration implements AlertHandler {
     this.width = width;
     this.height = height;
     this.cssMatch = cssMatch;
-    this.styleProperties = loadProperties();
+    this.styleProperties = loadProperties(language);
     this.propertyFont = Font.loadFont(
         getClass().getResourceAsStream(styleProperties.getProperty("Font")), 12);
   }
@@ -49,7 +51,7 @@ public class WidgetConfiguration implements AlertHandler {
    * Constructor with just a string property.
    */
   public WidgetConfiguration(String propertyName) {
-    this.styleProperties = loadProperties();
+    this.styleProperties = loadProperties(language);
     this.propertyContents = styleProperties.getProperty(propertyName);
     this.propertyFont = Font.loadFont(
         getClass().getResourceAsStream(styleProperties.getProperty("Font")), 12);
@@ -75,10 +77,10 @@ public class WidgetConfiguration implements AlertHandler {
     AlertHandler.super.showError(title, message);
   }
 
-  private Properties loadProperties() {
+  private Properties loadProperties(String language) {
     Properties properties = new Properties();
     try (InputStream inputStream = getClass().getResourceAsStream(
-        "/views/style.properties")) {
+        "/languages/" + language + ".properties")) {
       properties.load(inputStream);
     } catch (IOException e) {
       showError("ERROR", e.getMessage());
