@@ -1,47 +1,61 @@
 {
   "BabaTextBlock": {
-    "imagePath": "/images/BabaTextBlock.png"
+    "imagePath": "/images/BabaTextBlock.png",
+    "category" : ["Text"]
   },
   "EmptyTextBlock": {
-    "imagePath": "/images/EmptyTextBlock.png"
+    "imagePath": "/images/EmptyTextBlock.png",
+    "category" : ["Text"]
   },
   "FlagTextBlock": {
-    "imagePath": "/images/FlagTextBlock.png"
+    "imagePath": "/images/FlagTextBlock.png",
+    "category" : ["Text"]
   },
   "IsTextBlock": {
-    "imagePath": "/images/IsTextBlock.png"
+    "imagePath": "/images/IsTextBlock.png",
+    "category" : ["Text"]
   },
   "PushTextBlock": {
-    "imagePath": "/images/PushTextBlock.png"
+    "imagePath": "/images/PushTextBlock.png",
+    "category" : ["Text"]
   },
   "RockTextBlock": {
-    "imagePath": "/images/RockTextBlock.png"
+    "imagePath": "/images/RockTextBlock.png",
+    "category" : ["Text"]
   },
   "StopTextBlock": {
-    "imagePath": "/images/StopTextBlock.png"
+    "imagePath": "/images/StopTextBlock.png",
+    "category" : ["Text"]
   },
   "WallTextBlock": {
-    "imagePath": "/images/WallTextBlock.png"
+    "imagePath": "/images/WallTextBlock.png",
+    "category" : ["Text"]
   },
   "WinTextBlock": {
-    "imagePath": "/images/WinTextBlock.png"
+    "imagePath": "/images/WinTextBlock.png",
+    "category" : ["Text"]
   },
   "YouTextBlock": {
-    "imagePath": "/images/YouTextBlock.png"
+    "imagePath": "/images/YouTextBlock.png",
+    "category" : ["Text"]
   },
   "BabaVisualBlock": {
-    "imagePath": "/images/BabaVisualBlock.png"
+    "imagePath": "/images/BabaVisualBlock.png",
+    "category" : ["Visual"]
   },
   "EmptyVisualBlock": {
     "imagePath": "/images/EmptyVisualBlock.png"
   },
   "FlagVisualBlock": {
-    "imagePath": "/images/FlagVisualBlock.png"
+    "imagePath": "/images/FlagVisualBlock.png",
+    "category" : ["Visual"]
   },
   "RockVisualBlock": {
-    "imagePath": "/images/RockVisualBlock.png"
+    "imagePath": "/images/RockVisualBlock.png",
+    "category" : ["Visual"]
   },
   "WallVisualBlock": {
-    "imagePath": "/images/WallVisualBlock.png"
+    "imagePath": "/images/WallVisualBlock.png",
+    "category" : ["Visual"]
   }
 }
