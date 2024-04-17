@@ -114,7 +114,7 @@ public class StartingScene implements Scene {
     });
     ComboBox<String> switchLanguage = factory.makeComboBox(new WidgetConfiguration(200, 40,
         "SwitchLanguage", "combo-box"), new ArrayList<>(Arrays.asList("English",
-        "Spanish")), "English");
+        "Spanish")), language);
     //TODO: Change to be a drop down
     switchLanguage.setOnAction(event -> {
       language = switchLanguage.getValue();
