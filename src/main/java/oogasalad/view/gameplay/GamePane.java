@@ -12,6 +12,7 @@ import oogasalad.controller.gameplay.KeyHandlerController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
+import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
 
@@ -30,9 +31,10 @@ public class GamePane implements Observer<Grid> {
   private int width;
   private int height;
   private BlockViewFactory blockFactory;
+  private Level level;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
-      SceneController sceneController) {
+      SceneController sceneController, Level initialLevel) {
     try {
       this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
       this.width = width;
@@ -41,8 +43,8 @@ public class GamePane implements Observer<Grid> {
       this.scene = scene;
       this.keyHandlerController = new KeyHandlerController(
           new GameStateController(sceneController));
-      this.gridController = new GameGridController(this, keyHandlerController);
-
+      this.level = initialLevel;
+      this.gridController = new GameGridController(this, keyHandlerController, level);
       handleKeyPresses(scene);
 
     } catch (Exception e) {

@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -51,18 +52,34 @@ public class ElementsPane {
 
     Text descriptionLabel = factory.generateLine(new WidgetConfiguration
         ("DragInstructions"));
+
+    // Category selection setup
+    ComboBox<String> categoryComboBox = new ComboBox<>();
+    categoryComboBox.getItems().addAll("Visual", "Text", "Logic", "All"); // Example categories
+    categoryComboBox.setValue("All"); // Default value
+
     HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth());
 
     // Create a container for blocks
-    FlowPane blocksContainer = new FlowPane(); // FlowPane instead of VBox
-    blocksContainer.setHgap(30); // Adjust spacing between blocks
-    blocksContainer.setVgap(30); // Adjust spacing between rows
-    blocksContainer.setAlignment(Pos.CENTER); // Center the blocks horizontally
+    FlowPane blocksContainer = new FlowPane();
+    blocksContainer.setHgap(30);
+    blocksContainer.setVgap(30);
+    blocksContainer.setAlignment(Pos.CENTER);
     blocksContainer.getStyleClass().add("flowpane");
     blocksContainer.setMinHeight(350);
     blocksContainer.setPadding(new Insets(20));
 
-    loadBlocks(blocksContainer);
+    // Initialize the ScrollPane here before using it in updateBlocksDisplay
+    scrollPane = new ScrollPane(blocksContainer);
+    scrollPane.setFitToWidth(true);
+    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    scrollPane.getStyleClass().add("flowpane");
+    scrollPane.setPadding(new Insets(20));
+    scrollPane.setMaxHeight(350);
+
+    // Now, safely call updateBlocksDisplay
+    categoryComboBox.setOnAction(event -> updateBlocksDisplay(categoryComboBox.getValue()));
+    updateBlocksDisplay(categoryComboBox.getValue());
 
     // Button for changing grid size
     Button changeGridSizeButton = factory.makeButton(new WidgetConfiguration(
@@ -103,73 +120,57 @@ public class ElementsPane {
     saveJson.setOnAction(event -> {
       levelController.serializeLevel();
     });
+
     HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
 
     layout.getStyleClass().add("elements-background");
-
-    // Add components to layout
-    layout.getChildren()
-        .addAll(header, buttonsHBox, descriptionBox, scrollPane, jsonBox);
-    VBox.setVgrow(scrollPane, Priority.ALWAYS); // Allow the scroll pane to grow and fill space
+    layout.getChildren().addAll(header, categoryComboBox, buttonsHBox, descriptionBox, scrollPane, jsonBox);
+    VBox.setVgrow(scrollPane, Priority.ALWAYS);
   }
 
-  // Method to access the complete scene layout
+  private void toggleRemoveMode(Button removeButton) {
+    removeMode = !removeMode;
+    if (removeMode) {
+      removeButton.setText("Removing mode: Press blocks to remove");
+    } else {
+      removeButton.setText("Remove block");
+    }
+    builderPane.setRemove(removeMode);
+  }
+
   public VBox getLayout() {
     return layout;
   }
 
-
-  private void loadBlocks(FlowPane blocksContainer) {
-    blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH);
-  }
-
-  private ImageView loadImageFromDirectory(String imageName, double width, double height) {
-    String directoryPath = "src/main/resources/images";
-    File selectedDirectory = new File(directoryPath);
-    if (selectedDirectory.exists() && selectedDirectory.isDirectory()) {
-      File imageFile = new File(selectedDirectory, imageName + ".png");
-      if (imageFile.exists()) {
-        Image image = new Image(imageFile.toURI().toString(), width, height, true, true);
-        return new ImageView(image);
-      } else {
-        System.err.println("Image file not found: " + imageName);
-      }
+  private void updateBlocksDisplay(String category) {
+    FlowPane blocksContainer = (FlowPane) scrollPane.getContent();
+    blocksContainer.getChildren().clear();
+    if (category.equals("All")) {
+      blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH); // Load all blocks
     } else {
-      System.err.println("Directory not found or is not a valid directory.");
+      blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH, category); // Load blocks based on category
     }
-    return null;
   }
 
   private void changeGridSizeDialog(Button button) {
     button.setOnAction(event -> {
-      // Create the custom dialog.
       Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
       dialog.setTitle("Change Grid Size");
-
-      // Set the button types.
       ButtonType confirmButtonType = ButtonType.OK;
       dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
-
-      // Create the width and height labels and fields.
       GridPane grid = new GridPane();
       grid.setHgap(10);
       grid.setVgap(10);
-
       TextField widthField = new TextField();
       widthField.setPromptText("Width");
       TextField heightField = new TextField();
       heightField.setPromptText("Height");
-
       grid.add(new Label("Width:"), 0, 0);
       grid.add(widthField, 1, 0);
       grid.add(new Label("Height:"), 0, 1);
       grid.add(heightField, 1, 1);
-
-      // Enable/Disable confirm button depending on whether a width and height were entered.
       Button confirmButton = (Button) dialog.getDialogPane().lookupButton(confirmButtonType);
       confirmButton.setDisable(true);
-
-      // Do some validation (using the Java 8 lambda syntax).
       widthField.textProperty().addListener((observable, oldValue, newValue) -> {
         confirmButton.setDisable(
             newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
@@ -178,10 +179,7 @@ public class ElementsPane {
         confirmButton.setDisable(
             newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
       });
-
       dialog.getDialogPane().setContent(grid);
-
-      // Convert the result to a pair of width and height when the confirm button is clicked.
       dialog.setResultConverter(dialogButton -> {
         if (dialogButton == confirmButtonType) {
           try {
@@ -189,23 +187,18 @@ public class ElementsPane {
             int height = Integer.parseInt(heightField.getText());
             return new Pair<>(width, height);
           } catch (NumberFormatException e) {
-            // Handle the case where one or both of the inputs are not valid integers
             return null;
           }
         }
         return null;
       });
-
       dialog.showAndWait().ifPresent(pair -> {
-        int width = pair.getKey();
-        int height = pair.getValue();// Assuming width and height are the same for a grid
-        // Assuming builderScene is a reference to your BuilderScene instance
-        builderPane.updateGridSize(width, height);
+        if (pair != null) {
+          int width = pair.getKey();
+          int height = pair.getValue();
+          builderPane.updateGridSize(width, height);
+        }
       });
     });
   }
 }
-
-
-
-

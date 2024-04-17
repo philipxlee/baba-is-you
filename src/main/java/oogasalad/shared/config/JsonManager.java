@@ -23,10 +23,10 @@ public class JsonManager {
   /**
    * loadFromFile() is responsible for loading in JSON data from a JSON file that a user selects.
    *
-   * @param stage stage that JavaFX uses to display the file chooser.
    * @return the JsonObject that represents the JSON file provided.
    */
-  public JsonObject loadFromFile(Stage stage) throws IOException {
+  public JsonObject loadFromFile() throws IOException {
+    Stage stage = new Stage();
     File file = selectFile(stage);
     if (file != null) {
       return loadJsonFromFile(file);
@@ -40,7 +40,7 @@ public class JsonManager {
    * @param file The File object representing the JSON file to be loaded.
    * @return The JsonObject containing the parsed JSON data.
    */
-  protected JsonObject loadJsonFromFile(File file) throws IOException {
+  public JsonObject loadJsonFromFile(File file) throws IOException {
     try (FileReader reader = new FileReader(file)) {
       return gson.fromJson(reader, JsonObject.class);
     } catch (JsonSyntaxException e) {
@@ -52,9 +52,9 @@ public class JsonManager {
    * Save JSON data to a JSON file.
    *
    * @param jsonObject the JsonObject to save.
-   * @param stage      the JavaFX stage used to display the file chooser dialog.
    */
-  public void saveToFile(JsonObject jsonObject, Stage stage) throws IOException {
+  public void saveToFile(JsonObject jsonObject) throws IOException {
+    Stage stage = new Stage();
     File file = selectSaveFile(stage);
     if (file != null) {
       writeToFile(jsonObject, file);
