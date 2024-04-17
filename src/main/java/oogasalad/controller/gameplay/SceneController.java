@@ -40,7 +40,8 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new StartingScene(this, playerDataController));
+    switchToScene(new StartingScene(this,
+        playerDataController, "English"));
   }
 
   /**

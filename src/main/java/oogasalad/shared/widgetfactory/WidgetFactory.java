@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -63,7 +64,7 @@ public class WidgetFactory {
   }
 
   public HBox wrapInHBox(List<Node> toBeWrapped, int width) {
-    HBox hbox = new HBox();
+    HBox hbox = new HBox(20);
     hbox.getChildren().addAll(toBeWrapped);
     hbox.setPrefWidth(width);
     hbox.setAlignment(Pos.CENTER);
@@ -78,7 +79,7 @@ public class WidgetFactory {
    * @return
    */
   public HBox wrapInHBox(Node toBeWrapped, int width) {
-    HBox hbox = new HBox(10);
+    HBox hbox = new HBox(20);
     hbox.getChildren().add(toBeWrapped);
     hbox.setPrefWidth(width);
     hbox.setAlignment(Pos.CENTER);
@@ -185,6 +186,17 @@ public class WidgetFactory {
     label.setText(configuration.getPropertyContents());
     label.getStyleClass().add("label");
     return label;
+  }
+
+  public ComboBox<String> makeComboBox(WidgetConfiguration configuration, List<String> options,
+      String defaultOption) {
+    ComboBox<String> categoryComboBox = new ComboBox<>();
+    categoryComboBox.getItems().addAll(options);
+    categoryComboBox.setValue(defaultOption);
+    categoryComboBox.setMinWidth(configuration.getWidth());
+    categoryComboBox.setMinHeight(configuration.getHeight());
+    categoryComboBox.getStyleClass().add(configuration.getCssMatch());
+    return categoryComboBox;
   }
 
 }
