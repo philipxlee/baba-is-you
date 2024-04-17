@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
 import oogasalad.util.DukeApplicationTest;
@@ -28,6 +29,7 @@ public class InteractionPaneTest extends DukeApplicationTest {
   private final LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", "3",
       2, 2, initialConfiguration);
   private final Level level = new Level(metadata);
+  private final LevelController levelController = new LevelController(level);
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -35,7 +37,7 @@ public class InteractionPaneTest extends DukeApplicationTest {
 //    this.sceneController = new SceneController(stage, new DatabaseManager);
     this.interactionPane = new InteractionPane();
     interactionPane.initializeInteractionPane(800, 600,
-        new MainScene(sceneController, level), factory, sceneController);
+        new MainScene(sceneController, levelController), factory, sceneController, levelController);
 
     javafx.scene.Scene scene = new javafx.scene.Scene(interactionPane.getPane(), 800, 600);
     stage.setScene(scene);

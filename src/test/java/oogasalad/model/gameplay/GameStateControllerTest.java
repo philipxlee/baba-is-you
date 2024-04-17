@@ -2,6 +2,7 @@ package oogasalad.model.gameplay;
 
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.GameStateController;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.DataManager;
@@ -28,7 +29,8 @@ public class GameStateControllerTest {
   @BeforeEach
   void setUp() {
     stage = new Stage();
-    sceneController = new SceneController(stage, playerDataController, new Level(metadata));
+    sceneController = new SceneController(stage, playerDataController, new LevelController
+        (new Level(metadata)));
     gameStateController = new GameStateController(sceneController);
   }
 

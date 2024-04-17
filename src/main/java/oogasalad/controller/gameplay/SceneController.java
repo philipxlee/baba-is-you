@@ -17,17 +17,20 @@ public class SceneController {
   private final PlayerDataController playerDataController;
   private boolean isGuestSession;
   private Level level;
+  private LevelController levelController;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
    *
    * @param stage primary stage of JavaFX application
    */
-  public SceneController(Stage stage, PlayerDataController playerDataController, Level level) {
+  public SceneController(Stage stage, PlayerDataController playerDataController, LevelController
+      levelController) {
     this.stage = stage;
     this.playerDataController = playerDataController;
     this.isGuestSession = false;
-    this.level = level;
+    this.levelController = levelController;
+    this.level = levelController.getLevel();
     stage.setTitle("Baba is Us: Game Player");
     stage.setResizable(false);
     stage.show();
@@ -55,7 +58,7 @@ public class SceneController {
    */
   public void beginGame(boolean isGuest) {
     this.isGuestSession = isGuest;
-    switchToScene(new MainScene(this, level));
+    switchToScene(new MainScene(this, levelController));
   }
 
   /**
@@ -87,4 +90,9 @@ public class SceneController {
   public Level getLevel() {
     return level;
   }
+
+  /**
+   * Return level controller.
+   */
+  public LevelController getLevelController() { return levelController; }
 }

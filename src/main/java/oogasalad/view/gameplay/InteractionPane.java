@@ -19,13 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import oogasalad.controller.gameplay.PlayerDataController;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.database.DataManager;
-import oogasalad.database.DatabaseConfig;
-import oogasalad.model.gameplay.level.JsonGameParser;
-import oogasalad.model.gameplay.level.Level;
-import oogasalad.shared.config.JsonManager;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
@@ -49,8 +44,7 @@ public class InteractionPane {
   private WidgetFactory factory;
   private Image fileIcon;
   private SceneController sceneController;
-  private final JsonManager jsonManager = new JsonManager();
-  private final JsonGameParser jsonGameParser = new JsonGameParser();
+  private LevelController levelController;
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -61,13 +55,14 @@ public class InteractionPane {
    * @param factory an instance of the WidgetFactory used for UI widget creation
    */
   public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
-      factory, SceneController sceneController) {
+      factory, SceneController sceneController, LevelController levelController) {
     this.factory = factory;
     this.sceneController = sceneController;
     this.scene = scene;
     this.root = new Group();
     this.width = width;
     this.height = height;
+    this.levelController = levelController;
 
     InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
     fileIcon = new Image(stream);
@@ -94,7 +89,7 @@ public class InteractionPane {
     Button load = factory.makeAuthoringButton("Load", 150, 40);
     load.setOnAction(event -> {
       try {
-        loadNewLevel(sceneController);
+        levelController.loadNewLevel(sceneController);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -112,18 +107,6 @@ public class InteractionPane {
     header.setAlignment(Pos.CENTER);
 
     root.getChildren().addAll(background, display);
-  }
-
-  private void loadNewLevel(SceneController sceneController) throws IOException {
-    Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
-    DatabaseConfig databaseConfig = new DatabaseConfig();
-    DataManager dataManager = new DataManager(databaseConfig.getDatabase());
-    PlayerDataController playerDataController = new PlayerDataController(dataManager);
-
-    this.sceneController = new SceneController(sceneController.getStage(), playerDataController,
-        newLevel);
-
-    this.sceneController.initializeViews();
   }
 
   /**
