@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay;
 
+import java.io.IOException;
 import java.io.InputStream;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
@@ -42,6 +44,7 @@ public class InteractionPane {
   private WidgetFactory factory;
   private Image fileIcon;
   private SceneController sceneController;
+  private LevelController levelController;
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -52,13 +55,14 @@ public class InteractionPane {
    * @param factory an instance of the WidgetFactory used for UI widget creation
    */
   public void initializeInteractionPane(int width, int height, MainScene scene, WidgetFactory
-      factory, SceneController sceneController) {
+      factory, SceneController sceneController, LevelController levelController) {
     this.factory = factory;
     this.sceneController = sceneController;
     this.scene = scene;
     this.root = new Group();
     this.width = width;
     this.height = height;
+    this.levelController = levelController;
 
     InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
     fileIcon = new Image(stream);
@@ -82,12 +86,22 @@ public class InteractionPane {
       scene.resetGame();
     });
 
+    Button load = factory.makeAuthoringButton("Load", 150, 40);
+    load.setOnAction(event -> {
+      try {
+        levelController.loadNewLevel(sceneController);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+
     // Setup leaderboard display
     VBox leaderboardButton = setupLeaderboardButton();
 
     // Combine the header and arrow keys into a single display layout
     VBox display = new VBox(20);
-    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), reset, leaderboardButton);
+    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), load, reset,
+        leaderboardButton);
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);

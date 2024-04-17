@@ -1,6 +1,7 @@
 package oogasalad.controller.gameplay;
 
 import javafx.stage.Stage;
+import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.scene.Scene;
 import oogasalad.view.gameplay.MainScene;
 import oogasalad.view.gameplay.StartingScene;
@@ -15,16 +16,21 @@ public class SceneController {
   private final Stage stage;
   private final PlayerDataController playerDataController;
   private boolean isGuestSession;
+  private Level level;
+  private LevelController levelController;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
    *
    * @param stage primary stage of JavaFX application
    */
-  public SceneController(Stage stage, PlayerDataController playerDataController) {
+  public SceneController(Stage stage, PlayerDataController playerDataController, LevelController
+      levelController) {
     this.stage = stage;
     this.playerDataController = playerDataController;
     this.isGuestSession = false;
+    this.levelController = levelController;
+    this.level = levelController.getLevel();
     stage.setTitle("Baba is Us: Game Player");
     stage.setResizable(false);
     stage.show();
@@ -52,11 +58,12 @@ public class SceneController {
    */
   public void beginGame(boolean isGuest) {
     this.isGuestSession = isGuest;
-    switchToScene(new MainScene(this));
+    switchToScene(new MainScene(this, levelController));
   }
 
   /**
    * Check if the current session is a guest session.
+   *
    * @return true if it's a guest session, false otherwise.
    */
   public boolean isGuestSession() {
@@ -69,4 +76,23 @@ public class SceneController {
   public PlayerDataController getPlayerDataController() {
     return playerDataController;
   }
+
+  /**
+   * Return stage.
+   */
+  public Stage getStage() {
+    return stage;
+  }
+
+  /**
+   * Return level.
+   */
+  public Level getLevel() {
+    return level;
+  }
+
+  /**
+   * Return level controller.
+   */
+  public LevelController getLevelController() { return levelController; }
 }
