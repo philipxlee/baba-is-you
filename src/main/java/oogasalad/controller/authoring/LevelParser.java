@@ -98,9 +98,10 @@ public class LevelParser {
    * Method to allow LevelParser to have file save functionality.
    *
    * @param jsonObject The jsonObject to save to file.
+   * @param fileName   The template name of the file.
    * @throws IOException Throws IOException if error with file saving.
    */
-  public void saveJSON(JsonObject jsonObject) throws IOException {
-    jsonManager.saveToFile(jsonObject);
+  public void saveJSON(JsonObject jsonObject, String fileName) throws IOException {
+    jsonManager.saveToFile(jsonObject, fileName);
   }
 }
