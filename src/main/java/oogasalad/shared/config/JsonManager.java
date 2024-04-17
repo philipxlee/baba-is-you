@@ -52,9 +52,9 @@ public class JsonManager {
    * Save JSON data to a JSON file.
    *
    * @param jsonObject the JsonObject to save.
-   * @param stage      the JavaFX stage used to display the file chooser dialog.
    */
-  public void saveToFile(JsonObject jsonObject, Stage stage) throws IOException {
+  public void saveToFile(JsonObject jsonObject) throws IOException {
+    Stage stage = new Stage();
     File file = selectSaveFile(stage);
     if (file != null) {
       writeToFile(jsonObject, file);
