@@ -45,7 +45,6 @@ public class ElementsPane {
 
   private void initializeElementsLayout() {
     layout = new VBox(30);
-//    layout.setMinHeight(builderScene.getRoot().getHeight());
 
     Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
     HBox header = factory.wrapInHBox(title, (int) layout.getWidth());

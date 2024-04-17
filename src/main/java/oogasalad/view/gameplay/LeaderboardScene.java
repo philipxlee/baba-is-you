@@ -78,7 +78,7 @@ public class LeaderboardScene implements Scene {
 
       // Create a button with the player information, make it unpressable
       Button playerInfoButton = factory.makeButton(new WidgetConfiguration(200, 50,
-          "Back", "authoring-button"));
+          "white-button"), playerInfoText);
       playerInfoButton.setDisable(true);  // Make the button unpressable
       playerInfoButton.setMaxWidth(500);  // Extend the button width to the full width of its container
 

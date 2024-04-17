@@ -6,7 +6,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -108,6 +110,21 @@ public class WidgetFactory {
     return button;
   }
 
+  /**
+   * For dynamic buttons showing player information or other non-property information
+   * @param configuration
+   * @param label
+   * @return
+   */
+  public Button makeButton(WidgetConfiguration configuration, String label) {
+    Button button = new Button(label);
+    button.setPrefWidth(configuration.getWidth());
+    button.setPrefHeight(configuration.getHeight());
+    button.setPadding(new Insets(10));
+    button.getStyleClass().add(configuration.getCssMatch());
+    return button;
+  }
+
   public ScrollPane makeScrollPane(FlowPane flowPane, int maxWidth) {
     ScrollPane pane = new ScrollPane(flowPane);
     pane.setFitToWidth(true);
@@ -124,13 +141,50 @@ public class WidgetFactory {
     return pane;
   }
 
-  public void createPopUpWindow(int width, int height, Parent root, String title) {
+  public void createPopUpWindow(WidgetConfiguration configuration, Parent root) {
     Stage popup = new Stage();
-    javafx.scene.Scene scene = new javafx.scene.Scene(root, width, height);
+    javafx.scene.Scene scene = new javafx.scene.Scene(root, configuration.getWidth(),
+        configuration.getHeight());
     popup.setScene(scene);
-    popup.setTitle(title);
+    popup.setTitle(configuration.getPropertyContents());
     popup.show();
+  }
 
+  public FlowPane createFlowPane(WidgetConfiguration configuration) {
+      FlowPane flowPane = new FlowPane();
+      flowPane.setPrefSize(configuration.getWidth(), configuration.getHeight());
+      flowPane.setPadding(new Insets(10));
+      flowPane.setHgap(10);
+      flowPane.setVgap(10);
+      flowPane.setAlignment(Pos.CENTER);
+      flowPane.setFocusTraversable(false);
+      flowPane.getStyleClass().add(configuration.getCssMatch());
+      return flowPane;
+  }
+
+  public TextField createTextField(WidgetConfiguration configuration) {
+    TextField field = new TextField();
+    field.setPromptText(configuration.getPropertyContents());
+    field.setMinWidth(configuration.getWidth());
+    field.setMaxWidth(configuration.getWidth()+100);
+    field.setPrefHeight(configuration.getHeight());
+    field.getStyleClass().add("text-field");
+    return field;
+  }
+
+  public void replaceLabelContent(Label old, WidgetConfiguration configuration) {
+    old.setText(configuration.getPropertyContents());
+  }
+
+  public void replaceTextContent(Text old, WidgetConfiguration configuration) {
+    old.setText(configuration.getPropertyContents());
+  }
+
+  public Label generateLabel(WidgetConfiguration configuration) {
+    Label label = new Label();
+    label.setText(configuration.getPropertyContents());
+    label.getStyleClass().add("label");
+    return label;
   }
 
 }

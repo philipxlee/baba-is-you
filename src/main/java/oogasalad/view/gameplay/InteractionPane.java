@@ -104,7 +104,8 @@ public class InteractionPane {
    * @return a scrollpane with populated image icons representing JSON level files.
    */
   private VBox setUpFileChooser() {
-    FlowPane flowPane = setUpFlowPane(width - 50, height / 4);
+    FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(width - 50,
+        height / 4, "flowpane"));
 
     //TODO: change to actual file #
     populateFiles(10, flowPane);
@@ -113,18 +114,6 @@ public class InteractionPane {
     VBox labelAndChooser = factory.wrapInVBox(paneLabel, height / 3);
     labelAndChooser.getChildren().add(pane);
     return labelAndChooser;
-  }
-
-  private FlowPane setUpFlowPane(int width, int height) {
-    FlowPane flowPane = new FlowPane();
-    flowPane.setPrefSize(width, height);
-    flowPane.setPadding(new Insets(10));
-    flowPane.setHgap(10);
-    flowPane.setVgap(10);
-    flowPane.setAlignment(Pos.CENTER);
-    flowPane.setFocusTraversable(false);
-    flowPane.getStyleClass().add("flowpane");
-    return flowPane;
   }
 
   /**
@@ -151,7 +140,8 @@ public class InteractionPane {
         public void handle(MouseEvent event) {
           Text text = new Text("TEMPORARY: file info goes here");
           VBox vbox = new VBox(text);
-          factory.createPopUpWindow(width - 100, height / 4, vbox, "File Information");
+          factory.createPopUpWindow(new WidgetConfiguration(width - 100,
+              height / 4, "FileInformation"), vbox);
         }
       });
       flowPane.getChildren().add(imageAndLabel);
