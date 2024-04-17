@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
@@ -32,15 +33,6 @@ public class StartingScene implements Scene {
   private TextField usernameField;
   private int width;
   private int height;
-
-  private final static String rules =
-      "Baba Is You is a puzzle game where players manipulate the game's\n "
-          + "rules to solve puzzles and progress. Players control Baba, a character, and aim to reach specific\n"
-          + " goals like touching flags or objects. The game world consists of blocks with words defining\n"
-          + " rules like 'Baba Is You' or 'Flag Is Win.' By moving blocks, players change rules to create\n"
-          + " win conditions or alter the game's logic. For example, by arranging 'Flag Is You' near a \n"
-          + "flag, Baba becomes the flag and wins. Players must think logically, as changing rules can\n"
-          + " have unintended consequences. Through experimentation, players solve increasingly complex puzzles.";
 
   /**
    * Constructor for StartingScene.
@@ -84,15 +76,17 @@ public class StartingScene implements Scene {
   }
 
   private void generateContent() {
-    Text header = factory.generateHeader("Welcome to Baba Is You!");
-    Text content = factory.generateLine(rules);
-    Text enterPrompt = factory.generateLine("Enter your username:");
-    Label feedbackLabel = new Label();
-    feedbackLabel.setStyle("-fx-text-fill: red;");
+    Text header = factory.generateHeader(new WidgetConfiguration("BabaHeader"));
+    Text content = factory.generateLine(new WidgetConfiguration("BabaRules"));
+    Text enterPrompt = factory.generateLine(new WidgetConfiguration("EnterPrompt"));
+    Label feedbackLabel = factory.generateLabel(new WidgetConfiguration(""));
 
-    createUsernamePromptField();
-    Button start = factory.makeButton("Click Enter To Begin", 300, 40);
-    Button guestButton = factory.makeButton("Play as Guest", 300, 40);
+    usernameField = factory.createTextField(new WidgetConfiguration(200, 40,
+        "UsernamePrompter", "text-field"));
+    Button start = factory.makeButton(new WidgetConfiguration(300, 40,
+        "Enter", "button"));
+    Button guestButton = factory.makeButton(new WidgetConfiguration(300, 40,
+        "PlayAsGuest", "button"));
     usernameField.textProperty().addListener((obs, old, newValue) -> {
       checkUsernameValidity(newValue, feedbackLabel, start);
     });
@@ -113,13 +107,6 @@ public class StartingScene implements Scene {
     root.getChildren().add(textContainer);
   }
 
-  private void createUsernamePromptField() {
-    usernameField = new TextField();
-    usernameField.setPromptText("Enter username here...");
-    usernameField.setMinWidth(200);
-    usernameField.setMaxWidth(300);
-  }
-
   private void startGame(Button start) {
     start.setOnAction(event -> {
       if (!usernameField.getText().trim().isEmpty()) {
@@ -135,7 +122,7 @@ public class StartingScene implements Scene {
       feedbackLabel.setText("");
       checkUsernameAvailability(newValue, start, feedbackLabel);
     } else {
-      feedbackLabel.setText("Invalid username. Use only letters, digits, and underscores.");
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameInvalid"));
       start.setDisable(true);
     }
   }
@@ -143,9 +130,9 @@ public class StartingScene implements Scene {
   private void checkUsernameAvailability(String newValue, Button start, Label feedbackLabel) {
     if (playerDataController.isUsernameAvailable(newValue.trim())) {
       start.setDisable(false);
-      feedbackLabel.setText("Username is available.");
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameAvailable"));
     } else {
-      feedbackLabel.setText("Username already taken, please choose another.");
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameTaken"));
       start.setDisable(true);
     }
   }
