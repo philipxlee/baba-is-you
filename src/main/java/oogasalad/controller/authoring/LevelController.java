@@ -34,6 +34,10 @@ public class LevelController {
     currentLevel.addBlockToCell(row, col, blockType);
   }
 
+  public void removeBlockFromCell(int row, int col) throws Exception {
+    currentLevel.removeBlockFromCell(row, col);
+  }
+
   /**
    * Serialize current level to JSON using Gson library. Parse according to configuration format.
    * Save to file directory.
