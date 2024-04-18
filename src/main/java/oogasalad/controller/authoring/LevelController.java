@@ -12,6 +12,7 @@ import oogasalad.model.authoring.level.LevelMetadata;
 public class LevelController {
 
   private final LevelParser levelParser;
+  private final OpenAIClient openAIClient;
   private Level currentLevel;
 
   /**
@@ -19,6 +20,7 @@ public class LevelController {
    */
   public LevelController(LevelMetadata levelMetadata) {
     levelParser = new LevelParser();
+    openAIClient = new OpenAIClient();
     currentLevel = new Level(levelMetadata);
   }
 
@@ -57,6 +59,12 @@ public class LevelController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void generateLevel() throws Exception {
+    openAIClient.fetchLevelConfiguration().thenAccept(json -> {
+      System.out.println("Received level configuration: " + json);
+    });
   }
 
   /**
