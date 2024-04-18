@@ -1,7 +1,7 @@
 package oogasalad.controller.authoring;
 
 import com.google.gson.JsonObject;
-import java.io.FileWriter;
+import java.io.IOException;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 
@@ -12,14 +12,14 @@ import oogasalad.model.authoring.level.LevelMetadata;
 public class LevelController {
 
   private final LevelParser levelParser;
-  private final Level currentLevel;
+  private Level currentLevel;
 
   /**
    * LevelController constructor.
    */
-  public LevelController(Level level) {
+  public LevelController(LevelMetadata levelMetadata) {
     levelParser = new LevelParser();
-    currentLevel = level;
+    currentLevel = new Level(levelMetadata);
   }
 
   /**
@@ -36,15 +36,25 @@ public class LevelController {
 
   /**
    * Serialize current level to JSON using Gson library. Parse according to configuration format.
+   * Save to file directory.
    */
   public void serializeLevel() {
     JsonObject levelJson = levelParser.parseLevelToJSON(currentLevel);
-    String fileName = "data/" + currentLevel.getLevelMetadata().levelName() + ".json";
-    try (FileWriter writer = new FileWriter(fileName)) {
-      writer.write(levelJson.toString());
-    } catch (Exception e) {
+    String fileName = currentLevel.getLevelMetadata().levelName() + ".json";
+    try {
+      levelParser.saveJSON(levelJson, fileName);
+    } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Reset level to a new level configuration.
+   *
+   * @param levelMetadata The level metadata configuration to reset to.
+   */
+  public void resetLevel(LevelMetadata levelMetadata) {
+    currentLevel = new Level(levelMetadata);
   }
 
   /**

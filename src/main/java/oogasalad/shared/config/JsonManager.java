@@ -52,10 +52,11 @@ public class JsonManager {
    * Save JSON data to a JSON file.
    *
    * @param jsonObject the JsonObject to save.
+   * @param fileName   the template filename of the file.
    */
-  public void saveToFile(JsonObject jsonObject) throws IOException {
+  public void saveToFile(JsonObject jsonObject, String fileName) throws IOException {
     Stage stage = new Stage();
-    File file = selectSaveFile(stage);
+    File file = selectSaveFile(stage, fileName);
     if (file != null) {
       writeToFile(jsonObject, file);
     }
@@ -166,11 +167,13 @@ public class JsonManager {
   /**
    * Displays a file chooser dialog for saving a JSON file.
    *
-   * @param stage stage that JavaFX uses to display the file chooser.
+   * @param stage    stage that JavaFX uses to display the file chooser.
+   * @param fileName The template filename to use.
    * @return the file chosen to be saved by the user
    */
-  private File selectSaveFile(Stage stage) {
+  private File selectSaveFile(Stage stage, String fileName) {
     FileChooser fileChooser = chooseFile();
+    fileChooser.setInitialFileName(fileName);
     return fileChooser.showSaveDialog(stage);
   }
 

@@ -7,7 +7,6 @@ import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
@@ -15,6 +14,7 @@ import oogasalad.database.PlayerData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
  * Scene that displays the leaderboard.
@@ -26,6 +26,7 @@ public class LeaderboardScene implements Scene {
   private javafx.scene.Scene scene;
   private VBox root;
   private LevelController levelController;
+  private String language;
 
   /**
    * Constructor for LeaderboardScene.
@@ -37,6 +38,7 @@ public class LeaderboardScene implements Scene {
     this.factory = factory;
     this.sceneController = sceneController;
     this.levelController = sceneController.getLevelController();
+    this.language = sceneController.getLanguage();
   }
 
   /**
@@ -69,7 +71,7 @@ public class LeaderboardScene implements Scene {
    * Populate the leaderboard.
    */
   private void populateLeaderboard() {
-    Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard"));
+    Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard", language));
 
     List<PlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
     VBox leaderboardList = new VBox(5);
@@ -81,7 +83,7 @@ public class LeaderboardScene implements Scene {
 
       // Create a button with the player information, make it unpressable
       Button playerInfoButton = factory.makeButton(new WidgetConfiguration(200, 50,
-          "white-button"), playerInfoText);
+          "white-button", language), playerInfoText);
       playerInfoButton.setDisable(true);  // Make the button unpressable
       playerInfoButton.setMaxWidth(500);  // Extend the button width to the full width of its container
 
@@ -90,7 +92,7 @@ public class LeaderboardScene implements Scene {
     }
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
-        "Back", "button"));
+        "Back", "button", language));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController,
         levelController)));
 

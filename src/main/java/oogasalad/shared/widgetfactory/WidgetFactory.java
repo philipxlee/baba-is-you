@@ -23,8 +23,6 @@ import javafx.stage.Stage;
  * Factory class for making general UI widgets.
  */
 public class WidgetFactory {
-
-  private oogasalad.shared.scene.Scene scene;
   public static final String STYLESHEET = "gameplay.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =

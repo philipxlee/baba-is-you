@@ -1,4 +1,4 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.mainscene;
 
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
@@ -23,6 +23,7 @@ public class MainScene implements Scene {
   private InteractionPane interactionScene;
   private Level level;
   private LevelController levelController;
+  private String language;
 
   public MainScene(SceneController sceneController, LevelController levelController) {
     this.sceneController = sceneController;

@@ -2,6 +2,7 @@ package oogasalad.controller.authoring;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.io.IOException;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
@@ -91,5 +92,16 @@ public class LevelParser {
     layersArray.add(singleLayerArray);
 
     return layersArray;
+  }
+
+  /**
+   * Method to allow LevelParser to have file save functionality.
+   *
+   * @param jsonObject The jsonObject to save to file.
+   * @param fileName   The template name of the file.
+   * @throws IOException Throws IOException if error with file saving.
+   */
+  public void saveJSON(JsonObject jsonObject, String fileName) throws IOException {
+    jsonManager.saveToFile(jsonObject, fileName);
   }
 }

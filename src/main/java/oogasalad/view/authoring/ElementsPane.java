@@ -1,6 +1,5 @@
 package oogasalad.view.authoring;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
@@ -13,8 +12,6 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -23,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
@@ -36,9 +34,11 @@ public class ElementsPane {
   private ScrollPane scrollPane;
   private VBox layout;
   private boolean removeMode = false;
+  private String language;
 
-  public ElementsPane(BuilderPane builderPane, LevelController levelController) {
+  public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
     this.factory = new WidgetFactory();
+    this.language = language;
     this.builderPane = builderPane;
     this.levelController = levelController;
     initializeElementsLayout();
@@ -47,11 +47,11 @@ public class ElementsPane {
   private void initializeElementsLayout() {
     layout = new VBox(30);
 
-    Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
     HBox header = factory.wrapInHBox(title, (int) layout.getWidth());
 
     Text descriptionLabel = factory.generateLine(new WidgetConfiguration
-        ("DragInstructions"));
+        ("DragInstructions", language));
 
     // Category selection setup
     ComboBox<String> categoryComboBox = new ComboBox<>();
@@ -83,12 +83,12 @@ public class ElementsPane {
 
     // Button for changing grid size
     Button changeGridSizeButton = factory.makeButton(new WidgetConfiguration(
-        200, 40, "ChangeGridSize","white-button"));
+        200, 40, "ChangeGridSize", "white-button", language));
     changeGridSizeDialog(changeGridSizeButton);
 
     // Button for toggling remove mode
-    Button removeButton = factory.makeButton(new WidgetConfiguration (
-        200, 30, "RemoveBlock","white-button"));
+    Button removeButton = factory.makeButton(new WidgetConfiguration(
+        200, 30, "RemoveBlock", "white-button", language));
 
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
@@ -116,7 +116,7 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeButton(new WidgetConfiguration(
-        200, 40, "SaveJson","white-button"));
+        200, 40, "SaveJson", "white-button", language));
     saveJson.setOnAction(event -> {
       levelController.serializeLevel();
     });
@@ -124,7 +124,8 @@ public class ElementsPane {
     HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
 
     layout.getStyleClass().add("elements-background");
-    layout.getChildren().addAll(header, categoryComboBox, buttonsHBox, descriptionBox, scrollPane, jsonBox);
+    layout.getChildren()
+        .addAll(header, categoryComboBox, buttonsHBox, descriptionBox, scrollPane, jsonBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
   }
 
@@ -148,7 +149,8 @@ public class ElementsPane {
     if (category.equals("All")) {
       blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH); // Load all blocks
     } else {
-      blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH, category); // Load blocks based on category
+      blockLoader.loadBlocks(blocksContainer, IMAGE_FILE_PATH,
+          category); // Load blocks based on category
     }
   }
 
@@ -197,6 +199,8 @@ public class ElementsPane {
           int width = pair.getKey();
           int height = pair.getValue();
           builderPane.updateGridSize(width, height);
+          LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height, width);
+          levelController.resetLevel(levelMetadata);
         }
       });
     });
