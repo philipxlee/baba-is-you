@@ -31,7 +31,7 @@ public class LevelController {
    * @throws Exception Throws exception if block type is invalid (not in properties file).
    */
   public void setCell(int row, int col, String blockType) throws Exception {
-    currentLevel.setCell(row, col, blockType);
+    currentLevel.addBlockToCell(row, col, blockType);
   }
 
   /**

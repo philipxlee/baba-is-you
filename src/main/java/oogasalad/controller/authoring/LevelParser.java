@@ -46,7 +46,7 @@ public class LevelParser {
    * @return A JsonArray representing the grid of the level.
    */
   private JsonArray turnGridToJson(Level level) {
-    String[][] levelGrid = level.getParsedGrid();
+    String[][][] levelGrid = level.getParsedGrid();
 
     return convertGridToJsonArray(levelGrid);
   }

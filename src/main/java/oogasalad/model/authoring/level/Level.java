@@ -1,6 +1,7 @@
 package oogasalad.model.authoring.level;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import oogasalad.model.authoring.block.Block;
 import oogasalad.shared.observer.Observable;
@@ -35,26 +36,46 @@ public class Level implements Observable<Level> {
    * @param blockType New block type.
    * @throws Exception Throws exception if block type is invalid (not in properties file).
    */
-  public void setCell(int row, int col, String blockType) throws Exception {
+  public void addBlockToCell(int row, int col, String blockType) throws Exception {
     grid.addBlockToCell(row, col, blockType);
   }
 
   /**
-   * Returns a 2D grid of block types (strings) representing the current state of the grid.
+   * Returns a 3D grid of block types (strings) representing the current state of the grid.
    *
-   * @return 2D array of strings representing the grid.
+   * @return 3D array of strings representing the grid.
    */
-  public String[][] getParsedGrid() {
-    String[][] parsedGrid = new String[levelMetadata.rows()][levelMetadata.cols()];
+  public String[][][] getParsedGrid() {
+    // Initialize a 3D list to dynamically handle varying numbers of blocks per stack
+    List<List<List<String>>> dynamicGrid = new ArrayList<>();
 
-    int row = 0;
-    int col = 0;
-    for (Block block : grid) {
-      parsedGrid[row][col] = block.type().name();
+    // Iterate through the entire grid using the iterator
+    for (int row = 0; row < levelMetadata.rows(); row++) {
+      List<List<String>> rowList = new ArrayList<>();
+      for (int col = 0; col < levelMetadata.cols(); col++) {
+        rowList.add(new ArrayList<>());
+      }
+      dynamicGrid.add(rowList);
+    }
+
+    Iterator<Block> it = grid.iterator();
+    int row = 0, col = 0;
+    while (it.hasNext()) {
+      Block block = it.next();
+      dynamicGrid.get(row).get(col).add(block.type().name());
       col++;
       if (col == levelMetadata.cols()) {
         col = 0;
         row++;
+      }
+    }
+
+    // Convert the dynamic list to a fixed size 3D array
+    String[][][] parsedGrid = new String[levelMetadata.rows()][levelMetadata.cols()][];
+    for (int i = 0; i < levelMetadata.rows(); i++) {
+      for (int j = 0; j < levelMetadata.cols(); j++) {
+        List<String> cellBlocks = dynamicGrid.get(i).get(j);
+        parsedGrid[i][j] = cellBlocks.toArray(new String[0]); // Convert list to array
       }
     }
 

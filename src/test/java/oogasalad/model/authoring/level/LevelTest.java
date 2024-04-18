@@ -36,7 +36,7 @@ public class LevelTest {
   @Test
   public void testSetCellValidBlock() throws Exception {
     // Assuming the blockTypeManager can handle the blockName without throwing an exception
-    level.setCell(1, 1, "EmptyVisualBlock");
+    level.addBlockToCell(1, 1, "EmptyVisualBlock");
     // Success if no exception is thrown
   }
 
@@ -44,7 +44,7 @@ public class LevelTest {
   public void testSetCellInvalidBlock() {
     // Assuming the blockTypeManager can handle the blockName without throwing an exception
     assertThrows(Exception.class, () -> {
-      level.setCell(1, 1, "invalidBlockName");
+      level.addBlockToCell(1, 1, "invalidBlockName");
     }, "Expected setCell to throw, but it didn't");
   }
 
