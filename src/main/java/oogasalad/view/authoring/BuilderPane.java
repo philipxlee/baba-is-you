@@ -21,13 +21,13 @@ public class BuilderPane {
   private final int GRID_MARGIN = 10;
   private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
   protected Pane root; // Your root node for the builder scene
-  private double cellSize; // Set the cell size
   protected GridPane gridPane;
   protected int gridWidth;
-  private BlockViewFactory blockViewFactory;
-  private LevelController levelController;
   protected boolean removeMode;
   protected int gridHeight;
+  private double cellSize; // Set the cell size
+  private BlockViewFactory blockViewFactory;
+  private LevelController levelController;
   private String language;
 
   public BuilderPane(LevelController levelController, String language) {
@@ -220,6 +220,13 @@ public class BuilderPane {
       if (node instanceof ImageView) {
         node.setOnMouseClicked(event -> {
           if (removeMode) {
+            Point2D cellIndices = getCellIndices(node.getLayoutX(), node.getLayoutY());
+            try {
+              levelController.removeBlockFromCell((int) cellIndices.getY(),
+                  (int) cellIndices.getX());
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
             root.getChildren().remove(node);
           }
         });

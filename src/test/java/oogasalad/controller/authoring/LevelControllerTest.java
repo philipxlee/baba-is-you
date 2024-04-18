@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,8 +21,7 @@ public class LevelControllerTest {
   public void setUp() throws Exception {
     // Setup mock LevelController
     LevelMetadata levelMetadata = new LevelMetadata("testLevel", "testDesc", 7, 7);
-    Level level = new Level(levelMetadata);
-    levelController = new LevelController(level);
+    levelController = new LevelController(levelMetadata);
   }
 
   @Test
@@ -45,21 +43,5 @@ public class LevelControllerTest {
     });
 
     assertTrue(exception.getMessage().contains("Invalid block type"));
-  }
-
-  @Test
-  public void testSerializeLevel() throws IOException {
-    // Redirect system output to capture the JSON output for verification
-    final String expectedFileName = "testLevel.json";
-    Path path = Paths.get(expectedFileName);
-    try {
-      levelController.serializeLevel();
-
-      // Verify that file was created and contains the expected content
-      assertTrue(Files.exists(path));
-    } finally {
-      // Cleanup: Delete the test file after verification
-      Files.deleteIfExists(path);
-    }
   }
 }

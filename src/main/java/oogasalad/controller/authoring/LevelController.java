@@ -34,6 +34,13 @@ public class LevelController {
     currentLevel.addBlockToCell(row, col, blockType);
   }
 
+  /**
+   * Remove last block from cell at given row and col position from level.
+   *
+   * @param row The row of the cell.
+   * @param col The column of the cell.
+   * @throws Exception Throws exception if row or col is invalid.
+   */
   public void removeBlockFromCell(int row, int col) throws Exception {
     currentLevel.removeBlockFromCell(row, col);
   }

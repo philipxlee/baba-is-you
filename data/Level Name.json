@@ -1,71 +1,50 @@
 {
   "levelName": "Level Name",
   "gridSize": {
-    "rows": "6",
-    "cols": "3"
+    "rows": "2",
+    "cols": "7"
   },
   "grid": [
     [
       [
         "EmptyVisualBlock",
-        "StopTextBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock",
-        "WinTextBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock",
-        "WinTextBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock",
-        "FlagTextBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock",
         "IsTextBlock"
       ],
       [
+        "EmptyVisualBlock",
+        "YouTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
         "EmptyVisualBlock"
       ]
     ],
     [
+      [
+        "EmptyVisualBlock",
+        "PushTextBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "YouTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
       [
         "EmptyVisualBlock"
       ],

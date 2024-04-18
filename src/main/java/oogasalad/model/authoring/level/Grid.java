@@ -63,6 +63,13 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
     notifyObserver();
   }
 
+  /**
+   * Remove last block from cell at given row and col position from 2D Array of Stacks.
+   *
+   * @param row The row of the cell.
+   * @param col The col of the cell.
+   * @throws Exception Throws exception if row or col is invalid.
+   */
   public void removeBlockFromCell(int row, int col) throws Exception {
     if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
       throw new Exception("Invalid Row/Col Position: " + row + " " + col);
@@ -94,7 +101,7 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
   /**
    * Iterator over the Stack of blocks in each grid position.
    *
-   * @return Iterator<Stack<Block>>.
+   * @return Iterator<Stack < Block>>.
    */
   @Override
   public Iterator<Stack<Block>> iterator() {
