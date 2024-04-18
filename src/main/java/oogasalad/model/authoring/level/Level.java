@@ -41,6 +41,10 @@ public class Level implements Observable<Level> {
     grid.addBlockToCell(row, col, blockType);
   }
 
+  public void removeBlockFromCell(int row, int col) throws Exception {
+    grid.removeBlockFromCell(row, col);
+  }
+
   /**
    * Returns a 3D grid of block types (strings) representing the current state of the grid.
    *
