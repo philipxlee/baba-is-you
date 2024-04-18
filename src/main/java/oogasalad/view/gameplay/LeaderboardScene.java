@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -63,7 +64,7 @@ public class LeaderboardScene implements Scene {
   public void initializeScene(int width, int height) {
     this.width = width;
     this.height = height;
-    this.root = new VBox(10);
+    this.root = new VBox(20);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
@@ -98,8 +99,8 @@ public class LeaderboardScene implements Scene {
       Button username = factory.makeButton(configuration, ""+num+". " + player.getUsername());
       Button timeSpent = factory.makeButton(configuration, ""+player.getTimeSpent()+" seconds");
       Button date = factory.makeButton(configuration, player.getDate());
-      Button levelName = factory.makeButton(configuration, player.getLevelName());
-      List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date, levelName));
+//      Button levelName = factory.makeButton(configuration, player.getLevelName());
+      List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date));
       for (Node btn: row) {
         btn.setDisable(true);
       }

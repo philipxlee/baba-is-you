@@ -31,7 +31,7 @@
 }
 
 .sub-header {
-  -fx-font-size: 50px;
+  -fx-font-size: 40px;
   -fx-fill: #191A20;;
   -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
@@ -90,6 +90,14 @@
   -fx-font-size: 16px;
 }
 
+.text-field-dark {
+  -fx-background-color: #191A20;
+  -fx-text-fill: #FF7171;
+  -fx-font-size: 20px;
+  -fx-border-width: 4px;
+  -fx-border-color: #777DA1;
+}
+
 .label {
   -fx-text-fill: #FF7171;
   -fx-font-size: 20px;
@@ -98,7 +106,13 @@
 .combo-box {
   -fx-text-fill: #191A20;
   -fx-font-size: 25px;
-  -fx-background-color: #777DA1
+  -fx-background-color: #777DA1;
+}
+
+.combo-box-white {
+  -fx-text-fill: #191A20;
+  -fx-font-size: 25px;
+  -fx-background-color: #F5F5F5;
 }
 
 .row-cell {

@@ -83,8 +83,8 @@ public class WidgetFactory {
    * @param width
    * @return
    */
-  public HBox wrapInHBox(Node toBeWrapped, int width) {
-    HBox hbox = new HBox(20);
+  public HBox wrapInHBox(Node toBeWrapped, int width, int spacing) {
+    HBox hbox = new HBox(spacing);
     hbox.getChildren().add(toBeWrapped);
     hbox.setPrefWidth(width);
     hbox.setAlignment(Pos.CENTER);
@@ -180,7 +180,7 @@ public class WidgetFactory {
     field.setMinWidth(configuration.getWidth());
     field.setMaxWidth(configuration.getWidth()+100);
     field.setPrefHeight(configuration.getHeight());
-    field.getStyleClass().add("text-field");
+    field.getStyleClass().add(configuration.getCssMatch());
     return field;
   }
 
