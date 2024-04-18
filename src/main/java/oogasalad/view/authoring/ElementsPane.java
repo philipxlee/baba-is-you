@@ -56,7 +56,7 @@ public class ElementsPane {
     // Category selection setup
     ComboBox<String> categoryComboBox = new ComboBox<>();
 
-    categoryComboBox.getItems().addAll("Visual", "Text", "Logic", "All");
+    categoryComboBox.getItems().addAll("Visual", "Text", "All");
     categoryComboBox.setValue("All"); // Default value
     categoryComboBox.setStyle("-fx-font-size: 20px; -fx-background-color: #ffffff; -fx-pref-width: 300px;");
 
