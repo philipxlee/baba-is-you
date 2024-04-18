@@ -55,10 +55,21 @@ public class ElementsPane {
 
     // Category selection setup
     ComboBox<String> categoryComboBox = new ComboBox<>();
-    categoryComboBox.getItems().addAll("Visual", "Text", "Logic", "All"); // Example categories
+
+    categoryComboBox.getItems().addAll("Visual", "Text", "All");
     categoryComboBox.setValue("All"); // Default value
+    categoryComboBox.setStyle("-fx-font-size: 20px; -fx-background-color: #ffffff; -fx-pref-width: 300px;");
+
+
+    // Difficulty chooser setup
+    ComboBox<String> difficultyComboBox = new ComboBox<>();
+    difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard"); // Example difficulty levels
+    difficultyComboBox.setValue("Medium"); // Default value
+    difficultyComboBox.setStyle("-fx-font-size: 20px; -fx-background-color: #ffffff; -fx-pref-width: 300px;");
+
 
     HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth());
+
 
     // Create a container for blocks
     FlowPane blocksContainer = new FlowPane();
@@ -124,8 +135,8 @@ public class ElementsPane {
     HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
 
     layout.getStyleClass().add("elements-background");
-    layout.getChildren()
-        .addAll(header, categoryComboBox, buttonsHBox, descriptionBox, scrollPane, jsonBox);
+
+    layout.getChildren().addAll(header, categoryComboBox, difficultyComboBox, buttonsHBox, descriptionBox, scrollPane, jsonBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
   }
 
