@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
+import java.util.Stack;
 import oogasalad.model.authoring.block.Block;
 import oogasalad.shared.observer.Observer;
 import org.junit.Before;
@@ -28,8 +29,10 @@ public class GridTest {
   @Test
   public void testGridInitialization() {
     // Test that all cells are initialized with "Empty" blocks
-    for (Block block : grid) {
-      assertEquals("EmptyVisualBlock", block.type().name());
+    for (Stack<Block> stack : grid) {
+      for (Block block : stack) {
+        assertEquals("EmptyVisualBlock", block.type().name());
+      }
     }
   }
 
@@ -45,8 +48,8 @@ public class GridTest {
   @Test
   public void testSetCellWithValidName() throws Exception {
     grid.addBlockToCell(0, 0, "BabaVisualBlock");
-    Block block = grid.iterator().next();
-    assertEquals("BabaVisualBlock", block.type().name());
+    Stack<Block> stack = grid.iterator().next();
+    assertEquals("BabaVisualBlock", stack.peek().type().name());
   }
 
   @Test
@@ -64,7 +67,7 @@ public class GridTest {
     assertNotNull(grid.iterator().next());
 
     // Move iterator to the end to test hasNext returns false
-    Iterator<Block> it = grid.iterator();
+    Iterator<Stack<Block>> it = grid.iterator();
     while (it.hasNext()) {
       it.next();
     }
