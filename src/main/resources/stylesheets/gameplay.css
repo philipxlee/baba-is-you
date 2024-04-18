@@ -100,3 +100,11 @@
   -fx-font-size: 25px;
   -fx-background-color: #777DA1
 }
+
+.row-cell {
+  -fx-background-color: #F5F5F5;
+  -fx-border-width: 3px;
+  -fx-padding: 0;
+  -fx-font-size: 30px;
+  -fx-fill: #191A20;
+}

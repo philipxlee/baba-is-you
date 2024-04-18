@@ -3,11 +3,19 @@ package oogasalad.view.gameplay;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
+import java.lang.module.Configuration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
@@ -83,29 +91,30 @@ public class LeaderboardScene implements Scene {
     VBox leaderboardList = new VBox(5);
     leaderboardList.setAlignment(Pos.CENTER);
 
-    FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(
-        width - 400, height - 200, "flowpane-gradient", language)); // Set a maximum size for the flow pane
-
-    int num = 1;
+    int num=1;
     for (LeaderboardPlayerData player : topPlayers) {
-      String playerInfoText = String.format("%s - %d sec - %s",
-          player.getUsername(), player.getTimeSpent(), player.getDate(), player.getLevelName());
-      playerInfoText = "" + num + ". " + playerInfoText;
+      WidgetConfiguration configuration = new WidgetConfiguration(300, 50,
+          "row-cell", language);
+      Button username = factory.makeButton(configuration, ""+num+". " + player.getUsername());
+      Button timeSpent = factory.makeButton(configuration, ""+player.getTimeSpent()+" seconds");
+      Button date = factory.makeButton(configuration, player.getDate());
+      Button levelName = factory.makeButton(configuration, player.getLevelName());
+      List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date, levelName));
+      for (Node btn: row) {
+        btn.setDisable(true);
+      }
+      HBox rowBtns = factory.wrapInHBox(row, width-400);
 
-      Text playerInfo = factory.generateSubHeader(playerInfoText);
-      leaderboardList.getChildren().add(playerInfo);
-
+      leaderboardList.getChildren().add(rowBtns);
       num++;
     }
-    flowPane.getChildren().add(leaderboardList);
-    ScrollPane scrollPane = factory.makeScrollPane(flowPane, width-400);
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
         "Back", "button", language));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController,
         levelController)));
 
-    root.getChildren().addAll(header, scrollPane, backButton);
+    root.getChildren().addAll(header, leaderboardList, backButton);
   }
 
 }

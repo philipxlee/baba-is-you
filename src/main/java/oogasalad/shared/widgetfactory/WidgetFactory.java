@@ -116,6 +116,10 @@ public class WidgetFactory {
     return button;
   }
 
+  public void removeInsets(Button btn) {
+    btn.setPadding(new Insets(0));
+  }
+
   /**
    * For dynamic buttons showing player information or other non-property information
    * @param configuration
@@ -138,7 +142,6 @@ public class WidgetFactory {
     pane.setMaxWidth(maxWidth);
     pane.setPannable(false);
     pane.setFocusTraversable(false);
-    pane.getStylesheets().add("scrollpane");
     pane.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP
           || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
