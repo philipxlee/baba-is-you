@@ -43,31 +43,32 @@ public class DataManager {
    *
    * @return a list of PlayerData objects representing the top players.
    */
-  public List<LeaderboardPlayerData> getTopPlayers() {
+  public List<LeaderboardData> getTopPlayers() {
     MongoCollection<Document> collection = database.getCollection("data");
     FindIterable<Document> result = collection.find()
         .sort(Sorts.ascending(TIME_SPENT))
         .limit(LEADERBOARD_SIZE);
-    List<LeaderboardPlayerData> topPlayers = new ArrayList<>();
+    List<LeaderboardData> topPlayers = new ArrayList<>();
     for (Document doc : result) {
       String username = doc.getString("username");
       String levelName = doc.getString("levelName");
       Date date = doc.getDate("date");
       long timeSpent = doc.getLong(TIME_SPENT);
-      topPlayers.add(new LeaderboardPlayerData(username, date, levelName, timeSpent));
+      topPlayers.add(new LeaderboardData(username, date, levelName, timeSpent));
     }
     return topPlayers;
   }
 
   /**
-   * Retrieves all comments for a specific level.
+   * Retrieves comments for a specific level.
    *
-   *
+   * @param levelName The name of the level to retrieve comments for.
+   * @return a list of CommentData objects representing the comments for the level.
    */
-  public List<PlayerData> getCommentsByLevel(String levelName) {
+  public List<CommentData> getCommentsByLevel(String levelName) {
     MongoCollection<Document> collection = database.getCollection("comments");
     FindIterable<Document> result = collection.find(Filters.eq("levelName", levelName));
-    List<PlayerData> comments = new ArrayList<>();
+    List<CommentData> comments = new ArrayList<>();
     for (Document doc : result) {
       List<Document> commentDocs = doc.getList("comments", Document.class);
       for (Document commentDoc : commentDocs) {
@@ -76,38 +77,10 @@ public class DataManager {
         String levelNames = commentDoc.getString("levelName");
         String reply = commentDoc.getString("reply");
         Date date = commentDoc.getDate("date");
-        long timeSpent = commentDoc.getLong(TIME_SPENT);
-        comments.add(new PlayerData(username, levelComments, date, levelNames, reply, timeSpent));
+        comments.add(new CommentData(username, levelComments, date, levelNames, reply));
       }
     }
     return comments;
-  }
-
-
-  /**
-   * Adds a comment to a specific level using PlayerData and returns the comment document.
-   *
-   * @param playerData PlayerData containing the comment data.
-   */
-  public void addComment(PlayerData playerData) {
-    MongoCollection<Document> collection = database.getCollection("comments");
-    Document commentDoc = playerData.getLevelComments();
-    collection.updateOne(Filters.eq("levelName", playerData.getLevelPlayed()),
-        Updates.push("comments", commentDoc), new UpdateOptions().upsert(true));
-  }
-
-  /**
-   * Adds a reply to a specific comment and returns the reply document.
-   *
-   * @param commentId The ID of the comment to which the reply is added.
-   * @param playerData PlayerData containing the reply data.
-   */
-  public void addReply(String commentId, PlayerData playerData) {
-    MongoCollection<Document> collection = database.getCollection("comments");
-    Document replyDoc = playerData.getReply();
-    collection.updateOne(Filters.and(Filters.eq("levelName", playerData.getLevelPlayed()),
-            Filters.elemMatch("comments", Filters.eq("_id", commentId))),
-        Updates.push("comments.$.replies", replyDoc));
   }
 
 
@@ -121,5 +94,6 @@ public class DataManager {
     collection.insertOne(playerData.getDocument());
     System.out.println("Player data saved successfully.");
   }
+
 
 }

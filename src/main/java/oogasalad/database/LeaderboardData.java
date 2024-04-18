@@ -3,13 +3,13 @@ package oogasalad.database;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-public class LeaderboardPlayerData {
+public class LeaderboardData {
   private String username;
   private String levelPlayed;
   private Date date;
   private long timeSpent;
 
-  public LeaderboardPlayerData(String username, Date date, String levelPlayed, long timeSpent) {
+  public LeaderboardData(String username, Date date, String levelPlayed, long timeSpent) {
     this.username = username;
     this.timeSpent = timeSpent;
     this.levelPlayed = levelPlayed;

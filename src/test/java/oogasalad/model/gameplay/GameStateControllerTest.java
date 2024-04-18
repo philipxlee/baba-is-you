@@ -3,7 +3,7 @@ package oogasalad.model.gameplay;
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.LevelController;
-import oogasalad.controller.gameplay.PlayerDataController;
+import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.DataManager;
 import oogasalad.database.DatabaseConfig;
@@ -18,7 +18,7 @@ public class GameStateControllerTest {
   private Stage stage;
   private final DatabaseConfig databaseConfig = new DatabaseConfig();
   private final DataManager dataManager = new DataManager(databaseConfig.getDatabase());
-  private final PlayerDataController playerDataController = new PlayerDataController(dataManager);
+  private final DatabaseController databaseController = new DatabaseController(dataManager);
   String[][][] initialConfiguration = {
       {{"EmptyVisualBlock", "RockVisualBlock"}, {"EmptyVisualBlock"}},
       {{"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaVisualBlock"}}
@@ -29,7 +29,7 @@ public class GameStateControllerTest {
   @BeforeEach
   void setUp() {
     stage = new Stage();
-    sceneController = new SceneController(stage, playerDataController, new LevelController
+    sceneController = new SceneController(stage, databaseController, new LevelController
         (new Level(metadata)));
     gameStateController = new GameStateController(sceneController);
   }

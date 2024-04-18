@@ -7,12 +7,10 @@ import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.database.LeaderboardPlayerData;
-import oogasalad.database.PlayerData;
+import oogasalad.database.LeaderboardData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -72,11 +70,11 @@ public class LeaderboardScene implements Scene {
   private void populateLeaderboard() {
     Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard"));
 
-    List<LeaderboardPlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
+    List<LeaderboardData> topPlayers = sceneController.getDatabaseController().getTopPlayers();
     VBox leaderboardList = new VBox(5);
     leaderboardList.setAlignment(Pos.CENTER);
 
-    for (LeaderboardPlayerData player : topPlayers) {
+    for (LeaderboardData player : topPlayers) {
       String playerInfoText = String.format("%s - %d sec - %s",
           player.getUsername(), player.getTimeSpent(), player.getDate(), player.getLevelName());
 

@@ -39,24 +39,6 @@ public class PlayerData {
   }
 
   /**
-   * Sets the username of this PlayerData.
-   *
-   * @param username The new username.
-   */
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  /**
-   * Returns the time spent by the player.
-   *
-   * @return The time spent by the player.
-   */
-  public long getTimeSpent() {
-    return timeSpent;
-  }
-
-  /**
    * Sets the time spent by the player.
    *
    * @param timeSpent The new time spent by the player.

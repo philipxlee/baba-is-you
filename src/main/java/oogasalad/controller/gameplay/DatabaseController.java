@@ -2,7 +2,8 @@ package oogasalad.controller.gameplay;
 
 import java.util.Date;
 import oogasalad.database.DataManager;
-import oogasalad.database.LeaderboardPlayerData;
+import oogasalad.database.GameSession;
+import oogasalad.database.LeaderboardData;
 import oogasalad.database.PlayerData;
 import java.util.List;
 
@@ -10,16 +11,12 @@ import java.util.List;
  * Controller class for managing player data, including starting and ending player sessions and
  * saving player data to a database.
  */
-public class PlayerDataController {
+public class DatabaseController {
 
   private static final int MILLISECOND_OFFSET = 1000;
-  private static final long DEFAULT_TIME_SPENT = 0;
-  private static final String DEFAULT_COMMENTS = "No comments";
-  private static final String TEMP_LEVEL_NAME = "Default Level";
-  private static final String DEFAULT_REPLY = "No reply";
-  private static final Date DEFAULT_DATE = new Date();
   private DataManager dataManager;
-  private PlayerData playerData;
+  private LevelController levelController;
+  private GameSession gameSession;
   private long startTime;
 
   /**
@@ -27,8 +24,9 @@ public class PlayerDataController {
    *
    * @param dataManager The DataManager to use for saving player data.
    */
-  public PlayerDataController(DataManager dataManager) {
+  public DatabaseController(DataManager dataManager, LevelController levelController) {
     this.dataManager = dataManager;
+    this.levelController = levelController;
   }
 
   /**
@@ -39,7 +37,7 @@ public class PlayerDataController {
    */
   public boolean startNewPlayer(String username) {
     if (dataManager.isUsernameAvailable(username)) {
-      this.playerData = new PlayerData(username, DEFAULT_COMMENTS, DEFAULT_DATE, TEMP_LEVEL_NAME, DEFAULT_REPLY, DEFAULT_TIME_SPENT);
+      this.gameSession = new GameSession(username, levelController.getLevelName());
       this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
       return true;
     } else {
@@ -62,33 +60,25 @@ public class PlayerDataController {
    *
    * @return a list of PlayerData objects for the top players.
    */
-  public List<LeaderboardPlayerData> getTopPlayers() {
+  public List<LeaderboardData> getTopPlayers() {
     return dataManager.getTopPlayers();
   }
 
-  /**
-   * Retrieves all comments for a specific level.
-   *
-   * @param levelName the name of the level to retrieve comments for
-   */
-  public List<PlayerData> getCommentsByLevel(String levelName) {
-    return dataManager.getCommentsByLevel(levelName);
-  }
 
+//  /**
+//   * Ends the current player session and captures any final data, such as time spent and comments.
+//   *
+//   * @param comments comments provided by the player about the level
+//   */
+//  public void endPlayerSession(String comments, long endTime) {
+//    if (playerData != null) {
+//      long timeSpent = endTime - startTime;
+//      playerData.setTimeSpent(timeSpent);
+//      playerData.setComments(comments);
+//      dataManager.savePlayerData(playerData); // Persist player data to MongoDB
+//    } else {
+//      System.err.println("No player session started.");
+//    }
+//  }
 
-  /**
-   * Ends the current player session and captures any final data, such as time spent and comments.
-   *
-   * @param comments comments provided by the player about the level
-   */
-  public void endPlayerSession(String comments, long endTime) {
-    if (playerData != null) {
-      long timeSpent = endTime - startTime;
-      playerData.setTimeSpent(timeSpent);
-      playerData.setComments(comments);
-      dataManager.savePlayerData(playerData); // Persist player data to MongoDB
-    } else {
-      System.err.println("No player session started.");
-    }
-  }
 }

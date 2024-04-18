@@ -14,7 +14,7 @@ public class SceneController {
   private static final int WIDTH = 1500;
   private static final int HEIGHT = 800;
   private final Stage stage;
-  private final PlayerDataController playerDataController;
+  private final DatabaseController databaseController;
   private boolean isGuestSession;
   private Level level;
   private LevelController levelController;
@@ -24,10 +24,10 @@ public class SceneController {
    *
    * @param stage primary stage of JavaFX application
    */
-  public SceneController(Stage stage, PlayerDataController playerDataController, LevelController
+  public SceneController(Stage stage, DatabaseController databaseController, LevelController
       levelController) {
     this.stage = stage;
-    this.playerDataController = playerDataController;
+    this.databaseController = databaseController;
     this.isGuestSession = false;
     this.levelController = levelController;
     this.level = levelController.getLevel();
@@ -41,7 +41,7 @@ public class SceneController {
    */
   public void initializeViews() {
     switchToScene(new StartingScene(this,
-        playerDataController, "English"));
+        databaseController, "English"));
   }
 
   /**
@@ -74,8 +74,8 @@ public class SceneController {
   /**
    * Get player data controller.
    */
-  public PlayerDataController getPlayerDataController() {
-    return playerDataController;
+  public DatabaseController getDatabaseController() {
+    return databaseController;
   }
 
   /**
