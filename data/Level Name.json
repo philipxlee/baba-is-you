@@ -1,3 +1,80 @@
-
-{"levelName":"Level Name","gridSize":{"rows":"10","cols":"10"},"grid":[[["RockVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","FlagTextBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","BabaVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"]]]}
-
+{
+  "levelName": "Level Name",
+  "gridSize": {
+    "rows": "6",
+    "cols": "3"
+  },
+  "grid": [
+    [
+      [
+        "EmptyVisualBlock",
+        "StopTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ],
+    [
+      [
+        "EmptyVisualBlock",
+        "WinTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ],
+    [
+      [
+        "EmptyVisualBlock",
+        "WinTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ],
+    [
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "FlagTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ],
+    [
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "IsTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ],
+    [
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ]
+  ]
+}

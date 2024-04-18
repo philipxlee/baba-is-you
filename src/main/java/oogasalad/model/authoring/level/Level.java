@@ -1,7 +1,9 @@
 package oogasalad.model.authoring.level;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 import oogasalad.model.authoring.block.Block;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
@@ -35,22 +37,39 @@ public class Level implements Observable<Level> {
    * @param blockType New block type.
    * @throws Exception Throws exception if block type is invalid (not in properties file).
    */
-  public void setCell(int row, int col, String blockType) throws Exception {
-    grid.setCell(row, col, blockType);
+  public void addBlockToCell(int row, int col, String blockType) throws Exception {
+    grid.addBlockToCell(row, col, blockType);
+  }
+
+  public void removeBlockFromCell(int row, int col) throws Exception {
+    grid.removeBlockFromCell(row, col);
   }
 
   /**
-   * Returns a 2D grid of block types (strings) representing the current state of the grid.
+   * Returns a 3D grid of block types (strings) representing the current state of the grid.
    *
-   * @return 2D array of strings representing the grid.
+   * @return 3D List of strings representing the grid.
    */
-  public String[][] getParsedGrid() {
-    String[][] parsedGrid = new String[levelMetadata.rows()][levelMetadata.cols()];
+  public List<List<List<String>>> getParsedGrid() {
+    // Initialize a 3D list to dynamically handle varying numbers of blocks per stack
+    List<List<List<String>>> dynamicGrid = new ArrayList<>();
 
-    int row = 0;
-    int col = 0;
-    for (Block block : grid) {
-      parsedGrid[row][col] = block.type().name();
+    // Iterate through the entire grid using the iterator
+    for (int row = 0; row < levelMetadata.rows(); row++) {
+      List<List<String>> rowList = new ArrayList<>();
+      for (int col = 0; col < levelMetadata.cols(); col++) {
+        rowList.add(new ArrayList<>());
+      }
+      dynamicGrid.add(rowList);
+    }
+
+    Iterator<Stack<Block>> it = grid.iterator();
+    int row = 0, col = 0;
+    while (it.hasNext()) {
+      Stack<Block> blockStack = it.next();
+      for (Block block : blockStack) {
+        dynamicGrid.get(row).get(col).add(block.type().name());
+      }
       col++;
       if (col == levelMetadata.cols()) {
         col = 0;
@@ -58,7 +77,7 @@ public class Level implements Observable<Level> {
       }
     }
 
-    return parsedGrid;
+    return dynamicGrid;
   }
 
   /**

@@ -35,13 +35,13 @@ public class LevelControllerTest {
   @Test
   public void testSetCellValidBlock() {
     // Assuming "validBlockName" is considered valid by the mocked BlockTypeManager
-    assertDoesNotThrow(() -> levelController.setCell(1, 1, "EmptyVisualBlock"));
+    assertDoesNotThrow(() -> levelController.addBlockToCell(1, 1, "EmptyVisualBlock"));
   }
 
   @Test
   public void testSetCellInvalidBlock() {
     Exception exception = assertThrows(Exception.class, () -> {
-      levelController.setCell(1, 1, "invalidBlockName");
+      levelController.addBlockToCell(1, 1, "invalidBlockName");
     });
 
     assertTrue(exception.getMessage().contains("Invalid block type"));
