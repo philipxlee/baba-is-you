@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.controller.authoring.SceneController;
-import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 
 public class AuthoringEnvironment extends Application {
