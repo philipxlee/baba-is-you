@@ -3,6 +3,7 @@ package oogasalad.model.authoring.level;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 import oogasalad.model.authoring.block.Block;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
@@ -43,9 +44,9 @@ public class Level implements Observable<Level> {
   /**
    * Returns a 3D grid of block types (strings) representing the current state of the grid.
    *
-   * @return 3D array of strings representing the grid.
+   * @return 3D List of strings representing the grid.
    */
-  public String[][][] getParsedGrid() {
+  public List<List<List<String>>> getParsedGrid() {
     // Initialize a 3D list to dynamically handle varying numbers of blocks per stack
     List<List<List<String>>> dynamicGrid = new ArrayList<>();
 
@@ -58,11 +59,13 @@ public class Level implements Observable<Level> {
       dynamicGrid.add(rowList);
     }
 
-    Iterator<Block> it = grid.iterator();
+    Iterator<Stack<Block>> it = grid.iterator();
     int row = 0, col = 0;
     while (it.hasNext()) {
-      Block block = it.next();
-      dynamicGrid.get(row).get(col).add(block.type().name());
+      Stack<Block> blockStack = it.next();
+      for (Block block : blockStack) {
+        dynamicGrid.get(row).get(col).add(block.type().name());
+      }
       col++;
       if (col == levelMetadata.cols()) {
         col = 0;
@@ -70,16 +73,7 @@ public class Level implements Observable<Level> {
       }
     }
 
-    // Convert the dynamic list to a fixed size 3D array
-    String[][][] parsedGrid = new String[levelMetadata.rows()][levelMetadata.cols()][];
-    for (int i = 0; i < levelMetadata.rows(); i++) {
-      for (int j = 0; j < levelMetadata.cols(); j++) {
-        List<String> cellBlocks = dynamicGrid.get(i).get(j);
-        parsedGrid[i][j] = cellBlocks.toArray(new String[0]); // Convert list to array
-      }
-    }
-
-    return parsedGrid;
+    return dynamicGrid;
   }
 
   /**
