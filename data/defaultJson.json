@@ -309,7 +309,8 @@
           "EmptyVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "LavaTextBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -347,6 +348,7 @@
           "EmptyVisualBlock"
         ],
         [
+          "IsTextBlock",
           "EmptyVisualBlock"
         ],
         [
@@ -358,7 +360,8 @@
           "EmptyVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "IsTextBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -398,7 +401,8 @@
           "EmptyVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "MeltTextBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -409,7 +413,8 @@
           "EmptyVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "HotTextBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -626,10 +631,12 @@
           "EmptyVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "LavaVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "LavaVisualBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -671,19 +678,20 @@
           "EmptyVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "LavaVisualBlock"
         ],
         [
           "EmptyVisualBlock",
-          "WallVisualBlock"
+          "LavaVisualBlock"
         ],
         [
           "EmptyVisualBlock",
-          "WallVisualBlock"
+          "LavaVisualBlock"
         ],
         [
           "EmptyVisualBlock",
-          "WallVisualBlock"
+          "LavaVisualBlock"
         ],
         [
           "EmptyVisualBlock"

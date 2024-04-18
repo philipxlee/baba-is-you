@@ -21,6 +21,7 @@ import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.CommentScene;
 import oogasalad.view.gameplay.LeaderboardScene;
 
 /**
@@ -111,11 +112,20 @@ public class InteractionPane {
     HBox loadAndReset = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset)), width);
     display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadAndReset,
         leaderboardButton);
+    // Setup comments display
+    VBox commentButton = setupCommentButton();
+
+    HBox stats = factory.wrapInHBox(factory.generateCaption(""), width);
+    stats.getChildren().addAll(leaderboardButton, commentButton);
+
+    // Combine the header and arrow keys into a single display layout
+
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
 
     root.getChildren().addAll(background, display);
+
   }
 
   private VBox setupArrowKeys() {
@@ -177,6 +187,16 @@ public class InteractionPane {
         "ViewBoard", "white-button", language));
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
+    buttonContainer.setAlignment(Pos.CENTER);
+    buttonContainer.setPadding(new Insets(15, 0, 0, 0));
+    return buttonContainer;
+  }
+
+  private VBox setupCommentButton() {
+    Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
+        "ViewComments", "white-button"));
+    commentButton.setOnAction(event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
+    VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
     return buttonContainer;
