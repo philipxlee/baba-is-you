@@ -84,9 +84,9 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
   }
 
   /**
-   * Iterator over the blocks of the grid.
+   * Iterator over the Stack of blocks in each grid position.
    *
-   * @return Iterator<Block>.
+   * @return Iterator<Stack<Block>>.
    */
   @Override
   public Iterator<Stack<Block>> iterator() {
