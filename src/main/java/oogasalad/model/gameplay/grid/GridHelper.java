@@ -1,29 +1,235 @@
 package oogasalad.model.gameplay.grid;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.strategies.attributes.Controllable;
+import oogasalad.model.gameplay.strategies.attributes.Pushable;
+import oogasalad.model.gameplay.strategies.attributes.Stoppable;
+import oogasalad.model.gameplay.strategies.attributes.Winnable;
+
 
 public class GridHelper {
-
-  public GridHelper() {
-
+  protected final List<AbstractBlock>[][] grid;
+  private final BlockFactory factory;
+  public GridHelper(int rows, int cols) {
+    this.grid = new ArrayList[rows][cols];
+    this.factory = new BlockFactory();
   }
 
-  public List<int[]> findControllableBlock(Grid grid) {
-    List<int[]> AllControllableBlocks = new ArrayList<>();
-    for (int i = 0; i < grid.gridWidth(); i++) {
-      for (int j = 0; j < grid.gridHeight(); j++) {
-        for (int k = 0; k < grid.cellSize(i, j); k++) {
-          AbstractBlock block = grid.getBlock(i, j, k);
-          if (block != null && block.hasBehavior(Controllable.class)) {
-            int[] a = {i, j, k};
-            AllControllableBlocks.add(a);
+
+  /**
+   * Moves a block from one cell to another.
+   *
+   * @param fromI The row index of the source cell.
+   * @param fromJ The column index of the source cell.
+   * @param fromK The index of the block in the source cell.
+   * @param ToI   The row index of the target cell.
+   * @param ToJ   The column index of the target cell.
+   */
+  public void moveBlock(int fromI, int fromJ, int fromK, int ToI, int ToJ) {
+    AbstractBlock block = grid[fromI][fromJ].get(fromK);
+    grid[ToI][ToJ].add(block);
+    grid[fromI][fromJ].remove(fromK);
+
+    // Important: Set the row and col of visual blocks to the new position if moved
+    if (!block.isTextBlock()) {
+      block.setRow(ToI);
+      block.setCol(ToJ);
+    }
+
+    if (grid[fromI][fromJ].isEmpty()) {
+      addBlock(fromI, fromJ, "EmptyVisualBlock");
+    }
+  }
+
+
+  /**
+   * Resets all behaviors for blocks in the grid.
+   */
+  public void resetAllBlocks() {
+    //List<AbstractBlock>[][] grid = getGrid();
+    for (List<AbstractBlock>[] blocksRow : grid) {
+      for (List<AbstractBlock> cell : blocksRow) {
+        for (AbstractBlock block : cell) {
+          if (!block.isTextBlock()) {
+            block.resetAllBehaviors();
           }
         }
       }
     }
-    return AllControllableBlocks;
   }
+
+  /**
+   * Adds a block to the specified cell in the grid.
+   *
+   * @param i         The row index of the cell.
+   * @param j         The column index of the cell.
+   * @param BlockType The type of block to add.
+   */
+  private void addBlock(int i, int j, String BlockType) {
+    grid[i][j].add(factory.createBlock(BlockType, i, j));
+  }
+
+  /**
+   * Checks if a block can be moved to the margin of the grid.
+   *
+   * @param endI                   The target row index for the block.
+   * @param endJ                   The target column index for the block.
+   * @param endK                   The index of the block in the target cell.
+   * @param controllableintialI  The initial row index of the controllable block.
+   * @param controllableintialJ  The initial column index of the controllable block.
+   * @param controllableinitialK  The index of the controllable block in its initial cell.
+   * @return True if the block can be moved to the margin, false otherwise.
+   */
+  public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI,
+                                   int controllableintialJ, int controllableinitialK) {
+    boolean already_in_margin = isAlreadyInMargin(controllableintialI, controllableintialJ);
+    if (already_in_margin) {
+      return true;
+    }
+    if (!isMovingToMargin(endI, endJ)) {
+      return true;
+    }
+    if ((endI == grid.length - 1 || endI == 0)) {
+      int indexI;
+      indexI = (endI == 0) ? endI + 1 : endI - 1;
+      return grid[indexI][endJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+    } else if ((endJ == grid[0].length - 1 || endJ == 0)) {
+      int indexJ;
+      indexJ = (endJ == 0) ? endJ + 1 : endJ - 1;
+      return grid[endI][indexJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+    } else {
+      return false;
+    }
+  }
+
+
+  /**
+   * Finds all controllable blocks in the grid.
+   *
+   * @return A list of arrays containing the row, column, and index of each controllable block.
+   */
+  public List<int[]> findControllableBlock() { //record class
+    List<int[]> allControllableBlocks = new ArrayList<>();
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if (block != null && block.hasBehavior(Controllable.class)) {
+            int[] a = {i, j, k};
+            allControllableBlocks.add(a);
+          }
+        }
+      }
+    }
+    return allControllableBlocks;
+  }
+
+  /**
+   * Retrieves the indices of all pushable blocks in a cell.
+   *
+   * @param i The row index of the cell.
+   * @param j The column index of the cell.
+   * @return A list containing the indices of all pushable blocks in the cell.
+   */
+  public List<Integer> allPushableBlocksIndex(int i,
+                                              int j) { //Cant use stream and ForEach because we want to ensure order of element in arraylist are kept same way in indiceslist
+    List<Integer> indicesList = new ArrayList<>();
+    for (int index = 0; index < grid[i][j].size(); index++) {
+      AbstractBlock block = grid[i][j].get(index);
+      if (block.getBlockName().endsWith("TextBlock") || (
+              block.getBlockName().endsWith("VisualBlock") && block.hasBehavior(Pushable.class))) {
+        indicesList.add(index);
+      }
+    }
+
+    return indicesList;
+  }
+
+  /**
+   * Checks if a cell contains a block with the Controllable behavior.
+   *
+   * @param i The row index of the cell.
+   * @param j The column index of the cell.
+   * @return True if the cell contains a block with the Controllable behavior, false otherwise.
+   */
+
+  public boolean cellHasControllable(int i, int j) {
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+  }
+
+  /**
+   * Checks if a cell contains a block with the Winnable behavior.
+   *
+   * @param i The row index of the cell.
+   * @param j The column index of the cell.
+   * @return True if the cell contains a block with the Winnable behavior, false otherwise.
+   */
+  public boolean cellHasWinning(int i, int j) {
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Winnable.class));
+  }
+
+
+  /**
+   * Checks if a cell contains a block with the Stoppable behavior.
+   *
+   * @param i The row index of the cell.
+   * @param j The column index of the cell.
+   * @return True if the cell contains a block with the Stoppable behavior, false otherwise.
+   */
+
+  public boolean cellHasStoppable(int i, int j) {
+    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Stoppable.class));
+  }
+
+  /**
+   * Checks if a cell contains a block with the Pushable behavior or a TextBlock.
+   *
+   * @param i The row index of the cell.
+   * @param j The column index of the cell.
+   * @return True if the cell contains a block with the Pushable behavior or a TextBlock, false otherwise.
+   */
+  public boolean cellHasPushable(int i, int j) {
+    boolean hasPushable = false;
+    boolean textBlock = false;
+    for (AbstractBlock block : grid[i][j]) {
+      if (block.getBlockName().endsWith("TextBlock")) {
+        textBlock = true;
+      }
+      if (block.hasBehavior(Pushable.class)) {
+        hasPushable = true;
+      }
+    }
+    return hasPushable || textBlock;
+  }
+
+  /**
+   * Checks if the specified indices represent a cell that is already at the margin of the grid.
+   *
+   * @param i The row index of the cell.
+   * @param j The column index of the cell.
+   * @return True if the cell is already at the margin, false otherwise.
+   */
+  private boolean isAlreadyInMargin(int i, int j) {
+    return ((i == grid.length - 1 || i == 0) || (j == grid[0].length - 1 || j == 0));
+  }
+
+  /**
+   * Checks if moving to the specified indices would cause the cell to be at the margin of the grid.
+   *
+   * @param nextI The next row index.
+   * @param nextJ The next column index.
+   * @return True if moving to the specified indices would lead to the cell being at the margin, false otherwise.
+   */
+  private boolean isMovingToMargin(int nextI, int nextJ) {
+    return ((nextI == grid.length - 1 || nextI == 0) || (nextJ == grid[0].length - 1
+            || nextJ == 0));
+  }
+
+
+
 }
