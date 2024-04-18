@@ -113,12 +113,12 @@ public class StartingScene implements Scene {
     });
     ComboBox<String> switchLanguage = factory.makeComboBox(new WidgetConfiguration(200, 40,
         "SwitchLanguage", "combo-box", language), new ArrayList<>(Arrays.asList("English",
-        "Spanish", language)), language);
+        "Spanish")), language);
     //TODO: Change to be a drop down
     switchLanguage.setOnAction(event -> {
       language = switchLanguage.getValue();
-      sceneController.switchToScene(new StartingScene(sceneController, playerDataController));
       sceneController.setLanguage(language);
+      sceneController.switchToScene(new StartingScene(sceneController, playerDataController));;
     });
     startGame(start);
     guestButton.setOnAction(event -> sceneController.beginGame(true));
