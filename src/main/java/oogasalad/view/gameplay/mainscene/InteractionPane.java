@@ -79,11 +79,11 @@ public class InteractionPane {
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
-    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width);
+    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width, 20);
     arrowKeysBox.setAlignment(Pos.CENTER);
 
     Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
-    HBox header = factory.wrapInHBox(title, width);
+    HBox header = factory.wrapInHBox(title, width, 20);
 
     Button reset = factory.makeButton(new WidgetConfiguration(150, 40,
         "Reset", "white-button", language));
@@ -115,7 +115,7 @@ public class InteractionPane {
     // Setup comments display
     VBox commentButton = setupCommentButton();
 
-    HBox stats = factory.wrapInHBox(factory.generateCaption(""), width);
+    HBox stats = factory.wrapInHBox(factory.generateCaption(""), width, 20);
     stats.getChildren().addAll(leaderboardButton, commentButton);
 
     // Combine the header and arrow keys into a single display layout
