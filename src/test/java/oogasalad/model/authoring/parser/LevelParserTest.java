@@ -50,13 +50,9 @@ class LevelParserTest {
     JsonArray jsonArray = jsonManager.getJsonArray(metadataJson, "grid");
     JsonArray firstLayer = jsonArray.get(0).getAsJsonArray();
     JsonArray firstRow = firstLayer.get(0).getAsJsonArray();
-
     String firstCell = firstRow.get(0).getAsString();
-    String secondCell = firstRow.get(1).getAsString();
 
     assertEquals("EmptyVisualBlock", firstCell, "The first cell is not an"
-        + " EmptyVisualBlock");
-    assertEquals("EmptyVisualBlock", secondCell, "The second cell is not an"
         + " EmptyVisualBlock");
   }
 }

@@ -3,6 +3,7 @@ package oogasalad.controller.authoring;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
+import java.util.List;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
@@ -46,7 +47,7 @@ public class LevelParser {
    * @return A JsonArray representing the grid of the level.
    */
   private JsonArray turnGridToJson(Level level) {
-    String[][] levelGrid = level.getParsedGrid();
+    List<List<List<String>>> levelGrid = level.getParsedGrid();
 
     return convertGridToJsonArray(levelGrid);
   }
@@ -77,19 +78,26 @@ public class LevelParser {
    * @return A JsonArray where the first element is a JsonArray representing the single layer of the
    * grid.
    */
-  private JsonArray convertGridToJsonArray(String[][] grid) {
-    JsonArray singleLayerArray = new JsonArray();
-
-    for (String[] row : grid) {
-      JsonArray rowArray = new JsonArray();
-      for (String cell : row) {
-        rowArray.add(cell);
-      }
-      singleLayerArray.add(rowArray);
-    }
-
+  private JsonArray convertGridToJsonArray(List<List<List<String>>> grid) {
     JsonArray layersArray = new JsonArray();
-    layersArray.add(singleLayerArray);
+
+    // Iterate over each layer
+    for (List<List<String>> layer : grid) {
+      JsonArray singleLayerArray = new JsonArray();
+
+      // Iterate over each row in the layer
+      for (List<String> row : layer) {
+        JsonArray rowArray = new JsonArray();
+
+        // Iterate over each cell in the row
+        for (String cell : row) {
+          rowArray.add(cell);
+        }
+        singleLayerArray.add(rowArray);
+      }
+
+      layersArray.add(singleLayerArray);
+    }
 
     return layersArray;
   }

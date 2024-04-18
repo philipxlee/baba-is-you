@@ -2,6 +2,7 @@ package oogasalad.controller.gameplay;
 
 import java.util.Date;
 import oogasalad.database.DataManager;
+import oogasalad.database.LeaderboardPlayerData;
 import oogasalad.database.PlayerData;
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class PlayerDataController {
   private static final int MILLISECOND_OFFSET = 1000;
   private static final long DEFAULT_TIME_SPENT = 0;
   private static final String DEFAULT_COMMENTS = "No comments";
+  private static final String TEMP_LEVEL_NAME = "Default Level";
+  private static final String DEFAULT_REPLY = "No reply";
   private static final Date DEFAULT_DATE = new Date();
   private DataManager dataManager;
   private PlayerData playerData;
@@ -36,8 +39,8 @@ public class PlayerDataController {
    */
   public boolean startNewPlayer(String username) {
     if (dataManager.isUsernameAvailable(username)) {
-      this.playerData = new PlayerData(username, DEFAULT_TIME_SPENT, DEFAULT_COMMENTS, DEFAULT_DATE);
-      this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // make to seconds
+      this.playerData = new PlayerData(username, DEFAULT_COMMENTS, DEFAULT_DATE, TEMP_LEVEL_NAME, DEFAULT_REPLY, DEFAULT_TIME_SPENT);
+      this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
       return true;
     } else {
       return false;
@@ -59,9 +62,19 @@ public class PlayerDataController {
    *
    * @return a list of PlayerData objects for the top players.
    */
-  public List<PlayerData> getTopPlayers() {
+  public List<LeaderboardPlayerData> getTopPlayers() {
     return dataManager.getTopPlayers();
   }
+
+  /**
+   * Retrieves all comments for a specific level.
+   *
+   * @param levelName the name of the level to retrieve comments for
+   */
+  public List<PlayerData> getCommentsByLevel(String levelName) {
+    return dataManager.getCommentsByLevel(levelName);
+  }
+
 
   /**
    * Ends the current player session and captures any final data, such as time spent and comments.

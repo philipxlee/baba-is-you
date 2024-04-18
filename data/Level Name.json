@@ -1,46 +1,58 @@
 {
   "levelName": "Level Name",
   "gridSize": {
-    "rows": "4",
+    "rows": "2",
     "cols": "7"
   },
   "grid": [
     [
       [
-        "BabaTextBlock",
-        "WallTextBlock",
         "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock"
+        "IsTextBlock"
       ],
       [
         "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "FlagVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
+        "YouTextBlock"
+      ],
+      [
         "EmptyVisualBlock"
       ],
       [
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
         "EmptyVisualBlock"
       ],
       [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ],
+    [
+      [
         "EmptyVisualBlock",
+        "PushTextBlock"
+      ],
+      [
         "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "EmptyVisualBlock",
-        "WallVisualBlock"
+        "YouTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
       ]
     ]
   ]

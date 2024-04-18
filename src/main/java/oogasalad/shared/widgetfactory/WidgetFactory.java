@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -46,6 +47,12 @@ public class WidgetFactory {
   public Text generateLine(WidgetConfiguration configuration) {
     Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("paragraph");
+    return line;
+  }
+
+  public Text generateSubHeader(String content) {
+    Text line = new Text(content);
+    line.getStyleClass().add("sub-header");
     return line;
   }
 
@@ -109,6 +116,10 @@ public class WidgetFactory {
     return button;
   }
 
+  public void removeInsets(Button btn) {
+    btn.setPadding(new Insets(0));
+  }
+
   /**
    * For dynamic buttons showing player information or other non-property information
    * @param configuration
@@ -146,6 +157,8 @@ public class WidgetFactory {
         configuration.getHeight());
     popup.setScene(scene);
     popup.setTitle(configuration.getPropertyContents());
+    scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
+        .toExternalForm());
     popup.show();
   }
 

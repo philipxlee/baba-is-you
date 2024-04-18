@@ -13,7 +13,7 @@ import oogasalad.shared.observer.Observer;
  * Grid holds the state of a grid of blocks. Implements observable to provide notifications on state
  * changes. Implements Iterable to provide iterator interface.
  */
-public class Grid implements Observable<Grid>, Iterable<Block> {
+public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
 
   private final BlockFactory blockFactory;
   private final Stack<Block>[][] cells;
@@ -64,6 +64,21 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
   }
 
   /**
+   * Remove last block from cell at given row and col position from 2D Array of Stacks.
+   *
+   * @param row The row of the cell.
+   * @param col The col of the cell.
+   * @throws Exception Throws exception if row or col is invalid.
+   */
+  public void removeBlockFromCell(int row, int col) throws Exception {
+    if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
+      throw new Exception("Invalid Row/Col Position: " + row + " " + col);
+    }
+    cells[row][col].pop();
+    notifyObserver();
+  }
+
+  /**
    * Add Grid observer to list of observers.
    *
    * @param o The Observer to add to notification service.
@@ -84,49 +99,12 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
   }
 
   /**
-   * Iterator over the blocks of the grid.
+   * Iterator over the Stack of blocks in each grid position.
    *
-   * @return Iterator<Block>.
+   * @return Iterator<Stack < Block>>.
    */
   @Override
-  public Iterator<Block> iterator() {
-    return new Iterator<>() {
-      private int row = 0, col = 0;
-
-      /**
-       * Checks if there is another block in iterator.
-       *
-       * @return Boolean if there is at least one block left.
-       */
-      @Override
-      public boolean hasNext() {
-        while (row < cells.length && (col >= cells[row].length || cells[row][col].isEmpty())) {
-          col++;
-          if (col >= cells[row].length) {
-            col = 0;
-            row++;
-          }
-        }
-        return row < cells.length;
-      }
-
-      /**
-       * Returns next block in iterator and updates pointers.
-       *
-       * @return Next block.
-       */
-      @Override
-      public Block next() {
-        Block block = cells[row][col].pop();
-        if (cells[row][col].isEmpty()) {
-          col++;
-          if (col >= cells[row].length) {
-            col = 0;
-            row++;
-          }
-        }
-        return block;
-      }
-    };
+  public Iterator<Stack<Block>> iterator() {
+    return new GridIterator(cells);
   }
 }

@@ -57,5 +57,21 @@
   "WallVisualBlock": {
     "imagePath": "/images/WallVisualBlock.png",
     "category" : ["Visual"]
+  },
+  "LavaVisualBlock": {
+    "imagePath": "/images/LavaVisualBlock.png",
+    "category" : ["Visual"]
+  },
+  "MeltTextBlock": {
+    "imagePath": "/images/MeltTextBlock.png",
+    "category" : ["Text"]
+  },
+  "HotTextBlock": {
+    "imagePath": "/images/HotTextBlock.png",
+    "category" : ["Text"]
+  },
+  "LavaTextBlock": {
+    "imagePath": "/images/LavaTextBlock.png",
+    "category" : ["Text"]
   }
 }
