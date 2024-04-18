@@ -1,5 +1,6 @@
 package oogasalad.controller.gameplay;
 
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import oogasalad.database.DataManager;
 import oogasalad.database.DatabaseConfig;

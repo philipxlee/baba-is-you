@@ -3,24 +3,14 @@ package oogasalad.view.gameplay;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
-import java.lang.module.Configuration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.database.LeaderboardPlayerData;
 import oogasalad.database.PlayerData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
@@ -30,23 +20,23 @@ import oogasalad.view.gameplay.mainscene.MainScene;
 /**
  * Scene that displays the leaderboard.
  */
-public class LeaderboardScene implements Scene {
+public class CommentScene implements Scene {
 
+  private final static String LEVEL_NAME = "Default Level";
   private final WidgetFactory factory;
   private final SceneController sceneController;
   private javafx.scene.Scene scene;
   private VBox root;
   private LevelController levelController;
   private String language;
-  private int width;
-  private int height;
+
   /**
    * Constructor for LeaderboardScene.
    *
    * @param factory WidgetFactory
    * @param sceneController SceneController
    */
-  public LeaderboardScene(WidgetFactory factory, SceneController sceneController) {
+  public CommentScene(WidgetFactory factory, SceneController sceneController) {
     this.factory = factory;
     this.sceneController = sceneController;
     this.levelController = sceneController.getLevelController();
@@ -61,14 +51,12 @@ public class LeaderboardScene implements Scene {
    */
   @Override
   public void initializeScene(int width, int height) {
-    this.width = width;
-    this.height = height;
     this.root = new VBox(10);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
-    populateLeaderboard();
+    populateComments();
   }
 
   /**
@@ -84,37 +72,31 @@ public class LeaderboardScene implements Scene {
   /**
    * Populate the leaderboard.
    */
-  private void populateLeaderboard() {
-    Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard", language));
+  private void populateComments() {
+    Text header = factory.generateHeader(new WidgetConfiguration("Comments", language));
+    List<PlayerData> comments = sceneController.getPlayerDataController().getCommentsByLevel(LEVEL_NAME);  // Assuming this method exists
 
-    List<LeaderboardPlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
-    VBox leaderboardList = new VBox(5);
-    leaderboardList.setAlignment(Pos.CENTER);
+    VBox commentsList = new VBox(5);
+    commentsList.setAlignment(Pos.CENTER);
 
-    int num=1;
-    for (LeaderboardPlayerData player : topPlayers) {
-      WidgetConfiguration configuration = new WidgetConfiguration(300, 50,
-          "row-cell", language);
-      Button username = factory.makeButton(configuration, ""+num+". " + player.getUsername());
-      Button timeSpent = factory.makeButton(configuration, ""+player.getTimeSpent()+" seconds");
-      Button date = factory.makeButton(configuration, player.getDate());
-      Button levelName = factory.makeButton(configuration, player.getLevelName());
-      List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date, levelName));
-      for (Node btn: row) {
-        btn.setDisable(true);
-      }
-      HBox rowBtns = factory.wrapInHBox(row, width-400);
+    for (PlayerData comment : comments) {
+      String commentText = String.format("%s: %s", comment.getUsername(), comment.getComments());
+      Button commentButton = factory.makeButton(new WidgetConfiguration(200, 50, "white-button",
+          language), commentText);
+//      commentButton.setOnAction(event -> toggleCommentInput(commentButton, comment));
 
-      leaderboardList.getChildren().add(rowBtns);
-      num++;
+      commentsList.getChildren().add(commentButton);
     }
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
         "Back", "button", language));
-    backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController,
-        levelController)));
+    backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
 
-    root.getChildren().addAll(header, leaderboardList, backButton);
+    root.getChildren().addAll(header, commentsList, backButton);
   }
+
+
+
+
 
 }

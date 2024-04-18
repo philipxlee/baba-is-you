@@ -6,72 +6,72 @@ import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
-import oogasalad.model.gameplay.strategies.becomes.BecomesEmpty;
+import oogasalad.model.gameplay.strategies.becomes.BecomesBaba;
 import oogasalad.model.gameplay.strategies.becomes.BecomesLava;
 
 /**
- * Visitor pattern for the empty behavior.
+ * Visitor pattern for the lava behavior.
  */
-public class EmptyVisitor implements BlockVisitor {
+public class LavaVisitor implements BlockVisitor {
 
   /**
-   * Adds the empty behavior to the baba block.
+   * Adds the lava behavior to the baba block.
    *
    * @param baba the baba block
    */
   @Override
   public void visit(BabaVisualBlock baba) {
-    baba.addBehavior(new BecomesEmpty());
+    baba.addBehavior(new BecomesLava());
   }
 
   /**
-   * Adds the empty behavior to the wall block.
+   * Adds the lava behavior to the wall block.
    *
    * @param wall the wall block.
    */
   @Override
   public void visit(WallVisualBlock wall) {
-    wall.addBehavior(new BecomesEmpty());
+    wall.addBehavior(new BecomesLava());
   }
 
+
   /**
-   * Adds the empty behavior to the rock block.
+   * Adds the lava behavior to the rock block.
    *
    * @param rock the rock block.
    */
   @Override
   public void visit(RockVisualBlock rock) {
-    rock.addBehavior(new BecomesEmpty());
+    rock.addBehavior(new BecomesLava());
   }
 
   /**
-   * Adds the empty behavior to the flag block.
+   * Adds the lava behavior to the flag block.
    *
    * @param flag the flag block.
    */
   @Override
   public void visit(FlagVisualBlock flag) {
-    flag.addBehavior(new BecomesEmpty());
+    flag.addBehavior(new BecomesLava());
   }
 
   /**
-   * Adds the empty behavior to the empty block.
+   * Adds the lava behavior to the empty block.
    *
    * @param empty the empty block.
    */
   @Override
   public void visit(EmptyVisualBlock empty) {
-    empty.addBehavior(new BecomesEmpty());
+    empty.addBehavior(new BecomesLava());
   }
 
   /**
-   * Adds the empty behavior to the lava block.
+   * Adds the lava behavior to the lava block.
    *
    * @param lava the lava block.
    */
   @Override
   public void visit(LavaVisualBlock lava) {
-    lava.addBehavior(new BecomesEmpty());
+    lava.addBehavior(new BecomesLava());
   }
-
 }
