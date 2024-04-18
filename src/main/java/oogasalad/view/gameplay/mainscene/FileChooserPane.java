@@ -118,7 +118,7 @@ public class FileChooserPane {
         flowPane.getChildren().add(imageAndLabel);
       }
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+//      System.out.println(e.getMessage());
     }
   }
 

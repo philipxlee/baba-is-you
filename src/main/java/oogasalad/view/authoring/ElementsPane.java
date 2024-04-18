@@ -1,6 +1,7 @@
 package oogasalad.view.authoring;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -45,30 +46,28 @@ public class ElementsPane {
   }
 
   private void initializeElementsLayout() {
-    layout = new VBox(30);
+    layout = new VBox(15);
 
     Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
-    HBox header = factory.wrapInHBox(title, (int) layout.getWidth());
+    Text subtitle = factory.generateSubHeader("Authoring Environment");
+    VBox header = factory.wrapInVBox(new ArrayList<Node>(Arrays.asList(title, subtitle)),
+        (int) layout.getHeight());
+    header.setSpacing(0);
 
     Text descriptionLabel = factory.generateLine(new WidgetConfiguration
         ("DragInstructions", language));
 
     // Category selection setup
-    ComboBox<String> categoryComboBox = new ComboBox<>();
-
-    categoryComboBox.getItems().addAll("Visual", "Text", "All");
-    categoryComboBox.setValue("All"); // Default value
-    categoryComboBox.setStyle("-fx-font-size: 20px; -fx-background-color: #ffffff; -fx-pref-width: 300px;");
-
+    ComboBox<String> categoryComboBox = factory.makeComboBox(new WidgetConfiguration(200, 50,
+        "combo-box-white", language), new ArrayList<>(Arrays.asList("Visual", "Text", "All")),
+        "All");
 
     // Difficulty chooser setup
-    ComboBox<String> difficultyComboBox = new ComboBox<>();
-    difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard"); // Example difficulty levels
-    difficultyComboBox.setValue("Medium"); // Default value
-    difficultyComboBox.setStyle("-fx-font-size: 20px; -fx-background-color: #ffffff; -fx-pref-width: 300px;");
+    ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50,
+            "combo-box-white", language), new ArrayList<>(Arrays.asList("Easy", "Medium",
+        "Hard")), "Medium");
 
-
-    HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth());
+    HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth(), 15);
 
 
     // Create a container for blocks
@@ -94,12 +93,12 @@ public class ElementsPane {
 
     // Button for changing grid size
     Button changeGridSizeButton = factory.makeButton(new WidgetConfiguration(
-        200, 40, "ChangeGridSize", "white-button", language));
+        170, 40, "ChangeGridSize", "white-button", language));
     changeGridSizeDialog(changeGridSizeButton);
 
     // Button for toggling remove mode
     Button removeButton = factory.makeButton(new WidgetConfiguration(
-        200, 30, "RemoveBlock", "white-button", language));
+        170, 30, "RemoveBlock", "white-button", language));
 
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
@@ -114,8 +113,9 @@ public class ElementsPane {
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
     buttons.add(removeButton);
+    buttons.add(difficultyComboBox);
     HBox buttonsHBox = factory.wrapInHBox(buttons, (int) layout.getWidth());
-    buttonsHBox.setSpacing(50);
+    buttonsHBox.setSpacing(20);
 
     // Scroll pane for blocks container
     scrollPane = new ScrollPane(blocksContainer);
@@ -132,11 +132,12 @@ public class ElementsPane {
       levelController.serializeLevel();
     });
 
-    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth());
+    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth(), 15);
 
     layout.getStyleClass().add("elements-background");
 
-    layout.getChildren().addAll(header, categoryComboBox, difficultyComboBox, buttonsHBox, descriptionBox, scrollPane, jsonBox);
+    layout.getChildren().addAll(header, buttonsHBox, factory.wrapInHBox(categoryComboBox,
+        (int)layout.getWidth(), 15), descriptionBox, scrollPane, jsonBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
   }
 
