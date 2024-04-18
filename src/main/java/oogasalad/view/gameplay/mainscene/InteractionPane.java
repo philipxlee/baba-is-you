@@ -123,6 +123,7 @@ public class InteractionPane {
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
+    display.getChildren().add(stats);
 
     root.getChildren().addAll(background, display);
 
@@ -194,7 +195,7 @@ public class InteractionPane {
 
   private VBox setupCommentButton() {
     Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewComments", "white-button"));
+        "ViewComments", "white-button", language));
     commentButton.setOnAction(event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
     VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);

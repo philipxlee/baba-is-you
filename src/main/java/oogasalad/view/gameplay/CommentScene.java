@@ -15,6 +15,7 @@ import oogasalad.database.PlayerData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
  * Scene that displays the leaderboard.
@@ -27,6 +28,7 @@ public class CommentScene implements Scene {
   private javafx.scene.Scene scene;
   private VBox root;
   private LevelController levelController;
+  private String language;
 
   /**
    * Constructor for LeaderboardScene.
@@ -38,6 +40,7 @@ public class CommentScene implements Scene {
     this.factory = factory;
     this.sceneController = sceneController;
     this.levelController = sceneController.getLevelController();
+    this.language = sceneController.getLanguage();
   }
 
   /**
@@ -70,7 +73,7 @@ public class CommentScene implements Scene {
    * Populate the leaderboard.
    */
   private void populateComments() {
-    Text header = factory.generateHeader(new WidgetConfiguration("Comments"));
+    Text header = factory.generateHeader(new WidgetConfiguration("Comments", language));
     List<PlayerData> comments = sceneController.getPlayerDataController().getCommentsByLevel(LEVEL_NAME);  // Assuming this method exists
 
     VBox commentsList = new VBox(5);
@@ -78,7 +81,8 @@ public class CommentScene implements Scene {
 
     for (PlayerData comment : comments) {
       String commentText = String.format("%s: %s", comment.getUsername(), comment.getComments());
-      Button commentButton = factory.makeButton(new WidgetConfiguration(200, 50, "white-button"), commentText);
+      Button commentButton = factory.makeButton(new WidgetConfiguration(200, 50, "white-button",
+          language), commentText);
 //      commentButton.setOnAction(event -> toggleCommentInput(commentButton, comment));
 
       commentsList.getChildren().add(commentButton);
