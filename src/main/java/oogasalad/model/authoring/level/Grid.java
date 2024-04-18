@@ -54,7 +54,7 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
    * @param blockType The block type as a string.
    * @throws Exception Throws exception if the block type or cell position is invalid.
    */
-  public void setCell(int row, int col, String blockType) throws Exception {
+  public void addBlockToCell(int row, int col, String blockType) throws Exception {
     if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
       throw new Exception("Invalid Row/Col Position: " + row + " " + col);
     }

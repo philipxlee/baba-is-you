@@ -36,7 +36,7 @@ public class Level implements Observable<Level> {
    * @throws Exception Throws exception if block type is invalid (not in properties file).
    */
   public void setCell(int row, int col, String blockType) throws Exception {
-    grid.setCell(row, col, blockType);
+    grid.addBlockToCell(row, col, blockType);
   }
 
   /**
