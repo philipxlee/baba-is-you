@@ -1,37 +1,14 @@
 {
   "levelName": "Level Name",
   "gridSize": {
-    "rows": "10",
-    "cols": "10"
+    "rows": "6",
+    "cols": "3"
   },
   "grid": [
     [
       [
         "EmptyVisualBlock",
-        "BabaTextBlock"
-      ],
-      [
-        "EmptyVisualBlock",
-        "IsTextBlock"
-      ],
-      [
-        "EmptyVisualBlock",
-        "YouTextBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
+        "StopTextBlock"
       ],
       [
         "EmptyVisualBlock"
@@ -41,214 +18,6 @@
       ]
     ],
     [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock",
-        "FlagVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock",
-        "BabaVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock",
-        "FlagTextBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock",
-        "IsTextBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ]
-    ],
-    [
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
       [
         "EmptyVisualBlock",
         "WinTextBlock"
@@ -258,9 +27,12 @@
       ],
       [
         "EmptyVisualBlock"
-      ],
+      ]
+    ],
+    [
       [
-        "EmptyVisualBlock"
+        "EmptyVisualBlock",
+        "WinTextBlock"
       ],
       [
         "EmptyVisualBlock"
@@ -274,28 +46,8 @@
         "EmptyVisualBlock"
       ],
       [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
+        "EmptyVisualBlock",
+        "FlagTextBlock"
       ],
       [
         "EmptyVisualBlock"
@@ -306,23 +58,14 @@
         "EmptyVisualBlock"
       ],
       [
-        "EmptyVisualBlock"
+        "EmptyVisualBlock",
+        "IsTextBlock"
       ],
       [
         "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
-      [
-        "EmptyVisualBlock"
-      ],
+      ]
+    ],
+    [
       [
         "EmptyVisualBlock"
       ],

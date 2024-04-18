@@ -63,6 +63,14 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
     notifyObserver();
   }
 
+  public void removeBlockFromCell(int row, int col) throws Exception {
+    if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
+      throw new Exception("Invalid Row/Col Position: " + row + " " + col);
+    }
+    cells[row][col].pop();
+    notifyObserver();
+  }
+
   /**
    * Add Grid observer to list of observers.
    *
