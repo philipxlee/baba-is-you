@@ -3,9 +3,12 @@ package oogasalad.model.gameplay.blocks.blockvisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.strategies.attributes.Winnable;
+import oogasalad.model.gameplay.strategies.becomes.BecomesEmpty;
+import oogasalad.model.gameplay.strategies.becomes.BecomesLava;
 
 /**
  * Visitor pattern for the winnable behavior.
@@ -60,5 +63,15 @@ public class WinVisitor implements BlockVisitor {
   @Override
   public void visit(EmptyVisualBlock empty) {
     empty.addBehavior(new Winnable());
+  }
+
+  /**
+   * Adds the winnable behavior to the lava block.
+   *
+   * @param lava the lava block.
+   */
+  @Override
+  public void visit(LavaVisualBlock lava) {
+    lava.addBehavior(new Winnable());
   }
 }
