@@ -32,7 +32,7 @@ public class SceneController {
     this.isGuestSession = false;
     this.levelController = levelController;
     this.level = levelController.getLevel();
-    stage.setTitle("Baba is Us: Game Player");
+    stage.setTitle("Baba Is Us: Game Player");
     stage.setResizable(false);
     stage.show();
     this.language = "English";

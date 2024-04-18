@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -146,6 +147,8 @@ public class WidgetFactory {
         configuration.getHeight());
     popup.setScene(scene);
     popup.setTitle(configuration.getPropertyContents());
+    scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
+        .toExternalForm());
     popup.show();
   }
 
