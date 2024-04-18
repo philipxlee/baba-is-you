@@ -1,7 +1,6 @@
 package oogasalad.model.gameplay.grid;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
