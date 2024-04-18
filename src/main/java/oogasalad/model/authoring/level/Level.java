@@ -41,6 +41,13 @@ public class Level implements Observable<Level> {
     grid.addBlockToCell(row, col, blockType);
   }
 
+  /**
+   * Remove last block from cell at given row and col position from grid.
+   *
+   * @param row The row of the cell.
+   * @param col The col of the cell.
+   * @throws Exception Throws exception if row or col is invalid.
+   */
   public void removeBlockFromCell(int row, int col) throws Exception {
     grid.removeBlockFromCell(row, col);
   }
