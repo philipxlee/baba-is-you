@@ -6,6 +6,8 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
@@ -28,7 +30,8 @@ public class LeaderboardScene implements Scene {
   private VBox root;
   private LevelController levelController;
   private String language;
-
+  private int width;
+  private int height;
   /**
    * Constructor for LeaderboardScene.
    *
@@ -50,6 +53,8 @@ public class LeaderboardScene implements Scene {
    */
   @Override
   public void initializeScene(int width, int height) {
+    this.width = width;
+    this.height = height;
     this.root = new VBox(10);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
@@ -78,27 +83,29 @@ public class LeaderboardScene implements Scene {
     VBox leaderboardList = new VBox(5);
     leaderboardList.setAlignment(Pos.CENTER);
 
+    FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(
+        width - 400, height - 200, "flowpane-gradient", language)); // Set a maximum size for the flow pane
+
+    int num = 1;
     for (LeaderboardPlayerData player : topPlayers) {
       String playerInfoText = String.format("%s - %d sec - %s",
           player.getUsername(), player.getTimeSpent(), player.getDate(), player.getLevelName());
+      playerInfoText = "" + num + ". " + playerInfoText;
 
-      // Create a button with the player information, make it unpressable
-      Button playerInfoButton = factory.makeButton(new WidgetConfiguration(200, 50,
-          "white-button", language), playerInfoText);
-      playerInfoButton.setDisable(true);  // Make the button unpressable
-      playerInfoButton.setMaxWidth(500);  // Extend the button width to the full width of its container
+      Text playerInfo = factory.generateSubHeader(playerInfoText);
+      leaderboardList.getChildren().add(playerInfo);
 
-      // Add the styled button to the leaderboard list
-      leaderboardList.getChildren().add(playerInfoButton);
+      num++;
     }
+    flowPane.getChildren().add(leaderboardList);
+    ScrollPane scrollPane = factory.makeScrollPane(flowPane, width-400);
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
         "Back", "button", language));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController,
         levelController)));
 
-    root.getChildren().addAll(header, leaderboardList, backButton);
+    root.getChildren().addAll(header, scrollPane, backButton);
   }
-
 
 }

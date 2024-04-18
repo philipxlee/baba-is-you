@@ -50,6 +50,12 @@ public class WidgetFactory {
     return line;
   }
 
+  public Text generateSubHeader(String content) {
+    Text line = new Text(content);
+    line.getStyleClass().add("sub-header");
+    return line;
+  }
+
   public Text generateCaption(WidgetConfiguration configuration) {
     Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("caption");
@@ -132,6 +138,7 @@ public class WidgetFactory {
     pane.setMaxWidth(maxWidth);
     pane.setPannable(false);
     pane.setFocusTraversable(false);
+    pane.getStylesheets().add("scrollpane");
     pane.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP
           || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {

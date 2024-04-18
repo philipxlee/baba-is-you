@@ -88,7 +88,8 @@ public class CommentScene implements Scene {
       commentsList.getChildren().add(commentButton);
     }
 
-    Button backButton = factory.makeButton(new WidgetConfiguration(200, 50, "Back", "button"));
+    Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
+        "Back", "button", language));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
 
     root.getChildren().addAll(header, commentsList, backButton);
