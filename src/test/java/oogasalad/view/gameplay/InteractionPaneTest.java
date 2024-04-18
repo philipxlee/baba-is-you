@@ -1,12 +1,19 @@
 package oogasalad.view.gameplay;
 
 import static org.junit.Assert.assertEquals;
+
+import java.io.File;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
+import oogasalad.controller.gameplay.PlayerDataController;
+import oogasalad.database.DataManager;
+import oogasalad.database.DatabaseConfig;
+import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
+import oogasalad.shared.config.JsonManager;
 import oogasalad.util.DukeApplicationTest;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -32,11 +39,19 @@ public class InteractionPaneTest extends DukeApplicationTest {
       2, 2, initialConfiguration);
   private final Level level = new Level(metadata);
   private final LevelController levelController = new LevelController(level);
+  private JsonManager jsonManager = new JsonManager();
+  private JsonGameParser jsonGameParser = new JsonGameParser();
+  private final File defaultJson = new File("data/defaultJson.json");
 
   @Override
   public void start(Stage stage) throws Exception {
+    Level defaultLevel = jsonGameParser.parseLevel(jsonManager.loadJsonFromFile(defaultJson));
+    LevelController levelController = new LevelController(defaultLevel);
+    DatabaseConfig databaseConfig = new DatabaseConfig();
+    DataManager dataManager = new DataManager(databaseConfig.getDatabase());
     this.factory = new WidgetFactory();
-//    this.sceneController = new SceneController(stage, new DatabaseManager);
+    this.sceneController = new SceneController(stage, new PlayerDataController(dataManager),
+        levelController);
     this.interactionPane = new InteractionPane();
     interactionPane.initializeInteractionPane(800, 600,
         new MainScene(sceneController, levelController), factory, sceneController, levelController);
