@@ -3,6 +3,7 @@ package oogasalad.model.authoring.level;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 import oogasalad.model.authoring.block.Block;
 import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observable;
@@ -15,7 +16,7 @@ import oogasalad.shared.observer.Observer;
 public class Grid implements Observable<Grid>, Iterable<Block> {
 
   private final BlockFactory blockFactory;
-  private final Block[][] cells;
+  private final Stack<Block>[][] cells;
   private final List<Observer<Grid>> observers;
 
   /**
@@ -23,19 +24,21 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
    */
   public Grid(int rows, int cols) {
     this.blockFactory = BlockFactory.getInstance();
-    cells = new Block[rows][cols];
+    cells = new Stack[rows][cols];
     observers = new ArrayList<>();
     initializeGrid();
   }
 
   /**
-   * Initializes grid with Empty blocks.
+   * Initializes grid as 2D grid of Stacks. Each stack contains one EmptyVisualBlock.
    */
   private void initializeGrid() {
     try {
       for (int row = 0; row < cells.length; row++) {
         for (int col = 0; col < cells[row].length; col++) {
-          cells[row][col] = blockFactory.createBlock("EmptyVisualBlock");
+          Stack<Block> stack = new Stack<>();
+          stack.push(blockFactory.createBlock("EmptyVisualBlock"));
+          cells[row][col] = stack;
         }
       }
     } catch (Exception e) {
@@ -55,7 +58,8 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
     if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
       throw new Exception("Invalid Row/Col Position: " + row + " " + col);
     }
-    cells[row][col] = blockFactory.createBlock(blockType);
+    Block block = blockFactory.createBlock(blockType);
+    cells[row][col].push(block);
     notifyObserver();
   }
 
@@ -96,7 +100,14 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
        */
       @Override
       public boolean hasNext() {
-        return row < cells.length && col < cells[row].length;
+        while (row < cells.length && (col >= cells[row].length || cells[row][col].isEmpty())) {
+          col++;
+          if (col >= cells[row].length) {
+            col = 0;
+            row++;
+          }
+        }
+        return row < cells.length;
       }
 
       /**
@@ -106,10 +117,13 @@ public class Grid implements Observable<Grid>, Iterable<Block> {
        */
       @Override
       public Block next() {
-        Block block = cells[row][col++];
-        if (col >= cells[row].length) {
-          col = 0;
-          row++;
+        Block block = cells[row][col].pop();
+        if (cells[row][col].isEmpty()) {
+          col++;
+          if (col >= cells[row].length) {
+            col = 0;
+            row++;
+          }
         }
         return block;
       }
