@@ -1,2 +1,47 @@
-
-{"levelName":"Level Name","gridSize":{"rows":"10","cols":"10"},"grid":[[["RockVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","FlagTextBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","BabaVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"]]]}
+{
+  "levelName": "Level Name",
+  "gridSize": {
+    "rows": "4",
+    "cols": "7"
+  },
+  "grid": [
+    [
+      [
+        "BabaTextBlock",
+        "WallTextBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "FlagVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "EmptyVisualBlock",
+        "WallVisualBlock"
+      ]
+    ]
+  ]
+}

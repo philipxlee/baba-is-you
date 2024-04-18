@@ -12,14 +12,14 @@ import oogasalad.model.authoring.level.LevelMetadata;
 public class LevelController {
 
   private final LevelParser levelParser;
-  private final Level currentLevel;
+  private Level currentLevel;
 
   /**
    * LevelController constructor.
    */
-  public LevelController(Level level) {
+  public LevelController(LevelMetadata levelMetadata) {
     levelParser = new LevelParser();
-    currentLevel = level;
+    currentLevel = new Level(levelMetadata);
   }
 
   /**
@@ -49,6 +49,15 @@ public class LevelController {
   }
 
   /**
+   * Reset level to a new level configuration.
+   *
+   * @param levelMetadata The level metadata configuration to reset to.
+   */
+  public void resetLevel(LevelMetadata levelMetadata) {
+    currentLevel = new Level(levelMetadata);
+  }
+
+  /**
    * Return the current level's metadata.
    *
    * @return Level Metadata of current level.
@@ -56,5 +65,4 @@ public class LevelController {
   public LevelMetadata getLevelMetadata() {
     return currentLevel.getLevelMetadata();
   }
-
 }
