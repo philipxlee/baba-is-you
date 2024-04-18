@@ -26,9 +26,12 @@ public class LoseScene implements Scene {
   private final SceneController sceneController;
   private int width;
   private int height;
+  private String language;
 
   public LoseScene(SceneController sceneController) {
+
     this.sceneController = sceneController;
+    this.language = sceneController.getLanguage();
   }
 
   /**
@@ -64,15 +67,15 @@ public class LoseScene implements Scene {
    * Show the lose message.
    */
   private void showLoseMessage() {
-    Text header = factory.generateHeader(new WidgetConfiguration("LostHeader"));
-    Text content = factory.generateLine(new WidgetConfiguration("LostContent"));
+    Text header = factory.generateHeader(new WidgetConfiguration("LostHeader", language));
+    Text content = factory.generateLine(new WidgetConfiguration("LostContent", language));
 
     List<Node> texts = new ArrayList<>();
     texts.add(header);
     texts.add(content);
 
     Button start = factory.makeButton(new WidgetConfiguration(200, 40,
-        "TryAgain", "button"));
+        "TryAgain", "button", language));
     texts.add(start);
     start.setOnAction(event -> {
       sceneController.beginGame(sceneController.isGuestSession());

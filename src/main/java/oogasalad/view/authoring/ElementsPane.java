@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -23,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.controller.authoring.SceneController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
@@ -36,22 +38,26 @@ public class ElementsPane {
   private ScrollPane scrollPane;
   private VBox layout;
   private boolean removeMode = false;
+  private SceneController sceneController;
+  private String language;
 
-  public ElementsPane(BuilderPane builderPane, LevelController levelController) {
+  public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
     this.factory = new WidgetFactory();
+    this.language = language;
     this.builderPane = builderPane;
     this.levelController = levelController;
+    this.sceneController = sceneController;
     initializeElementsLayout();
   }
 
   private void initializeElementsLayout() {
     layout = new VBox(30);
 
-    Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
     HBox header = factory.wrapInHBox(title, (int) layout.getWidth());
 
     Text descriptionLabel = factory.generateLine(new WidgetConfiguration
-        ("DragInstructions"));
+        ("DragInstructions", language));
 
     // Category selection setup
     ComboBox<String> categoryComboBox = new ComboBox<>();
@@ -83,12 +89,12 @@ public class ElementsPane {
 
     // Button for changing grid size
     Button changeGridSizeButton = factory.makeButton(new WidgetConfiguration(
-        200, 40, "ChangeGridSize","white-button"));
+        200, 40, "ChangeGridSize","white-button", language));
     changeGridSizeDialog(changeGridSizeButton);
 
     // Button for toggling remove mode
     Button removeButton = factory.makeButton(new WidgetConfiguration (
-        200, 30, "RemoveBlock","white-button"));
+        200, 30, "RemoveBlock","white-button", language));
 
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
@@ -116,7 +122,7 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeButton(new WidgetConfiguration(
-        200, 40, "SaveJson","white-button"));
+        200, 40, "SaveJson","white-button", language));
     saveJson.setOnAction(event -> {
       levelController.serializeLevel();
     });

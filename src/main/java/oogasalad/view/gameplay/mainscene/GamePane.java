@@ -1,4 +1,4 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.mainscene;
 
 import java.util.List;
 import javafx.geometry.Pos;
@@ -15,6 +15,7 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
+import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
  * Class that encapsulates the grid interactions from the model and displays them. Uses the Observer
@@ -147,26 +148,4 @@ public class GamePane implements Observer<Grid> {
       }
     });
   }
-
-//  private AbstractBlockView reflect(String blockType) {
-//    try {
-//      String path = "/images/" + blockType + ".png";
-//      String className = blockType + "View";
-//      String source = "oogasalad.shared.blockviews.";
-//      if (className.contains("Visual")) {
-//        source += "visualblocksview.";
-//      }
-//      //do this for the rest
-//      else if (className.contains("Text")) {
-//        source += "textblocksview.";
-//      }
-//      Class<?> clazz = Class.forName(source + className);
-//      AbstractBlockView obj = (AbstractBlockView) clazz.getDeclaredConstructor(String.class)
-//          .newInstance(path);
-//      return obj;
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//      return null;
-//    }
-//  }
 }
