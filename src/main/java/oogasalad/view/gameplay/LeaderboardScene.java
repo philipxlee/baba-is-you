@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
+import oogasalad.database.LeaderboardPlayerData;
 import oogasalad.database.PlayerData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
@@ -71,13 +72,13 @@ public class LeaderboardScene implements Scene {
   private void populateLeaderboard() {
     Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard"));
 
-    List<PlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
+    List<LeaderboardPlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
     VBox leaderboardList = new VBox(5);
     leaderboardList.setAlignment(Pos.CENTER);
 
-    for (PlayerData player : topPlayers) {
+    for (LeaderboardPlayerData player : topPlayers) {
       String playerInfoText = String.format("%s - %d sec - %s",
-          player.getUsername(), player.getTimeSpent(), player.getComments());
+          player.getUsername(), player.getTimeSpent(), player.getDate(), player.getLevelName());
 
       // Create a button with the player information, make it unpressable
       Button playerInfoButton = factory.makeButton(new WidgetConfiguration(200, 50,

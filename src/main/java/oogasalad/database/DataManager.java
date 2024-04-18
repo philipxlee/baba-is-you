@@ -43,21 +43,18 @@ public class DataManager {
    *
    * @return a list of PlayerData objects representing the top players.
    */
-  public List<PlayerData> getTopPlayers() {
+  public List<LeaderboardPlayerData> getTopPlayers() {
     MongoCollection<Document> collection = database.getCollection("data");
     FindIterable<Document> result = collection.find()
         .sort(Sorts.ascending(TIME_SPENT))
         .limit(LEADERBOARD_SIZE);
-    List<PlayerData> topPlayers = new ArrayList<>();
+    List<LeaderboardPlayerData> topPlayers = new ArrayList<>();
     for (Document doc : result) {
-      // Default values assigned if fields are null
       String username = doc.getString("username");
-      String comments = doc.getString("comments");
       String levelName = doc.getString("levelName");
-      String reply = doc.getString("reply");
-      Date date = doc.getDate("date");// Use current date as default
+      Date date = doc.getDate("date");
       long timeSpent = doc.getLong(TIME_SPENT);
-      topPlayers.add(new PlayerData(username, comments, date, levelName, reply, timeSpent));
+      topPlayers.add(new LeaderboardPlayerData(username, date, levelName, timeSpent));
     }
     return topPlayers;
   }
@@ -91,14 +88,12 @@ public class DataManager {
    * Adds a comment to a specific level using PlayerData and returns the comment document.
    *
    * @param playerData PlayerData containing the comment data.
-   * @return The Document of the new comment.
    */
-  public Document addComment(PlayerData playerData) {
+  public void addComment(PlayerData playerData) {
     MongoCollection<Document> collection = database.getCollection("comments");
     Document commentDoc = playerData.getLevelComments();
     collection.updateOne(Filters.eq("levelName", playerData.getLevelPlayed()),
         Updates.push("comments", commentDoc), new UpdateOptions().upsert(true));
-    return commentDoc;
   }
 
   /**
@@ -106,15 +101,13 @@ public class DataManager {
    *
    * @param commentId The ID of the comment to which the reply is added.
    * @param playerData PlayerData containing the reply data.
-   * @return The Document of the new reply.
    */
-  public Document addReply(String commentId, PlayerData playerData) {
+  public void addReply(String commentId, PlayerData playerData) {
     MongoCollection<Document> collection = database.getCollection("comments");
     Document replyDoc = playerData.getReply();
     collection.updateOne(Filters.and(Filters.eq("levelName", playerData.getLevelPlayed()),
             Filters.elemMatch("comments", Filters.eq("_id", commentId))),
         Updates.push("comments.$.replies", replyDoc));
-    return replyDoc;
   }
 
 

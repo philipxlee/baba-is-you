@@ -79,6 +79,7 @@ public class CommentScene implements Scene {
     for (PlayerData comment : comments) {
       String commentText = String.format("%s: %s", comment.getUsername(), comment.getComments());
       Button commentButton = factory.makeButton(new WidgetConfiguration(200, 50, "white-button"), commentText);
+//      commentButton.setOnAction(event -> toggleCommentInput(commentButton, comment));
 
       commentsList.getChildren().add(commentButton);
     }
@@ -88,6 +89,8 @@ public class CommentScene implements Scene {
 
     root.getChildren().addAll(header, commentsList, backButton);
   }
+
+
 
 
 

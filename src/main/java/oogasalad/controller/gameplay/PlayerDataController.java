@@ -2,6 +2,7 @@ package oogasalad.controller.gameplay;
 
 import java.util.Date;
 import oogasalad.database.DataManager;
+import oogasalad.database.LeaderboardPlayerData;
 import oogasalad.database.PlayerData;
 import java.util.List;
 
@@ -61,17 +62,19 @@ public class PlayerDataController {
    *
    * @return a list of PlayerData objects for the top players.
    */
-  public List<PlayerData> getTopPlayers() {
+  public List<LeaderboardPlayerData> getTopPlayers() {
     return dataManager.getTopPlayers();
   }
 
   /**
+   * Retrieves all comments for a specific level.
    *
-   *
+   * @param levelName the name of the level to retrieve comments for
    */
   public List<PlayerData> getCommentsByLevel(String levelName) {
     return dataManager.getCommentsByLevel(levelName);
   }
+
 
   /**
    * Ends the current player session and captures any final data, such as time spent and comments.
