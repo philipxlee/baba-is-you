@@ -102,10 +102,16 @@ public class InteractionPane {
     // Setup leaderboard display
     VBox leaderboardButton = setupLeaderboardButton();
 
+    // Setup comments display
+    VBox commentButton = setupCommentButton();
+
+    HBox stats = factory.wrapInHBox(factory.generateCaption(""), width);
+    stats.getChildren().addAll(leaderboardButton, commentButton);
+
     // Combine the header and arrow keys into a single display layout
     VBox display = new VBox(20);
     display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), load, reset,
-        leaderboardButton);
+        stats);
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
@@ -219,9 +225,19 @@ public class InteractionPane {
 
   private VBox setupLeaderboardButton() {
     Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewBoard", "white-button"));
+        "ViewLeaderboard", "white-button"));
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
+    buttonContainer.setAlignment(Pos.CENTER);
+    buttonContainer.setPadding(new Insets(15, 0, 0, 0));
+    return buttonContainer;
+  }
+
+  private VBox setupCommentButton() {
+    Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
+        "ViewComments", "white-button"));
+    commentButton.setOnAction(event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
+    VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
     return buttonContainer;

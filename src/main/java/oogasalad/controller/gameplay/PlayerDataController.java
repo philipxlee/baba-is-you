@@ -14,6 +14,8 @@ public class PlayerDataController {
   private static final int MILLISECOND_OFFSET = 1000;
   private static final long DEFAULT_TIME_SPENT = 0;
   private static final String DEFAULT_COMMENTS = "No comments";
+  private static final String TEMP_LEVEL_NAME = "Default Level";
+  private static final String DEFAULT_REPLY = "No reply";
   private static final Date DEFAULT_DATE = new Date();
   private DataManager dataManager;
   private PlayerData playerData;
@@ -36,8 +38,8 @@ public class PlayerDataController {
    */
   public boolean startNewPlayer(String username) {
     if (dataManager.isUsernameAvailable(username)) {
-      this.playerData = new PlayerData(username, DEFAULT_TIME_SPENT, DEFAULT_COMMENTS, DEFAULT_DATE);
-      this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // make to seconds
+      this.playerData = new PlayerData(username, DEFAULT_COMMENTS, DEFAULT_DATE, TEMP_LEVEL_NAME, DEFAULT_REPLY, DEFAULT_TIME_SPENT);
+      this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
       return true;
     } else {
       return false;
@@ -61,6 +63,14 @@ public class PlayerDataController {
    */
   public List<PlayerData> getTopPlayers() {
     return dataManager.getTopPlayers();
+  }
+
+  /**
+   *
+   *
+   */
+  public List<PlayerData> getCommentsByLevel(String levelName) {
+    return dataManager.getCommentsByLevel(levelName);
   }
 
   /**
