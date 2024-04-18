@@ -3,7 +3,7 @@ package oogasalad.controller.gameplay;
 import javafx.stage.Stage;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.scene.Scene;
-import oogasalad.view.gameplay.MainScene;
+import oogasalad.view.gameplay.mainscene.MainScene;
 import oogasalad.view.gameplay.StartingScene;
 
 /**
@@ -18,6 +18,7 @@ public class SceneController {
   private boolean isGuestSession;
   private Level level;
   private LevelController levelController;
+  private String language;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
@@ -31,16 +32,18 @@ public class SceneController {
     this.isGuestSession = false;
     this.levelController = levelController;
     this.level = levelController.getLevel();
-    stage.setTitle("Baba is Us: Game Player");
+    stage.setTitle("Baba Is Us: Game Player");
     stage.setResizable(false);
     stage.show();
+    this.language = "English";
   }
 
   /**
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new StartingScene(this, playerDataController));
+    switchToScene(new StartingScene(this,
+        playerDataController));
   }
 
   /**
@@ -95,4 +98,12 @@ public class SceneController {
    * Return level controller.
    */
   public LevelController getLevelController() { return levelController; }
+
+  public void setLanguage(String newLanguage) {
+    this.language = newLanguage;
+  }
+
+  public String getLanguage() {
+    return this.language;
+  }
 }

@@ -4,15 +4,16 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLD
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
@@ -33,6 +34,7 @@ public class StartingScene implements Scene {
   private TextField usernameField;
   private int width;
   private int height;
+  public static String language;
 
   /**
    * Constructor for StartingScene.
@@ -43,6 +45,7 @@ public class StartingScene implements Scene {
   public StartingScene(SceneController sceneController, PlayerDataController playerDataController) {
     this.sceneController = sceneController;
     this.playerDataController = playerDataController;
+    this.language = sceneController.getLanguage();
   }
 
   /**
@@ -76,23 +79,13 @@ public class StartingScene implements Scene {
   }
 
   private void generateContent() {
-    Text header = factory.generateHeader(new WidgetConfiguration("BabaHeader"));
-    Text content = factory.generateLine(new WidgetConfiguration("BabaRules"));
-    Text enterPrompt = factory.generateLine(new WidgetConfiguration("EnterPrompt"));
-    Label feedbackLabel = factory.generateLabel(new WidgetConfiguration(""));
+    Text header = factory.generateHeader(new WidgetConfiguration("BabaHeader", language));
+    Text content = factory.generateLine(new WidgetConfiguration("BabaRules", language));
+    Text enterPrompt = factory.generateLine(new WidgetConfiguration("EnterPrompt", language));
+    Label feedbackLabel = factory.generateLabel(new WidgetConfiguration("", language));
 
     usernameField = factory.createTextField(new WidgetConfiguration(200, 40,
-        "UsernamePrompter", "text-field"));
-    Button start = factory.makeButton(new WidgetConfiguration(300, 40,
-        "Enter", "button"));
-    Button guestButton = factory.makeButton(new WidgetConfiguration(300, 40,
-        "PlayAsGuest", "button"));
-    usernameField.textProperty().addListener((obs, old, newValue) -> {
-      checkUsernameValidity(newValue, feedbackLabel, start);
-    });
-    startGame(start);
-
-    guestButton.setOnAction(event -> sceneController.beginGame(true));
+        "UsernamePrompter", "text-field", language));
 
     List<Node> texts = new ArrayList<>();
     texts.add(header);
@@ -100,11 +93,42 @@ public class StartingScene implements Scene {
     texts.add(enterPrompt);
     texts.add(usernameField);
     texts.add(feedbackLabel);
-    texts.add(start);
-    texts.add(guestButton);
 
-    VBox textContainer = factory.wrapInVBox(texts, height);
-    root.getChildren().add(textContainer);
+    List<Node> btns = createButtons(feedbackLabel);
+
+    List<Node> boxes = new ArrayList<>();
+    boxes.add(factory.wrapInVBox(texts, height/2));
+    boxes.add(factory.wrapInHBox(btns, width));
+
+    root.getChildren().add(factory.wrapInVBox(boxes, height));
+  }
+
+  private List<Node> createButtons(Label feedbackLabel) {
+    Button start = factory.makeButton(new WidgetConfiguration(200, 40,
+        "Enter", "button", language));
+    Button guestButton = factory.makeButton(new WidgetConfiguration(200, 40,
+        "PlayAsGuest", "button", language));
+    usernameField.textProperty().addListener((obs, old, newValue) -> {
+      checkUsernameValidity(newValue, feedbackLabel, start);
+    });
+    ComboBox<String> switchLanguage = factory.makeComboBox(new WidgetConfiguration(200, 40,
+        "SwitchLanguage", "combo-box", language), new ArrayList<>(Arrays.asList("English",
+        "Spanish")), language);
+    //TODO: Change to be a drop down
+    switchLanguage.setOnAction(event -> {
+      language = switchLanguage.getValue();
+      sceneController.setLanguage(language);
+      sceneController.switchToScene(new StartingScene(sceneController, playerDataController));;
+    });
+    startGame(start);
+    guestButton.setOnAction(event -> sceneController.beginGame(true));
+
+    //Wrap buttons in list of nodes
+    List<Node> btns = new ArrayList<>();
+    btns.add(start);
+    btns.add(guestButton);
+    btns.add(switchLanguage);
+    return btns;
   }
 
   private void startGame(Button start) {
@@ -122,7 +146,7 @@ public class StartingScene implements Scene {
       feedbackLabel.setText("");
       checkUsernameAvailability(newValue, start, feedbackLabel);
     } else {
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameInvalid"));
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameInvalid", language));
       start.setDisable(true);
     }
   }
@@ -130,9 +154,9 @@ public class StartingScene implements Scene {
   private void checkUsernameAvailability(String newValue, Button start, Label feedbackLabel) {
     if (playerDataController.isUsernameAvailable(newValue.trim())) {
       start.setDisable(false);
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameAvailable"));
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameAvailable", language));
     } else {
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameTaken"));
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameTaken", language));
       start.setDisable(true);
     }
   }

@@ -1,7 +1,7 @@
 package oogasalad.controller.authoring;
 
 import com.google.gson.JsonObject;
-import java.io.FileWriter;
+import java.io.IOException;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 
@@ -12,14 +12,14 @@ import oogasalad.model.authoring.level.LevelMetadata;
 public class LevelController {
 
   private final LevelParser levelParser;
-  private final Level currentLevel;
+  private Level currentLevel;
 
   /**
    * LevelController constructor.
    */
-  public LevelController(Level level) {
+  public LevelController(LevelMetadata levelMetadata) {
     levelParser = new LevelParser();
-    currentLevel = level;
+    currentLevel = new Level(levelMetadata);
   }
 
   /**
@@ -30,21 +30,42 @@ public class LevelController {
    * @param blockType The new block type.
    * @throws Exception Throws exception if block type is invalid (not in properties file).
    */
-  public void setCell(int row, int col, String blockType) throws Exception {
-    currentLevel.setCell(row, col, blockType);
+  public void addBlockToCell(int row, int col, String blockType) throws Exception {
+    currentLevel.addBlockToCell(row, col, blockType);
+  }
+
+  /**
+   * Remove last block from cell at given row and col position from level.
+   *
+   * @param row The row of the cell.
+   * @param col The column of the cell.
+   * @throws Exception Throws exception if row or col is invalid.
+   */
+  public void removeBlockFromCell(int row, int col) throws Exception {
+    currentLevel.removeBlockFromCell(row, col);
   }
 
   /**
    * Serialize current level to JSON using Gson library. Parse according to configuration format.
+   * Save to file directory.
    */
   public void serializeLevel() {
     JsonObject levelJson = levelParser.parseLevelToJSON(currentLevel);
-    String fileName = "data/" + currentLevel.getLevelMetadata().levelName() + ".json";
-    try (FileWriter writer = new FileWriter(fileName)) {
-      writer.write(levelJson.toString());
-    } catch (Exception e) {
+    String fileName = currentLevel.getLevelMetadata().levelName() + ".json";
+    try {
+      levelParser.saveJSON(levelJson, fileName);
+    } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Reset level to a new level configuration.
+   *
+   * @param levelMetadata The level metadata configuration to reset to.
+   */
+  public void resetLevel(LevelMetadata levelMetadata) {
+    currentLevel = new Level(levelMetadata);
   }
 
   /**

@@ -26,7 +26,7 @@ public class BuilderPaneTest {
         new JFXPanel(); // Initialize JavaFX Toolkit
         Level level = new Level(new LevelMetadata("TestLevel", "test", 10, 10)); // Create a dummy level for testing
         LevelController levelController = new LevelController(level); // Pass the dummy level to the controller
-        builderPane = new BuilderPane(levelController);
+        builderPane = new BuilderPane(levelController, "English");
     }
 
     @Test

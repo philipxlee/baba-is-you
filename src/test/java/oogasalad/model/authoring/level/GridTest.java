@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 import oogasalad.model.authoring.block.Block;
-import oogasalad.model.authoring.block.BlockFactory;
 import oogasalad.shared.observer.Observer;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class GridTest {
 
   @Test
   public void testSetCellWithValidName() throws Exception {
-    grid.setCell(0, 0, "BabaVisualBlock");
+    grid.addBlockToCell(0, 0, "BabaVisualBlock");
     Block block = grid.iterator().next();
     assertEquals("BabaVisualBlock", block.type().name());
   }
@@ -54,7 +53,7 @@ public class GridTest {
   public void testSetCellWithInvalidPosition() {
     // Test setting a cell with an invalid position (out of bounds)
     Exception exception = assertThrows(Exception.class,
-        () -> grid.setCell(ROWS, COLS, "Invalid Row/Col Position"));
+        () -> grid.addBlockToCell(ROWS, COLS, "Invalid Row/Col Position"));
     assertNotNull(exception);
   }
 

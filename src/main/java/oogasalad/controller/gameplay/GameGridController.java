@@ -3,14 +3,12 @@ package oogasalad.controller.gameplay;
 import com.google.gson.JsonObject;
 import javafx.scene.input.KeyCode;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.level.GameLevelParser;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
 import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
 import oogasalad.shared.alert.AlertHandler;
-import oogasalad.shared.config.JsonManager;
-import oogasalad.view.gameplay.GamePane;
+import oogasalad.view.gameplay.mainscene.GamePane;
 
 /**
  * Controller that manages state changes from the GamePlay View to the Model, specifically the

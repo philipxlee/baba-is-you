@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.Properties;
 import javafx.scene.text.Font;
 import oogasalad.shared.alert.AlertHandler;
+import oogasalad.view.authoring.MainScene;
+import oogasalad.view.gameplay.StartingScene;
 
 /**
  * Configuration object class for use within the WidgetFactory
@@ -17,6 +19,7 @@ public class WidgetConfiguration implements AlertHandler {
   private String cssMatch;
   private String propertyContents;
   private Font propertyFont;
+  private String language;
 
   /**
    * Constructor with a property files match.
@@ -26,7 +29,8 @@ public class WidgetConfiguration implements AlertHandler {
    * @param propertyName
    * @param cssMatch
    */
-  public WidgetConfiguration(int width, int height, String propertyName, String cssMatch) {
+  public WidgetConfiguration(int width, int height, String propertyName, String cssMatch, String language) {
+    this.language = language;
     this.width = width;
     this.height = height;
     this.cssMatch = cssMatch;
@@ -36,7 +40,8 @@ public class WidgetConfiguration implements AlertHandler {
         getClass().getResourceAsStream(styleProperties.getProperty("Font")), 12);
   }
 
-  public WidgetConfiguration(int width, int height, String cssMatch) {
+  public WidgetConfiguration(int width, int height, String cssMatch, String language) {
+    this.language = language;
     this.width = width;
     this.height = height;
     this.cssMatch = cssMatch;
@@ -48,7 +53,8 @@ public class WidgetConfiguration implements AlertHandler {
   /**
    * Constructor with just a string property.
    */
-  public WidgetConfiguration(String propertyName) {
+  public WidgetConfiguration(String propertyName, String language) {
+    this.language = language;
     this.styleProperties = loadProperties();
     this.propertyContents = styleProperties.getProperty(propertyName);
     this.propertyFont = Font.loadFont(
@@ -78,7 +84,7 @@ public class WidgetConfiguration implements AlertHandler {
   private Properties loadProperties() {
     Properties properties = new Properties();
     try (InputStream inputStream = getClass().getResourceAsStream(
-        "/views/style.properties")) {
+        "/languages/" + language + ".properties")) {
       properties.load(inputStream);
     } catch (IOException e) {
       showError("ERROR", e.getMessage());

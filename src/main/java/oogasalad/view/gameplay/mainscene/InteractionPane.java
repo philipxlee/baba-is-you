@@ -1,19 +1,17 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.mainscene;
 
 import java.io.IOException;
 import java.io.InputStream;
-import javafx.event.EventHandler;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,13 +21,15 @@ import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.CommentScene;
+import oogasalad.view.gameplay.LeaderboardScene;
 
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
  */
 public class InteractionPane {
 
-  public static final Color BASE_COLOR = Color.web("#90A4AE");
+  public static final Color BASE_COLOR = Color.web("#343342");
   public static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
   private static final int ROUNDED_CORNER = 10;
   private static final int RECTANGLE_SIZE = 50;
@@ -46,6 +46,7 @@ public class InteractionPane {
   private Image fileIcon;
   private SceneController sceneController;
   private LevelController levelController;
+  private String language;
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -64,6 +65,7 @@ public class InteractionPane {
     this.width = width;
     this.height = height;
     this.levelController = levelController;
+    this.language = sceneController.getLanguage();
 
     InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
     fileIcon = new Image(stream);
@@ -73,24 +75,24 @@ public class InteractionPane {
     root.setFocusTraversable(true);
 
     Rectangle background = factory.interactionPanel(new WidgetConfiguration(width, height,
-        "interaction-background"));
+        "interaction-background", language));
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
     HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width);
     arrowKeysBox.setAlignment(Pos.CENTER);
 
-    Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
     HBox header = factory.wrapInHBox(title, width);
 
     Button reset = factory.makeButton(new WidgetConfiguration(150, 40,
-        "Reset", "white-button"));
+        "Reset", "white-button", language));
     reset.setOnAction(event -> {
       scene.resetGame();
     });
 
     Button load = factory.makeButton(new WidgetConfiguration(150, 40,
-        "Load", "white-button"));
+        "Load", "white-button", language));
     load.setOnAction(event -> {
       try {
         levelController.loadNewLevel(sceneController);
@@ -102,65 +104,29 @@ public class InteractionPane {
     // Setup leaderboard display
     VBox leaderboardButton = setupLeaderboardButton();
 
-    // Combine the header and arrow keys into a single display layout
+    //Set up the file chooser
     VBox display = new VBox(20);
-    display.getChildren().addAll(header, arrowKeysBox, setUpFileChooser(), load, reset,
+    FileChooserPane fileChooser = new FileChooserPane(width, height, language, levelController,
+        sceneController);
+
+    HBox loadAndReset = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset)), width);
+    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadAndReset,
         leaderboardButton);
+    // Setup comments display
+    VBox commentButton = setupCommentButton();
+
+    HBox stats = factory.wrapInHBox(factory.generateCaption(""), width);
+    stats.getChildren().addAll(leaderboardButton, commentButton);
+
+    // Combine the header and arrow keys into a single display layout
+
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
+    display.getChildren().add(stats);
 
     root.getChildren().addAll(background, display);
-  }
 
-  /**
-   * Sets up the scrollpane used for selecting files.
-   *
-   * @return a scrollpane with populated image icons representing JSON level files.
-   */
-  private VBox setUpFileChooser() {
-    FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(width - 50,
-        height / 4, "flowpane"));
-
-    //TODO: change to actual file #
-    populateFiles(10, flowPane);
-    ScrollPane pane = factory.makeScrollPane(flowPane, width - 50);
-    Text paneLabel = factory.generateLine(new WidgetConfiguration("Games"));
-    VBox labelAndChooser = factory.wrapInVBox(paneLabel, height / 3);
-    labelAndChooser.getChildren().add(pane);
-    return labelAndChooser;
-  }
-
-  /**
-   * Iterates through default game files and populates them within a flowpane. When the file icons
-   * representing each game file are clicked, an individual popup dialog window appears with their
-   * information.
-   *
-   * @param numFiles number of default game level JSON files
-   * @param flowPane javafx object containing the clickable file icons
-   */
-  private void populateFiles(int numFiles, FlowPane flowPane) {
-    for (int i = 1; i <= numFiles; i++) {
-      ImageView imageView = new ImageView(fileIcon);
-      imageView.setFitWidth(80);
-      imageView.setFitHeight(80);
-
-      Text fileName = factory.generateCaption("File: " + i);
-      VBox imageAndLabel = new VBox(10);
-      imageAndLabel.getChildren().addAll(imageView, fileName);
-
-      // Make each file icon clickable: TODO: connect to json
-      imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-          Text text = new Text("TEMPORARY: file info goes here");
-          VBox vbox = new VBox(text);
-          factory.createPopUpWindow(new WidgetConfiguration(width - 100,
-              height / 4, "FileInformation"), vbox);
-        }
-      });
-      flowPane.getChildren().add(imageAndLabel);
-    }
   }
 
   private VBox setupArrowKeys() {
@@ -219,9 +185,19 @@ public class InteractionPane {
 
   private VBox setupLeaderboardButton() {
     Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewBoard", "white-button"));
+        "ViewBoard", "white-button", language));
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
+    buttonContainer.setAlignment(Pos.CENTER);
+    buttonContainer.setPadding(new Insets(15, 0, 0, 0));
+    return buttonContainer;
+  }
+
+  private VBox setupCommentButton() {
+    Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
+        "ViewComments", "white-button", language));
+    commentButton.setOnAction(event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
+    VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
     return buttonContainer;
