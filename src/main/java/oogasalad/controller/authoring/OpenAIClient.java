@@ -9,11 +9,17 @@ import java.net.http.HttpResponse;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * OpenAIClient is the client to interface with the OpenAI API.
+ */
 public class OpenAIClient {
 
   private static final String OPENAI_CONFIG = "/openai/openai.properties";
   private static Properties config;
 
+  /**
+   * OpenAIClient constructor.
+   */
   public OpenAIClient() {
     config = new Properties();
     try (InputStream inputStream = getClass().getResourceAsStream(OPENAI_CONFIG)) {
@@ -23,6 +29,11 @@ public class OpenAIClient {
     }
   }
 
+  /**
+   * Method to send a level configuration request to GPT-3.5-turbo.
+   *
+   * @return CompletableFuture object representing the HTTP request.
+   */
   public CompletableFuture<String> fetchLevelConfiguration() {
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
@@ -36,10 +47,15 @@ public class OpenAIClient {
         .thenApply(HttpResponse::body);
   }
 
+  /**
+   * Build the payload for the HTTP request.
+   *
+   * @return String representing the body of the request.
+   */
   private String buildPayload() {
     return """
         {
-            "model": "gpt-4",
+            "model": "gpt-3.5-turbo",
             "messages": [
                 {"role": "system", "content": "Assume you are an AI chat bot assistant."},
                 {"role": "user", "content": "Hi! How are you doing today?"}

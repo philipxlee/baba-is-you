@@ -59,16 +59,15 @@ public class ElementsPane {
 
     // Category selection setup
     ComboBox<String> categoryComboBox = factory.makeComboBox(new WidgetConfiguration(200, 50,
-        "combo-box-white", language), new ArrayList<>(Arrays.asList("Visual", "Text", "All")),
+            "combo-box-white", language), new ArrayList<>(Arrays.asList("Visual", "Text", "All")),
         "All");
 
     // Difficulty chooser setup
     ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50,
-            "combo-box-white", language), new ArrayList<>(Arrays.asList("Easy", "Medium",
+        "combo-box-white", language), new ArrayList<>(Arrays.asList("Easy", "Medium",
         "Hard")), "Medium");
 
     HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth(), 15);
-
 
     // Create a container for blocks
     FlowPane blocksContainer = new FlowPane();
@@ -102,6 +101,14 @@ public class ElementsPane {
 
     Button gpt = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
+
+    gpt.setOnMouseClicked(event -> {
+      try {
+        levelController.generateLevel();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
 
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
@@ -216,7 +223,8 @@ public class ElementsPane {
           int width = pair.getKey();
           int height = pair.getValue();
           builderPane.updateGridSize(width, height);
-          LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height, width);
+          LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
+              width);
           levelController.resetLevel(levelMetadata);
         }
       });

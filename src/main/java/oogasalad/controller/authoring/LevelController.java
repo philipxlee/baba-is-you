@@ -61,6 +61,11 @@ public class LevelController {
     }
   }
 
+  /**
+   * Use GPT to randomly generate a valid level configuration.
+   *
+   * @throws Exception Thrown if error occurs with GPT client.
+   */
   public void generateLevel() throws Exception {
     openAIClient.fetchLevelConfiguration().thenAccept(json -> {
       System.out.println("Received level configuration: " + json);
