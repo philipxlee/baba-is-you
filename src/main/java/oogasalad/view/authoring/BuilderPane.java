@@ -62,14 +62,14 @@ public class BuilderPane {
     container.setAlignment(Pos.CENTER);
 
     //Level name editor textfield
-    TextField levelName = factory.createTextField(new WidgetConfiguration(200, 50,
-        "text-field-dark", language));
-    Text levelNameLabel = factory.generateLine(new WidgetConfiguration("EnterName",
-        language));
-    HBox nameEditor = factory.wrapInHBox(new ArrayList<>(Arrays.asList(levelNameLabel, levelName)),
-        (int)root.getWidth());
-
-    container.getChildren().add(nameEditor);
+//    TextField levelName = factory.createTextField(new WidgetConfiguration(200, 50,
+//        "text-field-dark", language));
+//    Text levelNameLabel = factory.generateLine(new WidgetConfiguration("EnterName",
+//        language));
+//    HBox nameEditor = factory.wrapInHBox(new ArrayList<>(Arrays.asList(levelNameLabel, levelName)),
+//        (int)root.getWidth());
+//
+//    container.getChildren().add(nameEditor);
 
     this.gridPane = new GridPane();
     LevelMetadata levelMetadata = levelController.getLevelMetadata();
@@ -82,7 +82,7 @@ public class BuilderPane {
 
     setUpGrid();
     setUpDropHandling();
-    root.getChildren().add(container);
+//    root.getChildren().add(container);
   }
 
   private void setUpGrid() {
@@ -90,7 +90,7 @@ public class BuilderPane {
 
     // Adjust the maximum width and height available for the grid, accounting for margins
     double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
-    double availableHeight =  root.getHeight() - 2 * GRID_MARGIN - 2* gridHeight- 50;
+    double availableHeight =  root.getHeight() - 2 * GRID_MARGIN - 2* gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
     this.cellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);
@@ -117,8 +117,9 @@ public class BuilderPane {
     }
 
     // Ensure the gridPane is added to the root if not already present
-    if (!container.getChildren().contains(gridPane)) {
-      container.getChildren().add(factory.wrapInHBox(gridPane, (int)root.getWidth(), 15));
+    if (!root.getChildren().contains(gridPane)) {
+//      container.getChildren().add(factory.wrapInHBox(gridPane, (int)root.getWidth(), 15));
+      root.getChildren().add(gridPane);
     }
   }
 

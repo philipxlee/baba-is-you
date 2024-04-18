@@ -100,6 +100,9 @@ public class ElementsPane {
     Button removeButton = factory.makeButton(new WidgetConfiguration(
         170, 30, "RemoveBlock", "white-button", language));
 
+    Button gpt = factory.makeButton(new WidgetConfiguration(170, 40,
+        "GPTGenerate", "white-button", language));
+
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
       if (removeMode) {
@@ -113,7 +116,7 @@ public class ElementsPane {
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
     buttons.add(removeButton);
-    buttons.add(difficultyComboBox);
+    buttons.add(gpt);
     HBox buttonsHBox = factory.wrapInHBox(buttons, (int) layout.getWidth());
     buttonsHBox.setSpacing(20);
 
@@ -136,8 +139,10 @@ public class ElementsPane {
 
     layout.getStyleClass().add("elements-background");
 
-    layout.getChildren().addAll(header, buttonsHBox, factory.wrapInHBox(categoryComboBox,
-        (int)layout.getWidth(), 15), descriptionBox, scrollPane, jsonBox);
+    HBox comboBoxes = factory.wrapInHBox(new ArrayList<>(Arrays.asList(difficultyComboBox,
+        categoryComboBox)), (int) layout.getWidth());
+    layout.getChildren().addAll(header, buttonsHBox, comboBoxes, descriptionBox,
+        scrollPane, jsonBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
   }
 
