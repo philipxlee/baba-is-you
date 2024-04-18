@@ -1,4 +1,4 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.mainscene;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +23,8 @@ import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.LeaderboardScene;
+import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
@@ -46,6 +48,7 @@ public class InteractionPane {
   private Image fileIcon;
   private SceneController sceneController;
   private LevelController levelController;
+  private String language;
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -64,6 +67,7 @@ public class InteractionPane {
     this.width = width;
     this.height = height;
     this.levelController = levelController;
+    this.language = sceneController.getLanguage();
 
     InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
     fileIcon = new Image(stream);
@@ -73,24 +77,24 @@ public class InteractionPane {
     root.setFocusTraversable(true);
 
     Rectangle background = factory.interactionPanel(new WidgetConfiguration(width, height,
-        "interaction-background"));
+        "interaction-background", language));
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
     HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width);
     arrowKeysBox.setAlignment(Pos.CENTER);
 
-    Text title = factory.generateHeader(new WidgetConfiguration("BIU"));
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
     HBox header = factory.wrapInHBox(title, width);
 
     Button reset = factory.makeButton(new WidgetConfiguration(150, 40,
-        "Reset", "white-button"));
+        "Reset", "white-button", language));
     reset.setOnAction(event -> {
       scene.resetGame();
     });
 
     Button load = factory.makeButton(new WidgetConfiguration(150, 40,
-        "Load", "white-button"));
+        "Load", "white-button", language));
     load.setOnAction(event -> {
       try {
         levelController.loadNewLevel(sceneController);
@@ -120,12 +124,12 @@ public class InteractionPane {
    */
   private VBox setUpFileChooser() {
     FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(width - 50,
-        height / 4, "flowpane"));
+        height / 4, "flowpane", language));
 
     //TODO: change to actual file #
     populateFiles(10, flowPane);
     ScrollPane pane = factory.makeScrollPane(flowPane, width - 50);
-    Text paneLabel = factory.generateLine(new WidgetConfiguration("Games"));
+    Text paneLabel = factory.generateLine(new WidgetConfiguration("Games", language));
     VBox labelAndChooser = factory.wrapInVBox(paneLabel, height / 3);
     labelAndChooser.getChildren().add(pane);
     return labelAndChooser;
@@ -156,7 +160,7 @@ public class InteractionPane {
           Text text = new Text("TEMPORARY: file info goes here");
           VBox vbox = new VBox(text);
           factory.createPopUpWindow(new WidgetConfiguration(width - 100,
-              height / 4, "FileInformation"), vbox);
+              height / 4, "FileInformation", language), vbox);
         }
       });
       flowPane.getChildren().add(imageAndLabel);
@@ -219,7 +223,7 @@ public class InteractionPane {
 
   private VBox setupLeaderboardButton() {
     Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewBoard", "white-button"));
+        "ViewBoard", "white-button", language));
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);

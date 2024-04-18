@@ -28,9 +28,11 @@ public class BuilderPane {
   private LevelController levelController;
   protected boolean removeMode;
   protected int gridHeight;
+  private String language;
 
-  public BuilderPane(LevelController levelController) {
+  public BuilderPane(LevelController levelController, String language) {
     this.levelController = levelController;
+    this.language = language;
     try {
       this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
     } catch (Exception e) {

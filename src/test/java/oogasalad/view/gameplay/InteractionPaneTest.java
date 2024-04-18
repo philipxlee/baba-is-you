@@ -10,6 +10,8 @@ import oogasalad.model.gameplay.level.LevelMetadata;
 import oogasalad.util.DukeApplicationTest;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.mainscene.InteractionPane;
+import oogasalad.view.gameplay.mainscene.MainScene;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -13,6 +13,7 @@ public class SceneController {
   private static final int HEIGHT = 800;
   private final Stage stage;
   private final LevelController levelController;
+  private String language;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage and LevelController.
@@ -24,6 +25,7 @@ public class SceneController {
     this.stage = stage;
     this.levelController = levelController;
     stage.setTitle("Baba is Us: Authoring Environment");
+    this.language = "English";
     stage.setResizable(false);
     stage.show();
   }
@@ -32,6 +34,7 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
+
     switchToScene(new MainScene(levelController));
   }
 
@@ -44,4 +47,5 @@ public class SceneController {
     scene.initializeScene(WIDTH, HEIGHT);
     stage.setScene(scene.getScene());
   }
+
 }

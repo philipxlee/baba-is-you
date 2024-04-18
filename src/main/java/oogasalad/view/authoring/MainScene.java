@@ -9,11 +9,14 @@ import oogasalad.shared.scene.Scene;
 
 public class MainScene implements Scene {
 
+  private String language;
   private final LevelController levelController;
   private javafx.scene.Scene scene;
 
   public MainScene(LevelController levelController) {
     this.levelController = levelController;
+    //TODO: make it changeable
+    this.language = "English";
   }
 
   @Override
@@ -21,10 +24,10 @@ public class MainScene implements Scene {
     SplitPane root = new SplitPane();
 
     // Initialize builder scene with 60% of width
-    BuilderPane builderPane = new BuilderPane(levelController);
+    BuilderPane builderPane = new BuilderPane(levelController, language);
 
     // Initialize elements scene with 40% of width
-    ElementsPane elementsPane = new ElementsPane(builderPane, levelController);
+    ElementsPane elementsPane = new ElementsPane(builderPane, levelController, language);
 
     // Set up left and right sides of SplitPane
     root.getItems().addAll(elementsPane.getLayout(), builderPane.getRoot());
