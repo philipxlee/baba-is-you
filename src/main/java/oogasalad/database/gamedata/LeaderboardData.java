@@ -1,5 +1,6 @@
 package oogasalad.database.gamedata;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.bson.Document;
 
@@ -26,4 +27,20 @@ public class LeaderboardData {
     return doc;
   }
 
+  public String getUsername() {
+    return username;
+  }
+
+  public String getLevelName() {
+    return levelName;
+  }
+
+  public String getDate() {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM, dd yyyy");
+    return dateFormat.format(date);
+  }
+
+  public long getTimeSpent() {
+    return timeSpent;
+  }
 }
