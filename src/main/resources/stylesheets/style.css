@@ -23,6 +23,13 @@
   -fx-text-alignment: center;
 }
 
+.red-header {
+  -fx-font-size: 100px;
+  -fx-fill: #FF7171;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
+}
+
 .paragraph {
   -fx-font-size: 40px;
   -fx-fill: #FF7171;

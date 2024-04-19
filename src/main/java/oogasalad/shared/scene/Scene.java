@@ -1,5 +1,7 @@
 package oogasalad.shared.scene;
 
+import oogasalad.controller.entrypoint.EntryPointController;
+
 /**
  * Scene abstraction represents a scene being displayed.
  */
