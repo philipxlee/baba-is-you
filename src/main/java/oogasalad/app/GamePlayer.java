@@ -34,8 +34,7 @@ public class GamePlayer extends Application {
 
     // Set up database
     DatabaseConfig databaseConfig = new DatabaseConfig();
-    DataManager dataManager = new DataManager(databaseConfig.getDatabase());
-    DatabaseController databaseDataController = new DatabaseController(dataManager, levelController);
+    DatabaseController databaseDataController = new DatabaseController(databaseConfig.getDatabase(), levelController);
 
     // initialize controllers
     SceneController sceneController = new SceneController(stage, databaseDataController,

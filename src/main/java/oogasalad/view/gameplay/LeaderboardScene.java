@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.database.LeaderboardData;
+import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -70,30 +70,13 @@ public class LeaderboardScene implements Scene {
   private void populateLeaderboard() {
     Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard"));
 
-    List<LeaderboardData> topPlayers = sceneController.getDatabaseController().getTopPlayers();
-    VBox leaderboardList = new VBox(5);
-    leaderboardList.setAlignment(Pos.CENTER);
-
-    for (LeaderboardData player : topPlayers) {
-      String playerInfoText = String.format("%s - %d sec - %s",
-          player.getUsername(), player.getTimeSpent(), player.getDate(), player.getLevelName());
-
-      // Create a button with the player information, make it unpressable
-      Button playerInfoButton = factory.makeButton(new WidgetConfiguration(200, 50,
-          "white-button"), playerInfoText);
-      playerInfoButton.setDisable(true);  // Make the button unpressable
-      playerInfoButton.setMaxWidth(500);  // Extend the button width to the full width of its container
-
-      // Add the styled button to the leaderboard list
-      leaderboardList.getChildren().add(playerInfoButton);
-    }
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
         "Back", "button"));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController,
         levelController)));
 
-    root.getChildren().addAll(header, leaderboardList, backButton);
+    root.getChildren().addAll(header, backButton);
   }
 
 

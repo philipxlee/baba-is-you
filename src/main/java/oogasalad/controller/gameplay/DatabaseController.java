@@ -1,11 +1,13 @@
 package oogasalad.controller.gameplay;
 
-import java.util.Date;
-import oogasalad.database.DataManager;
-import oogasalad.database.GameSession;
-import oogasalad.database.LeaderboardData;
-import oogasalad.database.PlayerData;
+import com.mongodb.client.MongoDatabase;
+import oogasalad.database.dataservice.DataFetcher;
+import oogasalad.database.dataservice.DataUploader;
+import oogasalad.database.gamedata.GameSession;
+import oogasalad.database.gamedata.LeaderboardData;
 import java.util.List;
+import java.util.Optional;
+
 
 /**
  * Controller class for managing player data, including starting and ending player sessions and
@@ -14,37 +16,30 @@ import java.util.List;
 public class DatabaseController {
 
   private static final int MILLISECOND_OFFSET = 1000;
-  private DataManager dataManager;
+  private MongoDatabase database;
   private LevelController levelController;
-  private GameSession gameSession;
+  private DataFetcher dataFetcher;
+  private DataUploader dataUploader;
+  private Optional<GameSession> gameSession;
   private long startTime;
 
-  /**
-   * Constructs a new PlayerDataController with the given DataManager.
-   *
-   * @param dataManager The DataManager to use for saving player data.
-   */
-  public DatabaseController(DataManager dataManager, LevelController levelController) {
-    this.dataManager = dataManager;
+  public DatabaseController(MongoDatabase database, LevelController levelController) {
+    this.database = database;
     this.levelController = levelController;
+    initializeDataServices();
   }
 
-  /**
-   * Initializes a new player session with a given username.
-   *
-   * @param username the username of the player
-   * @return true if the player session was successfully started, false otherwise
-   */
   public boolean startNewPlayer(String username) {
-    if (dataManager.isUsernameAvailable(username)) {
-      this.gameSession = new GameSession(username, levelController.getLevelName());
-      this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
-      return true;
-    } else {
-      return false;
-    }
+    return dataFetcher.isUsernameAvailable(username)
+        ? initializeSession(username)
+        : false;
   }
 
+  private boolean initializeSession(String username) {
+    gameSession = Optional.of(new GameSession(username, levelController.getLevelName()));
+    startTime = System.currentTimeMillis() / 1000;  // Assuming MILLISECOND_OFFSET is 1000
+    return true;
+  }
   /**
    * Checks if a username is available in the database.
    *
@@ -52,7 +47,7 @@ public class DatabaseController {
    * @return True if the username is available, false otherwise.
    */
   public boolean isUsernameAvailable(String username) {
-    return dataManager.isUsernameAvailable(username);
+    return dataFetcher.isUsernameAvailable(username);
   }
 
   /**
@@ -61,24 +56,12 @@ public class DatabaseController {
    * @return a list of PlayerData objects for the top players.
    */
   public List<LeaderboardData> getTopPlayers() {
-    return dataManager.getTopPlayers();
+    return dataFetcher.getTopPlayers();
   }
 
-
-//  /**
-//   * Ends the current player session and captures any final data, such as time spent and comments.
-//   *
-//   * @param comments comments provided by the player about the level
-//   */
-//  public void endPlayerSession(String comments, long endTime) {
-//    if (playerData != null) {
-//      long timeSpent = endTime - startTime;
-//      playerData.setTimeSpent(timeSpent);
-//      playerData.setComments(comments);
-//      dataManager.savePlayerData(playerData); // Persist player data to MongoDB
-//    } else {
-//      System.err.println("No player session started.");
-//    }
-//  }
+  private void initializeDataServices() {
+    this.dataFetcher = new DataFetcher(database);
+    this.dataUploader = new DataUploader(database);
+  }
 
 }
