@@ -1,47 +1,34 @@
 package oogasalad.database.gamedata;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.bson.Document;
 
 /**
- * This class is responsible for storing the comment data.
+ * Stores and manages comment data for a game session, including replies.
  */
-public class CommentData {
-
-  private final String username;
-  private final String levelName;
-  private final Date date;
-  private final String comment;
-  private final List<ReplySchema> replies;  // Change to use Reply objects
+public class CommentData extends AbstractGameData {
+  private String comment;
+  private List<ReplySchema> replies;
 
   /**
    * Constructor for the CommentData class.
    *
-   * @param username  username
-   * @param levelName level name
-   * @param date      date
-   * @param comment   comment
-   * @param replies   replies
+   * @param username  the username of the person who made the comment
+   * @param levelName the level at which the comment was made
+   * @param date      the date the comment was made
+   * @param comment   the text of the comment
+   * @param replies   a list of replies to the comment
    */
-  public CommentData(String username, String levelName, Date date, String comment,
-      List<ReplySchema> replies) {
-    this.username = username;
-    this.levelName = levelName;
-    this.date = date;
+  public CommentData(String username, String levelName, Date date, String comment, List<ReplySchema> replies) {
+    super(username, levelName, date);
     this.comment = comment;
-    this.replies = new ArrayList<>(replies);
+    this.replies = new ArrayList<>(replies);  // Ensure a new list is created to avoid external modifications
   }
 
-  /**
-   * Constructor for the CommentData class.
-   *
-   * @param newComment new comment
-   * @return document
-   */
-  public Document getCommentDocument(String newComment) {
+  @Override
+  public Document toDocument() {
     List<Document> replyDocs = new ArrayList<>();
     for (ReplySchema reply : replies) {
       replyDocs.add(reply.toDocument());
@@ -49,53 +36,34 @@ public class CommentData {
     return new Document("username", username)
         .append("levelName", levelName)
         .append("date", date)
-        .append("comment", newComment)
+        .append("comment", comment)
         .append("replies", replyDocs);
   }
 
   /**
-   * Gets the replies.
+   * Gets the text of the comment.
    *
-   * @return replies
+   * @return the comment text
+   */
+  public String getComment() {
+    return comment;
+  }
+
+  /**
+   * Gets the list of replies to this comment.
+   *
+   * @return a list of ReplySchema objects representing replies to this comment
    */
   public List<ReplySchema> getReplies() {
-    return replies;
+    return new ArrayList<>(replies);  // Return a copy to preserve encapsulation
   }
 
   /**
    * Adds a reply to the comment.
    *
-   * @return comment
+   * @param reply a ReplySchema object containing the reply to add
    */
-  public String getUsername() {
-    return username;
-  }
-
-  /**
-   * Gets the level name.
-   *
-   * @return level name
-   */
-  public String getLevelName() {
-    return levelName;
-  }
-
-  /**
-   * Gets the date.
-   *
-   * @return date
-   */
-  public String getDate() {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-    return dateFormat.format(date);
-  }
-
-  /**
-   * Gets the comment.
-   *
-   * @return comment
-   */
-  public String getComment() {
-    return comment;
+  public void addReply(ReplySchema reply) {
+    this.replies.add(reply);
   }
 }

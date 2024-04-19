@@ -15,39 +15,22 @@ import oogasalad.database.gamedata.ReplySchema;
 import org.bson.Document;
 
 /**
- * This class is responsible for fetching data from the database.
+ * Fetches data from the MongoDB database.
  */
 public class DataFetcher {
 
   private final MongoDatabase database;
 
-  /**
-   * Constructor for the DataFetcher class.
-   *
-   * @param database database
-   */
   public DataFetcher(MongoDatabase database) {
     this.database = database;
   }
 
-  /**
-   * Checks if the username is available.
-   *
-   * @param username username
-   * @return true if the username is available, false otherwise
-   */
   public boolean isUsernameAvailable(String username) {
     MongoCollection<Document> collection = database.getCollection("data");
     long count = collection.countDocuments(Filters.eq("username", username));
     return count == 0;
   }
 
-  /**
-   * Gets the top players for the current level.
-   *
-   * @param currentLevelName current level name
-   * @return list of top players
-   */
   public List<LeaderboardData> getTopPlayers(String currentLevelName) {
     MongoCollection<Document> collection = database.getCollection("data");
     return StreamSupport.stream(collection
@@ -63,12 +46,6 @@ public class DataFetcher {
         .collect(Collectors.toList());
   }
 
-  /**
-   * Gets the comments for the current level.
-   *
-   * @param currentLevelName current level name
-   * @return list of comments
-   */
   public List<CommentData> getLevelComments(String currentLevelName) {
     MongoCollection<Document> collection = database.getCollection("comment");
     return StreamSupport.stream(collection
@@ -90,19 +67,12 @@ public class DataFetcher {
 
   private List<ReplySchema> extractReplies(Document document) {
     List<Document> replyDocs = document.getList("replies", Document.class);
-    if (replyDocs == null) {
-      return new ArrayList<>();
-    }
-    return replyDocs.stream()
-        .map(this::documentToReplySchema)
+    return replyDocs == null ? new ArrayList<>() : replyDocs.stream()
+        .map(doc -> new ReplySchema(
+            doc.getString("username"),
+            null,  // Assume level name is not applicable to individual replies
+            doc.getDate("date"),
+            doc.getString("reply")))
         .collect(Collectors.toList());
   }
-
-  private ReplySchema documentToReplySchema(Document replyDoc) {
-    String replyUsername = replyDoc.getString("username");
-    String replyText = replyDoc.getString("reply");
-    Date replyDate = replyDoc.getDate("date");
-    return new ReplySchema(replyUsername, replyText, replyDate);
-  }
-
 }

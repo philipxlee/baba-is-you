@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * This class is responsible for storing the game session data.
+ * Manages the session state for a game, including comments and leaderboard data.
  */
 public class GameSession {
 
@@ -16,31 +16,26 @@ public class GameSession {
   private final CommentData commentData;
   private final LeaderboardData leaderboardData;
 
-  /**
-   * Constructor for the GameSession class.
-   *
-   * @param username  username
-   * @param levelName level name
-   */
   public GameSession(String username, String levelName) {
     this.commentData = new CommentData(username, levelName, DEFAULT_DATE, DEFAULT_COMMENT, DEFAULT_REPLIES);
     this.leaderboardData = new LeaderboardData(username, levelName, DEFAULT_DATE, DEFAULT_TIME);
   }
 
   /**
-   * Adds a comment to the game session.
+   * Retrieves the comment data associated with this session.
+   *
+   * @return The comment data for this game session.
    */
-  public CommentData getLevelCommentData() {
+  public CommentData getCommentData() {
     return this.commentData;
   }
 
   /**
-   * Ends the game session.
+   * Retrieves the leaderboard data associated with this session.
    *
-   * @return leaderboard data
+   * @return The leaderboard data for this game session.
    */
   public LeaderboardData getLeaderboardData() {
     return this.leaderboardData;
   }
-
 }
