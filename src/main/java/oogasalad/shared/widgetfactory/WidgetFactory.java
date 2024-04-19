@@ -24,7 +24,7 @@ import javafx.stage.Stage;
  * Factory class for making general UI widgets.
  */
 public class WidgetFactory {
-  public static final String STYLESHEET = "gameplay.css";
+  public static final String STYLESHEET = "style.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
@@ -52,6 +52,12 @@ public class WidgetFactory {
 
   public Text generateSubHeader(String content) {
     Text line = new Text(content);
+    line.getStyleClass().add("sub-header");
+    return line;
+  }
+
+  public Text generateSubHeader(WidgetConfiguration configuration) {
+    Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("sub-header");
     return line;
   }
@@ -91,8 +97,8 @@ public class WidgetFactory {
     return hbox;
   }
 
-  public VBox wrapInVBox(List<Node> toBeWrapped, int height) {
-    VBox vbox = new VBox(10);
+  public VBox wrapInVBox(List<Node> toBeWrapped, int height, int spacing) {
+    VBox vbox = new VBox(spacing);
     vbox.getChildren().addAll(toBeWrapped);
     vbox.setPrefHeight(height);
     vbox.setAlignment(Pos.CENTER);

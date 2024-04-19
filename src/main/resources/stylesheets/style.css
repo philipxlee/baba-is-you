@@ -62,12 +62,25 @@
   -fx-fill: #191A20;
 }
 
-.button:hover, .authoring-button:hover {
+.black-button {
+  -fx-background-color: #191A20;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
+  -fx-padding: 6;
+  -fx-font-size: 25px;
+  -fx-text-fill: #FF7171;
+}
+
+.button:hover {
   -fx-background-color: #9773FD;
 }
 
-.white-button:hover {
+.white-button:hover, .black-button:hover {
   -fx-background-color: #FF7171;
+}
+
+.black-button:hover {
+  -fx-text-fill: #191A20;
 }
 
 .grid {

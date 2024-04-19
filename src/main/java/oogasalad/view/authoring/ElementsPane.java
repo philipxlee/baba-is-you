@@ -49,9 +49,10 @@ public class ElementsPane {
     layout = new VBox(15);
 
     Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
-    Text subtitle = factory.generateSubHeader("Authoring Environment");
+    Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
+        "AuthEnv", language));
     VBox header = factory.wrapInVBox(new ArrayList<Node>(Arrays.asList(title, subtitle)),
-        (int) layout.getHeight());
+        (int) layout.getHeight(), 10);
     header.setSpacing(0);
 
     Text descriptionLabel = factory.generateLine(new WidgetConfiguration
@@ -137,7 +138,7 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeButton(new WidgetConfiguration(
-        200, 40, "SaveJson", "white-button", language));
+        200, 40, "SaveJson", "black-button", language));
     saveJson.setOnAction(event -> {
       levelController.serializeLevel();
     });

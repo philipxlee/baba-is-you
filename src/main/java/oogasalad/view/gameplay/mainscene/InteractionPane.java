@@ -43,7 +43,6 @@ public class InteractionPane {
   private int width;
   private int height;
   private WidgetFactory factory;
-  private Image fileIcon;
   private SceneController sceneController;
   private LevelController levelController;
   private String language;
@@ -67,9 +66,6 @@ public class InteractionPane {
     this.levelController = levelController;
     this.language = sceneController.getLanguage();
 
-    InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
-    fileIcon = new Image(stream);
-
     root.setOnKeyPressed(this::handleKeyPress);
     root.setOnKeyReleased(this::handleKeyRelease);
     root.setFocusTraversable(true);
@@ -79,18 +75,51 @@ public class InteractionPane {
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
-    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width, 20);
+    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width, 10);
     arrowKeysBox.setAlignment(Pos.CENTER);
 
-    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
-    HBox header = factory.wrapInHBox(title, width, 20);
+    //Set up header + subtitle
+    VBox header = setUpHeader();
 
+    //Initializes reset and load buttons
+    Button reset = setUpResetButton();
+    Button load = setUpLoadButton();
+
+    //Orient all elements in the space
+    orientPaneDisplay(load, reset, header, arrowKeysBox, background);
+  }
+
+  /**
+   * Set up the "Baba Is You" header + the "Game Player" subtitle.
+   * @return VBox with both texts
+   */
+  private VBox setUpHeader() {
+    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
+    Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
+        "GamePlay", language));
+    VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
+        height/6, 5);
+    return header;
+  }
+
+  /**
+   * Initialize the reset button (resets Baba to the original position he was at)/
+   * @return reset button
+   */
+  private Button setUpResetButton() {
     Button reset = factory.makeButton(new WidgetConfiguration(150, 40,
         "Reset", "white-button", language));
     reset.setOnAction(event -> {
       scene.resetGame();
     });
+    return reset;
+  }
 
+  /**
+   * Initialize the load button, which lets the user upload a new game level.
+   * @return load button
+   */
+  private Button setUpLoadButton() {
     Button load = factory.makeButton(new WidgetConfiguration(150, 40,
         "Load", "white-button", language));
     load.setOnAction(event -> {
@@ -100,12 +129,22 @@ public class InteractionPane {
         throw new RuntimeException(e);
       }
     });
+    return load;
+  }
 
-    // Setup leaderboard display
+  /**
+   * Initializes/arranges all buttons and elements to be centered in the Interaction Pane.
+   * @param load load button
+   * @param reset reset button
+   * @param header text with header+subtitle
+   * @param arrowKeysBox HBox with light-up rectangles showing key presses
+   * @param background Rectangle background hosting all widgets
+   */
+  private void orientPaneDisplay(Button load, Button reset, VBox header, HBox arrowKeysBox,
+      Rectangle background) {
     VBox leaderboardButton = setupLeaderboardButton();
-
     //Set up the file chooser
-    VBox display = new VBox(20);
+    VBox display = new VBox(15);
     FileChooserPane fileChooser = new FileChooserPane(width, height, language, levelController,
         sceneController);
 
@@ -126,7 +165,6 @@ public class InteractionPane {
     display.getChildren().add(stats);
 
     root.getChildren().addAll(background, display);
-
   }
 
   private VBox setupArrowKeys() {
@@ -185,7 +223,7 @@ public class InteractionPane {
 
   private VBox setupLeaderboardButton() {
     Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewBoard", "white-button", language));
+        "ViewBoard", "black-button", language));
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);
@@ -195,7 +233,7 @@ public class InteractionPane {
 
   private VBox setupCommentButton() {
     Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewComments", "white-button", language));
+        "ViewComments", "black-button", language));
     commentButton.setOnAction(event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
     VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);

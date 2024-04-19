@@ -99,10 +99,10 @@ public class StartingScene implements Scene {
     List<Node> btns = createButtons(feedbackLabel);
 
     List<Node> boxes = new ArrayList<>();
-    boxes.add(factory.wrapInVBox(texts, height/2));
+    boxes.add(factory.wrapInVBox(texts, height/2, 10));
     boxes.add(factory.wrapInHBox(btns, width));
 
-    root.getChildren().add(factory.wrapInVBox(boxes, height));
+    root.getChildren().add(factory.wrapInVBox(boxes, height, 10));
   }
 
   private List<Node> createButtons(Label feedbackLabel) {

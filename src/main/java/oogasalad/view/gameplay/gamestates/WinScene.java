@@ -122,7 +122,7 @@ public class WinScene implements Scene {
     texts.add(playAgainButton);
     texts.add(guestMessage);
 
-    VBox textContainer = factory.wrapInVBox(texts, height);
+    VBox textContainer = factory.wrapInVBox(texts, height, 10);
     root.getChildren().add(textContainer);
   }
 

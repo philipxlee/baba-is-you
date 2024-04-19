@@ -81,7 +81,7 @@ public class LoseScene implements Scene {
       sceneController.beginGame(sceneController.isGuestSession());
     });
 
-    VBox textContainer = factory.wrapInVBox(texts, height);
+    VBox textContainer = factory.wrapInVBox(texts, height, 10);
     root.getChildren().add(textContainer);
   }
 }
