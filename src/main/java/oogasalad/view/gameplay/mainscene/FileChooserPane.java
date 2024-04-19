@@ -110,7 +110,7 @@ public class FileChooserPane {
               dimensions, "columns"));
 
           VBox vbox = factory.wrapInVBox(new ArrayList<>(Arrays.asList(rows, cols)),
-              width-100);
+              width-100, 10);
 
           factory.createPopUpWindow(new WidgetConfiguration(width - 100,
               height / 4, "FileInformation", "root", language), vbox);

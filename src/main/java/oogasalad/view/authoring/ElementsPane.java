@@ -49,9 +49,10 @@ public class ElementsPane {
     layout = new VBox(15);
 
     Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
-    Text subtitle = factory.generateSubHeader("Authoring Environment");
+    Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
+        "AuthEnv", language));
     VBox header = factory.wrapInVBox(new ArrayList<Node>(Arrays.asList(title, subtitle)),
-        (int) layout.getHeight());
+        (int) layout.getHeight(), 10);
     header.setSpacing(0);
 
     Text descriptionLabel = factory.generateLine(new WidgetConfiguration

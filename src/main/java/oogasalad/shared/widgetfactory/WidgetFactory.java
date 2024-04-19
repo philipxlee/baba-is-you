@@ -56,6 +56,12 @@ public class WidgetFactory {
     return line;
   }
 
+  public Text generateSubHeader(WidgetConfiguration configuration) {
+    Text line = new Text(configuration.getPropertyContents());
+    line.getStyleClass().add("sub-header");
+    return line;
+  }
+
   public Text generateCaption(WidgetConfiguration configuration) {
     Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("caption");
@@ -91,8 +97,8 @@ public class WidgetFactory {
     return hbox;
   }
 
-  public VBox wrapInVBox(List<Node> toBeWrapped, int height) {
-    VBox vbox = new VBox(10);
+  public VBox wrapInVBox(List<Node> toBeWrapped, int height, int spacing) {
+    VBox vbox = new VBox(spacing);
     vbox.getChildren().addAll(toBeWrapped);
     vbox.setPrefHeight(height);
     vbox.setAlignment(Pos.CENTER);
