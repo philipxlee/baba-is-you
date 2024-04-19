@@ -5,6 +5,7 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -79,35 +80,37 @@ public class LeaderboardScene implements Scene {
    */
   private void populateLeaderboard() {
     Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard", language));
+    root.getChildren().add(header);
 
-    List<LeaderboardData> topPlayers = sceneController.getDatabaseController().getTopPlayers();
+    Iterator<LeaderboardData> topPlayersIterator = sceneController.getDatabaseController()
+        .getTopPlayersIterator(sceneController.getLevelController().getLevelName());
+
     VBox leaderboardList = new VBox(5);
     leaderboardList.setAlignment(Pos.CENTER);
 
     int num = 1;
-    for (LeaderboardData player : topPlayers) {
-      WidgetConfiguration configuration = new WidgetConfiguration(300, 50,
-          "row-cell", language);
-      Button username = factory.makeButton(configuration, num + ". " + player.getUsername());
-      Button timeSpent = factory.makeButton(configuration, player.getTimeSpent() + " seconds");
-      Button date = factory.makeButton(configuration, player.getDate());
-      List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date));
-      for (Node btn : row) {
-        btn.setDisable(true);
-      }
-      HBox rowBtns = factory.wrapInHBox(row, width - 400);
-
-      leaderboardList.getChildren().add(rowBtns);
-      num++;
+    while (topPlayersIterator.hasNext()) {
+      LeaderboardData player = topPlayersIterator.next();
+      HBox row = createLeaderboardRow(num++, player);
+      row.setAlignment(Pos.CENTER);
+      leaderboardList.getChildren().add(row);
     }
 
+    Button backButton = factory.makeButton(new WidgetConfiguration(200, 50, "Back", "button", language));
+    backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
 
-    Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
-        "Back", "button", language));
-    backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController,
-        levelController)));
+    root.getChildren().addAll(leaderboardList, backButton);
+  }
 
-    root.getChildren().addAll(header, leaderboardList, backButton);
+  private HBox createLeaderboardRow(int number, LeaderboardData player) {
+    WidgetConfiguration configuration = new WidgetConfiguration(300, 50, "row-cell", language);
+    Button username = factory.makeButton(configuration, number + ". " + player.getUsername());
+    Button timeSpent = factory.makeButton(configuration, player.getTimeSpent() + " seconds");
+    Button date = factory.makeButton(configuration, player.getDate().toString());
+    username.setDisable(true);
+    timeSpent.setDisable(true);
+    date.setDisable(true);
+    return new HBox(username, timeSpent, date);
   }
 
 }

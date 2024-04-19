@@ -6,6 +6,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -53,25 +54,24 @@ public class DataFetcher {
   }
 
   /**
-   * Gets the top players for the current level.
-   *
+   * Returns an iterator over the top players for a given level.
    * @param currentLevelName the name of the current level
-   * @return a list of the top players
+   * @return an iterator over the leaderboard data
    */
-  public List<LeaderboardData> getTopPlayers(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty("collection.data"));
-    return StreamSupport.stream(collection
-            .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
-            .sort(Sorts.ascending(properties.getProperty("field.timeSpent")))
-            .limit(DISPLAY_LIMIT)
-            .spliterator(), false)
+  public Iterator<LeaderboardData> getTopPlayersIterator(String currentLevelName) {
+    MongoCollection<Document> collection = database.getCollection(properties.getProperty("collection.data"));
+    Iterable<Document> documents = collection
+        .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
+        .sort(Sorts.ascending(properties.getProperty("field.timeSpent")))
+        .limit(DISPLAY_LIMIT);
+
+    return StreamSupport.stream(documents.spliterator(), false)
         .map(document -> new LeaderboardData(
             document.getString(properties.getProperty("field.username")),
             document.getString(properties.getProperty("field.levelName")),
             document.getDate(properties.getProperty("field.date")),
-            document.getLong(properties.getProperty("field.timeSpent"))))
-        .collect(Collectors.toList());
+            document.getLong(properties.getProperty("field.timeSpent"))
+        )).iterator();
   }
 
   /**

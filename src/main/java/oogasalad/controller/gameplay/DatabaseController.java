@@ -1,6 +1,7 @@
 package oogasalad.controller.gameplay;
 
 import com.mongodb.client.MongoDatabase;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import oogasalad.database.dataservice.DataFetcher;
@@ -65,10 +66,11 @@ public class DatabaseController {
    *
    * @return list of top players
    */
-  public List<LeaderboardData> getTopPlayers() {
+  public Iterator<LeaderboardData> getTopPlayersIterator(String levelName) {
     initializeDataFetcher();
-    return dataFetcher.getTopPlayers(levelController.getLevelName());
+    return dataFetcher.getTopPlayersIterator(levelName);
   }
+
 
   /**
    * Gets the level comments.
