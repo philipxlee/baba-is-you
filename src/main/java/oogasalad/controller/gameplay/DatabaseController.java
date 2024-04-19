@@ -3,6 +3,7 @@ package oogasalad.controller.gameplay;
 import com.mongodb.client.MongoDatabase;
 import oogasalad.database.dataservice.DataFetcher;
 import oogasalad.database.dataservice.DataUploader;
+import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 import java.util.List;
@@ -40,6 +41,11 @@ public class DatabaseController {
     return dataFetcher.getTopPlayers(levelController.getLevelName());
   }
 
+  public List<CommentData> getLevelComments() {
+    initializeDataFetcher();
+    return dataFetcher.getLevelComments(levelController.getLevelName());
+  }
+
   public void saveLevelCommentData(String comment) {
     initializeDataUploader();
     dataUploader.saveLevelComment(comment);
@@ -48,6 +54,11 @@ public class DatabaseController {
   public void savePlayerData(long endTime) {
     initializeDataUploader();
     dataUploader.savePlayerLeaderboardData(startTime, endTime);
+  }
+
+  public void addReply(String commenterUsername, String reply) {
+    initializeDataUploader();
+    dataUploader.addReplyToUserComment(commenterUsername, reply);
   }
 
   private void initializeDataFetcher() {

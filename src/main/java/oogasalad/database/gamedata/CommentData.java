@@ -1,5 +1,6 @@
 package oogasalad.database.gamedata;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import org.bson.Document;
@@ -27,7 +28,33 @@ public class CommentData {
     doc.append("levelName", levelName);
     doc.append("date", date);
     doc.append("comment", comment);
+    doc.append("replies", replies);
     return doc;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public String getLevelName() {
+    return levelName;
+  }
+
+  public String getDate() {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM, dd yyyy");
+    return dateFormat.format(date);
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public String getReplies() {
+    StringBuilder allReplies = new StringBuilder();
+    for (String reply : replies) {
+      allReplies.append(reply).append("\n");
+    }
+    return allReplies.toString();
   }
 
 }

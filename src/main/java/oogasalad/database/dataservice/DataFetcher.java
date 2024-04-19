@@ -4,9 +4,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 import org.bson.Document;
@@ -36,6 +38,19 @@ public class DataFetcher {
             document.getString("levelName"),
             document.getDate("date"),
             document.getLong("timeSpent")))
+        .collect(Collectors.toList());
+  }
+
+  public List<CommentData> getLevelComments(String currentLevelName) {
+    MongoCollection<Document> collection = database.getCollection("comment");
+    return StreamSupport.stream(collection.find(Filters.eq("levelName", currentLevelName))
+            .spliterator(), false)
+        .map(document -> new CommentData(
+            document.getString("username"),
+            document.getString("levelName"),
+            document.getDate("date"),
+            document.getString("comment"),
+            (ArrayList<String>) document.get("replies")))
         .collect(Collectors.toList());
   }
 }

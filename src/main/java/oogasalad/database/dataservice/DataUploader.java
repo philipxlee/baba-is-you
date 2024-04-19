@@ -32,4 +32,12 @@ public class DataUploader {
     System.out.println("Level comments saved successfully.");
   }
 
+  public void addReplyToUserComment(String commenterUsername, String reply) {
+    MongoCollection<Document> collection = database.getCollection("comment");
+    Document filter = new Document("username", commenterUsername);
+    Document updateOperation = new Document("$push", new Document("replies", reply));
+    collection.updateOne(filter, updateOperation);
+    System.out.printf("Reply added successfully");
+  }
+
 }

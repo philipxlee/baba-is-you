@@ -91,7 +91,6 @@ public class LeaderboardScene implements Scene {
       Button username = factory.makeButton(configuration, num + ". " + player.getUsername());
       Button timeSpent = factory.makeButton(configuration, player.getTimeSpent() + " seconds");
       Button date = factory.makeButton(configuration, player.getDate());
-      Button levelName = factory.makeButton(configuration, player.getLevelName());
       List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date));
       for (Node btn : row) {
         btn.setDisable(true);
