@@ -17,6 +17,7 @@ public class DatabaseController {
   private DataUploader dataUploader;
   private GameSession gameSession;
   private long startTime;
+  private String username;
 
   public DatabaseController(MongoDatabase database, LevelController levelController) {
     this.database = database;
@@ -27,6 +28,7 @@ public class DatabaseController {
     if (!isUsernameAvailable(username)) {
       return false;
     }
+    this.username = username;
     initializeSession(username);
     return true;
   }
@@ -56,9 +58,13 @@ public class DatabaseController {
     dataUploader.savePlayerLeaderboardData(startTime, endTime);
   }
 
-  public void addReply(String commenterUsername, String reply) {
+  public void addReply(String commenterUsername, String playerUsername, String reply) {
     initializeDataUploader();
-    dataUploader.addReplyToUserComment(commenterUsername, reply);
+    dataUploader.addReplyToUserComment(commenterUsername, playerUsername, reply);
+  }
+
+  public String getUsername() {
+    return username;
   }
 
   private void initializeDataFetcher() {

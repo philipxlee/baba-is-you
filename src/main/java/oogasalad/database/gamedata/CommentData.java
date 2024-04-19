@@ -3,6 +3,7 @@ package oogasalad.database.gamedata;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.bson.Document;
 
 public class CommentData {
@@ -11,25 +12,27 @@ public class CommentData {
   private final String levelName;
   private final Date date;
   private final String comment;
-  private final ArrayList<String> replies;
+  private final List<ReplySchema> replies;  // Change to use Reply objects
 
-  public CommentData(String username, String levelName, Date defaultDate, String comment,
-      ArrayList<String> replies) {
+  public CommentData(String username, String levelName, Date date, String comment,
+      ArrayList<ReplySchema> replies) {
     this.username = username;
     this.levelName = levelName;
-    this.date = defaultDate;
+    this.date = date;
     this.comment = comment;
-    this.replies = replies;
+    this.replies = new ArrayList<>(replies);
   }
 
-  public Document getCommentDocument(String comment) {
-    Document doc = new Document();
-    doc.append("username", username);
-    doc.append("levelName", levelName);
-    doc.append("date", date);
-    doc.append("comment", comment);
-    doc.append("replies", replies);
-    return doc;
+  public Document getCommentDocument(String newComment) {
+    List<Document> replyDocs = new ArrayList<>();
+    for (ReplySchema reply : replies) {
+      replyDocs.add(reply.toDocument());
+    }
+    return new Document("username", username)
+        .append("levelName", levelName)
+        .append("date", date)
+        .append("comment", newComment)
+        .append("replies", replyDocs);
   }
 
   public String getUsername() {
@@ -41,7 +44,7 @@ public class CommentData {
   }
 
   public String getDate() {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM, dd yyyy");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
     return dateFormat.format(date);
   }
 
@@ -50,11 +53,10 @@ public class CommentData {
   }
 
   public String getReplies() {
-    StringBuilder allReplies = new StringBuilder();
-    for (String reply : replies) {
-      allReplies.append(reply).append("\n");
+    List<String> formattedReplies = new ArrayList<>();
+    for (ReplySchema reply : replies) {
+      formattedReplies.add(reply.getUsername() + ": " + reply.getReplyText() + " (" + reply.getFormattedReplyDate() + ")");
     }
-    return allReplies.toString();
+    return formattedReplies.toString();
   }
-
 }

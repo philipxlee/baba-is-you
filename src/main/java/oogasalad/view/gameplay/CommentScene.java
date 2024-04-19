@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.gamedata.CommentData;
@@ -117,7 +118,7 @@ public class CommentScene implements Scene {
     root.getChildren().addAll(header, commentList, backButton);
   }
 
-  private void addReply(String username) {
+  private void addReply(String targetUsername) {
     // Create a new dialog where users can type their reply
     TextArea replyArea = new TextArea();
     replyArea.setPromptText("Type your reply here...");
@@ -128,7 +129,9 @@ public class CommentScene implements Scene {
 
     Button submitButton = new Button("Submit");
     submitButton.setOnAction(e -> {
-      sceneController.getDatabaseController().addReply(username, replyArea.getText());
+      DatabaseController databaseController = sceneController.getDatabaseController();
+      String playerUsername = databaseController.getUsername();
+      databaseController.addReply(targetUsername, playerUsername, replyArea.getText());
       dialogStage.close();
     });
 

@@ -5,12 +5,14 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
+import oogasalad.database.gamedata.ReplySchema;
 import org.bson.Document;
 
 public class DataFetcher {
@@ -45,12 +47,25 @@ public class DataFetcher {
     MongoCollection<Document> collection = database.getCollection("comment");
     return StreamSupport.stream(collection.find(Filters.eq("levelName", currentLevelName))
             .spliterator(), false)
-        .map(document -> new CommentData(
-            document.getString("username"),
-            document.getString("levelName"),
-            document.getDate("date"),
-            document.getString("comment"),
-            (ArrayList<String>) document.get("replies")))
+        .map(document -> {
+          List<Document> replyDocs = (List<Document>) document.get("replies");
+          ArrayList<ReplySchema> replies = new ArrayList<>();
+          if (replyDocs != null) {
+            for (Document replyDoc : replyDocs) {
+              String replyUsername = replyDoc.getString("username");
+              String replyText = replyDoc.getString("reply");
+              Date replyDate = replyDoc.getDate("date");
+              replies.add(new ReplySchema(replyUsername, replyText, replyDate));
+            }
+          }
+          return new CommentData(
+              document.getString("username"),
+              document.getString("levelName"),
+              document.getDate("date"),
+              document.getString("comment"),
+              replies);
+        })
         .collect(Collectors.toList());
   }
+
 }

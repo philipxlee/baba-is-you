@@ -7,7 +7,7 @@ public class GameSession {
 
   private static final Date DEFAULT_DATE = new Date();
   private static final String DEFAULT_COMMENT = "";
-  private static final ArrayList<String> DEFAULT_REPLIES = new ArrayList<String>();
+  private static final ArrayList<ReplySchema> DEFAULT_REPLIES = new ArrayList<>();
   private static final int DEFAULT_TIME = 0;
 
   private final CommentData commentData;
