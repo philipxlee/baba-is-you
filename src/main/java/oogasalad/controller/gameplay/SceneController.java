@@ -35,14 +35,13 @@ public class SceneController {
     stage.setTitle("Baba Is Us: Game Player");
     stage.setResizable(false);
     stage.show();
-    this.language = "English";
   }
 
   /**
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new StartingScene(this, databaseController, "English"));
+    switchToScene(new StartingScene(this, databaseController, language));
 
   }
 

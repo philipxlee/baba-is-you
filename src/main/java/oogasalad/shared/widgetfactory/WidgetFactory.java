@@ -44,6 +44,12 @@ public class WidgetFactory {
     return header;
   }
 
+  public Text generateRedHeader(WidgetConfiguration configuration) {
+    Text header = new Text(configuration.getPropertyContents());
+    header.getStyleClass().add("red-header");
+    return header;
+  }
+
   public Text generateLine(WidgetConfiguration configuration) {
     Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("paragraph");
