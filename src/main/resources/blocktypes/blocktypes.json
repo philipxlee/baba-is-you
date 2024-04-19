@@ -39,8 +39,20 @@
     "imagePath": "/images/YouTextBlock.png",
     "category" : ["Text"]
   },
-  "BabaVisualBlock": {
-    "imagePath": "/images/BabaVisualBlock.png",
+  "BabaVisualBlockRight": {
+    "imagePath": "/images/BabaVisualBlockRight.png",
+    "category" : ["Visual"]
+  },
+  "BabaVisualBlockLeft": {
+    "imagePath": "/images/BabaVisualBlockLeft.png",
+    "category" : ["Visual"]
+  },
+  "BabaVisualBlockUp": {
+    "imagePath": "/images/BabaVisualBlockUp.png",
+    "category" : ["Visual"]
+  },
+  "BabaVisualBlockDown": {
+    "imagePath": "/images/BabaVisualBlockDown.png",
     "category" : ["Visual"]
   },
   "EmptyVisualBlock": {

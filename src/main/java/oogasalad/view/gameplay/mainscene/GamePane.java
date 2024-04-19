@@ -33,6 +33,7 @@ public class GamePane implements Observer<Grid> {
   private int height;
   private BlockViewFactory blockFactory;
   private Level level;
+  private String currentDirection = "Right";
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
@@ -87,6 +88,7 @@ public class GamePane implements Observer<Grid> {
     List<AbstractBlock>[][] grid = gridController.getGameGrid().getGrid();
     calculateCellSize(grid.length, grid[0].length);
     double blockOffset = 0; // Offset for displaying stacked blocks
+    String modifiedBlockName;
 
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
@@ -103,7 +105,13 @@ public class GamePane implements Observer<Grid> {
             offsetX = Math.min(offsetX, j * cellSize + cellSize - blockOffset);
             offsetY = Math.min(offsetY, i * cellSize + cellSize - blockOffset);
 
-            ImageView visualObj = blockFactory.createBlockView(block.getBlockName());
+            if (block.getBlockName().contains("BabaVisual")) {
+              modifiedBlockName = block.getBlockName() + currentDirection;
+            }
+            else {
+              modifiedBlockName = block.getBlockName();
+            }
+            ImageView visualObj = blockFactory.createBlockView(modifiedBlockName);
 
             if (visualObj == null) {
               gridController.showError("ERROR", "ImageView in AbstractBlockView is null");
@@ -133,6 +141,7 @@ public class GamePane implements Observer<Grid> {
     this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
       if (event.getCode().isArrowKey()) {
         gridController.sendPlayToModel(event.getCode());
+        this.currentDirection = event.getCode().getName();
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks
         scene.getInteractionPane().updateKeyPress(event.getCode());
