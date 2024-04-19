@@ -8,9 +8,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,6 +24,7 @@ import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.LeaderboardData;
+import oogasalad.database.gamedata.ReplySchema;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -85,62 +88,67 @@ public class CommentScene implements Scene {
    * Populate the leaderboard.
    */
   private void populateComments() {
-
     Text header = factory.generateHeader(new WidgetConfiguration("Comments", language));
-    VBox commentList = new VBox(5);
+
+    VBox commentList = new VBox(15);
     commentList.setAlignment(Pos.CENTER);
+    commentList.setPadding(new Insets(10));
+
     List<CommentData> levelComments = sceneController.getDatabaseController().getLevelComments();
-
     for (CommentData comment : levelComments) {
-      WidgetConfiguration configuration = new WidgetConfiguration(300, 50,
-          "row-cell", language);
-      Button username = factory.makeButton(configuration, comment.getUsername());
-      Button timeSpent = factory.makeButton(configuration, comment.getComment());
-      Button date = factory.makeButton(configuration, comment.getDate());
-      Button replies = factory.makeButton(configuration, comment.getReplies());
-      Button replyButton = factory.makeButton(configuration, "Reply");
+      Label usernameLabel = new Label(comment.getUsername() + " (" + comment.getDate() + "): ");
+      Label commentLabel = new Label(comment.getComment());
+      commentLabel.setWrapText(true);
 
-      username.setDisable(true);
-      timeSpent.setDisable(true);
-      date.setDisable(true);
-      replies.setDisable(true);
+      HBox commentHeader = new HBox(10, usernameLabel, commentLabel);
+      commentHeader.setAlignment(Pos.TOP_LEFT);
 
-      replyButton.setOnAction(event -> addReply(comment.getUsername()));
-      List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date, replies, replyButton));
-      HBox rowBtns = factory.wrapInHBox(row, width - 400);
-      commentList.getChildren().add(rowBtns);
+      VBox commentBox = new VBox(10, commentHeader);
+
+      VBox repliesContainer = new VBox(5);
+      repliesContainer.setPadding(new Insets(0, 0, 0, 20));
+      updateRepliesUI(comment, repliesContainer);
+
+      commentList.getChildren().addAll(commentBox, repliesContainer);
     }
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
         "Back", "button", language));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
 
+
     root.getChildren().addAll(header, commentList, backButton);
   }
 
-  private void addReply(String targetUsername) {
-    // Create a new dialog where users can type their reply
-    TextArea replyArea = new TextArea();
-    replyArea.setPromptText("Type your reply here...");
+  private void updateRepliesUI(CommentData comment, VBox repliesContainer) {
+    List<ReplySchema> replies = comment.getReplies();
+    for (ReplySchema reply : replies) {
+      Label replyLabel = new Label(reply.getUsername() + " replied: " + reply.getReplyText());
+      replyLabel.setWrapText(true);
+      repliesContainer.getChildren().add(replyLabel);
+    }
+    Button addReplyButton = new Button("Add Reply");  // Button to add a reply
+    addReplyButton.setOnAction(e -> showReplyInput(comment, repliesContainer));
+    repliesContainer.getChildren().add(addReplyButton);
+  }
 
-    Stage dialogStage = new Stage();
-    dialogStage.initModality(Modality.APPLICATION_MODAL);
-    dialogStage.setTitle("Reply to Comment");
-
-    Button submitButton = new Button("Submit");
-    submitButton.setOnAction(e -> {
-      DatabaseController databaseController = sceneController.getDatabaseController();
-      String playerUsername = databaseController.getUsername();
-      databaseController.addReply(targetUsername, playerUsername, replyArea.getText());
-      dialogStage.close();
+  private void showReplyInput(CommentData comment, VBox repliesContainer) {
+    TextArea replyInput = new TextArea();
+    Button submitReply = new Button("Submit Reply");
+    submitReply.setOnAction(e -> {
+      String replyText = replyInput.getText().trim();
+      if (!replyText.isEmpty()) {
+        DatabaseController databaseController = sceneController.getDatabaseController();
+        databaseController.addReply(comment.getUsername(), databaseController.getUsername(), replyText);
+        Label newReplyLabel = new Label(databaseController.getUsername() + ": " + replyText);
+        repliesContainer.getChildren().add(newReplyLabel);
+        replyInput.clear();
+        repliesContainer.getChildren().removeAll(replyInput, submitReply);  // Remove input area after submission
+      }
     });
 
-    VBox dialogVBox = new VBox(10, replyArea, submitButton);
-    dialogVBox.setAlignment(Pos.CENTER);
-
-    javafx.scene.Scene dialogScene = new javafx.scene.Scene(dialogVBox, 300, 200);
-    dialogStage.setScene(dialogScene);
-    dialogStage.show();
+    repliesContainer.getChildren().addAll(replyInput, submitReply);
   }
+
 
 }

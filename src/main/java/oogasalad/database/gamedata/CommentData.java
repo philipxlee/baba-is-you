@@ -58,14 +58,8 @@ public class CommentData {
    *
    * @return replies
    */
-  public String getReplies() {
-    List<String> formattedReplies = new ArrayList<>();
-    for (ReplySchema reply : replies) {
-      formattedReplies.add(
-          reply.getUsername() + ": " + reply.getReplyText() + " (" + reply.getFormattedReplyDate()
-              + ")");
-    }
-    return formattedReplies.toString();
+  public List<ReplySchema> getReplies() {
+    return replies;
   }
 
   /**

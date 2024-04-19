@@ -9,12 +9,11 @@ import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 
 /**
- * This class is responsible for handling the database interactions for the game.
+ * This class is responsible for controlling the database.
  */
 public class DatabaseController {
 
   private static final int MILLISECOND_OFFSET = 1000;
-
   private final MongoDatabase database;
   private final LevelController levelController;
   private DataFetcher dataFetcher;
@@ -26,30 +25,26 @@ public class DatabaseController {
   /**
    * Constructor for the DatabaseController class.
    *
-   * @param database        database
+   * @param database       database
    * @param levelController level controller
    */
   public DatabaseController(MongoDatabase database, LevelController levelController) {
     this.database = database;
     this.levelController = levelController;
-    this.dataFetcher = new DataFetcher(database);
   }
 
   /**
-   * Starts a new player session and initializes data services.
+   * Starts a new player.
    *
    * @param username username
-   * @return true if the session was started and necessary services were initialized
+   * @return true if the player is started, false otherwise
    */
   public boolean startNewPlayer(String username) {
     if (!isUsernameAvailable(username)) {
       return false;
     }
     this.username = username;
-    if (!initializeSession(username)) {
-      return false;
-    }
-    initializeDataUploader();  // Initialize after the session is successfully created
+    initializeSession(username);
     return true;
   }
 
@@ -60,83 +55,91 @@ public class DatabaseController {
    * @return true if the username is available, false otherwise
    */
   public boolean isUsernameAvailable(String username) {
+    initializeDataFetcher();
     return dataFetcher.isUsernameAvailable(username);
   }
 
   /**
-   * Retrieves the top players for the current level.
+   * Gets the top players.
    *
-   * @return A list of leaderboard data.
+   * @return list of top players
    */
   public List<LeaderboardData> getTopPlayers() {
+    initializeDataFetcher();
     return dataFetcher.getTopPlayers(levelController.getLevelName());
   }
 
   /**
-   * Retrieves comments for the current level.
+   * Gets the level comments.
    *
-   * @return A list of comment data.
+   * @return list of level comments
    */
   public List<CommentData> getLevelComments() {
+    initializeDataFetcher();
     return dataFetcher.getLevelComments(levelController.getLevelName());
   }
 
   /**
-   * Saves a comment made on the current level.
+   * Saves the level comment data.
    *
-   * @param comment The comment text to save.
+   * @param comment comment
    */
   public void saveLevelCommentData(String comment) {
+    initializeDataUploader();
     dataUploader.saveLevelComment(comment);
   }
 
   /**
-   * Saves the data of a player at the end of their game session.
+   * Saves the player data.
    *
-   * @param endTime The end time of the player's session.
+   * @param endTime end time
    */
   public void savePlayerData(long endTime) {
+    initializeDataUploader();
     dataUploader.savePlayerLeaderboardData(startTime, endTime);
   }
 
   /**
    * Adds a reply to a user comment.
    *
-   * @param commenterUsername The username of the person who originally commented.
-   * @param playerUsername The username of the person replying.
-   * @param reply The reply text.
+   * @param commenterUsername comment username
+   * @param playerUsername   player username
+   * @param reply           reply
    */
   public void addReply(String commenterUsername, String playerUsername, String reply) {
+    initializeDataUploader();
     dataUploader.addReplyToUserComment(commenterUsername, playerUsername, reply);
   }
 
   /**
-   * Returns the current session's username.
+   * Gets the username.
    *
-   * @return The current username.
+   * @return username
    */
   public String getUsername() {
     return username;
   }
 
-  /**
-   * Initializes a new game session for a given username.
-   *
-   * @param username The username for whom to initialize the session.
-   * @return true if the session is successfully initialized
-   */
-  private boolean initializeSession(String username) {
-    this.gameSession = new GameSession(username, levelController.getLevelName());
-    this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
-    return this.gameSession != null; // Ensure gameSession is properly initialized
+  private void initializeDataFetcher() {
+    if (dataFetcher == null) {
+      dataFetcher = new DataFetcher(database);
+    }
   }
 
-  /**
-   * Initializes DataUploader only after a valid game session is available.
-   */
   private void initializeDataUploader() {
-    if (gameSession != null && dataUploader == null) {
+    if (dataUploader == null) {
       dataUploader = new DataUploader(database, gameSession);
     }
+  }
+
+  private void initializeSession(String username) {
+    this.gameSession = new GameSession(username, levelController.getLevelName());
+    this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
+    initializeDataServices();
+  }
+
+  private void initializeDataServices() {
+    initializeDataFetcher();
+    initializeDataUploader();
   }
 }
