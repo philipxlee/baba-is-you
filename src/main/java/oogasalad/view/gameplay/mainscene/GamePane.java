@@ -1,6 +1,8 @@
 package oogasalad.view.gameplay.mainscene;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -34,11 +36,13 @@ public class GamePane implements Observer<Grid> {
   private BlockViewFactory blockFactory;
   private Level level;
   private String currentDirection = "Right";
+  private Map<String, ImageView> animationCache;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
     try {
       this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
+      this.animationCache = new HashMap<>();
       this.width = width;
       this.height = height;
       this.root = new Group();
@@ -94,6 +98,7 @@ public class GamePane implements Observer<Grid> {
       for (int j = 0; j < grid[i].length; j++) {
         List<AbstractBlock> blocks = grid[i][j];
         for (int k = 0; k < blocks.size(); k++) {
+          ImageView visualObj;
           try {
             AbstractBlock block = blocks.get(k);
 
@@ -107,11 +112,15 @@ public class GamePane implements Observer<Grid> {
 
             if (block.getBlockName().contains("BabaVisual")) {
               modifiedBlockName = block.getBlockName() + currentDirection;
+              if (!animationCache.containsKey( block.getBlockName() + currentDirection)) {
+                ImageView image = blockFactory.createBlockView(modifiedBlockName);
+                animationCache.put(modifiedBlockName, image);
+              }
+              visualObj = animationCache.get(modifiedBlockName);
             }
             else {
-              modifiedBlockName = block.getBlockName();
+              visualObj = blockFactory.createBlockView(block.getBlockName());
             }
-            ImageView visualObj = blockFactory.createBlockView(modifiedBlockName);
 
             if (visualObj == null) {
               gridController.showError("ERROR", "ImageView in AbstractBlockView is null");

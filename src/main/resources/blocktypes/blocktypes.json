@@ -40,19 +40,19 @@
     "category" : ["Text"]
   },
   "BabaVisualBlockRight": {
-    "imagePath": "/images/BabaVisualBlockRight.png",
+    "imagePath": "/images/baba/BabaVisualBlockRight.png",
     "category" : ["Visual"]
   },
   "BabaVisualBlockLeft": {
-    "imagePath": "/images/BabaVisualBlockLeft.png",
+    "imagePath": "/images/baba/BabaVisualBlockLeft.png",
     "category" : ["Visual"]
   },
   "BabaVisualBlockUp": {
-    "imagePath": "/images/BabaVisualBlockUp.png",
+    "imagePath": "/images/baba/BabaVisualBlockUp.png",
     "category" : ["Visual"]
   },
   "BabaVisualBlockDown": {
-    "imagePath": "/images/BabaVisualBlockDown.png",
+    "imagePath": "/images/baba/BabaVisualBlockDown.png",
     "category" : ["Visual"]
   },
   "EmptyVisualBlock": {

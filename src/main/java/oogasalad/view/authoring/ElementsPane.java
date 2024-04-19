@@ -137,7 +137,7 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeButton(new WidgetConfiguration(
-        200, 40, "SaveJson", "white-button", language));
+        200, 40, "SaveJson", "black-button", language));
     saveJson.setOnAction(event -> {
       levelController.serializeLevel();
     });

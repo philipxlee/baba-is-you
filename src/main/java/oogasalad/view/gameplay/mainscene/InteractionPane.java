@@ -185,7 +185,7 @@ public class InteractionPane {
 
   private VBox setupLeaderboardButton() {
     Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewBoard", "white-button", language));
+        "ViewBoard", "black-button", language));
     leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);
@@ -195,7 +195,7 @@ public class InteractionPane {
 
   private VBox setupCommentButton() {
     Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "ViewComments", "white-button", language));
+        "ViewComments", "black-button", language));
     commentButton.setOnAction(event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
     VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);
