@@ -113,14 +113,6 @@ public class StartingScene implements Scene {
     usernameField.textProperty().addListener((obs, old, newValue) -> {
       checkUsernameValidity(newValue, feedbackLabel, start);
     });
-    ComboBox<String> switchLanguage = factory.makeComboBox(new WidgetConfiguration(200, 40,
-        "SwitchLanguage", "combo-box", language), new ArrayList<>(Arrays.asList("English",
-        "Spanish")), language);
-    //TODO: Change to be a drop down
-    switchLanguage.setOnAction(event -> {
-      language = switchLanguage.getValue();
-      sceneController.switchToScene(new StartingScene(sceneController, databaseController, language));
-    });
     startGame(start);
     guestButton.setOnAction(event -> sceneController.beginGame(true));
 
@@ -128,7 +120,6 @@ public class StartingScene implements Scene {
     List<Node> btns = new ArrayList<>();
     btns.add(start);
     btns.add(guestButton);
-    btns.add(switchLanguage);
     return btns;
   }
 
