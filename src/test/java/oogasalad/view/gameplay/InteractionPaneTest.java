@@ -8,7 +8,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.PlayerDataController;
-import oogasalad.database.DataManager;
 import oogasalad.database.DatabaseConfig;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
