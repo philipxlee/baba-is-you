@@ -3,8 +3,8 @@ package oogasalad.app;
 import java.io.File;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.LevelController;
-import oogasalad.controller.gameplay.PlayerDataController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.DataManager;
 import oogasalad.database.DatabaseConfig;
@@ -34,11 +34,10 @@ public class GamePlayer extends Application {
 
     // Set up database
     DatabaseConfig databaseConfig = new DatabaseConfig();
-    DataManager dataManager = new DataManager(databaseConfig.getDatabase());
-    PlayerDataController playerDataController = new PlayerDataController(dataManager);
+    DatabaseController databaseDataController = new DatabaseController(databaseConfig.getDatabase(), levelController);
 
     // initialize controllers
-    SceneController sceneController = new SceneController(stage, playerDataController,
+    SceneController sceneController = new SceneController(stage, databaseDataController,
         levelController);
 
     // initialize views

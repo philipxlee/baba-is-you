@@ -3,26 +3,18 @@ package oogasalad.view.gameplay;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
-import java.lang.module.Configuration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.database.LeaderboardPlayerData;
-import oogasalad.database.PlayerData;
+import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -88,27 +80,28 @@ public class LeaderboardScene implements Scene {
   private void populateLeaderboard() {
     Text header = factory.generateHeader(new WidgetConfiguration("LeaderBoard", language));
 
-    List<LeaderboardPlayerData> topPlayers = sceneController.getPlayerDataController().getTopPlayers();
+    List<LeaderboardData> topPlayers = sceneController.getDatabaseController().getTopPlayers();
     VBox leaderboardList = new VBox(5);
     leaderboardList.setAlignment(Pos.CENTER);
 
-    int num=1;
-    for (LeaderboardPlayerData player : topPlayers) {
+    int num = 1;
+    for (LeaderboardData player : topPlayers) {
       WidgetConfiguration configuration = new WidgetConfiguration(300, 50,
           "row-cell", language);
-      Button username = factory.makeButton(configuration, ""+num+". " + player.getUsername());
-      Button timeSpent = factory.makeButton(configuration, ""+player.getTimeSpent()+" seconds");
+      Button username = factory.makeButton(configuration, num + ". " + player.getUsername());
+      Button timeSpent = factory.makeButton(configuration, player.getTimeSpent() + " seconds");
       Button date = factory.makeButton(configuration, player.getDate());
-//      Button levelName = factory.makeButton(configuration, player.getLevelName());
+      Button levelName = factory.makeButton(configuration, player.getLevelName());
       List<Node> row = new ArrayList<>(Arrays.asList(username, timeSpent, date));
-      for (Node btn: row) {
+      for (Node btn : row) {
         btn.setDisable(true);
       }
-      HBox rowBtns = factory.wrapInHBox(row, width-400);
+      HBox rowBtns = factory.wrapInHBox(row, width - 400);
 
       leaderboardList.getChildren().add(rowBtns);
       num++;
     }
+
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
         "Back", "button", language));
