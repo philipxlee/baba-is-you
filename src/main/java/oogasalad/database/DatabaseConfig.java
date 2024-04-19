@@ -14,9 +14,9 @@ import java.util.Properties;
  */
 public class DatabaseConfig {
 
+  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
   private MongoClient mongoClient;
   private String databaseName;
-  private static String DATABASE_PROPERTIES_PATH = "database/database.properties";
 
   /**
    * Constructs a new DatabaseConfig object.
@@ -55,7 +55,8 @@ public class DatabaseConfig {
 
   private Properties loadProperties() {
     Properties properties = new Properties();
-    try (InputStream input = getClass().getClassLoader().getResourceAsStream(DATABASE_PROPERTIES_PATH)) {
+    try (InputStream input = getClass().getClassLoader()
+        .getResourceAsStream(DATABASE_PROPERTIES_PATH)) {
       if (input == null) {
         throw new IllegalStateException("Failed to load database properties file.");
       }
