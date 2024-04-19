@@ -2,8 +2,6 @@ package oogasalad.controller.gameplay;
 
 import com.mongodb.client.MongoDatabase;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
 import oogasalad.database.dataservice.DataFetcher;
 import oogasalad.database.dataservice.DataUploader;
 import oogasalad.database.gamedata.CommentData;
@@ -71,16 +69,16 @@ public class DatabaseController {
     return dataFetcher.getTopPlayersIterator(levelName);
   }
 
-
   /**
-   * Gets the level comments.
+   * Returns an iterator over the comments for the current level.
    *
-   * @return list of level comments
+   * @return an iterator of CommentData
    */
-  public List<CommentData> getLevelComments() {
+  public Iterator<CommentData> getLevelCommentsIterator(String levelName) {
     initializeDataFetcher();
-    return dataFetcher.getLevelComments(levelController.getLevelName());
+    return dataFetcher.getLevelCommentsIterator(levelName);
   }
+
 
   /**
    * Saves the level comment data.

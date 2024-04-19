@@ -80,15 +80,15 @@ public class DataFetcher {
    * @param currentLevelName the name of the current level
    * @return a list of the comments
    */
-  public List<CommentData> getLevelComments(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty("collection.comments"));
-    return StreamSupport.stream(collection
-            .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
-            .limit(DISPLAY_LIMIT)
-            .spliterator(), false)
+  public Iterator<CommentData> getLevelCommentsIterator(String currentLevelName) {
+    MongoCollection<Document> collection = database.getCollection(properties.getProperty("collection.comments"));
+    Iterable<Document> documents = collection
+        .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
+        .limit(DISPLAY_LIMIT);
+
+    return StreamSupport.stream(documents.spliterator(), false)
         .map(this::documentToCommentData)
-        .collect(Collectors.toList());
+        .iterator();
   }
 
   private CommentData documentToCommentData(Document document) {
