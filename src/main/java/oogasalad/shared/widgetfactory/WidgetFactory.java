@@ -24,7 +24,7 @@ import javafx.stage.Stage;
  * Factory class for making general UI widgets.
  */
 public class WidgetFactory {
-  public static final String STYLESHEET = "gameplay.css";
+  public static final String STYLESHEET = "style.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");

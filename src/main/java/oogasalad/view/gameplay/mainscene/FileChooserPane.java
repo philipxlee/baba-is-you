@@ -107,7 +107,7 @@ public class FileChooserPane {
           Text rows = factory.generateCaption("Rows: " + jsonManager.getValue(
               dimensions, "rows"));
           Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
-              dimensions, "cols"));
+              dimensions, "columns"));
 
           VBox vbox = factory.wrapInVBox(new ArrayList<>(Arrays.asList(rows, cols)),
               width-100);

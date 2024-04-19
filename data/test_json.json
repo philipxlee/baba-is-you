@@ -2,7 +2,7 @@
   "levelName": "Level Name",
   "gridSize": {
     "rows": "10",
-    "cols": "10"
+    "columns": "10"
   },
   "grid": [
     [
