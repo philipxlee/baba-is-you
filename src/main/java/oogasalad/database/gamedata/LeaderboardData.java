@@ -18,7 +18,7 @@ public class LeaderboardData {
     this.timeSpent = timeSpent;
   }
 
-  public Document getDocument(long startTime, long endTime) {
+  public Document getLeaderboardDocument(long startTime, long endTime) {
     Document doc = new Document();
     doc.append("username", username);
     doc.append("levelName", levelName);

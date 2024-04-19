@@ -40,6 +40,11 @@ public class DatabaseController {
     return dataFetcher.getTopPlayers(levelController.getLevelName());
   }
 
+  public void saveLevelCommentData(String comment) {
+    initializeDataUploader();
+    dataUploader.saveLevelComment(comment);
+  }
+
   public void savePlayerData(long endTime) {
     initializeDataUploader();
     dataUploader.savePlayerLeaderboardData(startTime, endTime);
