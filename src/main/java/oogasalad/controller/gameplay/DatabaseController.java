@@ -2,6 +2,7 @@ package oogasalad.controller.gameplay;
 
 import com.mongodb.client.MongoDatabase;
 import java.util.List;
+import java.util.Properties;
 import oogasalad.database.dataservice.DataFetcher;
 import oogasalad.database.dataservice.DataUploader;
 import oogasalad.database.gamedata.CommentData;

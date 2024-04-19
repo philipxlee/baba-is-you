@@ -7,11 +7,13 @@ import com.mongodb.client.model.Sorts;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.database.gamedata.ReplySchema;
+import oogasalad.shared.util.PropertiesLoader;
 import org.bson.Document;
 
 /**
@@ -19,60 +21,89 @@ import org.bson.Document;
  */
 public class DataFetcher {
 
+  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
   private final MongoDatabase database;
+  private final Properties properties;
 
+  /**
+   * Constructor for the DataFetcher class.
+   *
+   * @param database the database
+   */
   public DataFetcher(MongoDatabase database) {
     this.database = database;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
+  /**
+   * Checks if the username is available.
+   *
+   * @param username the username to check
+   * @return true if the username is available, false otherwise
+   */
   public boolean isUsernameAvailable(String username) {
-    MongoCollection<Document> collection = database.getCollection("data");
-    long count = collection.countDocuments(Filters.eq("username", username));
+    MongoCollection<Document> collection = database.getCollection(
+        properties.getProperty("collection.data"));
+    long count = collection.countDocuments(
+        Filters.eq(properties.getProperty("field.username"), username));
     return count == 0;
   }
 
+  /**
+   * Gets the top players for the current level.
+   *
+   * @param currentLevelName the name of the current level
+   * @return a list of the top players
+   */
   public List<LeaderboardData> getTopPlayers(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection("data");
+    MongoCollection<Document> collection = database.getCollection(
+        properties.getProperty("collection.data"));
     return StreamSupport.stream(collection
-            .find(Filters.eq("levelName", currentLevelName))
-            .sort(Sorts.ascending("timeSpent"))
+            .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
+            .sort(Sorts.ascending(properties.getProperty("field.timeSpent")))
             .limit(10)
             .spliterator(), false)
         .map(document -> new LeaderboardData(
-            document.getString("username"),
-            document.getString("levelName"),
-            document.getDate("date"),
-            document.getLong("timeSpent")))
+            document.getString(properties.getProperty("field.username")),
+            document.getString(properties.getProperty("field.levelName")),
+            document.getDate(properties.getProperty("field.date")),
+            document.getLong(properties.getProperty("field.timeSpent"))))
         .collect(Collectors.toList());
   }
 
+  /**
+   * Gets the comments for the current level.
+   *
+   * @param currentLevelName the name of the current level
+   * @return a list of the comments
+   */
   public List<CommentData> getLevelComments(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection("comment");
+    MongoCollection<Document> collection = database.getCollection(
+        properties.getProperty("collection.comments"));
     return StreamSupport.stream(collection
-            .find(Filters.eq("levelName", currentLevelName))
+            .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
             .spliterator(), false)
         .map(this::documentToCommentData)
         .collect(Collectors.toList());
   }
 
   private CommentData documentToCommentData(Document document) {
-    String username = document.getString("username");
-    String levelName = document.getString("levelName");
-    Date date = document.getDate("date");
-    String comment = document.getString("comment");
+    String username = document.getString(properties.getProperty("field.username"));
+    String levelName = document.getString(properties.getProperty("field.levelName"));
+    Date date = document.getDate(properties.getProperty("field.date"));
+    String comment = document.getString(properties.getProperty("field.comment"));
     List<ReplySchema> replies = extractReplies(document);
-
     return new CommentData(username, levelName, date, comment, replies);
   }
 
   private List<ReplySchema> extractReplies(Document document) {
-    List<Document> replyDocs = document.getList("replies", Document.class);
+    List<Document> replyDocs = document.getList(properties.getProperty("field.replies"),
+        Document.class);
     return replyDocs == null ? new ArrayList<>() : replyDocs.stream()
         .map(doc -> new ReplySchema(
-            doc.getString("username"),
-            null,  // Assume level name is not applicable to individual replies
-            doc.getDate("date"),
-            doc.getString("reply")))
+            doc.getString(properties.getProperty("field.username")), null,
+            doc.getDate(properties.getProperty("field.date")),
+            doc.getString(properties.getProperty("field.reply"))))
         .collect(Collectors.toList());
   }
 }

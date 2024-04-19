@@ -3,14 +3,21 @@ package oogasalad.database.gamedata;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
+import oogasalad.shared.util.PropertiesLoader;
 import org.bson.Document;
 
 /**
  * Stores and manages comment data for a game session, including replies.
  */
 public class CommentData extends AbstractGameData {
-  private String comment;
-  private List<ReplySchema> replies;
+
+  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+
+  private final Properties properties;
+  private final String comment;
+  private final List<ReplySchema> replies;
 
   /**
    * Constructor for the CommentData class.
@@ -24,20 +31,21 @@ public class CommentData extends AbstractGameData {
   public CommentData(String username, String levelName, Date date, String comment, List<ReplySchema> replies) {
     super(username, levelName, date);
     this.comment = comment;
-    this.replies = new ArrayList<>(replies);  // Ensure a new list is created to avoid external modifications
+    this.replies = new ArrayList<>(replies);
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
   @Override
   public Document toDocument() {
-    List<Document> replyDocs = new ArrayList<>();
-    for (ReplySchema reply : replies) {
-      replyDocs.add(reply.toDocument());
-    }
-    return new Document("username", username)
-        .append("levelName", levelName)
-        .append("date", date)
-        .append("comment", comment)
-        .append("replies", replyDocs);
+    List<Document> replyDocs = replies.stream()
+        .map(ReplySchema::toDocument)
+        .collect(Collectors.toList());
+
+    return new Document(properties.getProperty("field.username"), username)
+        .append(properties.getProperty("field.levelName"), levelName)
+        .append(properties.getProperty("field.date"), date)
+        .append(properties.getProperty("field.comment"), comment)
+        .append(properties.getProperty("field.replies"), replyDocs);
   }
 
   /**
@@ -58,12 +66,4 @@ public class CommentData extends AbstractGameData {
     return new ArrayList<>(replies);  // Return a copy to preserve encapsulation
   }
 
-  /**
-   * Adds a reply to the comment.
-   *
-   * @param reply a ReplySchema object containing the reply to add
-   */
-  public void addReply(ReplySchema reply) {
-    this.replies.add(reply);
-  }
 }
