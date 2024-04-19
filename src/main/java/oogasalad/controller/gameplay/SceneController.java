@@ -18,7 +18,7 @@ public class SceneController {
   private boolean isGuestSession;
   private Level level;
   private LevelController levelController;
-  private String language = "English";
+  private String language;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.

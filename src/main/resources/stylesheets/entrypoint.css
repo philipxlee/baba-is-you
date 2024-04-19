@@ -1,0 +1,40 @@
+@font-face {
+  font-family: 'Bahiana';
+  src: url('fonts/Bahiana-Regular.ttf');
+}
+
+.root {
+  -fx-font-family: 'Bahiana';
+}
+
+.header {
+  -fx-font-size: 100px;
+  -fx-fill: #F5F5F5;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
+}
+
+.red-header {
+  -fx-font-size: 100px;
+  -fx-fill: #FF7171;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
+}
+
+.white-button {
+  -fx-background-color: #F5F5F5;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
+  -fx-padding: 6;
+  -fx-font-size: 25px;
+  -fx-fill: #191A20;
+}
+.white-button:hover {
+  -fx-background-color: #FF7171;
+}
+
+.combo-box {
+  -fx-text-fill: #191A20;
+  -fx-font-size: 25px;
+  -fx-background-color: #777DA1;
+}

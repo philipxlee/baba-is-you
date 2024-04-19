@@ -11,5 +11,6 @@ public class Entrance extends Application {
   public void start(Stage primaryStage) throws Exception {
     EntryPointController entryPointController = new EntryPointController(primaryStage);
     entryPointController.initializeViews();
+    primaryStage.show();
   }
 }
