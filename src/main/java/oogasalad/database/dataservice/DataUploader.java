@@ -14,6 +14,7 @@ public class DataUploader {
 
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
   private static final String GUEST_USERNAME = "Anonymous";
+
   private final MongoDatabase database;
   private final GameSession gameSession;
   private final Properties properties;
@@ -39,7 +40,7 @@ public class DataUploader {
     LeaderboardData leaderboardData = gameSession.getLeaderboardData();
     Document leaderboardDocument = leaderboardData.toDocument();
     leaderboardDocument.append(properties.getProperty("field.timeSpent"),
-        endTime - startTime);  // Dynamically retrieve the field name for "timeSpent"
+        endTime - startTime);
     collection.insertOne(leaderboardDocument);
     System.out.println("Player data saved successfully.");
   }
@@ -53,7 +54,7 @@ public class DataUploader {
     CommentData commentData = gameSession.getCommentData();
     Document commentDocument = commentData.toDocument();
     commentDocument.append(properties.getProperty("field.comment"),
-        comment);  // Dynamically update the "comment" field
+        comment);
     collection.insertOne(commentDocument);
     System.out.println("Level comments saved successfully.");
   }

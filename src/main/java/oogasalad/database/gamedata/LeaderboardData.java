@@ -14,12 +14,25 @@ public class LeaderboardData extends AbstractGameData {
   private final Properties properties;
   private final long timeSpent;
 
+  /**
+   * Constructor for the LeaderboardData class.
+   *
+   * @param username  The username of the player.
+   * @param levelName The name of the level.
+   * @param date      The date the game was played.
+   * @param timeSpent The time spent in the game.
+   */
   public LeaderboardData(String username, String levelName, Date date, long timeSpent) {
     super(username, levelName, date);
     this.timeSpent = timeSpent;
     this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
+  /**
+   * Converts the leaderboard data to a Document.
+   *
+   * @return The leaderboard data as a Document.
+   */
   @Override
   public Document toDocument() {
     return new Document(properties.getProperty("field.username"), username)

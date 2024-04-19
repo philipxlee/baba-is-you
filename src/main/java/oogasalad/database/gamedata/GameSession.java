@@ -16,6 +16,12 @@ public class GameSession {
   private final CommentData commentData;
   private final LeaderboardData leaderboardData;
 
+  /**
+   * Constructor for the GameSession class.
+   *
+   * @param username  The username of the player.
+   * @param levelName The name of the level.
+   */
   public GameSession(String username, String levelName) {
     this.commentData = new CommentData(username, levelName, DEFAULT_DATE, DEFAULT_COMMENT, DEFAULT_REPLIES);
     this.leaderboardData = new LeaderboardData(username, levelName, DEFAULT_DATE, DEFAULT_TIME);

@@ -54,5 +54,4 @@ public class DatabaseConfig {
     mongoClient = MongoClients.create(settings);
   }
 
-
 }

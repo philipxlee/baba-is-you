@@ -22,6 +22,9 @@ import org.bson.Document;
 public class DataFetcher {
 
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+  private static final int DISPLAY_LIMIT = 10;
+  private static final int NONE = 0;
+
   private final MongoDatabase database;
   private final Properties properties;
 
@@ -46,7 +49,7 @@ public class DataFetcher {
         properties.getProperty("collection.data"));
     long count = collection.countDocuments(
         Filters.eq(properties.getProperty("field.username"), username));
-    return count == 0;
+    return count == NONE;
   }
 
   /**
@@ -61,7 +64,7 @@ public class DataFetcher {
     return StreamSupport.stream(collection
             .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
             .sort(Sorts.ascending(properties.getProperty("field.timeSpent")))
-            .limit(10)
+            .limit(DISPLAY_LIMIT)
             .spliterator(), false)
         .map(document -> new LeaderboardData(
             document.getString(properties.getProperty("field.username")),
@@ -82,6 +85,7 @@ public class DataFetcher {
         properties.getProperty("collection.comments"));
     return StreamSupport.stream(collection
             .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
+            .limit(DISPLAY_LIMIT)
             .spliterator(), false)
         .map(this::documentToCommentData)
         .collect(Collectors.toList());

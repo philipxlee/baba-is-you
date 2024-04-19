@@ -14,12 +14,25 @@ public class ReplySchema extends AbstractGameData {
   private final Properties properties;
   private final String replyText;
 
+  /**
+   * Constructor for the ReplySchema class.
+   *
+   * @param username  the username of the person who made the reply
+   * @param levelName the level at which the reply was made
+   * @param date      the date the reply was made
+   * @param replyText the text of the reply
+   */
   public ReplySchema(String username, String levelName, Date date, String replyText) {
     super(username, levelName, date);
     this.replyText = replyText;
     this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
+  /**
+   * Converts the reply to a Document.
+   *
+   * @return The reply as a Document.
+   */
   @Override
   public Document toDocument() {
     return new Document(properties.getProperty("field.username"), username)
