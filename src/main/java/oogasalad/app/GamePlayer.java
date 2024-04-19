@@ -6,7 +6,6 @@ import javafx.stage.Stage;
 import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.database.DataManager;
 import oogasalad.database.DatabaseConfig;
 import javafx.application.Platform;
 import oogasalad.model.gameplay.level.JsonGameParser;

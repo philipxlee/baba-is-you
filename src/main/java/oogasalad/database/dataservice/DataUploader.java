@@ -8,16 +8,31 @@ import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 import org.bson.Document;
 
+/**
+ * This class is responsible for uploading data to the database.
+ */
 public class DataUploader {
 
   MongoDatabase database;
   GameSession gameSession;
 
+  /**
+   * Constructor for the DataUploader class.
+   *
+   * @param database    database
+   * @param gameSession game session
+   */
   public DataUploader(MongoDatabase database, GameSession gameSession) {
     this.database = database;
     this.gameSession = gameSession;
   }
 
+  /**
+   * Saves the player leaderboard data to the database.
+   *
+   * @param startTime start time
+   * @param endTime   end time
+   */
   public void savePlayerLeaderboardData(long startTime, long endTime) {
     MongoCollection<Document> collection = database.getCollection("data");
     LeaderboardData leaderboardData = gameSession.getLeaderboardData();
@@ -25,6 +40,11 @@ public class DataUploader {
     System.out.println("Player data saved successfully.");
   }
 
+  /**
+   * Saves the level comment to the database.
+   *
+   * @param comment comment
+   */
   public void saveLevelComment(String comment) {
     MongoCollection<Document> collection = database.getCollection("comment");
     CommentData commentData = gameSession.getLevelCommentData();
@@ -32,6 +52,13 @@ public class DataUploader {
     System.out.println("Level comments saved successfully.");
   }
 
+  /**
+   * Adds a reply to a user comment.
+   *
+   * @param commenterUsername username of the commenter
+   * @param playerUsername    username of the player
+   * @param reply             reply
+   */
   public void addReplyToUserComment(String commenterUsername, String playerUsername, String reply) {
     MongoCollection<Document> collection = database.getCollection("comment");
     Document replyDocument = new Document("username", validateUsername(playerUsername))
