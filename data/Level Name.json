@@ -1,1 +1,59 @@
-{"levelName":"Level Name","gridSize":{"rows":"10","cols":"10"},"grid":[[["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","PushTextBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyTextBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","WallTextBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["BabaVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"],["EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock","EmptyVisualBlock"]]]}
+{
+  "levelName": "Level Name",
+  "gridSize": {
+    "rows": "2",
+    "cols": "7"
+  },
+  "grid": [
+    [
+      [
+        "EmptyVisualBlock",
+        "IsTextBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "YouTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ],
+    [
+      [
+        "EmptyVisualBlock",
+        "PushTextBlock"
+      ],
+      [
+        "EmptyVisualBlock",
+        "YouTextBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ],
+      [
+        "EmptyVisualBlock"
+      ]
+    ]
+  ]
+}

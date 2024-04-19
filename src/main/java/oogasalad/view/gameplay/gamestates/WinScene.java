@@ -15,7 +15,6 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
-import oogasalad.view.gameplay.MainScene;
 
 /**
  * Scene that displays when the player wins the game.
@@ -31,9 +30,12 @@ public class WinScene implements Scene {
   private int width;
   private int height;
   private boolean statsSaved = false;
+  private String language;
 
   public WinScene(SceneController sceneController) {
+
     this.sceneController = sceneController;
+    this.language = sceneController.getLanguage();
   }
 
   /**
@@ -69,11 +71,11 @@ public class WinScene implements Scene {
    * Show the win message.
    */
   private void showWinMessage() {
-    Text header = factory.generateHeader(new WidgetConfiguration("WinHeader"));
-    Text content = factory.generateLine(new WidgetConfiguration("WinContent"));
+    Text header = factory.generateHeader(new WidgetConfiguration("WinHeader", language));
+    Text content = factory.generateLine(new WidgetConfiguration("WinContent", language));
 
     // Create UI components that are conditional
-    Text commentsLabel = factory.generateLine(new WidgetConfiguration("CommentMessage"));
+    Text commentsLabel = factory.generateLine(new WidgetConfiguration("CommentMessage", language));
     TextArea commentField = new TextArea();
     commentField.setPromptText("Enter comments here...");
     commentField.setPrefHeight(100);
@@ -82,8 +84,8 @@ public class WinScene implements Scene {
     commentField.setWrapText(true);
 
     Button saveStatsButton = factory.makeButton(new WidgetConfiguration(
-        200, 40, "SaveStats", "button"));
-    Text guestMessage = factory.generateLine(new WidgetConfiguration("GuestMessage"));
+        200, 40, "SaveStats", "button", language));
+    Text guestMessage = factory.generateLine(new WidgetConfiguration("GuestMessage", language));
     guestMessage.setVisible(false); // Default to not visible
 
     List<Node> texts = new ArrayList<>();
@@ -114,7 +116,7 @@ public class WinScene implements Scene {
 
 
     Button playAgainButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "PlayAgain","button"));
+        "PlayAgain","button", language));
     playAgainButton.setOnAction(event -> {
       sceneController.initializeViews();
     });

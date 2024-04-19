@@ -20,6 +20,7 @@ import oogasalad.database.gamedata.CommentData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
  * Scene that displays the leaderboard.
@@ -32,6 +33,7 @@ public class CommentScene implements Scene {
   private javafx.scene.Scene scene;
   private VBox root;
   private LevelController levelController;
+  private String language;
 
   /**
    * Constructor for LeaderboardScene.
@@ -43,6 +45,7 @@ public class CommentScene implements Scene {
     this.factory = factory;
     this.sceneController = sceneController;
     this.levelController = sceneController.getLevelController();
+    this.language = sceneController.getLanguage();
   }
 
   /**
@@ -75,11 +78,13 @@ public class CommentScene implements Scene {
    * Populate the leaderboard.
    */
   private void populateComments() {
-    Text header = factory.generateHeader(new WidgetConfiguration("Comments for " + LEVEL_NAME));
-    root.getChildren().add(header); // Ensure the header is added to the root
+
+    Text header = factory.generateHeader(new WidgetConfiguration("Comments", language));
+      // Assuming this method exists
 
 
-    Button backButton = factory.makeButton(new WidgetConfiguration(200, 50, "Back", "button"));
+    Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
+        "Back", "button", language));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
 
     root.getChildren().addAll(header, backButton);

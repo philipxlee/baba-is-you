@@ -47,6 +47,7 @@ public class StartingScene implements Scene {
     this.sceneController = sceneController;
     this.databaseController = databaseController;
     this.language = language;
+
   }
 
   /**
@@ -80,13 +81,13 @@ public class StartingScene implements Scene {
   }
 
   private void generateContent() {
-    Text header = factory.generateHeader(new WidgetConfiguration("BabaHeader"));
-    Text content = factory.generateLine(new WidgetConfiguration("BabaRules"));
-    Text enterPrompt = factory.generateLine(new WidgetConfiguration("EnterPrompt"));
-    Label feedbackLabel = factory.generateLabel(new WidgetConfiguration(""));
+    Text header = factory.generateHeader(new WidgetConfiguration("BabaHeader", language));
+    Text content = factory.generateLine(new WidgetConfiguration("BabaRules", language));
+    Text enterPrompt = factory.generateLine(new WidgetConfiguration("EnterPrompt", language));
+    Label feedbackLabel = factory.generateLabel(new WidgetConfiguration("", language));
 
     usernameField = factory.createTextField(new WidgetConfiguration(200, 40,
-        "UsernamePrompter", "text-field"));
+        "UsernamePrompter", "text-field", language));
 
     List<Node> texts = new ArrayList<>();
     texts.add(header);
@@ -106,14 +107,14 @@ public class StartingScene implements Scene {
 
   private List<Node> createButtons(Label feedbackLabel) {
     Button start = factory.makeButton(new WidgetConfiguration(200, 40,
-        "Enter", "button"));
+        "Enter", "button", language));
     Button guestButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "PlayAsGuest", "button"));
+        "PlayAsGuest", "button", language));
     usernameField.textProperty().addListener((obs, old, newValue) -> {
       checkUsernameValidity(newValue, feedbackLabel, start);
     });
     ComboBox<String> switchLanguage = factory.makeComboBox(new WidgetConfiguration(200, 40,
-        "SwitchLanguage", "combo-box"), new ArrayList<>(Arrays.asList("English",
+        "SwitchLanguage", "combo-box", language), new ArrayList<>(Arrays.asList("English",
         "Spanish")), language);
     //TODO: Change to be a drop down
     switchLanguage.setOnAction(event -> {
@@ -146,7 +147,7 @@ public class StartingScene implements Scene {
       feedbackLabel.setText("");
       checkUsernameAvailability(newValue, start, feedbackLabel);
     } else {
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameInvalid"));
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameInvalid", language));
       start.setDisable(true);
     }
   }
@@ -154,9 +155,9 @@ public class StartingScene implements Scene {
   private void checkUsernameAvailability(String newValue, Button start, Label feedbackLabel) {
     if (databaseController.isUsernameAvailable(newValue.trim())) {
       start.setDisable(false);
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameAvailable"));
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameAvailable", language));
     } else {
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameTaken"));
+      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameTaken", language));
       start.setDisable(true);
     }
   }

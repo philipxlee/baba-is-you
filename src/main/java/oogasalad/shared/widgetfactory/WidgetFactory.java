@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -23,8 +24,6 @@ import javafx.stage.Stage;
  * Factory class for making general UI widgets.
  */
 public class WidgetFactory {
-
-  private oogasalad.shared.scene.Scene scene;
   public static final String STYLESHEET = "gameplay.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
@@ -48,6 +47,12 @@ public class WidgetFactory {
   public Text generateLine(WidgetConfiguration configuration) {
     Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("paragraph");
+    return line;
+  }
+
+  public Text generateSubHeader(String content) {
+    Text line = new Text(content);
+    line.getStyleClass().add("sub-header");
     return line;
   }
 
@@ -78,8 +83,8 @@ public class WidgetFactory {
    * @param width
    * @return
    */
-  public HBox wrapInHBox(Node toBeWrapped, int width) {
-    HBox hbox = new HBox(20);
+  public HBox wrapInHBox(Node toBeWrapped, int width, int spacing) {
+    HBox hbox = new HBox(spacing);
     hbox.getChildren().add(toBeWrapped);
     hbox.setPrefWidth(width);
     hbox.setAlignment(Pos.CENTER);
@@ -109,6 +114,10 @@ public class WidgetFactory {
     button.setPadding(new Insets(10));
     button.getStyleClass().add(configuration.getCssMatch());
     return button;
+  }
+
+  public void removeInsets(Button btn) {
+    btn.setPadding(new Insets(0));
   }
 
   /**
@@ -148,6 +157,8 @@ public class WidgetFactory {
         configuration.getHeight());
     popup.setScene(scene);
     popup.setTitle(configuration.getPropertyContents());
+    scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
+        .toExternalForm());
     popup.show();
   }
 
@@ -169,7 +180,7 @@ public class WidgetFactory {
     field.setMinWidth(configuration.getWidth());
     field.setMaxWidth(configuration.getWidth()+100);
     field.setPrefHeight(configuration.getHeight());
-    field.getStyleClass().add("text-field");
+    field.getStyleClass().add(configuration.getCssMatch());
     return field;
   }
 

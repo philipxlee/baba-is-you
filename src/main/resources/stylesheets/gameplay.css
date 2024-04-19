@@ -30,6 +30,13 @@
   -fx-text-alignment: center;
 }
 
+.sub-header {
+  -fx-font-size: 40px;
+  -fx-fill: #191A20;;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
+}
+
 .caption {
   -fx-font-size: 20px;
   -fx-fill: #FF7171;
@@ -73,10 +80,22 @@
   -fx-background-color: #343342;
 }
 
+.flowpane-gradient {
+  -fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD);
+ }
+
 .text-field {
   -fx-background-color: #F5F5F5;
   -fx-text-fill: #FF7171;
   -fx-font-size: 16px;
+}
+
+.text-field-dark {
+  -fx-background-color: #191A20;
+  -fx-text-fill: #FF7171;
+  -fx-font-size: 20px;
+  -fx-border-width: 4px;
+  -fx-border-color: #777DA1;
 }
 
 .label {
@@ -87,5 +106,19 @@
 .combo-box {
   -fx-text-fill: #191A20;
   -fx-font-size: 25px;
-  -fx-background-color: #777DA1
+  -fx-background-color: #777DA1;
+}
+
+.combo-box-white {
+  -fx-text-fill: #191A20;
+  -fx-font-size: 25px;
+  -fx-background-color: #F5F5F5;
+}
+
+.row-cell {
+  -fx-background-color: #F5F5F5;
+  -fx-border-width: 3px;
+  -fx-padding: 0;
+  -fx-font-size: 30px;
+  -fx-fill: #191A20;
 }

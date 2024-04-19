@@ -128,7 +128,7 @@ public class GridTest {
      */
     @Test
     public void testGridWidth() {
-        assertEquals(5, grid.gridWidth());
+        assertEquals(5, grid.getGridWidth());
     }
 
 
@@ -137,7 +137,7 @@ public class GridTest {
      */
     @Test
     public void testGridHeight() {
-        assertEquals(5, grid.gridHeight());
+        assertEquals(5, grid.getGridHeight());
     }
 
 
