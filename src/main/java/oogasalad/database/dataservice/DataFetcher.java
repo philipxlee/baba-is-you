@@ -25,15 +25,17 @@ public class DataFetcher {
     return count == 0;
   }
 
-  public List<LeaderboardData> getTopPlayers() {
+  public List<LeaderboardData> getTopPlayers(String currentLevelName) {
     MongoCollection<Document> collection = database.getCollection("data");
-    return StreamSupport.stream(collection.find().sort(Sorts.descending("timeSpent")).limit(10).spliterator(), false)
-        .map(document ->
-            new LeaderboardData(
-                document.getString("username"),
-                document.getString("levelName"),
-                document.getDate("date"),
-                document.getInteger("timeSpent")))
+    return StreamSupport.stream(collection.find(Filters.eq("levelName", currentLevelName))
+            .sort(Sorts.ascending("timeSpent"))
+            .limit(10)
+            .spliterator(), false)
+        .map(document -> new LeaderboardData(
+            document.getString("username"),
+            document.getString("levelName"),
+            document.getDate("date"),
+            document.getLong("timeSpent")))
         .collect(Collectors.toList());
   }
 }

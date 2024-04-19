@@ -37,7 +37,7 @@ public class DatabaseController {
 
   public List<LeaderboardData> getTopPlayers() {
     initializeDataFetcher();
-    return dataFetcher.getTopPlayers();
+    return dataFetcher.getTopPlayers(levelController.getLevelName());
   }
 
   public void savePlayerData(long endTime) {
