@@ -16,18 +16,19 @@ import oogasalad.shared.config.JsonManager;
 /**
  * MainController is the entrypoint for the Game Player.
  */
-public class GamePlayer extends Application {
+public class GamePlayer {
   private JsonManager jsonManager = new JsonManager();
   private JsonGameParser jsonGameParser = new JsonGameParser();
   private final File defaultJson = new File("data/defaultJson.json");
-
+  private SceneController sceneController;
+  private String language = "English";
 
   /**
    * Connects Model, Views and Controllers together.
    *
    * @param stage primary stage of the application
    */
-  @Override
+
   public void start(Stage stage) throws Exception {
     Level defaultLevel = jsonGameParser.parseLevel(jsonManager.loadJsonFromFile(defaultJson));
     LevelController levelController = new LevelController(defaultLevel);
@@ -37,8 +38,9 @@ public class GamePlayer extends Application {
     DatabaseController databaseDataController = new DatabaseController(databaseConfig.getDatabase(), levelController);
 
     // initialize controllers
-    SceneController sceneController = new SceneController(stage, databaseDataController,
+    sceneController = new SceneController(stage, databaseDataController,
         levelController);
+    sceneController.setLanguage(language);
 
     // initialize views
     sceneController.initializeViews();
@@ -50,5 +52,9 @@ public class GamePlayer extends Application {
       Platform.exit();
     });
 
+  }
+
+  public void setLanguage(String newLanguage) {
+    this.language = newLanguage;
   }
 }

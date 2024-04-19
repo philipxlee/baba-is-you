@@ -18,7 +18,7 @@ public class SceneController {
   private boolean isGuestSession;
   private Level level;
   private LevelController levelController;
-  private String language;
+  private String language = "English";
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
@@ -35,14 +35,13 @@ public class SceneController {
     stage.setTitle("Baba Is Us: Game Player");
     stage.setResizable(false);
     stage.show();
-    this.language = "English";
   }
 
   /**
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new StartingScene(this, databaseController, "English"));
+    switchToScene(new StartingScene(this, databaseController, language));
 
   }
 
