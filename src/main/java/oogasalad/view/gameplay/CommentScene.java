@@ -3,15 +3,20 @@ package oogasalad.view.gameplay;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.database.PlayerData;
+import oogasalad.database.gamedata.CommentData;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
@@ -73,30 +78,16 @@ public class CommentScene implements Scene {
    * Populate the leaderboard.
    */
   private void populateComments() {
+
     Text header = factory.generateHeader(new WidgetConfiguration("Comments", language));
-    List<PlayerData> comments = sceneController.getPlayerDataController().getCommentsByLevel(LEVEL_NAME);  // Assuming this method exists
+      // Assuming this method exists
 
-    VBox commentsList = new VBox(5);
-    commentsList.setAlignment(Pos.CENTER);
-
-    for (PlayerData comment : comments) {
-      String commentText = String.format("%s: %s", comment.getUsername(), comment.getComments());
-      Button commentButton = factory.makeButton(new WidgetConfiguration(200, 50, "white-button",
-          language), commentText);
-//      commentButton.setOnAction(event -> toggleCommentInput(commentButton, comment));
-
-      commentsList.getChildren().add(commentButton);
-    }
 
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 50,
         "Back", "button", language));
     backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
 
-    root.getChildren().addAll(header, commentsList, backButton);
+    root.getChildren().addAll(header, backButton);
   }
-
-
-
-
 
 }

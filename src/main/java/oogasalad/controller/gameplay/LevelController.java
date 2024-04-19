@@ -38,6 +38,13 @@ public class LevelController {
   }
 
   /**
+   * Returns current level name
+   */
+  public String getLevelName() {
+    return level.getLevelMetadata().levelName();
+  }
+
+  /**
    * Loads a new level from a file, initializes related controllers and updates the scene.
    * This method orchestrates the loading of a new level configuration, creating necessary data
    * management and scene setup to transition to the new level.
@@ -49,9 +56,8 @@ public class LevelController {
     Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
     LevelController levelController = new LevelController(newLevel);
     DatabaseConfig databaseConfig = new DatabaseConfig();
-    DataManager dataManager = new DataManager(databaseConfig.getDatabase());
-    PlayerDataController playerDataController = new PlayerDataController(dataManager);
-    this.sceneController = new SceneController(sceneController.getStage(), playerDataController,
+    DatabaseController databaseController = new DatabaseController(databaseConfig.getDatabase(), levelController);
+    this.sceneController = new SceneController(sceneController.getStage(), databaseController,
         levelController);
     this.sceneController.initializeViews();
   }

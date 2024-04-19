@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import oogasalad.controller.gameplay.PlayerDataController;
+import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
@@ -27,7 +27,7 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 public class StartingScene implements Scene {
 
   private final SceneController sceneController;
-  private final PlayerDataController playerDataController;
+  private final DatabaseController databaseController;
   private javafx.scene.Scene scene;
   private HBox root;
   private WidgetFactory factory;
@@ -40,12 +40,14 @@ public class StartingScene implements Scene {
    * Constructor for StartingScene.
    *
    * @param sceneController      The SceneController object.
-   * @param playerDataController The PlayerDataController object.
+   * @param databaseController The PlayerDataController object.
    */
-  public StartingScene(SceneController sceneController, PlayerDataController playerDataController) {
+  public StartingScene(SceneController sceneController, DatabaseController databaseController,
+      String language) {
     this.sceneController = sceneController;
-    this.playerDataController = playerDataController;
-    this.language = sceneController.getLanguage();
+    this.databaseController = databaseController;
+    this.language = language;
+
   }
 
   /**
@@ -117,8 +119,7 @@ public class StartingScene implements Scene {
     //TODO: Change to be a drop down
     switchLanguage.setOnAction(event -> {
       language = switchLanguage.getValue();
-      sceneController.setLanguage(language);
-      sceneController.switchToScene(new StartingScene(sceneController, playerDataController));;
+      sceneController.switchToScene(new StartingScene(sceneController, databaseController, language));
     });
     startGame(start);
     guestButton.setOnAction(event -> sceneController.beginGame(true));
@@ -134,7 +135,7 @@ public class StartingScene implements Scene {
   private void startGame(Button start) {
     start.setOnAction(event -> {
       if (!usernameField.getText().trim().isEmpty()) {
-        if (playerDataController.startNewPlayer(usernameField.getText().trim())) {
+        if (databaseController.startNewPlayer(usernameField.getText().trim())) {
           sceneController.beginGame(false);
         }
       }
@@ -152,7 +153,7 @@ public class StartingScene implements Scene {
   }
 
   private void checkUsernameAvailability(String newValue, Button start, Label feedbackLabel) {
-    if (playerDataController.isUsernameAvailable(newValue.trim())) {
+    if (databaseController.isUsernameAvailable(newValue.trim())) {
       start.setDisable(false);
       factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameAvailable", language));
     } else {
