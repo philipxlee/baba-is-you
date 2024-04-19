@@ -96,9 +96,8 @@ public class WinScene implements Scene {
     if (!sceneController.isGuestSession()) {
       saveStatsButton.setOnAction(event -> {
         if (!statsSaved) {
-          String comments = commentField.getText();
           long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
-          sceneController.getDatabaseController().endPlayerSession(comments, endTime);
+          sceneController.getDatabaseController().savePlayerData(endTime);
           saveStatsButton.setText("Stats Saved!");
           saveStatsButton.setDisable(true);
           statsSaved = true; // Ensure stats can only be saved once

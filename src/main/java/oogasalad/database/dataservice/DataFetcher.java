@@ -7,6 +7,7 @@ import com.mongodb.client.model.Sorts;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 import org.bson.Document;
 
@@ -14,7 +15,7 @@ public class DataFetcher {
 
   private final MongoDatabase database;
 
-  public DataFetcher(MongoDatabase database) {
+  public DataFetcher(MongoDatabase database, GameSession gameSession) {
     this.database = database;
   }
 
@@ -27,8 +28,12 @@ public class DataFetcher {
   public List<LeaderboardData> getTopPlayers() {
     MongoCollection<Document> collection = database.getCollection("data");
     return StreamSupport.stream(collection.find().sort(Sorts.descending("timeSpent")).limit(10).spliterator(), false)
-        .map(document -> new LeaderboardData())
+        .map(document ->
+            new LeaderboardData(
+                document.getString("username"),
+                document.getString("levelName"),
+                document.getDate("date"),
+                document.getInteger("timeSpent")))
         .collect(Collectors.toList());
-  //   .map(document -> new LeaderboardData(document.getString("username"), document.getString("levelName"), document.getDate("date"), document.getInteger("timeSpent")))
   }
 }

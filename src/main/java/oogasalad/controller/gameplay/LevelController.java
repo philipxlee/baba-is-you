@@ -56,8 +56,7 @@ public class LevelController {
     Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
     LevelController levelController = new LevelController(newLevel);
     DatabaseConfig databaseConfig = new DatabaseConfig();
-    DataManager dataManager = new DataManager(databaseConfig.getDatabase());
-    DatabaseController databaseController = new DatabaseController(dataManager, levelController);
+    DatabaseController databaseController = new DatabaseController(databaseConfig.getDatabase(), levelController);
     this.sceneController = new SceneController(sceneController.getStage(), databaseController,
         levelController);
     this.sceneController.initializeViews();

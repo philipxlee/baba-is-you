@@ -6,62 +6,65 @@ import oogasalad.database.dataservice.DataUploader;
 import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 import java.util.List;
-import java.util.Optional;
 
-
-/**
- * Controller class for managing player data, including starting and ending player sessions and
- * saving player data to a database.
- */
 public class DatabaseController {
 
   private static final int MILLISECOND_OFFSET = 1000;
-  private MongoDatabase database;
-  private LevelController levelController;
+  private final MongoDatabase database;
+  private final LevelController levelController;
   private DataFetcher dataFetcher;
   private DataUploader dataUploader;
-  private Optional<GameSession> gameSession;
+  private GameSession gameSession;
   private long startTime;
 
   public DatabaseController(MongoDatabase database, LevelController levelController) {
     this.database = database;
     this.levelController = levelController;
-    initializeDataServices();
   }
 
   public boolean startNewPlayer(String username) {
-    return dataFetcher.isUsernameAvailable(username)
-        ? initializeSession(username)
-        : false;
-  }
-
-  private boolean initializeSession(String username) {
-    gameSession = Optional.of(new GameSession(username, levelController.getLevelName()));
-    startTime = System.currentTimeMillis() / 1000;  // Assuming MILLISECOND_OFFSET is 1000
+    if (!isUsernameAvailable(username)) {
+      return false;
+    }
+    initializeSession(username);
     return true;
   }
-  /**
-   * Checks if a username is available in the database.
-   *
-   * @param username The username to check.
-   * @return True if the username is available, false otherwise.
-   */
+
   public boolean isUsernameAvailable(String username) {
+    initializeDataFetcher();
     return dataFetcher.isUsernameAvailable(username);
   }
 
-  /**
-   * Retrieves top player statistics for leaderboard display.
-   *
-   * @return a list of PlayerData objects for the top players.
-   */
   public List<LeaderboardData> getTopPlayers() {
+    initializeDataFetcher();
     return dataFetcher.getTopPlayers();
   }
 
-  private void initializeDataServices() {
-    this.dataFetcher = new DataFetcher(database);
-    this.dataUploader = new DataUploader(database);
+  public void savePlayerData(long endTime) {
+    initializeDataUploader();
+    dataUploader.savePlayerLeaderboardData(startTime, endTime);
   }
 
+  private void initializeDataFetcher() {
+    if (dataFetcher == null) {
+      dataFetcher = new DataFetcher(database, gameSession);
+    }
+  }
+
+  private void initializeDataUploader() {
+    if (dataUploader == null) {
+      dataUploader = new DataUploader(database, gameSession);
+    }
+  }
+
+  private void initializeSession(String username) {
+    this.gameSession = new GameSession(username, levelController.getLevelName());
+    this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
+    initializeDataServices();
+  }
+
+  private void initializeDataServices() {
+    initializeDataFetcher();
+    initializeDataUploader();
+  }
 }
