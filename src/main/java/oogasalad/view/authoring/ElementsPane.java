@@ -3,16 +3,12 @@ package oogasalad.view.authoring;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -28,6 +24,8 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 public class ElementsPane {
 
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
+
+  private ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
@@ -179,6 +177,18 @@ public class ElementsPane {
     }
   }
 
+  private boolean isValidSize(String value) {
+    try {
+      int size = Integer.parseInt(value);
+      if (size <= 4 || size > 20) {
+        return false; // Return false if size is out of range
+      }
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
   private void changeGridSizeDialog(Button button) {
     button.setOnAction(event -> {
       Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
@@ -197,38 +207,48 @@ public class ElementsPane {
       grid.add(new Label("Height:"), 0, 1);
       grid.add(heightField, 1, 1);
       Button confirmButton = (Button) dialog.getDialogPane().lookupButton(confirmButtonType);
-      confirmButton.setDisable(true);
-      widthField.textProperty().addListener((observable, oldValue, newValue) -> {
-        confirmButton.setDisable(
-            newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
-      });
-      heightField.textProperty().addListener((observable, oldValue, newValue) -> {
-        confirmButton.setDisable(
-            newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
-      });
+
       dialog.getDialogPane().setContent(grid);
       dialog.setResultConverter(dialogButton -> {
         if (dialogButton == confirmButtonType) {
           try {
             int width = Integer.parseInt(widthField.getText());
             int height = Integer.parseInt(heightField.getText());
-            return new Pair<>(width, height);
+            if (isValidSize(String.valueOf(width)) && isValidSize(String.valueOf(height))) {
+              return new Pair<>(width, height);
+            } else {
+              if (!isValidSize(String.valueOf(width))) {
+                showErrorMessage(resourceBundle.getString("grid_size_error_message"));
+              } else if (!isValidSize(String.valueOf(height))) {
+                showErrorMessage(resourceBundle.getString("grid_size_error_message"));
+              }
+              return null;
+            }
           } catch (NumberFormatException e) {
+            showErrorMessage(resourceBundle.getString("invalid_number_error_message"));
             return null;
           }
         }
         return null;
       });
+
       dialog.showAndWait().ifPresent(pair -> {
         if (pair != null) {
           int width = pair.getKey();
           int height = pair.getValue();
           builderPane.updateGridSize(width, height);
           LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
-              width);
+                  width);
           levelController.resetLevel(levelMetadata);
         }
       });
     });
+  }
+  private void showErrorMessage(String message) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
   }
 }
