@@ -1,12 +1,16 @@
 package oogasalad.model.gameplay.blocks.visualblocks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
+import oogasalad.shared.util.PropertiesLoader;
 
 /**
  * Represents an abstract visual block within the game, providing visual-specific functionality and
@@ -14,12 +18,14 @@ import oogasalad.model.gameplay.strategies.Strategy;
  */
 public abstract class AbstractVisualBlock extends AbstractBlock {
 
-
+  private static final String BLOCK_PROPERTIES = "blockbehaviors/behaviors.properties";
   private static final String VISUAL_BLOCK = "VisualBlock";
   private static final String TEXT_BLOCK = "TextBlock";
   private static final String EMPTY_STRING = "";
   private final String name;
   private final List<Strategy> behaviors;
+  private final Map<String, Boolean> attributes;
+  private final Properties properties;
   private int row;
   private int col;
 
@@ -31,9 +37,12 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   public AbstractVisualBlock(String name, int row, int col) {
     super();
     this.name = name;
-    this.behaviors = new ArrayList<>();
+    this.properties = PropertiesLoader.loadProperties(BLOCK_PROPERTIES);
+    this.behaviors = new ArrayList<>(); // for BecomesX behaviors
+    this.attributes = new HashMap<>(); // for Controllable, Pushable, etc.
     this.row = row;
     this.col = col;
+    initializeAttributes();
   }
 
   /**
@@ -150,4 +159,24 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     return behaviors;
   }
 
+  /**
+   * Allows external modification of an attribute's boolean value.
+   *
+   * @param attribute The name of the attribute to modify.
+   * @param value The new boolean value for the attribute.
+   */
+  public void modifyAttribute(String attribute, boolean value) {
+    if (attributes.containsKey(attribute)) {
+      attributes.put(attribute, value);
+    } else {
+      throw new IllegalArgumentException("Attribute not recognized: " + attribute);
+    }
+  }
+
+  private void initializeAttributes() {
+    String attributesList = properties.getProperty("attributes");
+    for (String attribute : attributesList.split(",")) {
+      attributes.put(attribute.trim(), false);
+    }
+  }
 }
