@@ -4,11 +4,10 @@ import oogasalad.model.gameplay.blocks.visualblocks.*;
 
 public class AttributeVisitor implements BlockVisitor {
   private String attribute;
-  private boolean value;
 
-  public AttributeVisitor(String attribute, boolean value) {
+  public AttributeVisitor(String attribute) {
+    System.out.println("AttributeVisitor created");
     this.attribute = attribute;
-    this.value = value;
   }
 
   @Override
@@ -47,6 +46,6 @@ public class AttributeVisitor implements BlockVisitor {
   }
 
   private void setAttribute(AbstractVisualBlock block) {
-    block.modifyAttribute(attribute, value);
+    block.modifyAttribute(attribute, true);
   }
 }

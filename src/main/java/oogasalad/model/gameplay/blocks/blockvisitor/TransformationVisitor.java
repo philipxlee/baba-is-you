@@ -8,6 +8,7 @@ public class TransformationVisitor implements BlockVisitor {
 
   public TransformationVisitor(String targetType) {
     this.targetType = "Becomes" + targetType;
+    System.out.println("TransformationVisitor created");
   }
 
   private void transform(AbstractVisualBlock block) {

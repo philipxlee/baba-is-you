@@ -45,6 +45,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
     this.strategyMap = HashBiMap.create();
     addMappingsToStrategyMap();
     InitializeGrid();
+    parser.interpretRules(grid);
   }
   private void addMappingsToStrategyMap() {
     Strategy Meltable = new Meltable();

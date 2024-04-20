@@ -18,6 +18,8 @@ import oogasalad.shared.util.PropertiesLoader;
  */
 public abstract class AbstractVisualBlock extends AbstractBlock {
 
+  private static final Map<String, String> attributeTranslationMap = new HashMap<>();
+
   private static final String BLOCK_PROPERTIES = "blockbehaviors/behaviors.properties";
   private static final String VISUAL_BLOCK = "VisualBlock";
   private static final String TEXT_BLOCK = "TextBlock";
@@ -43,6 +45,15 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     this.row = row;
     this.col = col;
     initializeAttributes();
+
+    attributeTranslationMap.put("You", "Controllable");
+    attributeTranslationMap.put("Win", "Winnable");
+    attributeTranslationMap.put("Drown", "Drownable");
+    attributeTranslationMap.put("Melt", "Meltable");
+    attributeTranslationMap.put("Push", "Pushable");
+    attributeTranslationMap.put("Hot", "Hotable");
+    attributeTranslationMap.put("Sink", "Sinkable");
+    attributeTranslationMap.put("Stop", "Stoppable");
   }
 
   /**
@@ -166,7 +177,8 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    * @param value The new boolean value for the attribute.
    */
   public void modifyAttribute(String attribute, boolean value) {
-    if (attributes.containsKey(attribute)) {
+    String attributeKey = attributeTranslationMap.get(attribute);
+    if (attributes.containsKey(attributeKey)) {
       attributes.put(attribute, value);
     } else {
       throw new IllegalArgumentException("Attribute not recognized: " + attribute);
@@ -176,6 +188,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   private void initializeAttributes() {
     String attributesList = properties.getProperty("attributes");
     for (String attribute : attributesList.split(",")) {
+      System.out.printf("Attribute: %s%n", attribute);
       attributes.put(attribute.trim(), false);
     }
   }
