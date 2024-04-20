@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
+
+
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -15,11 +20,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+
 
 public class ElementsPane {
 
@@ -101,6 +109,8 @@ public class ElementsPane {
     Button gpt = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
 
+    gpt.setOnAction(event -> showLoadingScreen());
+
     gpt.setOnMouseClicked(event -> {
       try {
         levelController.generateLevel();
@@ -108,6 +118,7 @@ public class ElementsPane {
         e.printStackTrace();
       }
     });
+
 
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
@@ -293,4 +304,52 @@ public class ElementsPane {
     alert.setContentText(message);
     alert.showAndWait();
   }
+
+  private void showLoadingScreen() {
+    // Create a progress bar for the loading screen
+    ProgressBar progressBar = new ProgressBar();
+    progressBar.setPrefWidth(200);
+
+    // Create a stack pane to hold the progress bar
+    VBox loadingPane = new VBox();
+    loadingPane.getChildren().addAll(progressBar);
+    loadingPane.setPadding(new Insets(20));
+    loadingPane.setAlignment(Pos.CENTER);
+
+    // Create a dialog window for the loading screen
+    Stage loadingStage = new Stage();
+    loadingStage.initModality(Modality.APPLICATION_MODAL);
+    loadingStage.setTitle("Generating Level");
+    loadingStage.setScene(new Scene(loadingPane, 250, 100));
+
+    // Start a task for generating the level
+    Task<Void> generateTask = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        // Simulate generation process
+        for (int i = 0; i <= 100; i++) {
+          updateProgress(i, 100);
+          Thread.sleep(50);
+        }
+        return null;
+      }
+    };
+
+    // Bind the progress of the task to the progress bar
+    progressBar.progressProperty().bind(generateTask.progressProperty());
+
+    // When the task completes, close the loading screen
+    generateTask.setOnSucceeded(event -> {
+      loadingStage.close();
+      // You can add any additional actions after the task completes here
+    });
+
+    // Show the loading screen
+    loadingStage.show();
+
+    // Start the task
+    new Thread(generateTask).start();
+  }
+
+
 }
