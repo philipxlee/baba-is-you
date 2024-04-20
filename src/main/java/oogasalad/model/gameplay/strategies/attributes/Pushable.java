@@ -5,7 +5,7 @@ import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
 
-public class Pushable implements Strategy {
+public class Pushable extends Equal implements Strategy {
 
   /**
    * Constructor for Pushable.

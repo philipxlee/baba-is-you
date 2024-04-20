@@ -4,12 +4,22 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
+import oogasalad.model.gameplay.strategies.Strategy;
+import oogasalad.model.gameplay.strategies.attributes.Controllable;
+import oogasalad.model.gameplay.strategies.attributes.Hotable;
+import oogasalad.model.gameplay.strategies.attributes.Meltable;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
+import oogasalad.model.gameplay.strategies.attributes.Sinkable;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
+
 
 public class Grid extends GridHelper implements Observable<Grid> {
   private final List<Observer<Grid>> observers = new ArrayList<>();
@@ -17,6 +27,8 @@ public class Grid extends GridHelper implements Observable<Grid> {
   private final BlockFactory factory;
   private final BlockUpdater blockUpdater;
   private final String[][][] initialConfiguration;
+
+  private final BiMap<Strategy, Strategy> strategyMap;
 
 
   /**
@@ -33,8 +45,18 @@ public class Grid extends GridHelper implements Observable<Grid> {
     this.factory = new BlockFactory();
     this.blockUpdater = new BlockUpdater(this, factory);
     this.initialConfiguration = initialConfiguration; // Initialize initial configuration
+    this.strategyMap = HashBiMap.create();
+    addMappingsToStrategyMap();
     InitializeGrid();
   }
+  private void addMappingsToStrategyMap() {
+    Strategy Meltable = new Meltable();
+    Strategy Hotable = new Hotable();
+    strategyMap.put(Hotable, Meltable);
+    strategyMap.put(new Sinkable(), new Controllable());
+    // Add more mappings as needed
+  }
+
 
   /**
    * Initializes the grid with blocks based on the initial configuration.
@@ -164,6 +186,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
    */
   @Override
   public void notifyObserver() {
+    checkForDisappear();
     for (Observer<Grid> observer : observers) {
       observer.update(this);
     }
@@ -207,6 +230,66 @@ public class Grid extends GridHelper implements Observable<Grid> {
       }
     }
   }
+
+  private void checkForDisappear(){
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        checkCellForDisappear(i, j);
+      }
+    }
+  }
+
+  private void checkCellForDisappear(int cellI, int cellJ){
+    Strategy keyStrategy = null;
+    Strategy valueStrategy = null;
+    int subject = -1;
+    int object = -1;
+    for (int k = 0; k < grid[cellI][cellJ].size(); k++) {
+      AbstractBlock block = grid[cellI][cellJ].get(k);
+      if(block instanceof AbstractVisualBlock){
+        List<Strategy> blockBehaviors = ((AbstractVisualBlock) block).getBehaviors();
+        for (Strategy strategy : blockBehaviors) {
+          if(strategy.equals(new Sinkable())){
+            System.out.println("found sinkable ");
+          }
+          if(grid[cellI][cellJ].size() > 2 && strategy.equals(new Controllable())){
+            System.out.println("found Controllable with something else");
+          }
+          if(subject == -1 && object == -1) { //we havent found any
+            if (strategyMap.containsKey(strategy)) { //we  found key
+              keyStrategy = strategy;
+              valueStrategy = strategyMap.get(keyStrategy);
+              subject = k; //we found subject
+              break;
+            }
+            if (strategyMap.containsValue(strategy)) {
+              valueStrategy = strategy;
+              keyStrategy = strategyMap.inverse().get(valueStrategy);
+              object = k; //we found object
+              break;
+            }
+          }
+          else if(subject != -1 && object == -1){ //found subject, but not object
+            if(strategy.equals(valueStrategy)){
+              object = k;
+            }
+          }
+          else if(subject == -1 && object != -1){
+            if(strategy.equals(keyStrategy)){
+              subject = k;
+            }
+          }
+        }
+      }
+    }
+    if(subject != -1 && object != -1){
+      grid[cellI][cellJ].remove(object);
+    }
+  }
+
+
+
+
 
 
 }

@@ -9,7 +9,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
  * This class is a strategy that is used to control the behavior of a block. It is used to implement
  * the Strategy design pattern.
  */
-public class Controllable implements Strategy {
+public class Controllable extends Equal implements Strategy {
 
   /**
    * Constructor for Controllable.
