@@ -7,9 +7,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
-import oogasalad.model.gameplay.strategies.becomes.BecomesEmpty;
 import oogasalad.model.gameplay.strategies.becomes.BecomesFlag;
-import oogasalad.model.gameplay.strategies.becomes.BecomesLava;
 
 /**
  * Visitor pattern for the flag behavior.

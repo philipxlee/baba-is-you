@@ -8,8 +8,6 @@ import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import oogasalad.model.gameplay.strategies.attributes.Pushable;
-import oogasalad.model.gameplay.strategies.becomes.BecomesEmpty;
-import oogasalad.model.gameplay.strategies.becomes.BecomesLava;
 
 /**
  * Visitor pattern for the pushable behavior.
