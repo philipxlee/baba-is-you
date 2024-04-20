@@ -6,6 +6,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import oogasalad.model.gameplay.strategies.attributes.Meltable;
 
 /**
@@ -71,6 +72,16 @@ public class MeltVisitor implements BlockVisitor {
   @Override
   public void visit(WallVisualBlock wall) {
     wall.addBehavior(new Meltable());
+  }
+
+  /**
+   * Adds the meltable behavior to the water block.
+   *
+   * @param water the water block
+   */
+  @Override
+  public void visit(WaterVisualBlock water) {
+    water.addBehavior(new Meltable());
   }
 
 }

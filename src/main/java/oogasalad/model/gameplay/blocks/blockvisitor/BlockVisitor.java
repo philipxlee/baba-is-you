@@ -6,6 +6,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 
 /**
  * Interface for a visitor pattern for the different types of blocks.
@@ -23,5 +24,7 @@ public interface BlockVisitor {
   void visit(EmptyVisualBlock empty);
 
   void visit(LavaVisualBlock lava);
+
+  void visit(WaterVisualBlock water);
 
 }
