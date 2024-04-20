@@ -15,6 +15,8 @@ import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.database.gamedata.ReplySchema;
 import oogasalad.shared.util.PropertiesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 
 /**
@@ -22,6 +24,7 @@ import org.bson.Document;
  */
 public class DataFetcher {
 
+  private static final Logger logger = LogManager.getLogger(DataFetcher.class);
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
   private static final int DISPLAY_LIMIT = 10;
   private static final int NONE = 0;
@@ -65,6 +68,8 @@ public class DataFetcher {
         .sort(Sorts.ascending(properties.getProperty("field.timeSpent")))
         .limit(DISPLAY_LIMIT);
 
+    logger.info("Retrieved top players for level: " + currentLevelName);
+
     return StreamSupport.stream(documents.spliterator(), false)
         .map(document -> new LeaderboardData(
             document.getString(properties.getProperty("field.username")),
@@ -85,6 +90,8 @@ public class DataFetcher {
     Iterable<Document> documents = collection
         .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
         .limit(DISPLAY_LIMIT);
+
+    logger.info("Retrieved comments for level: " + currentLevelName);
 
     return StreamSupport.stream(documents.spliterator(), false)
         .map(this::documentToCommentData)

@@ -6,8 +6,8 @@ import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
-import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 

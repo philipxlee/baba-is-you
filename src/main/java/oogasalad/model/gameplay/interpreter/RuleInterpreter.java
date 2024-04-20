@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
-import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 
 /**
  * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's

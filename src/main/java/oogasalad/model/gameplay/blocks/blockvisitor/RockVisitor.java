@@ -6,8 +6,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
-import oogasalad.model.gameplay.strategies.becomes.BecomesEmpty;
-import oogasalad.model.gameplay.strategies.becomes.BecomesLava;
+import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import oogasalad.model.gameplay.strategies.becomes.BecomesRock;
 
 /**
@@ -74,6 +73,11 @@ public class RockVisitor implements BlockVisitor {
   @Override
   public void visit(LavaVisualBlock lava) {
     lava.addBehavior(new BecomesRock());
+  }
+
+  @Override
+  public void visit(WaterVisualBlock water) {
+    water.addBehavior(new BecomesRock());
   }
 
 }

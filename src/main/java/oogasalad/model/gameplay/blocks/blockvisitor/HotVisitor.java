@@ -6,6 +6,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import oogasalad.model.gameplay.strategies.attributes.Hotable;
 
 /**
@@ -71,5 +72,15 @@ public class HotVisitor implements BlockVisitor {
   @Override
   public void visit(WallVisualBlock wall) {
     wall.addBehavior(new Hotable());
+  }
+
+  /**
+   * Adds the hot behavior to the water block.
+   *
+   * @param water the hot block
+   */
+  @Override
+  public void visit(WaterVisualBlock water) {
+    water.addBehavior(new Hotable());
   }
 }

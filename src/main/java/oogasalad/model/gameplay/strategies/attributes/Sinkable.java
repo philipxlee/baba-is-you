@@ -6,9 +6,10 @@ import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
- * Strategy for the hotable attribute.
+ * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
+ * behavior of a block when it becomes water.
  */
-public class Hotable implements Strategy {
+public class Sinkable implements Strategy {
 
   /**
    * Constructor for Pushable.
@@ -21,4 +22,5 @@ public class Hotable implements Strategy {
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
 
   }
+
 }
