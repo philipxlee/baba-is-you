@@ -1,82 +1,50 @@
 package oogasalad.database.gamedata;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import oogasalad.shared.util.PropertiesLoader;
 import org.bson.Document;
 
 /**
- * This class is responsible for storing the leaderboard data.
+ * Stores and manages leaderboard data for a game session.
  */
-public class LeaderboardData {
+public class LeaderboardData extends AbstractGameData {
 
-  private final String username;
-  private final String levelName;
-  private Date date;
-  private long timeSpent;
+  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+  private final Properties properties;
+  private final long timeSpent;
 
   /**
    * Constructor for the LeaderboardData class.
    *
-   * @param username  username
-   * @param levelName level name
-   * @param date      date
-   * @param timeSpent time spent
+   * @param username  The username of the player.
+   * @param levelName The name of the level.
+   * @param date      The date the game was played.
+   * @param timeSpent The time spent in the game.
    */
   public LeaderboardData(String username, String levelName, Date date, long timeSpent) {
-    this.username = username;
-    this.levelName = levelName;
-    this.date = date;
+    super(username, levelName, date);
     this.timeSpent = timeSpent;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
   /**
-   * Constructor for the LeaderboardData class.
+   * Converts the leaderboard data to a Document.
    *
-   * @param startTime start time
-   * @param endTime   end time
-   * @return document
+   * @return The leaderboard data as a Document.
    */
-  public Document getLeaderboardDocument(long startTime, long endTime) {
-    Document doc = new Document();
-    doc.append("username", username);
-    doc.append("levelName", levelName);
-    doc.append("date", date);
-    doc.append("timeSpent", endTime - startTime);
-    return doc;
-  }
-
-  /**
-   * Gets the date.
-   *
-   * @return date
-   */
-  public String getDate() {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM, dd yyyy");
-    return dateFormat.format(date);
-  }
-
-  /**
-   * Gets the username.
-   *
-   * @return username
-   */
-  public String getUsername() {
-    return username;
-  }
-
-  /**
-   * Gets the level name.
-   *
-   * @return level name
-   */
-  public String getLevelName() {
-    return levelName;
+  @Override
+  public Document toDocument() {
+    return new Document(properties.getProperty("field.username"), username)
+        .append(properties.getProperty("field.levelName"), levelName)
+        .append(properties.getProperty("field.date"), date)
+        .append(properties.getProperty("field.timeSpent"), timeSpent);
   }
 
   /**
    * Gets the time spent.
    *
-   * @return time spent
+   * @return Time spent in the game.
    */
   public long getTimeSpent() {
     return timeSpent;

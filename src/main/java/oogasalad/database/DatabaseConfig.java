@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import oogasalad.shared.util.PropertiesLoader;
 
 /**
  * DatabaseConfig is a class that manages the connection to the MongoDB database.
@@ -44,26 +45,13 @@ public class DatabaseConfig {
   }
 
   private void createDatabaseConnection() {
-    Properties properties = loadProperties();
+    Properties properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
     String connectionString = properties.getProperty("mongo.connection.string");
-    this.databaseName = properties.getProperty("mongo.database.name");
+    databaseName = properties.getProperty("mongo.database.name");
     MongoClientSettings settings = MongoClientSettings.builder()
         .applyConnectionString(new ConnectionString(connectionString))
         .build();
-    this.mongoClient = MongoClients.create(settings);
+    mongoClient = MongoClients.create(settings);
   }
 
-  private Properties loadProperties() {
-    Properties properties = new Properties();
-    try (InputStream input = getClass().getClassLoader()
-        .getResourceAsStream(DATABASE_PROPERTIES_PATH)) {
-      if (input == null) {
-        throw new IllegalStateException("Failed to load database properties file.");
-      }
-      properties.load(input);
-    } catch (IOException ex) {
-      throw new RuntimeException("Error loading database properties", ex);
-    }
-    return properties;
-  }
 }

@@ -1,0 +1,58 @@
+package oogasalad.database.gamedata;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.bson.Document;
+
+/**
+ * Abstract class to handle common game data functionality.
+ */
+public abstract class AbstractGameData {
+
+  private static final String DATE_FORMAT = "MMMM dd, yyyy";
+
+  protected String username;
+  protected String levelName;
+  protected Date date;
+
+  public AbstractGameData(String username, String levelName, Date date) {
+    this.username = username;
+    this.levelName = levelName;
+    this.date = date;
+  }
+
+  /**
+   * Formats the date into a human-readable string.
+   *
+   * @return Formatted date string.
+   */
+  public String getDate() {
+    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    return dateFormat.format(date);
+  }
+
+  /**
+   * Gets the username.
+   *
+   * @return username associated with this data.
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  /**
+   * Gets the level name.
+   *
+   * @return level name associated with this data.
+   */
+  public String getLevelName() {
+    return levelName;
+  }
+
+  /**
+   * Converts the data to a MongoDB Document.
+   *
+   * @return Document representing this data.
+   */
+  public abstract Document toDocument();
+}
