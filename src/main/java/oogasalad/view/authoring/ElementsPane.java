@@ -233,14 +233,12 @@ public class ElementsPane {
       });
 
       dialog.showAndWait().ifPresent(pair -> {
-        if (pair != null) {
           int width = pair.getKey();
           int height = pair.getValue();
           builderPane.updateGridSize(width, height);
           LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
                   width);
           levelController.resetLevel(levelMetadata);
-        }
       });
     });
   }
