@@ -11,10 +11,6 @@ public class AttributeVisitor implements BlockVisitor {
     this.value = value;
   }
 
-  private void setAttribute(AbstractVisualBlock block) {
-    block.setAttribute(attribute, value);
-  }
-
   @Override
   public void visit(BabaVisualBlock baba) {
     setAttribute(baba);
@@ -48,5 +44,9 @@ public class AttributeVisitor implements BlockVisitor {
   @Override
   public void visit(WaterVisualBlock water) {
     setAttribute(water);
+  }
+
+  private void setAttribute(AbstractVisualBlock block) {
+    block.modifyAttribute(attribute, value);
   }
 }
