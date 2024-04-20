@@ -2,7 +2,7 @@ package oogasalad.model.gameplay.factory;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 
 /**
  * Factory class for creating block instances. This class supports the creation of both text and
