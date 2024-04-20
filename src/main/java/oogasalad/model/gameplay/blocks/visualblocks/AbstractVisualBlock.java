@@ -102,6 +102,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   @Override
   public void resetAllBehaviors() {
     behaviors.clear();
+    attributes.replaceAll((k, v) -> false);
   }
 
   /**
@@ -166,6 +167,18 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     this.col = col;
   }
 
+  /**
+   * Retrieves the value of a specific attribute.
+   *
+   * @param attribute The name of the attribute to query.
+   * @return The boolean value of the attribute; returns false if the attribute is not found.
+   */
+  @Override
+  public boolean getAttribute(String attribute) {
+    boolean value = attributes.getOrDefault(attribute, false);
+    return value;
+  }
+
   public List<Strategy>  getBehaviors(){
     return behaviors;
   }
@@ -179,26 +192,24 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   public void modifyAttribute(String attribute, boolean value) {
     String attributeKey = attributeTranslationMap.get(attribute);
     if (attributes.containsKey(attributeKey)) {
-      attributes.put(attribute, value);
+
+      attributes.put(attributeKey, value);
     } else {
       throw new IllegalArgumentException("Attribute not recognized: " + attribute);
     }
   }
 
-  /**
-   * Retrieves the value of a specific attribute.
-   *
-   * @param attribute The name of the attribute to query.
-   * @return The boolean value of the attribute; returns false if the attribute is not found.
-   */
-  public boolean getAttribute(String attribute) {
-    return attributes.getOrDefault(attribute, false);
-  }
-
   private void initializeAttributes() {
+    System.out.printf("Initializing attributes for block %s%n", name);
     String attributesList = properties.getProperty("attributes");
     for (String attribute : attributesList.split(",")) {
       attributes.put(attribute.trim(), false);
+    }
+  }
+  public void printAttributes() {
+    System.out.println("Current attributes states:");
+    for (Map.Entry<String, Boolean> entry : attributes.entrySet()) {
+      System.out.println(entry.getKey() + ": " + entry.getValue());
     }
   }
 }

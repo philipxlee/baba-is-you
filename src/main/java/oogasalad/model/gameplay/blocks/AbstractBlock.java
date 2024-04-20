@@ -129,4 +129,14 @@ public abstract class AbstractBlock {
     // Default implementation is intentionally left blank.
   }
 
+  /**
+   * Retrieves the value of a specific attribute.
+   *
+   * @param attribute The name of the attribute to query.
+   * @return The boolean value of the attribute; returns false if the attribute is not found.
+   */
+  public boolean getAttribute(String attribute) {
+    return false;
+  }
+
 }

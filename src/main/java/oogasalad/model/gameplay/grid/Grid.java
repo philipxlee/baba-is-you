@@ -45,7 +45,6 @@ public class Grid extends GridHelper implements Observable<Grid> {
     this.strategyMap = HashBiMap.create();
     addMappingsToStrategyMap();
     InitializeGrid();
-    parser.interpretRules(grid);
   }
   private void addMappingsToStrategyMap() {
     Strategy Meltable = new Meltable();
@@ -232,7 +231,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   private void checkForDisappear(){
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        checkCellForDisappear(i, j);
+//        checkCellForDisappear(i, j);
       }
     }
   }
