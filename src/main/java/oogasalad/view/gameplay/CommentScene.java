@@ -6,6 +6,7 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -94,8 +95,11 @@ public class CommentScene implements Scene {
     commentList.setAlignment(Pos.CENTER);
     commentList.setPadding(new Insets(10));
 
-    List<CommentData> levelComments = sceneController.getDatabaseController().getLevelComments();
-    for (CommentData comment : levelComments) {
+    Iterator<CommentData> levelCommentsIterator = sceneController.getDatabaseController()
+        .getLevelCommentsIterator(levelController.getLevelName());
+
+    while (levelCommentsIterator.hasNext()) {
+      CommentData comment = levelCommentsIterator.next();
       Label usernameLabel = new Label(comment.getUsername() + " (" + comment.getDate() + "): ");
       Label commentLabel = new Label(comment.getComment());
       commentLabel.setWrapText(true);
@@ -121,8 +125,9 @@ public class CommentScene implements Scene {
   }
 
   private void updateRepliesUI(CommentData comment, VBox repliesContainer) {
-    List<ReplySchema> replies = comment.getReplies();
-    for (ReplySchema reply : replies) {
+    Iterator<ReplySchema> repliesIterator = comment.getRepliesIterator();
+    while (repliesIterator.hasNext()) {
+      ReplySchema reply = repliesIterator.next();
       Label replyLabel = new Label(reply.getUsername() + " replied: " + reply.getReplyText());
       replyLabel.setWrapText(true);
       repliesContainer.getChildren().add(replyLabel);
