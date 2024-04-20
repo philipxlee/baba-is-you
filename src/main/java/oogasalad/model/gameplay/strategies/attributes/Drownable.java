@@ -5,7 +5,7 @@ import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
 
-public class Drownable implements Strategy {
+public class Drownable extends Equal implements Strategy {
 
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {

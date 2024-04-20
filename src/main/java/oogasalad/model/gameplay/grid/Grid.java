@@ -8,12 +8,9 @@ import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.Strategy;
-import oogasalad.model.gameplay.strategies.attributes.Controllable;
-import oogasalad.model.gameplay.strategies.attributes.Hotable;
-import oogasalad.model.gameplay.strategies.attributes.Meltable;
+import oogasalad.model.gameplay.strategies.attributes.*;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
-import oogasalad.model.gameplay.strategies.attributes.Sinkable;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 import com.google.common.collect.BiMap;
@@ -53,7 +50,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
     Strategy Meltable = new Meltable();
     Strategy Hotable = new Hotable();
     strategyMap.put(Hotable, Meltable);
-    strategyMap.put(new Sinkable(), new Controllable());
+    strategyMap.put(new Sinkable(), new Drownable());
     // Add more mappings as needed
   }
 
