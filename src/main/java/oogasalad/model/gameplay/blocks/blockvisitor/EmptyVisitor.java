@@ -77,7 +77,7 @@ public class EmptyVisitor implements BlockVisitor {
   /**
    * Adds the empty behavior to the water  block.
    *
-   *  @param water the water block.
+   * @param water the water block.
    */
   @Override
   public void visit(WaterVisualBlock water) {

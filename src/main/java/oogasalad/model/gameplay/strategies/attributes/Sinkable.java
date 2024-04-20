@@ -10,6 +10,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
  * behavior of a block when it becomes water.
  */
 public class Sinkable implements Strategy {
+
   /**
    * Constructor for Pushable.
    *

@@ -16,6 +16,7 @@ public class TextBlock extends AbstractBlock {
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String GRAMMAR_PROPERTY_SUFFIX = ".grammar";
   private static final String REGEX_DELIMITER = ",";
+
   private final String name;
   private final Properties properties;
 
