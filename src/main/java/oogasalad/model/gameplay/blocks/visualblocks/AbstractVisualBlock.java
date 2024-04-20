@@ -146,4 +146,8 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     this.col = col;
   }
 
+  public List<Strategy>  getBehaviors(){
+    return behaviors;
+  }
+
 }
