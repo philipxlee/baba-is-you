@@ -8,14 +8,18 @@ import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.strategies.Strategy;
+import oogasalad.model.gameplay.strategies.attributes.Controllable;
 import oogasalad.model.gameplay.strategies.attributes.Hotable;
 import oogasalad.model.gameplay.strategies.attributes.Meltable;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
-import oogasalad.model.gameplay.utils.exceptions.VisitorReflectionException;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
+import oogasalad.model.gameplay.strategies.attributes.Sinkable;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+
+
 
 public class Grid extends GridHelper implements Observable<Grid> {
   private final List<Observer<Grid>> observers = new ArrayList<>();
@@ -49,6 +53,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
     Strategy Meltable = new Meltable();
     Strategy Hotable = new Hotable();
     strategyMap.put(Hotable, Meltable);
+    strategyMap.put(new Sinkable(), new Controllable());
     // Add more mappings as needed
   }
 
@@ -244,6 +249,12 @@ public class Grid extends GridHelper implements Observable<Grid> {
       if(block instanceof AbstractVisualBlock){
         List<Strategy> blockBehaviors = ((AbstractVisualBlock) block).getBehaviors();
         for (Strategy strategy : blockBehaviors) {
+          if(strategy.equals(new Sinkable())){
+            System.out.println("found sinkable ");
+          }
+          if(grid[cellI][cellJ].size() > 2 && strategy.equals(new Controllable())){
+            System.out.println("found Controllable with something else");
+          }
           if(subject == -1 && object == -1) { //we havent found any
             if (strategyMap.containsKey(strategy)) { //we  found key
               keyStrategy = strategy;
