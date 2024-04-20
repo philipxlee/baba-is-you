@@ -96,7 +96,7 @@ public class EntryPoint implements Scene {
       entryController.switchToAuthoringEnvironment();
     });
 
-    HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(gamePlay, authoring)),
+    HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(authoring, gamePlay)),
         width/2);
     buttons.setAlignment(Pos.BASELINE_CENTER);
     vbox.getChildren().add(buttons);

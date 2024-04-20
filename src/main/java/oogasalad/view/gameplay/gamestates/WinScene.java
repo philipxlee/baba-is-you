@@ -3,8 +3,8 @@ package oogasalad.view.gameplay.gamestates;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -33,7 +33,6 @@ public class WinScene implements Scene {
   private String language;
 
   public WinScene(SceneController sceneController) {
-
     this.sceneController = sceneController;
     this.language = sceneController.getLanguage();
   }
@@ -42,7 +41,7 @@ public class WinScene implements Scene {
    * Initialize the scene.
    *
    * @param width  width of scene
-   * @param height height of scenes
+   * @param height height of scene
    */
   @Override
   public void initializeScene(int width, int height) {
@@ -52,7 +51,7 @@ public class WinScene implements Scene {
     this.root = new VBox();
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
-    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
+    this.scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
     showWinMessage();
   }
@@ -68,66 +67,72 @@ public class WinScene implements Scene {
   }
 
   /**
-   * Show the win message.
+   * Show the win message and other UI components based on the user's session status.
    */
   private void showWinMessage() {
+    addTextComponents();
+    handleCommentsSection();
+    addButtonComponents();
+  }
+
+  private void addTextComponents() {
     Text header = factory.generateHeader(new WidgetConfiguration("WinHeader", language));
     Text content = factory.generateLine(new WidgetConfiguration("WinContent", language));
+    root.getChildren().addAll(header, content);
+  }
 
-    // Create UI components that are conditional
+  private void handleCommentsSection() {
+    if (!sceneController.isGuestSession()) {
+      addCommentsSection();
+    } else {
+      addGuestMessage();
+    }
+  }
+
+  private void addCommentsSection() {
     Text commentsLabel = factory.generateLine(new WidgetConfiguration("CommentMessage", language));
+    TextArea commentField = createTextArea();
+    Button saveStatsButton = createSaveStatsButton(commentField);
+    root.getChildren().addAll(commentsLabel, commentField, saveStatsButton);
+  }
+
+  private TextArea createTextArea() {
     TextArea commentField = new TextArea();
     commentField.setPromptText("Enter comments here...");
     commentField.setPrefHeight(100);
     commentField.setMinWidth(300);
     commentField.setMaxWidth(400);
     commentField.setWrapText(true);
-
-    Button saveStatsButton = factory.makeButton(new WidgetConfiguration(
-        200, 40, "SaveStats", "button", language));
-    Text guestMessage = factory.generateLine(new WidgetConfiguration("GuestMessage", language));
-    guestMessage.setVisible(false); // Default to not visible
-
-    List<Node> texts = new ArrayList<>();
-    texts.add(header);
-    texts.add(content);
-
-    // Only add comment elements if not a guest
-    if (!sceneController.isGuestSession()) {
-      saveStatsButton.setOnAction(event -> {
-        if (!statsSaved) {
-          long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
-          String comment = commentField.getText();
-          sceneController.getDatabaseController().savePlayerData(endTime);
-          sceneController.getDatabaseController().saveLevelCommentData(comment);
-          saveStatsButton.setText("Stats Saved!");
-          saveStatsButton.setDisable(true);
-          statsSaved = true; // Ensure stats can only be saved once
-        }
-      });
-
-      texts.add(commentsLabel);
-      texts.add(commentField);
-    } else {
-      saveStatsButton.setDisable(true); // Disable save button for guests
-      guestMessage.setVisible(true); // Show guest message for guests
-    }
-
-    texts.add(saveStatsButton);
-
-
-    Button playAgainButton = factory.makeButton(new WidgetConfiguration(200, 40,
-        "PlayAgain","button", language));
-    playAgainButton.setOnAction(event -> {
-      sceneController.initializeViews();
-    });
-    texts.add(playAgainButton);
-    texts.add(guestMessage);
-
-    VBox textContainer = factory.wrapInVBox(texts, height, 10);
-    root.getChildren().add(textContainer);
+    return commentField;
   }
 
+  private Button createSaveStatsButton(TextArea commentField) {
+    Button saveStatsButton = factory.makeButton(new WidgetConfiguration(200, 40, "SaveStats", "button", language));
+    saveStatsButton.setOnAction(event -> saveStatistics(commentField, saveStatsButton));
+    return saveStatsButton;
+  }
 
+  private void saveStatistics(TextArea commentField, Button saveStatsButton) {
+    if (!statsSaved) {
+      long endTime = System.currentTimeMillis() / MILLISECOND_OFFSET;
+      String comment = commentField.getText();
+      sceneController.getDatabaseController().savePlayerData(endTime);
+      sceneController.getDatabaseController().saveLevelCommentData(comment);
+      saveStatsButton.setText("Stats Saved!");
+      saveStatsButton.setDisable(true);
+      statsSaved = true;
+    }
+  }
 
+  private void addGuestMessage() {
+    Text guestMessage = factory.generateLine(new WidgetConfiguration("GuestMessage", language));
+    guestMessage.setVisible(true);
+    root.getChildren().add(guestMessage);
+  }
+
+  private void addButtonComponents() {
+    Button playAgainButton = factory.makeButton(new WidgetConfiguration(200, 40, "PlayAgain", "button", language));
+    playAgainButton.setOnAction(event -> sceneController.initializeViews());
+    root.getChildren().add(playAgainButton);
+  }
 }

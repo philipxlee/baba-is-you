@@ -1,101 +1,70 @@
 package oogasalad.database.gamedata;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
+import oogasalad.shared.util.PropertiesLoader;
 import org.bson.Document;
 
 /**
- * This class is responsible for storing the comment data.
+ * Stores and manages comment data for a game session, including replies.
  */
-public class CommentData {
+public class CommentData extends AbstractGameData {
 
-  private final String username;
-  private final String levelName;
-  private final Date date;
+  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+
+  private final Properties properties;
   private final String comment;
-  private final List<ReplySchema> replies;  // Change to use Reply objects
+  private final List<ReplySchema> replies;
 
   /**
    * Constructor for the CommentData class.
    *
-   * @param username  username
-   * @param levelName level name
-   * @param date      date
-   * @param comment   comment
-   * @param replies   replies
+   * @param username  the username of the person who made the comment
+   * @param levelName the level at which the comment was made
+   * @param date      the date the comment was made
+   * @param comment   the text of the comment
+   * @param replies   a list of replies to the comment
    */
-  public CommentData(String username, String levelName, Date date, String comment,
-      List<ReplySchema> replies) {
-    this.username = username;
-    this.levelName = levelName;
-    this.date = date;
+  public CommentData(String username, String levelName, Date date, String comment, List<ReplySchema> replies) {
+    super(username, levelName, date);
     this.comment = comment;
     this.replies = new ArrayList<>(replies);
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
+  }
+
+  @Override
+  public Document toDocument() {
+    List<Document> replyDocs = replies.stream()
+        .map(ReplySchema::toDocument)
+        .collect(Collectors.toList());
+
+    return new Document(properties.getProperty("field.username"), username)
+        .append(properties.getProperty("field.levelName"), levelName)
+        .append(properties.getProperty("field.date"), date)
+        .append(properties.getProperty("field.comment"), comment)
+        .append(properties.getProperty("field.replies"), replyDocs);
   }
 
   /**
-   * Constructor for the CommentData class.
+   * Gets the text of the comment.
    *
-   * @param newComment new comment
-   * @return document
-   */
-  public Document getCommentDocument(String newComment) {
-    List<Document> replyDocs = new ArrayList<>();
-    for (ReplySchema reply : replies) {
-      replyDocs.add(reply.toDocument());
-    }
-    return new Document("username", username)
-        .append("levelName", levelName)
-        .append("date", date)
-        .append("comment", newComment)
-        .append("replies", replyDocs);
-  }
-
-  /**
-   * Gets the replies.
-   *
-   * @return replies
-   */
-  public List<ReplySchema> getReplies() {
-    return replies;
-  }
-
-  /**
-   * Adds a reply to the comment.
-   *
-   * @return comment
-   */
-  public String getUsername() {
-    return username;
-  }
-
-  /**
-   * Gets the level name.
-   *
-   * @return level name
-   */
-  public String getLevelName() {
-    return levelName;
-  }
-
-  /**
-   * Gets the date.
-   *
-   * @return date
-   */
-  public String getDate() {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-    return dateFormat.format(date);
-  }
-
-  /**
-   * Gets the comment.
-   *
-   * @return comment
+   * @return the comment text
    */
   public String getComment() {
     return comment;
   }
+
+  /**
+   * Provides an iterator over the replies to this comment.
+   *
+   * @return an iterator of ReplySchema objects representing replies to this comment
+   */
+  public Iterator<ReplySchema> getRepliesIterator() {
+    return replies.iterator();
+  }
+
 }

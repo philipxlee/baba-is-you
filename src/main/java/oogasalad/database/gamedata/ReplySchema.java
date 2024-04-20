@@ -1,68 +1,52 @@
 package oogasalad.database.gamedata;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import oogasalad.shared.util.PropertiesLoader;
 import org.bson.Document;
 
 /**
- * This class is responsible for storing the reply schema.
+ * Represents a reply within a comment in the game data.
  */
-public class ReplySchema {
+public class ReplySchema extends AbstractGameData {
 
-  private final String username;
+  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+  private final Properties properties;
   private final String replyText;
-  private final Date replyDate;
 
   /**
    * Constructor for the ReplySchema class.
    *
-   * @param username  username
-   * @param replyText replyText
-   * @param replyDate replyDate
+   * @param username  the username of the person who made the reply
+   * @param levelName the level at which the reply was made
+   * @param date      the date the reply was made
+   * @param replyText the text of the reply
    */
-  public ReplySchema(String username, String replyText, Date replyDate) {
-    this.username = username;
+  public ReplySchema(String username, String levelName, Date date, String replyText) {
+    super(username, levelName, date);
     this.replyText = replyText;
-    this.replyDate = replyDate;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
   /**
-   * Gets the reply date.
+   * Converts the reply to a Document.
    *
-   * @return reply date
+   * @return The reply as a Document.
    */
-  public String getFormattedReplyDate() {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy HH:mm:ss");
-    return dateFormat.format(replyDate);
-  }
-
-  /**
-   * Converts the reply schema to a document.
-   *
-   * @return document
-   */
+  @Override
   public Document toDocument() {
-    return new Document("username", username)
-        .append("reply", replyText)
-        .append("date", replyDate);
-  }
-
-  /**
-   * Gets the username.
-   *
-   * @return username
-   */
-  public String getUsername() {
-    return username;
+    return new Document(properties.getProperty("field.username"), username)
+        .append(properties.getProperty("field.levelName"), levelName)
+        .append(properties.getProperty("field.date"), date)
+        .append(properties.getProperty("field.reply"), replyText);
   }
 
   /**
    * Gets the reply text.
    *
-   * @return reply text
+   * @return Reply text of the comment.
    */
   public String getReplyText() {
     return replyText;
   }
-
 }

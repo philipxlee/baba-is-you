@@ -90,13 +90,16 @@
           "EmptyVisualBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "WaterTextBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "IsTextBlock"
         ],
         [
-          "EmptyVisualBlock"
+          "EmptyVisualBlock",
+          "SinkTextBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -501,7 +504,7 @@
         ],
         [
           "EmptyVisualBlock",
-          "WallVisualBlock"
+          "WaterVisualBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -550,7 +553,7 @@
         ],
         [
           "EmptyVisualBlock",
-          "WallVisualBlock"
+          "WaterVisualBlock"
         ],
         [
           "EmptyVisualBlock"
@@ -602,7 +605,7 @@
         ],
         [
           "EmptyVisualBlock",
-          "WallVisualBlock"
+          "WaterVisualBlock"
         ],
         [
           "EmptyVisualBlock"

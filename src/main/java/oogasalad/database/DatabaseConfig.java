@@ -5,15 +5,17 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
+import oogasalad.shared.util.PropertiesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * DatabaseConfig is a class that manages the connection to the MongoDB database.
  */
 public class DatabaseConfig {
 
+  private static final Logger logger = LogManager.getLogger(DatabaseConfig.class);
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
   private MongoClient mongoClient;
   private String databaseName;
@@ -44,26 +46,14 @@ public class DatabaseConfig {
   }
 
   private void createDatabaseConnection() {
-    Properties properties = loadProperties();
+    Properties properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
     String connectionString = properties.getProperty("mongo.connection.string");
-    this.databaseName = properties.getProperty("mongo.database.name");
+    databaseName = properties.getProperty("mongo.database.name");
     MongoClientSettings settings = MongoClientSettings.builder()
         .applyConnectionString(new ConnectionString(connectionString))
         .build();
-    this.mongoClient = MongoClients.create(settings);
+    mongoClient = MongoClients.create(settings);
+    logger.info("Connected to MongoDB database.");
   }
 
-  private Properties loadProperties() {
-    Properties properties = new Properties();
-    try (InputStream input = getClass().getClassLoader()
-        .getResourceAsStream(DATABASE_PROPERTIES_PATH)) {
-      if (input == null) {
-        throw new IllegalStateException("Failed to load database properties file.");
-      }
-      properties.load(input);
-    } catch (IOException ex) {
-      throw new RuntimeException("Error loading database properties", ex);
-    }
-    return properties;
-  }
 }
