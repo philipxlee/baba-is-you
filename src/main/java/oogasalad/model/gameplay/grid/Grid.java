@@ -181,9 +181,6 @@ public class Grid extends GridHelper implements Observable<Grid> {
    */
   @Override
   public void notifyObserver() {
-    for (Observer<Grid> observer : observers) {
-      observer.update(this);
-    }
     checkForDisappear();
     for (Observer<Grid> observer : observers) {
       observer.update(this);
@@ -230,60 +227,55 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   private void checkForDisappear(){
-    //hotable is key
-    //meltable is value
-    int subject = -1;
-    int object = -1;
-    Strategy keyStrategy = null;
-    Strategy valueStrategy = null;
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        for (int k = 0; k < grid[i][j].size(); k++) {
-          AbstractBlock block = grid[i][j].get(k);
-          if(block.hasBehavior(Meltable.class)){
-            //System.out.println("Meltable found!!!!");
-          }
-          if(block instanceof AbstractVisualBlock){
-            List<Strategy> blockBehaviors = ((AbstractVisualBlock) block).getBehaviors();
-            for (Strategy strategy : blockBehaviors) {
-              if(subject == -1 && object == -1) {
-                if (strategyMap.containsKey(strategy)) {
-                  keyStrategy = strategy;
-                  valueStrategy = strategyMap.get(keyStrategy);
-                  subject = k;
-
-                } else if (strategyMap.containsValue(strategy)) {
-                  valueStrategy = strategy;
-                  keyStrategy = strategyMap.inverse().get(valueStrategy);
-                  object = k;
-                } else {
-                  continue;
-                }
-              }
-              else if(subject != -1 && object == -1){ //found subject, but not object
-                if(strategy.getClass() == valueStrategy.getClass()){
-                  object = k;
-                }
-              }
-              else if(subject == -1 && object != -1){
-                if(strategy.getClass() ==keyStrategy.getClass()){
-                  subject = k;
-                }
-              }
-            }
-          }
-        }
-        //System.out.println("subject is " + subject + " object is " + object);
-        if(subject != -1 && object != -1){
-          isDissapearingBlockPresent(i, j, object);
-        }
+        checkCellForDisappear(i, j);
       }
     }
   }
 
-  private void isDissapearingBlockPresent(int cellI, int cellJ, int ObjectIndex){
-    grid[cellI][cellJ].remove(ObjectIndex);
+  private void checkCellForDisappear(int cellI, int cellJ){
+    Strategy keyStrategy = null;
+    Strategy valueStrategy = null;
+    int subject = -1;
+    int object = -1;
+    for (int k = 0; k < grid[cellI][cellJ].size(); k++) {
+      AbstractBlock block = grid[cellI][cellJ].get(k);
+      if(block instanceof AbstractVisualBlock){
+        List<Strategy> blockBehaviors = ((AbstractVisualBlock) block).getBehaviors();
+        for (Strategy strategy : blockBehaviors) {
+          if(subject == -1 && object == -1) { //we havent found any
+            if (strategyMap.containsKey(strategy)) { //we  found key
+              keyStrategy = strategy;
+              valueStrategy = strategyMap.get(keyStrategy);
+              subject = k; //we found subject
+              break;
+            }
+            if (strategyMap.containsValue(strategy)) {
+              valueStrategy = strategy;
+              keyStrategy = strategyMap.inverse().get(valueStrategy);
+              object = k; //we found object
+              break;
+            }
+          }
+          else if(subject != -1 && object == -1){ //found subject, but not object
+            if(strategy.equals(valueStrategy)){
+              object = k;
+            }
+          }
+          else if(subject == -1 && object != -1){
+            if(strategy.equals(keyStrategy)){
+              subject = k;
+            }
+          }
+        }
+      }
+    }
+    if(subject != -1 && object != -1){
+      grid[cellI][cellJ].remove(object);
+    }
   }
+
 
 
 

@@ -8,7 +8,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
 /**
  * A strategy that makes a block stoppable, meaning it will not move when pushed.
  */
-public class Stoppable implements Strategy {
+public class Stoppable extends Equal implements Strategy {
 
   /**
    * Executes the stoppable strategy.

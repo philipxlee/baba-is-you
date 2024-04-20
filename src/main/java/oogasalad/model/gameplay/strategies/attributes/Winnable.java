@@ -8,7 +8,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
 /**
  * Strategy for blocks that can be won by the player.
  */
-public class Winnable implements Strategy {
+public class Winnable extends Equal implements Strategy {
 
   /**
    * Constructor for Winnable.
