@@ -9,26 +9,21 @@ import java.util.Properties;
  */
 public class PropertiesLoader {
 
-  private static final Properties properties = new Properties();
-  private static boolean loaded = false;
-
   /**
    * Loads properties from a specified path within the classpath.
    * This method ensures properties are loaded only once to avoid redundant IO operations.
    *
    * @param propertiesPath the classpath location of the properties file
    */
-  public static synchronized Properties loadProperties(String propertiesPath) {
-    if (!loaded) {
-      try (InputStream input = PropertiesLoader.class.getClassLoader().getResourceAsStream(propertiesPath)) {
-        if (input == null) {
-          throw new IllegalStateException("Failed to load properties file from: " + propertiesPath);
-        }
-        properties.load(input);
-        loaded = true;
-      } catch (IOException ex) {
-        throw new RuntimeException("Error loading properties from " + propertiesPath, ex);
+  public static Properties loadProperties(String propertiesPath) {
+    Properties properties = new Properties();
+    try (InputStream input = PropertiesLoader.class.getClassLoader().getResourceAsStream(propertiesPath)) {
+      if (input == null) {
+        throw new IllegalStateException("Failed to load properties file from: " + propertiesPath);
       }
+      properties.load(input);
+    } catch (IOException ex) {
+      throw new RuntimeException("Error loading properties from " + propertiesPath, ex);
     }
     return properties;
   }

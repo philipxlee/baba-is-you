@@ -1,8 +1,10 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.GrammarLoader;
+import oogasalad.shared.util.PropertiesLoader;
 
 /**
  * Represents a text block within the game, providing text-specific functionality. This class
@@ -10,9 +12,12 @@ import oogasalad.model.gameplay.blocks.GrammarLoader;
  */
 public class TextBlock extends AbstractBlock {
 
-  private static final GrammarLoader GRAMMAR_LOADER = new GrammarLoader();
+  private static final String GRAMMAR_PROPERTIES_PATH = "grammar/grammar.properties";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
+  private static final String GRAMMAR_PROPERTY_SUFFIX = ".grammar";
+  private static final String REGEX_DELIMITER = ",";
   private final String name;
+  private final Properties properties;
 
   /**
    * Creates a new text block with the given type.
@@ -22,6 +27,7 @@ public class TextBlock extends AbstractBlock {
   public TextBlock(String type) {
     super();
     this.name = type + TEXT_BLOCK_SUFFIX;
+    this.properties = PropertiesLoader.loadProperties(GRAMMAR_PROPERTIES_PATH);
   }
 
   /**
@@ -31,7 +37,8 @@ public class TextBlock extends AbstractBlock {
    */
   @Override
   public List<String> getBlockGrammar() {
-    return GRAMMAR_LOADER.getGrammarForBlock(this.name);
+    String grammar = properties.getProperty(this.name + GRAMMAR_PROPERTY_SUFFIX);
+    return Arrays.asList(grammar.split(REGEX_DELIMITER));
   }
 
   /**
