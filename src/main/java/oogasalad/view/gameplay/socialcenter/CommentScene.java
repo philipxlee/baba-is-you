@@ -3,28 +3,19 @@ package oogasalad.view.gameplay.socialcenter;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.database.gamedata.CommentData;
-import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.database.gamedata.ReplySchema;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
@@ -128,7 +119,8 @@ public class CommentScene implements Scene {
     Iterator<ReplySchema> repliesIterator = comment.getRepliesIterator();
     while (repliesIterator.hasNext()) {
       ReplySchema reply = repliesIterator.next();
-      Label replyLabel = new Label(reply.getUsername() + " replied: " + reply.getReplyText());
+      Label replyLabel = new Label(
+          reply.getUsername() + " replied at " + reply.getDate() + " : " + reply.getReplyText());
       replyLabel.setWrapText(true);
       repliesContainer.getChildren().add(replyLabel);
     }
