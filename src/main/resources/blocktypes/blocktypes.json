@@ -97,5 +97,9 @@
   "WaterVisualBlock": {
     "imagePath": "/images/WaterVisualBlock.png",
     "category" : ["Visual"]
+  },
+  "DrownTextBlock": {
+    "imagePath": "/images/DrownTextBlock.png",
+    "category" : ["Text"]
   }
 }
