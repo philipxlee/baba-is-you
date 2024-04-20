@@ -8,8 +8,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
 /**
  * Strategy for the meltable attribute.
  */
-public class Meltable implements Strategy {
-
+public class Meltable extends Equal implements Strategy {
   /**
    * Constructor for Pushable.
    *

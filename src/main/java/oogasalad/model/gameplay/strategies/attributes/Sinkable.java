@@ -9,7 +9,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
  * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
  * behavior of a block when it becomes water.
  */
-public class Sinkable implements Strategy {
+public class Sinkable extends Equal implements Strategy {
 
   /**
    * Constructor for Pushable.

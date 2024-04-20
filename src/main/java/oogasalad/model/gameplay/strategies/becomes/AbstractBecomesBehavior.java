@@ -5,6 +5,8 @@ import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
 
+import java.util.Objects;
+
 /**
  * Abstract class that provides common behaviors for 'becomes' strategies. This class encapsulates
  * methods to check the presence of non-empty visual blocks and text blocks within a grid cell.
@@ -40,6 +42,24 @@ public abstract class AbstractBecomesBehavior implements Strategy {
       }
     }
     return true;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    // Since we know obj is an instance of the same class, they are considered equal
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    // Use the class of the object to produce the hash code
+    return Objects.hash(getClass());
   }
 
 }
