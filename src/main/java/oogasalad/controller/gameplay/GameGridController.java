@@ -6,7 +6,7 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.shared.alert.AlertHandler;
 import oogasalad.view.gameplay.mainscene.GamePane;
 

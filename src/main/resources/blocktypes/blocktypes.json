@@ -85,5 +85,17 @@
   "LavaTextBlock": {
     "imagePath": "/images/LavaTextBlock.png",
     "category" : ["Text"]
+  },
+  "SinkTextBlock": {
+    "imagePath": "/images/SinkTextBlock.png",
+    "category" : ["Text"]
+  },
+  "WaterTextBlock": {
+    "imagePath": "/images/WaterTextBlock.png",
+    "category" : ["Text"]
+  },
+  "WaterVisualBlock": {
+    "imagePath": "/images/WaterVisualBlock.png",
+    "category" : ["Visual"]
   }
 }

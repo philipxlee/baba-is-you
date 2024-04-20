@@ -113,6 +113,8 @@ public class StartingScene implements Scene {
     usernameField.textProperty().addListener((obs, old, newValue) -> {
       checkUsernameValidity(newValue, feedbackLabel, start);
     });
+    Button backButton = factory.makeButton(new WidgetConfiguration(200, 40,
+        "Back", "button", language));
     startGame(start);
     guestButton.setOnAction(event -> sceneController.beginGame(true));
 
@@ -120,6 +122,7 @@ public class StartingScene implements Scene {
     List<Node> btns = new ArrayList<>();
     btns.add(start);
     btns.add(guestButton);
+    btns.add(backButton);
     return btns;
   }
 

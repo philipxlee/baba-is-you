@@ -7,82 +7,78 @@ import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
-import oogasalad.model.gameplay.strategies.becomes.BecomesLava;
+import oogasalad.model.gameplay.strategies.attributes.Sinkable;
 
-/**
- * Visitor pattern for the lava behavior.
- */
-public class LavaVisitor implements BlockVisitor {
+public class SinkVisitor implements BlockVisitor {
 
   /**
-   * Adds the lava behavior to the baba block.
+   * Adds the sinkable behavior to the baba block.
    *
-   * @param baba the baba block
+   * @param baba the baba block.
    */
   @Override
   public void visit(BabaVisualBlock baba) {
-    baba.addBehavior(new BecomesLava());
+    baba.addBehavior(new Sinkable());
   }
 
   /**
-   * Adds the lava behavior to the wall block.
+   * Adds the sinkable behavior to the wall block.
    *
    * @param wall the wall block.
    */
   @Override
   public void visit(WallVisualBlock wall) {
-    wall.addBehavior(new BecomesLava());
-  }
-
-
-  /**
-   * Adds the lava behavior to the rock block.
-   *
-   * @param rock the rock block.
-   */
-  @Override
-  public void visit(RockVisualBlock rock) {
-    rock.addBehavior(new BecomesLava());
+    wall.addBehavior(new Sinkable());
   }
 
   /**
-   * Adds the lava behavior to the flag block.
+   * Adds the sinkable behavior to the flag block.
    *
    * @param flag the flag block.
    */
   @Override
   public void visit(FlagVisualBlock flag) {
-    flag.addBehavior(new BecomesLava());
+    flag.addBehavior(new Sinkable());
   }
 
   /**
-   * Adds the lava behavior to the empty block.
+   * Adds the sinkable behavior to the rock block.
+   *
+   * @param rock the rock block.
+   */
+  @Override
+  public void visit(RockVisualBlock rock) {
+    rock.addBehavior(new Sinkable());
+  }
+
+  /**
+   * Adds the sinkable behavior to the empty block.
    *
    * @param empty the empty block.
    */
   @Override
   public void visit(EmptyVisualBlock empty) {
-    empty.addBehavior(new BecomesLava());
+    empty.addBehavior(new Sinkable());
   }
 
   /**
-   * Adds the lava behavior to the lava block.
+   * Adds the sinkable behavior to the lava block.
    *
    * @param lava the lava block.
    */
   @Override
   public void visit(LavaVisualBlock lava) {
-    lava.addBehavior(new BecomesLava());
+    lava.addBehavior(new Sinkable());
   }
 
   /**
-   * Adds the lava behavior to the lava block.
+   * Adds the sinkable behavior to the water block.
    *
    * @param water the water block.
    */
   @Override
   public void visit(WaterVisualBlock water) {
-    water.addBehavior(new BecomesLava());
+    water.addBehavior(new Sinkable());
   }
 
 }

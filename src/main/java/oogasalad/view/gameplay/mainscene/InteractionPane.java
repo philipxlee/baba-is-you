@@ -1,7 +1,6 @@
 package oogasalad.view.gameplay.mainscene;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.geometry.Insets;
@@ -10,19 +9,21 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import oogasalad.app.GamePlayer;
+import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
-import oogasalad.view.gameplay.CommentScene;
-import oogasalad.view.gameplay.LeaderboardScene;
+import oogasalad.view.gameplay.StartingScene;
+import oogasalad.view.gameplay.socialcenter.CommentScene;
+import oogasalad.view.gameplay.socialcenter.LeaderboardScene;
 
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
@@ -159,10 +160,16 @@ public class InteractionPane {
 
     // Combine the header and arrow keys into a single display layout
 
+    // Back button
+    Button backButton = factory.makeButton(new WidgetConfiguration(150, 40,
+        "Back", "white-button", language));
+
+    backButton.setOnAction(event -> sceneController.initializeViews());
+
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
-    display.getChildren().add(stats);
+    display.getChildren().addAll(stats, backButton);
 
     root.getChildren().addAll(background, display);
   }

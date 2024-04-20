@@ -8,10 +8,13 @@ import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.shared.util.PropertiesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 
 public class DataUploader {
 
+  private static final Logger logger = LogManager.getLogger(DataUploader.class);
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
   private static final String GUEST_USERNAME = "Anonymous";
 
@@ -42,7 +45,7 @@ public class DataUploader {
     leaderboardDocument.append(properties.getProperty("field.timeSpent"),
         endTime - startTime);
     collection.insertOne(leaderboardDocument);
-    System.out.println("Player data saved successfully.");
+    logger.info("Player data saved successfully.");
   }
 
   /**
@@ -56,7 +59,7 @@ public class DataUploader {
     commentDocument.append(properties.getProperty("field.comment"),
         comment);
     collection.insertOne(commentDocument);
-    System.out.println("Level comments saved successfully.");
+    logger.info("Level comments saved successfully.");
   }
 
   /**
@@ -70,7 +73,7 @@ public class DataUploader {
     MongoCollection<Document> commentsCollection = getCommentsCollection();
     Document replyDocument = createReplyDocument(playerUsername, reply);
     updateCommentWithReply(commentsCollection, commenterUsername, replyDocument);
-    System.out.println("Reply added successfully.");
+    logger.info("Reply added successfully.");
   }
 
   private MongoCollection<Document> getCommentsCollection() {

@@ -2,7 +2,7 @@ package oogasalad.model.gameplay.factory;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
-import oogasalad.model.gameplay.utils.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 
 /**
  * Factory class for creating block instances. This class supports the creation of both text and
@@ -29,13 +29,11 @@ public class BlockFactory {
   public AbstractBlock createBlock(String blockName, int row, int col) throws InvalidBlockName {
     try {
       if (blockName.endsWith(TEXT_BLOCK_SUFFIX)) {
-        // Direct instantiation for text blocks.
         return new TextBlock(blockName.replace(TEXT_BLOCK_SUFFIX, ""));
       } else {
-        // Reflection-based instantiation for other block types.
         String className = PACKAGE_PREFIX + determinePackageSuffix(blockName) + blockName;
         Class<?> blockClass = Class.forName(className);
-        validateBlockName(blockName, blockClass);
+        validateBlockName(blockClass);
         return (AbstractBlock) blockClass
             .getDeclaredConstructor(String.class, int.class, int.class)
             .newInstance(blockName, row, col);
@@ -48,11 +46,10 @@ public class BlockFactory {
   /**
    * Validates that the identified block class extends AbstractBlock.
    *
-   * @param blockName  The name of the block being validated.
    * @param blockClass The class object corresponding to the block name.
    * @throws InvalidBlockName If the class does not extend AbstractBlock.
    */
-  private void validateBlockName(String blockName, Class<?> blockClass) throws InvalidBlockName {
+  private void validateBlockName(Class<?> blockClass) throws InvalidBlockName {
     if (!AbstractBlock.class.isAssignableFrom(blockClass)) {
       throw new InvalidBlockName("Invalid block name");
     }

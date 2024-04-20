@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay.utils.exceptions;
+package oogasalad.model.gameplay.exceptions;
 
 /**
  * Exception thrown when the block name is invalid.

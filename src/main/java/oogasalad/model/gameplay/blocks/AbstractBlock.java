@@ -29,8 +29,7 @@ public abstract class AbstractBlock {
    * Determines if the block matches a specified descriptor, typically based on its class name.
    * Subclasses can rely on this implementation or override it for custom matching logic.
    *
-   * @param descriptor The descriptor to match against the block, usually related to the block's
-   *                   class.
+   * @param descriptor The descriptor to match against the block.
    * @return true if the descriptor matches the block's class name, false otherwise.
    */
   public boolean matches(String descriptor) {
@@ -104,6 +103,15 @@ public abstract class AbstractBlock {
   }
 
   /**
+   * Sets the row of the block.
+   *
+   * @param row The row to set.
+   */
+  public void setRow(int row) {
+    // Default implementation is intentionally left blank.
+  }
+
+  /**
    * Gets the column of the block.
    *
    * @return The column of the block.
@@ -113,14 +121,10 @@ public abstract class AbstractBlock {
   }
 
   /**
-   * Sets the row of the block.
+   * Sets the column of the block.
    *
-   * @param row The row to set.
+   * @param col The column to set.
    */
-  public void setRow(int row) {
-    // Default implementation is intentionally left blank.
-  }
-
   public void setCol(int col) {
     // Default implementation is intentionally left blank.
   }
