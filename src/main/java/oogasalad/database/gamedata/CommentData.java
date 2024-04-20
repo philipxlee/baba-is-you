@@ -2,6 +2,7 @@ package oogasalad.database.gamedata;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -58,12 +59,12 @@ public class CommentData extends AbstractGameData {
   }
 
   /**
-   * Gets the list of replies to this comment.
+   * Provides an iterator over the replies to this comment.
    *
-   * @return a list of ReplySchema objects representing replies to this comment
+   * @return an iterator of ReplySchema objects representing replies to this comment
    */
-  public List<ReplySchema> getReplies() {
-    return new ArrayList<>(replies);  // Return a copy to preserve encapsulation
+  public Iterator<ReplySchema> getRepliesIterator() {
+    return replies.iterator();
   }
 
 }

@@ -125,8 +125,9 @@ public class CommentScene implements Scene {
   }
 
   private void updateRepliesUI(CommentData comment, VBox repliesContainer) {
-    List<ReplySchema> replies = comment.getReplies();
-    for (ReplySchema reply : replies) {
+    Iterator<ReplySchema> repliesIterator = comment.getRepliesIterator();
+    while (repliesIterator.hasNext()) {
+      ReplySchema reply = repliesIterator.next();
       Label replyLabel = new Label(reply.getUsername() + " replied: " + reply.getReplyText());
       replyLabel.setWrapText(true);
       repliesContainer.getChildren().add(replyLabel);
