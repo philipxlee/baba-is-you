@@ -16,6 +16,9 @@ public class BlockFactory {
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String VISUAL_BLOCK_LOCATION_SUFFIX = "visualblocks.";
   private static final String TEXT_BLOCK_LOCATION_SUFFIX = "textblocks.";
+  private static final String VISUAL = "Visual";
+  private static final String TEXT = "Text";
+  private static final String REPLACEMENT = "";
 
   /**
    * Creates a block instance based on the provided block name. If the block name ends with
@@ -29,7 +32,7 @@ public class BlockFactory {
   public AbstractBlock createBlock(String blockName, int row, int col) throws InvalidBlockName {
     try {
       if (blockName.endsWith(TEXT_BLOCK_SUFFIX)) {
-        return new TextBlock(blockName.replace(TEXT_BLOCK_SUFFIX, ""));
+        return new TextBlock(blockName.replace(TEXT_BLOCK_SUFFIX, REPLACEMENT));
       } else {
         String className = PACKAGE_PREFIX + determinePackageSuffix(blockName) + blockName;
         Class<?> blockClass = Class.forName(className);
@@ -62,7 +65,7 @@ public class BlockFactory {
    * @return The package suffix corresponding to the block type.
    */
   private String determinePackageSuffix(String blockName) {
-    return blockName.contains("Visual") ? VISUAL_BLOCK_LOCATION_SUFFIX
-        : blockName.contains("Text") ? TEXT_BLOCK_LOCATION_SUFFIX : "";
+    return blockName.contains(VISUAL) ? VISUAL_BLOCK_LOCATION_SUFFIX
+        : blockName.contains(TEXT) ? TEXT_BLOCK_LOCATION_SUFFIX : REPLACEMENT;
   }
 }

@@ -1,7 +1,10 @@
 package oogasalad.model.gameplay.blocks;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
@@ -127,6 +130,28 @@ public abstract class AbstractBlock {
    */
   public void setCol(int col) {
     // Default implementation is intentionally left blank.
+  }
+
+  /**
+   * Retrieves the value of a specific attribute.
+   *
+   * @param attribute The name of the attribute to query.
+   * @return The boolean value of the attribute; returns false if the attribute is not found.
+   */
+  public boolean getAttribute(String attribute) {
+    return false;
+  }
+
+  /**
+   * Retrieves an iterator for the block's attributes. By default, there are no attributes to
+   * iterate over. Subclasses with attributes should override this method to provide an iterator.
+   * The iterator should return a map entry with the attribute name as the key and the boolean value
+   * as the value.
+   *
+   * @return An optional iterator for the block's attributes, empty if no attributes are present.
+   */
+  public Optional<Iterator<Entry<String, Boolean>>> getAttributeIterator() {
+    return Optional.empty();
   }
 
 }
