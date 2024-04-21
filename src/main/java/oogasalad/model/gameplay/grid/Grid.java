@@ -6,12 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.strategies.Strategy;
-import oogasalad.model.gameplay.strategies.attributes.*;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.shared.observer.Observable;
@@ -242,8 +240,11 @@ public class Grid extends GridHelper implements Observable<Grid> {
     int objectIndex = -1;
     for (int k = 0; k < grid[cellI][cellJ].size(); k++) {
       AbstractBlock block = grid[cellI][cellJ].get(k);
-        Iterator<Entry<String, Boolean>> iterator = block.getAttributeIterator();
-        while (iterator != null && iterator.hasNext()) {
+      Optional<Iterator<Entry<String, Boolean>>> optionalIterator = block.getAttributeIterator();
+
+      if (optionalIterator.isPresent()) {
+        Iterator<Map.Entry<String, Boolean>> iterator = optionalIterator.get();
+        while (iterator.hasNext()) {
           Map.Entry<String, Boolean> entry = iterator.next();
           if (strategyMap.containsKey(entry.getKey()) && entry.getValue()) {
             subjectIndex = k;
@@ -251,16 +252,12 @@ public class Grid extends GridHelper implements Observable<Grid> {
           if (strategyMap.containsValue(entry.getKey()) && entry.getValue()) {
             objectIndex = k;
           }
+        }
       }
     }
       if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
         grid[cellI][cellJ].remove(objectIndex);
       }
   }
-
-
-
-
-
 
 }

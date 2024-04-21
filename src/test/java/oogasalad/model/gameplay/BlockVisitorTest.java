@@ -20,11 +20,11 @@ import oogasalad.model.gameplay.strategies.attributes.Controllable;
 import oogasalad.model.gameplay.strategies.attributes.Pushable;
 import oogasalad.model.gameplay.strategies.attributes.Stoppable;
 import oogasalad.model.gameplay.strategies.attributes.Winnable;
-import oogasalad.model.gameplay.strategies.becomes.BecomesBaba;
-import oogasalad.model.gameplay.strategies.becomes.BecomesEmpty;
-import oogasalad.model.gameplay.strategies.becomes.BecomesFlag;
-import oogasalad.model.gameplay.strategies.becomes.BecomesRock;
-import oogasalad.model.gameplay.strategies.becomes.BecomesWall;
+import oogasalad.model.gameplay.strategies.BecomesBaba;
+import oogasalad.model.gameplay.strategies.BecomesEmpty;
+import oogasalad.model.gameplay.strategies.BecomesFlag;
+import oogasalad.model.gameplay.strategies.BecomesRock;
+import oogasalad.model.gameplay.strategies.BecomesWall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

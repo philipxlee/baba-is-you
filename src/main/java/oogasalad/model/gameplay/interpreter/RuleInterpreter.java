@@ -21,13 +21,15 @@ import oogasalad.shared.util.PropertiesLoader;
 public class RuleInterpreter {
 
   private static final String BLOCK_BEHAVIOR_PATH = "blockbehaviors/behaviors.properties";
-  private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blocks.blockvisitor.";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
-  private static final String VISITOR_SUFFIX = "Visitor";
   private static final String REPLACEMENT = "";
+  private static final String REGEX_SPLIT = ",";
   private static final String NOUN = "NOUN";
   private static final String VERB = "VERB";
   private static final String PROPERTY = "PROPERTY";
+  private static final String TRANSFORM = "Transform";
+  private static final String ATTRIBUTE = "Attribute";
+
   private Properties properties;
   private Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
 
@@ -43,8 +45,8 @@ public class RuleInterpreter {
     // Load and map attribute and transformation behaviors
     String attributes = properties.getProperty("attributeVisits");
     String transforms = properties.getProperty("becomesVisits");
-    Arrays.stream(attributes.split(",")).forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, "Attribute"));
-    Arrays.stream(transforms.split(",")).forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, "Transform"));
+    Arrays.stream(attributes.split(REGEX_SPLIT)).forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, "Attribute"));
+    Arrays.stream(transforms.split(REGEX_SPLIT)).forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, "Transform"));
   }
 
 
@@ -96,9 +98,9 @@ public class RuleInterpreter {
   private void checkAndProcessRuleAt(AbstractBlock firstBlock, AbstractBlock secondBlock,
       AbstractBlock thirdBlock, List<AbstractBlock>[][] grid) throws VisitorReflectionException {
     if (isValidRule(firstBlock, secondBlock, thirdBlock)) {
-      String property = thirdBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, "");
+      String property = thirdBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT);
       BlockVisitor visitor = determineVisitor(property);
-        applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, ""), grid);
+        applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid);
     }
   }
 
@@ -138,11 +140,17 @@ public class RuleInterpreter {
     }
   }
 
+  /**
+   * Determines the visitor to apply based on the property name.
+   *
+   * @param propertyName The name of the property.
+   * @return The visitor to apply.
+   */
   private BlockVisitor determineVisitor(String propertyName) {
     String behaviorType = behaviorMap.get(propertyName + TEXT_BLOCK_SUFFIX);
-    if ("Attribute".equals(behaviorType)) {
-      return new AttributeVisitor(propertyName); // Assuming default true for the demo
-    } else if ("Transform".equals(behaviorType)) {
+    if (ATTRIBUTE.equals(behaviorType)) {
+      return new AttributeVisitor(propertyName);
+    } else if (TRANSFORM.equals(behaviorType)) {
       return new TransformationVisitor(propertyName);
     }
     return null;

@@ -115,7 +115,6 @@ public class GridHelper {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
           if (block != null && block.getAttribute("Controllable")) {
-            System.out.println("FOUND CONTROLLABLE");
             int[] a = {i, j, k};
             allControllableBlocks.add(a);
           }

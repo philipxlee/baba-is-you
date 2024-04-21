@@ -1,18 +1,19 @@
-package oogasalad.model.gameplay.strategies.attributes;
+package oogasalad.model.gameplay.strategies;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
-import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
  * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
- * behavior of a block when it becomes water.
+ * behavior of a block when it becomes empty.
  */
-public class Sinkable extends Equal implements Strategy {
+public class BecomesEmpty extends AbstractBecomesBehavior {
+
+  private static final String EMPTY_VISUAL_BLOCK = "EmptyVisualBlock";
 
   /**
-   * Constructor for Pushable.
+   * Constructor for BecomesEmpty.
    *
    * @param block    block to control.
    * @param updater  updater to update block.
@@ -20,7 +21,8 @@ public class Sinkable extends Equal implements Strategy {
    */
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
-
+    updater.updateBlock(block, EMPTY_VISUAL_BLOCK);
   }
 
 }
+

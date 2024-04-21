@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Properties;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
@@ -87,15 +88,6 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   public boolean matches(String descriptor) {
     String normalizedBlockName = this.name.replace(VISUAL_BLOCK, EMPTY_STRING);
     return normalizedBlockName.equalsIgnoreCase(descriptor.replace(TEXT_BLOCK, EMPTY_STRING));
-  }
-
-  /**
-   * Adds a behavior to this visual block.
-   *
-   * @param behavior The behavior to add.
-   */
-  public void addBehavior(Strategy behavior) {
-    this.behaviors.add(behavior);
   }
 
   /**
@@ -181,9 +173,14 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     return value;
   }
 
+  /**
+   * Retrieves the grammatical category of the block, useful for parsing or rule validation.
+   *
+   * @return The grammatical category of the block as a string, DEFAULT_GRAMMAR for the base class.
+   */
   @Override
-  public Iterator<Entry<String, Boolean>> getAttributeIterator() {
-    return attributes.entrySet().iterator();
+  public Optional<Iterator<Entry<String, Boolean>>> getAttributeIterator() {
+    return Optional.of(attributes.entrySet().iterator());
   }
 
   /**
@@ -202,17 +199,21 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     }
   }
 
+  /**
+   * Adds a behavior to this visual block.
+   *
+   * @param behavior The behavior to add.
+   */
+  public void addBehavior(Strategy behavior) {
+    this.behaviors.add(behavior);
+  }
+
+
   private void initializeAttributes() {
-    System.out.printf("Initializing attributes for block %s%n", name);
     String attributesList = properties.getProperty("attributes");
     for (String attribute : attributesList.split(",")) {
       attributes.put(attribute.trim(), false);
     }
   }
-  public void printAttributes() {
-    System.out.println("Current attributes states:");
-    for (Map.Entry<String, Boolean> entry : attributes.entrySet()) {
-      System.out.println(entry.getKey() + ": " + entry.getValue());
-    }
-  }
+
 }
