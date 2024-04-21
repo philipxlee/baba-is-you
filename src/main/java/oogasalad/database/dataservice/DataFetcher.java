@@ -40,18 +40,23 @@ public class DataFetcher {
   private static final String UNKNOWN_NAME = "Unknown";
   private static final int DISPLAY_LIMIT = 10;
   private static final int NONE = 0;
+  private static DataFetcher instance;
 
   private final MongoDatabase database;
   private final Properties properties;
 
   /**
-   * Constructor for the DataFetcher class.
+   * Provides the global access point to the singleton instance of the DataFetcher. This uses the
+   * singleton pattern to ensure that only one instance of the DataFetcher is created.
    *
-   * @param database the database
+   * @param database the database instance required to create the DataFetcher
+   * @return the singleton instance of the DataFetcher
    */
-  public DataFetcher(MongoDatabase database) {
-    this.database = database;
-    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
+  public static DataFetcher getInstance(MongoDatabase database) {
+    if (instance == null) {
+      instance = new DataFetcher(database);
+    }
+    return instance;
   }
 
   /**
@@ -146,4 +151,16 @@ public class DataFetcher {
             doc.getString(properties.getProperty(FIELD_REPLY))))
         .collect(Collectors.toList());
   }
+
+
+  /**
+   * Private constructor for the DataFetcher class.
+   *
+   * @param database the database
+   */
+  private DataFetcher(MongoDatabase database) {
+    this.database = database;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
+  }
+
 }

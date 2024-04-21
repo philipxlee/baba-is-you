@@ -30,20 +30,27 @@ public class DataUploader {
   private static final String FIELD_DATE = "field.date";
   private static final String FIELD_REPLIES = "field.replies";
   private static final String FIELD_REPLY = "field.reply";
+  private static DataUploader instance;
   private final MongoDatabase database;
-  private final GameSession gameSession;
   private final Properties properties;
+  private GameSession gameSession;
 
   /**
-   * Constructor for the DataUploader class.
+   * Provides the global access point to the singleton instance of the DataUploader. This uses the
+   * singleton pattern to ensure that only one instance of the DataUploader is created.
    *
-   * @param database    the database interface
-   * @param gameSession the active game session
+   * @param database the database instance required to create the DataUploader
+   * @return the singleton instance of the DataUploader
    */
-  public DataUploader(MongoDatabase database, GameSession gameSession) {
-    this.database = database;
+  public static DataUploader getInstance(MongoDatabase database) {
+    if (instance == null) {
+      instance = new DataUploader(database);
+    }
+    return instance;
+  }
+
+  public void setGameSession(GameSession gameSession) {
     this.gameSession = gameSession;
-    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);  // Load properties
   }
 
   /**
@@ -133,5 +140,15 @@ public class DataUploader {
    */
   private String validateUsername(String username) {
     return username == null ? GUEST_USERNAME : username;
+  }
+
+  /**
+   * Private constructor for the DataUploader class.
+   *
+   * @param database    the database interface
+   */
+  private DataUploader(MongoDatabase database) {
+    this.database = database;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);  // Load properties
   }
 }
