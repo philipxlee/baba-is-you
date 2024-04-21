@@ -1,23 +1,25 @@
 package oogasalad.model.gameplay.blocks.visualblocks;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 
 /**
- * Represents an abstract visual block within the game, providing visual-specific functionality and
- * behavior management.
+ * Abstract base class for visual blocks in the game, handling attributes and behaviors specific to visual elements.
+ *
+ * @author Philip Lee.
  */
 public abstract class AbstractVisualBlock extends AbstractBlock {
 
@@ -25,27 +27,29 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   private static final String BLOCK_PROPERTIES = "blockbehaviors/behaviors.properties";
   private static final String VISUAL_BLOCK = "VisualBlock";
   private static final String TEXT_BLOCK = "TextBlock";
+  private static final String ATTRIBUTES = "attributes";
   private static final String EMPTY_STRING = "";
-
-  private final Map<String, String> attributeTranslationMap = new HashMap<>();
-  private final Map<String, Boolean> attributes;
-  private final List<Strategy> behaviors;
+  private static final String REGEX_SPLIT = ",";
+  private final List<Strategy> behaviors = new ArrayList<>();
   private final Properties properties;
   private final String name;
+
+  private Map<String, String> attributeTranslationMap = new HashMap<>();
+  private Map<String, Boolean> attributes = new HashMap<>();
   private int row;
   private int col;
 
   /**
-   * Constructs a new visual block with the given name.
+   * Constructs a new visual block with specified properties.
    *
-   * @param name The name of the visual block.
+   * @param name the identifier name of the block
+   * @param row the initial row location of the block
+   * @param col the initial column location of the block
    */
   public AbstractVisualBlock(String name, int row, int col) {
     super();
     this.name = name;
     this.properties = PropertiesLoader.loadProperties(BLOCK_PROPERTIES);
-    this.behaviors = new ArrayList<>(); // for BecomesX behaviors.
-    this.attributes = new HashMap<>(); // for Controllable, Pushable, etc.
     this.row = row;
     this.col = col;
     loadAttributeMappings();
@@ -53,18 +57,18 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Accepts a visitor that can perform operations on this visual block.
+   * Accepts a visitor to process this block.
    *
-   * @param visitor The visitor to accept.
+   * @param visitor The BlockVisitor instance to process this block.
    */
   @Override
   public abstract void accept(BlockVisitor visitor);
 
   /**
-   * Compares the block's name with a given descriptor after normalizing both strings.
+   * Determines if the block is a text block.
    *
-   * @param descriptor The descriptor to compare against the block's name.
-   * @return true if the normalized names match, false otherwise.
+   * @param descriptor The descriptor to match against the block.
+   * @return true if the descriptor matches the block's class name, false
    */
   @Override
   public boolean matches(String descriptor) {
@@ -73,7 +77,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Resets all behaviors associated with this visual block.
+   * Resets all behaviors associated with the block and its attributes.
    */
   @Override
   public void resetAllBehaviors() {
@@ -82,21 +86,42 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Executes all behaviors associated with this block, based on the provided direction and grid
-   * context. This method is typically called by the grid to update the block's state, e.g. turning
-   * an empty block into a wall.
+   * Executes the behaviors associated with the block.
+   *
+   * @param block The block to control.
+   * @param updater The updater to update the block.
+   * @param iterator The iterator to control.
    */
   @Override
   public void executeBehaviors(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
-    for (Strategy behavior : behaviors) {
-      behavior.execute(block, updater, iterator);
-    }
+    behaviors.forEach(behavior -> behavior.execute(block, updater, iterator));
   }
 
   /**
-   * Gets the name of the visual block.
+   * Checks if the block has a specific behavior.
    *
-   * @return The name of the visual block.
+   * @param attribute The name of the attribute to query.
+   * @return true if the block has the specified attribute, false otherwise.
+   */
+  @Override
+  public boolean getAttribute(String attribute) {
+    return attributes.getOrDefault(attribute, false);
+  }
+
+  /**
+   * Retrieves the block's attributes.
+   *
+   * @return An iterator of the block's attributes.
+   */
+  @Override
+  public Optional<Iterator<Map.Entry<String, Boolean>>> getAttributeIterator() {
+    return Optional.of(attributes.entrySet().iterator());
+  }
+
+  /**
+   * Retrieves the name of the block.
+   *
+   * @return The simple class name of this block instance.
    */
   @Override
   public String getBlockName() {
@@ -104,9 +129,9 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Gets the row of the block.
+   * Retrieves the row of the block.
    *
-   * @return the row of the block
+   * @return The row of the block.
    */
   @Override
   public int getRow() {
@@ -116,7 +141,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   /**
    * Sets the row of the block.
    *
-   * @param row the row to set
+   * @param row The row to set.
    */
   @Override
   public void setRow(int row) {
@@ -124,9 +149,9 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Gets the column of the block.
+   * Retrieves the column of the block.
    *
-   * @return the column of the block
+   * @return The column of the block.
    */
   @Override
   public int getCol() {
@@ -136,7 +161,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   /**
    * Sets the column of the block.
    *
-   * @param col the column to set
+   * @param col The column to set.
    */
   @Override
   public void setCol(int col) {
@@ -144,69 +169,45 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Retrieves the value of a specific attribute.
+   * Modifies the block's attribute.
    *
-   * @param attribute The name of the attribute to query.
-   * @return The boolean value of the attribute; returns false if the attribute is not found.
-   */
-  @Override
-  public boolean getAttribute(String attribute) {
-    return attributes.getOrDefault(attribute, false);
-  }
-
-  /**
-   * Retrieves the grammatical category of the block, useful for parsing or rule validation.
-   *
-   * @return The grammatical category of the block as a string, DEFAULT_GRAMMAR for the base class.
-   */
-  @Override
-  public Optional<Iterator<Entry<String, Boolean>>> getAttributeIterator() {
-    return Optional.of(attributes.entrySet().iterator());
-  }
-
-  /**
-   * Allows external modification of an attribute's boolean value.
-   *
-   * @param attribute The name of the attribute to modify.
-   * @param value The new boolean value for the attribute.
+   * @param attribute The attribute to modify.
+   * @param value The new value of the attribute.
    */
   public void modifyAttribute(String attribute, boolean value) {
-    String attributeKey = attributeTranslationMap.get(attribute);
-    if (attributes.containsKey(attributeKey)) {
-
-      attributes.put(attributeKey, value);
-    } else {
-      throw new IllegalArgumentException("Attribute not recognized: " + attribute);
-    }
+    Optional.ofNullable(attributeTranslationMap.get(attribute))
+        .ifPresentOrElse(key -> attributes.put(key, value),
+            () -> {
+              throw new IllegalArgumentException("Attribute not recognized: " + attribute);
+            });
   }
 
   /**
-   * Adds a behavior to this visual block.
+   * Adds a behavior to the block.
    *
    * @param behavior The behavior to add.
    */
   public void addBehavior(Strategy behavior) {
-    this.behaviors.add(behavior);
+    behaviors.add(behavior);
   }
 
   /**
-   * Loads the attribute mappings from the properties file.
+   * Retrieves the block's behaviors.
    */
   private void loadAttributeMappings() {
     Properties mappingProps = PropertiesLoader.loadProperties(ATTRIBUTE_MAPPINGS);
-    for (String key : mappingProps.stringPropertyNames()) {
-      attributeTranslationMap.put(key, mappingProps.getProperty(key));
-    }
+    attributeTranslationMap = mappingProps.stringPropertyNames()
+        .stream()
+        .collect(Collectors.toMap(key -> key, mappingProps::getProperty));
   }
 
   /**
-   * Initializes the attributes for this visual block.
+   * Initializes the block's attributes.
    */
   private void initializeAttributes() {
-    String attributesList = properties.getProperty("attributes");
-    for (String attribute : attributesList.split(",")) {
-      attributes.put(attribute.trim(), false);
-    }
+    String attributesList = properties.getProperty(ATTRIBUTES);
+    attributes = Arrays.stream(attributesList.split(REGEX_SPLIT))
+        .collect(Collectors.toMap(String::trim, k -> false));
   }
 
 }

@@ -13,6 +13,8 @@ import oogasalad.model.gameplay.strategies.Strategy;
 /**
  * Serves as the base class for all block types within the game, defining common properties and
  * behaviors. Subclasses should override methods as necessary to provide specific functionality.
+ *
+ * @author Philip Lee.
  */
 public abstract class AbstractBlock {
 

@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 
 /**
  * Represents a text block within the game, providing text-specific functionality. This class
  * encapsulates the concept of a text block, including its name and associated grammar.
+ *
+ * @author Philip Lee.
  */
 public class TextBlock extends AbstractBlock {
 

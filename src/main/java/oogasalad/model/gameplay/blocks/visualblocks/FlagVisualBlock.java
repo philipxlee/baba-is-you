@@ -5,6 +5,8 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 /**
  * A visual block that represents a flag in the game. The player wins the game when they reach the
  * flag.
+ *
+ * @author Philip Lee.
  */
 public class FlagVisualBlock extends AbstractVisualBlock {
 

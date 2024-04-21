@@ -1,4 +1,4 @@
-package oogasalad.shared.util;
+package oogasalad.shared.loader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +6,8 @@ import java.util.Properties;
 
 /**
  * Utility class for loading properties from a file.
+ *
+ * @author Philip Lee.
  */
 public class PropertiesLoader {
 

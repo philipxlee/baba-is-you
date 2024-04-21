@@ -2,11 +2,13 @@ package oogasalad.database.gamedata;
 
 import java.util.Date;
 import java.util.Properties;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 import org.bson.Document;
 
 /**
  * Represents a reply within a comment in the game data.
+ *
+ * @author Philip Lee.
  */
 public class ReplySchema extends AbstractGameData {
 
@@ -35,9 +37,9 @@ public class ReplySchema extends AbstractGameData {
    */
   @Override
   public Document toDocument() {
-    return new Document(properties.getProperty("field.username"), username)
-        .append(properties.getProperty("field.levelName"), levelName)
-        .append(properties.getProperty("field.date"), date)
+    return new Document(properties.getProperty("field.username"), getUsername())
+        .append(properties.getProperty("field.levelName"), getLevelName())
+        .append(properties.getProperty("field.date"), getDate())
         .append(properties.getProperty("field.reply"), replyText);
   }
 

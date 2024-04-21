@@ -12,6 +12,8 @@ import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 /**
  * This class is a concrete implementation of the BlockVisitor interface. It represents the behavior
  * of a block when it is visited by an attribute visitor.
+ *
+ * @author Philip Lee.
  */
 public class AttributeVisitor implements BlockVisitor {
 

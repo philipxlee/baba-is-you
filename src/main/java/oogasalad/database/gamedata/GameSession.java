@@ -5,6 +5,8 @@ import java.util.Date;
 
 /**
  * Manages the session state for a game, including comments and leaderboard data.
+ *
+ * @author Philip Lee.
  */
 public class GameSession {
 
@@ -12,7 +14,6 @@ public class GameSession {
   private static final String DEFAULT_COMMENT = "";
   private static final ArrayList<ReplySchema> DEFAULT_REPLIES = new ArrayList<>();
   private static final int DEFAULT_TIME = 0;
-
   private final CommentData commentData;
   private final LeaderboardData leaderboardData;
 

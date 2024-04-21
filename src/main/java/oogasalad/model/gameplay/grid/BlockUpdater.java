@@ -6,6 +6,8 @@ import oogasalad.model.gameplay.factory.BlockFactory;
 
 /**
  * This class is responsible for updating the block in the grid.
+ *
+ * @author Philip Lee.
  */
 public class BlockUpdater {
 

@@ -6,15 +6,24 @@ import org.bson.Document;
 
 /**
  * Abstract class to handle common game data functionality.
+ *
+ * @author Philip Lee.
  */
 public abstract class AbstractGameData {
 
   private static final String DATE_FORMAT = "MMMM dd, yyyy";
 
-  protected String username;
-  protected String levelName;
-  protected Date date;
+  private String username;
+  private String levelName;
+  private Date date;
 
+  /**
+   * Constructor for AbstractGameData.
+   *
+   * @param username username
+   * @param levelName level name
+   * @param date date
+   */
   public AbstractGameData(String username, String levelName, Date date) {
     this.username = username;
     this.levelName = levelName;

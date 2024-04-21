@@ -10,21 +10,58 @@ import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 
 /**
  * Interface for a visitor pattern for the different types of blocks.
+ *
+ * @author Philip Lee.
  */
 public interface BlockVisitor {
 
+  /**
+   * Visits a BabaVisualBlock.
+   *
+   * @param baba BabaVisualBlock to visit.
+   */
   void visit(BabaVisualBlock baba);
 
+  /**
+   * Visits a WallVisualBlock.
+   *
+   * @param wall WallVisualBlock to visit.
+   */
   void visit(WallVisualBlock wall);
 
+  /**
+   * Visits a RockVisualBlock.
+   *
+   * @param rock RockVisualBlock to visit.
+   */
   void visit(RockVisualBlock rock);
 
+  /**
+   * Visits a FlagVisualBlock.
+   *
+   * @param flag FlagVisualBlock to visit.
+   */
   void visit(FlagVisualBlock flag);
 
+  /**
+   * Visits an EmptyVisualBlock.
+   *
+   * @param empty EmptyVisualBlock to visit.
+   */
   void visit(EmptyVisualBlock empty);
 
+  /**
+   * Visits a LavaVisualBlock.
+   *
+   * @param lava LavaVisualBlock to visit.
+   */
   void visit(LavaVisualBlock lava);
 
+  /**
+   * Visits a WaterVisualBlock.
+   *
+   * @param water  WaterVisualBlock to visit.
+   */
   void visit(WaterVisualBlock water);
 
 }

@@ -4,6 +4,8 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
 /**
  * A visual block that represents the Baba block in the game.
+ *
+ * @author Philip Lee.
  */
 public class BabaVisualBlock extends AbstractVisualBlock {
 

@@ -13,6 +13,8 @@ import oogasalad.model.gameplay.strategies.Strategy;
 /**
  * This class is a concrete implementation of the BlockVisitor interface. It represents the behavior
  * of a block when it is visited by a transformation visitor.
+ *
+ * @author Philip Lee.
  */
 public class TransformationVisitor implements BlockVisitor {
 

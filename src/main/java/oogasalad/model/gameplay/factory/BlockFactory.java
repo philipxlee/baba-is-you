@@ -9,6 +9,8 @@ import oogasalad.model.gameplay.exceptions.InvalidBlockName;
  * visual block types through a unified interface. It uses reflection for visual blocks and direct
  * instantiation for text blocks, abstracting the block creation process and enhancing
  * extensibility.
+ *
+ * @author Philip Lee.
  */
 public class BlockFactory {
 

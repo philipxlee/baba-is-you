@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 import org.bson.Document;
 
 /**
  * Stores and manages comment data for a game session, including replies.
+ *
+ * @author Philip Lee.
  */
 public class CommentData extends AbstractGameData {
 
@@ -36,15 +38,20 @@ public class CommentData extends AbstractGameData {
     this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
+  /**
+   * Converts the comment data to a Document.
+   *
+   * @return The comment data as a Document.
+   */
   @Override
   public Document toDocument() {
     List<Document> replyDocs = replies.stream()
         .map(ReplySchema::toDocument)
         .collect(Collectors.toList());
 
-    return new Document(properties.getProperty("field.username"), username)
-        .append(properties.getProperty("field.levelName"), levelName)
-        .append(properties.getProperty("field.date"), date)
+    return new Document(properties.getProperty("field.username"), getUsername())
+        .append(properties.getProperty("field.levelName"), getLevelName())
+        .append(properties.getProperty("field.date"), getDate())
         .append(properties.getProperty("field.comment"), comment)
         .append(properties.getProperty("field.replies"), replyDocs);
   }

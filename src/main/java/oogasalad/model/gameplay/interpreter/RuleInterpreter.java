@@ -12,11 +12,13 @@ import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.blocks.blockvisitor.TransformationVisitor;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 
 /**
  * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's
  * current state represented as a grid of blocks.
+ *
+ * @author Philip Lee.
  */
 public class RuleInterpreter {
 
@@ -35,22 +37,14 @@ public class RuleInterpreter {
   private Properties properties;
   private Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
 
-
-
+  /**
+   * Constructor for the RuleInterpreter class.
+   */
   public RuleInterpreter() {
     properties = PropertiesLoader.loadProperties(BLOCK_BEHAVIOR_PATH);
     behaviorMap = new HashMap<>();
     loadBehaviorMappings();
   }
-
-  private void loadBehaviorMappings() {
-    // Load and map attribute and transformation behaviors
-    String attributes = properties.getProperty(ATTRIBUTE_VISITS);
-    String transforms = properties.getProperty(BECOMES_VISITS);
-    Arrays.stream(attributes.split(REGEX_SPLIT)).forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, "Attribute"));
-    Arrays.stream(transforms.split(REGEX_SPLIT)).forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, "Transform"));
-  }
-
 
   /**
    * Interprets and applies rules across the entire grid based on the detected text block patterns.
@@ -157,4 +151,17 @@ public class RuleInterpreter {
     }
     return null;
   }
+
+  /**
+   * Loads the behavior mappings from the properties file.
+   */
+  private void loadBehaviorMappings() {
+    String attributes = properties.getProperty(ATTRIBUTE_VISITS);
+    String transforms = properties.getProperty(BECOMES_VISITS);
+    Arrays.stream(attributes.split(REGEX_SPLIT))
+        .forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, ATTRIBUTE));
+    Arrays.stream(transforms.split(REGEX_SPLIT))
+        .forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, TRANSFORM));
+  }
+
 }

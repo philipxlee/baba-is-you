@@ -2,6 +2,8 @@ package oogasalad.model.gameplay.exceptions;
 
 /**
  * Exception thrown when the reflection for the visitor fails.
+ *
+ * @author Philip Lee.
  */
 public class VisitorReflectionException extends RuntimeException {
 
