@@ -3,31 +3,37 @@ package oogasalad.view.authoring;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
+
+import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
+
+
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
+
 public class ElementsPane {
 
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
+
+  private ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
@@ -103,6 +109,8 @@ public class ElementsPane {
     Button gpt = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
 
+    gpt.setOnAction(event -> showLoadingScreen());
+
     gpt.setOnMouseClicked(event -> {
       try {
         levelController.generateLevel();
@@ -110,6 +118,7 @@ public class ElementsPane {
         e.printStackTrace();
       }
     });
+
 
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
@@ -138,9 +147,53 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeButton(new WidgetConfiguration(
-        200, 40, "SaveJson", "black-button", language));
+            200, 40, "SaveJson", "black-button", language));
     saveJson.setOnAction(event -> {
-      levelController.serializeLevel();
+      // Create text fields for level name, level description, and author name
+      TextField levelNameField = new TextField();
+      levelNameField.setPromptText("Enter level name");
+      TextField levelDescriptionField = new TextField();
+      levelDescriptionField.setPromptText("Enter level description");
+      TextField authorNameField = new TextField();
+      authorNameField.setPromptText("Enter author name");
+
+      // Create a grid pane to hold the input fields
+      GridPane inputGrid = new GridPane();
+      inputGrid.setHgap(10);
+      inputGrid.setVgap(10);
+      inputGrid.addRow(0, new Label("Level Name:"), levelNameField);
+      inputGrid.addRow(1, new Label("Level Description:"), levelDescriptionField);
+      inputGrid.addRow(2, new Label("Author Name:"), authorNameField);
+
+      Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+      confirmation.setTitle("Save JSON");
+      confirmation.setHeaderText("Enter level details and save JSON:");
+      confirmation.getDialogPane().setContent(inputGrid);
+
+      ButtonType yesButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+      ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+      confirmation.getButtonTypes().setAll(yesButton, noButton);
+
+      confirmation.showAndWait().ifPresent(buttonType -> {
+        if (buttonType == yesButton) {
+          // Retrieve values from text fields
+          String levelName = levelNameField.getText();
+          String levelDescription = levelDescriptionField.getText();
+          String authorName = authorNameField.getText();
+
+          // Proceed with saving the JSON using the provided details
+          LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, builderPane.gridHeight, builderPane.gridWidth);
+          levelController.serializeLevel();
+
+          // Optionally, show a success message
+          Alert success = new Alert(Alert.AlertType.INFORMATION);
+          success.setTitle("Success");
+          success.setHeaderText(null);
+          success.setContentText("JSON saved successfully!");
+          success.showAndWait();
+        }
+      });
     });
 
     HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth(), 15);
@@ -179,6 +232,18 @@ public class ElementsPane {
     }
   }
 
+  private boolean isValidSize(String value) {
+    try {
+      int size = Integer.parseInt(value);
+      if (size <= 4 || size > 20) {
+        return false; // Return false if size is out of range
+      }
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
   private void changeGridSizeDialog(Button button) {
     button.setOnAction(event -> {
       Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
@@ -197,38 +262,94 @@ public class ElementsPane {
       grid.add(new Label("Height:"), 0, 1);
       grid.add(heightField, 1, 1);
       Button confirmButton = (Button) dialog.getDialogPane().lookupButton(confirmButtonType);
-      confirmButton.setDisable(true);
-      widthField.textProperty().addListener((observable, oldValue, newValue) -> {
-        confirmButton.setDisable(
-            newValue.trim().isEmpty() || heightField.getText().trim().isEmpty());
-      });
-      heightField.textProperty().addListener((observable, oldValue, newValue) -> {
-        confirmButton.setDisable(
-            newValue.trim().isEmpty() || widthField.getText().trim().isEmpty());
-      });
+
       dialog.getDialogPane().setContent(grid);
       dialog.setResultConverter(dialogButton -> {
         if (dialogButton == confirmButtonType) {
           try {
             int width = Integer.parseInt(widthField.getText());
             int height = Integer.parseInt(heightField.getText());
-            return new Pair<>(width, height);
+            if (isValidSize(String.valueOf(width)) && isValidSize(String.valueOf(height))) {
+              return new Pair<>(width, height);
+            } else {
+              if (!isValidSize(String.valueOf(width))) {
+                showErrorMessage(resourceBundle.getString("grid_size_error_message"));
+              } else if (!isValidSize(String.valueOf(height))) {
+                showErrorMessage(resourceBundle.getString("grid_size_error_message"));
+              }
+              return null;
+            }
           } catch (NumberFormatException e) {
+            showErrorMessage(resourceBundle.getString("invalid_number_error_message"));
             return null;
           }
         }
         return null;
       });
+
       dialog.showAndWait().ifPresent(pair -> {
-        if (pair != null) {
           int width = pair.getKey();
           int height = pair.getValue();
           builderPane.updateGridSize(width, height);
           LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
-              width);
+                  width);
           levelController.resetLevel(levelMetadata);
-        }
       });
     });
   }
+  private void showErrorMessage(String message) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+  }
+
+  private void showLoadingScreen() {
+    // Create a progress bar for the loading screen
+    ProgressBar progressBar = new ProgressBar();
+    progressBar.setPrefWidth(200);
+
+    // Create a stack pane to hold the progress bar
+    VBox loadingPane = new VBox();
+    loadingPane.getChildren().addAll(progressBar);
+    loadingPane.setPadding(new Insets(20));
+    loadingPane.setAlignment(Pos.CENTER);
+
+    // Create a dialog window for the loading screen
+    Stage loadingStage = new Stage();
+    loadingStage.initModality(Modality.APPLICATION_MODAL);
+    loadingStage.setTitle("Generating Level");
+    loadingStage.setScene(new Scene(loadingPane, 250, 100));
+
+    // Start a task for generating the level
+    Task<Void> generateTask = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        // Simulate generation process
+        for (int i = 0; i <= 100; i++) {
+          updateProgress(i, 100);
+          Thread.sleep(50);
+        }
+        return null;
+      }
+    };
+
+    // Bind the progress of the task to the progress bar
+    progressBar.progressProperty().bind(generateTask.progressProperty());
+
+    // When the task completes, close the loading screen
+    generateTask.setOnSucceeded(event -> {
+      loadingStage.close();
+      // You can add any additional actions after the task completes here
+    });
+
+    // Show the loading screen
+    loadingStage.show();
+
+    // Start the task
+    new Thread(generateTask).start();
+  }
+
+
 }
