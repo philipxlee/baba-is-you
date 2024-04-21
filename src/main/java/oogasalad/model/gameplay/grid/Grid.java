@@ -235,29 +235,46 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
-  private void checkCellForDisappear(int cellI, int cellJ){
+  private void checkCellForDisappear(int cellI, int cellJ) {
     int subjectIndex = -1;
     int objectIndex = -1;
+    String subjectStrategyKey = "";
+    String objectStrategyValue = "";
+
     for (int k = 0; k < grid[cellI][cellJ].size(); k++) {
       AbstractBlock block = grid[cellI][cellJ].get(k);
       Optional<Iterator<Entry<String, Boolean>>> optionalIterator = block.getAttributeIterator();
 
       if (optionalIterator.isPresent()) {
-        Iterator<Map.Entry<String, Boolean>> iterator = optionalIterator.get();
+        Iterator<Entry<String, Boolean>> iterator = optionalIterator.get();
         while (iterator.hasNext()) {
-          Map.Entry<String, Boolean> entry = iterator.next();
-          if (strategyMap.containsKey(entry.getKey()) && entry.getValue()) {
+          Entry<String, Boolean> entry = iterator.next();
+          String attribute = entry.getKey();
+          boolean isActive = entry.getValue();
+
+          // Check if a subject is found, if not, check if it's a potential subject
+          if (isActive && subjectIndex == -1 && strategyMap.containsKey(attribute)) {
             subjectIndex = k;
+            subjectStrategyKey = attribute;
           }
-          if (strategyMap.containsValue(entry.getKey()) && entry.getValue()) {
+
+          // Check if an object is found, if not, check if it's a potential object
+          if (isActive && objectIndex == -1 && strategyMap.inverse().containsKey(attribute)) {
             objectIndex = k;
+            objectStrategyValue = attribute;
+          }
+
+          // If both indices are found but not matched yet, check if they complete each other
+          if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
+            if (strategyMap.get(subjectStrategyKey).equals(objectStrategyValue) || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
+              grid[cellI][cellJ].remove(objectIndex);
+              return;
+            }
           }
         }
       }
     }
-      if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
-        grid[cellI][cellJ].remove(objectIndex);
-      }
   }
+
 
 }
