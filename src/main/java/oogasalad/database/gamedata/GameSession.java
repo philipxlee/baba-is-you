@@ -24,8 +24,9 @@ public class GameSession {
    * @param levelName The name of the level.
    */
   public GameSession(String username, String levelName) {
-    this.commentData = new CommentData(username, levelName, DEFAULT_DATE, DEFAULT_COMMENT, DEFAULT_REPLIES);
     this.leaderboardData = new LeaderboardData(username, levelName, DEFAULT_DATE, DEFAULT_TIME);
+    this.commentData = new CommentData(username, levelName, DEFAULT_DATE, DEFAULT_COMMENT,
+        DEFAULT_REPLIES);
   }
 
   /**

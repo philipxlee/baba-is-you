@@ -75,6 +75,7 @@ public class DataFetcher {
 
   /**
    * Returns an iterator over the top players for a given level.
+   *
    * @param currentLevelName the name of the current level
    * @return an iterator over the leaderboard data
    */
@@ -151,7 +152,6 @@ public class DataFetcher {
             doc.getString(properties.getProperty(FIELD_REPLY))))
         .collect(Collectors.toList());
   }
-
 
   /**
    * Private constructor for the DataFetcher class.

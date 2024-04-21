@@ -34,8 +34,8 @@ public class RuleInterpreter {
   private static final String ATTRIBUTE_VISITS = "attributeVisits";
   private static final String BECOMES_VISITS = "becomesVisits";
 
-  private Properties properties;
-  private Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
+  private final Properties properties;
+  private final Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
 
   /**
    * Constructor for the RuleInterpreter class.
@@ -96,7 +96,8 @@ public class RuleInterpreter {
     if (isValidRule(firstBlock, secondBlock, thirdBlock)) {
       String property = thirdBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT);
       BlockVisitor visitor = determineVisitor(property);
-        applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid);
+      applyVisitorToMatchingBlocks(visitor,
+          firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid);
     }
   }
 

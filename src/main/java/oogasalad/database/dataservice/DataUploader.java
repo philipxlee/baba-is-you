@@ -36,6 +36,16 @@ public class DataUploader {
   private GameSession gameSession;
 
   /**
+   * Private constructor for the DataUploader class.
+   *
+   * @param database the database interface
+   */
+  private DataUploader(MongoDatabase database) {
+    this.database = database;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);  // Load properties
+  }
+
+  /**
    * Provides the global access point to the singleton instance of the DataUploader. This uses the
    * singleton pattern to ensure that only one instance of the DataUploader is created.
    *
@@ -111,9 +121,9 @@ public class DataUploader {
   /**
    * Updates the comment with a reply.
    *
-   * @param collection collection to update
+   * @param collection        collection to update
    * @param commenterUsername username of the commenter
-   * @param replyDocument the reply document
+   * @param replyDocument     the reply document
    */
   private void updateCommentWithReply(MongoCollection<Document> collection,
       String commenterUsername, Document replyDocument) {
@@ -140,15 +150,5 @@ public class DataUploader {
    */
   private String validateUsername(String username) {
     return username == null ? GUEST_USERNAME : username;
-  }
-
-  /**
-   * Private constructor for the DataUploader class.
-   *
-   * @param database    the database interface
-   */
-  private DataUploader(MongoDatabase database) {
-    this.database = database;
-    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);  // Load properties
   }
 }

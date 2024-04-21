@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import oogasalad.shared.loader.PropertiesLoader;
 import org.bson.Document;
 
+
 /**
  * Stores and manages comment data for a game session, including replies.
  *
@@ -17,6 +18,11 @@ import org.bson.Document;
 public class CommentData extends AbstractGameData {
 
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+  private static final String FIELD_USERNAME = "field.username";
+  private static final String FIELD_LEVEL_NAME = "field.levelName";
+  private static final String FIELD_DATE = "field.date";
+  private static final String FIELD_COMMENT = "field.comment";
+  private static final String FIELD_REPLIES = "field.replies";
 
   private final Properties properties;
   private final String comment;
@@ -31,7 +37,8 @@ public class CommentData extends AbstractGameData {
    * @param comment   the text of the comment
    * @param replies   a list of replies to the comment
    */
-  public CommentData(String username, String levelName, Date date, String comment, List<ReplySchema> replies) {
+  public CommentData(String username, String levelName, Date date, String comment,
+      List<ReplySchema> replies) {
     super(username, levelName, date);
     this.comment = comment;
     this.replies = new ArrayList<>(replies);
@@ -49,11 +56,11 @@ public class CommentData extends AbstractGameData {
         .map(ReplySchema::toDocument)
         .collect(Collectors.toList());
 
-    return new Document(properties.getProperty("field.username"), getUsername())
-        .append(properties.getProperty("field.levelName"), getLevelName())
-        .append(properties.getProperty("field.date"), getDate())
-        .append(properties.getProperty("field.comment"), comment)
-        .append(properties.getProperty("field.replies"), replyDocs);
+    return new Document(properties.getProperty(FIELD_USERNAME), getUsername())
+        .append(properties.getProperty(FIELD_LEVEL_NAME), getLevelName())
+        .append(properties.getProperty(FIELD_DATE), getDate())
+        .append(properties.getProperty(FIELD_COMMENT), comment)
+        .append(properties.getProperty(FIELD_REPLIES), replyDocs);
   }
 
   /**

@@ -2,7 +2,6 @@ package oogasalad.database.gamedata;
 
 import java.util.Date;
 import java.util.Properties;
-import oogasalad.shared.loader.PropertiesLoader;
 import org.bson.Document;
 
 /**
@@ -12,8 +11,6 @@ import org.bson.Document;
  */
 public class ReplySchema extends AbstractGameData {
 
-  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
-  private final Properties properties;
   private final String replyText;
 
   /**
@@ -27,7 +24,6 @@ public class ReplySchema extends AbstractGameData {
   public ReplySchema(String username, String levelName, Date date, String replyText) {
     super(username, levelName, date);
     this.replyText = replyText;
-    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
   /**
@@ -37,6 +33,7 @@ public class ReplySchema extends AbstractGameData {
    */
   @Override
   public Document toDocument() {
+    Properties properties = getDatabaseProperties();
     return new Document(properties.getProperty("field.username"), getUsername())
         .append(properties.getProperty("field.levelName"), getLevelName())
         .append(properties.getProperty("field.date"), getDate())

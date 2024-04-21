@@ -2,6 +2,8 @@ package oogasalad.database.gamedata;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import oogasalad.shared.loader.PropertiesLoader;
 import org.bson.Document;
 
 /**
@@ -12,10 +14,12 @@ import org.bson.Document;
 public abstract class AbstractGameData {
 
   private static final String DATE_FORMAT = "MMMM dd, yyyy";
+  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
 
-  private String username;
-  private String levelName;
-  private Date date;
+  private final String username;
+  private final String levelName;
+  private final Date date;
+  private final Properties properties;
 
   /**
    * Constructor for AbstractGameData.
@@ -28,6 +32,7 @@ public abstract class AbstractGameData {
     this.username = username;
     this.levelName = levelName;
     this.date = date;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
   /**
@@ -56,6 +61,15 @@ public abstract class AbstractGameData {
    */
   public String getLevelName() {
     return levelName;
+  }
+
+  /**
+   * Gets the database properties.
+   *
+   * @return database properties.
+   */
+  public Properties getDatabaseProperties() {
+    return properties;
   }
 
   /**
