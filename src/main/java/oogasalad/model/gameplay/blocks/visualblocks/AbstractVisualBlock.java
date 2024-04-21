@@ -21,16 +21,17 @@ import oogasalad.shared.util.PropertiesLoader;
  */
 public abstract class AbstractVisualBlock extends AbstractBlock {
 
-  private static final Map<String, String> attributeTranslationMap = new HashMap<>();
-
+  private static final String ATTRIBUTE_MAPPINGS = "blockbehaviors/attributemap.properties";
   private static final String BLOCK_PROPERTIES = "blockbehaviors/behaviors.properties";
   private static final String VISUAL_BLOCK = "VisualBlock";
   private static final String TEXT_BLOCK = "TextBlock";
   private static final String EMPTY_STRING = "";
-  private final String name;
-  private final List<Strategy> behaviors;
+
+  private final Map<String, String> attributeTranslationMap = new HashMap<>();
   private final Map<String, Boolean> attributes;
+  private final List<Strategy> behaviors;
   private final Properties properties;
+  private final String name;
   private int row;
   private int col;
 
@@ -43,20 +44,12 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     super();
     this.name = name;
     this.properties = PropertiesLoader.loadProperties(BLOCK_PROPERTIES);
-    this.behaviors = new ArrayList<>(); // for BecomesX behaviors
+    this.behaviors = new ArrayList<>(); // for BecomesX behaviors.
     this.attributes = new HashMap<>(); // for Controllable, Pushable, etc.
     this.row = row;
     this.col = col;
+    loadAttributeMappings();
     initializeAttributes();
-
-    attributeTranslationMap.put("You", "Controllable");
-    attributeTranslationMap.put("Win", "Winnable");
-    attributeTranslationMap.put("Drown", "Drownable");
-    attributeTranslationMap.put("Melt", "Meltable");
-    attributeTranslationMap.put("Push", "Pushable");
-    attributeTranslationMap.put("Hot", "Hotable");
-    attributeTranslationMap.put("Sink", "Sinkable");
-    attributeTranslationMap.put("Stop", "Stoppable");
   }
 
   /**
@@ -66,17 +59,6 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    */
   @Override
   public abstract void accept(BlockVisitor visitor);
-
-  /**
-   * Checks if this visual block has a specific behavior.
-   *
-   * @param behaviorType The class of the behavior to check for.
-   * @return true if the block has the behavior, false otherwise.
-   */
-  @Override
-  public boolean hasBehavior(Class<? extends Strategy> behaviorType) {
-    return behaviors.stream().anyMatch(behaviorType::isInstance);
-  }
 
   /**
    * Compares the block's name with a given descriptor after normalizing both strings.
@@ -100,16 +82,6 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   }
 
   /**
-   * Gets the name of the visual block.
-   *
-   * @return The name of the visual block.
-   */
-  @Override
-  public String getBlockName() {
-    return name;
-  }
-
-  /**
    * Executes all behaviors associated with this block, based on the provided direction and grid
    * context. This method is typically called by the grid to update the block's state, e.g. turning
    * an empty block into a wall.
@@ -119,6 +91,16 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     for (Strategy behavior : behaviors) {
       behavior.execute(block, updater, iterator);
     }
+  }
+
+  /**
+   * Gets the name of the visual block.
+   *
+   * @return The name of the visual block.
+   */
+  @Override
+  public String getBlockName() {
+    return name;
   }
 
   /**
@@ -169,8 +151,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    */
   @Override
   public boolean getAttribute(String attribute) {
-    boolean value = attributes.getOrDefault(attribute, false);
-    return value;
+    return attributes.getOrDefault(attribute, false);
   }
 
   /**
@@ -208,7 +189,19 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     this.behaviors.add(behavior);
   }
 
+  /**
+   * Loads the attribute mappings from the properties file.
+   */
+  private void loadAttributeMappings() {
+    Properties mappingProps = PropertiesLoader.loadProperties(ATTRIBUTE_MAPPINGS);
+    for (String key : mappingProps.stringPropertyNames()) {
+      attributeTranslationMap.put(key, mappingProps.getProperty(key));
+    }
+  }
 
+  /**
+   * Initializes the attributes for this visual block.
+   */
   private void initializeAttributes() {
     String attributesList = properties.getProperty("attributes");
     for (String attribute : attributesList.split(",")) {

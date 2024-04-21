@@ -1,6 +1,13 @@
 package oogasalad.model.gameplay.blocks.blockvisitor;
 
-import oogasalad.model.gameplay.blocks.visualblocks.*;
+import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
@@ -10,7 +17,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
 public class TransformationVisitor implements BlockVisitor {
 
   private static final String PREFIX = "Becomes";
-  private static final String STRATEGY_PACKAGE = "oogasalad.model.gameplay.strategies.becomes.";
+  private static final String STRATEGY_PACKAGE = "oogasalad.model.gameplay.strategies.";
 
   private final String targetType;
 

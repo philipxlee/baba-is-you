@@ -29,6 +29,8 @@ public class RuleInterpreter {
   private static final String PROPERTY = "PROPERTY";
   private static final String TRANSFORM = "Transform";
   private static final String ATTRIBUTE = "Attribute";
+  private static final String ATTRIBUTE_VISITS = "attributeVisits";
+  private static final String BECOMES_VISITS = "becomesVisits";
 
   private Properties properties;
   private Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
@@ -43,8 +45,8 @@ public class RuleInterpreter {
 
   private void loadBehaviorMappings() {
     // Load and map attribute and transformation behaviors
-    String attributes = properties.getProperty("attributeVisits");
-    String transforms = properties.getProperty("becomesVisits");
+    String attributes = properties.getProperty(ATTRIBUTE_VISITS);
+    String transforms = properties.getProperty(BECOMES_VISITS);
     Arrays.stream(attributes.split(REGEX_SPLIT)).forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, "Attribute"));
     Arrays.stream(transforms.split(REGEX_SPLIT)).forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, "Transform"));
   }
