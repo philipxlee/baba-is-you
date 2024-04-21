@@ -5,10 +5,6 @@ import java.util.List;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
-import oogasalad.model.gameplay.strategies.attributes.Controllable;
-import oogasalad.model.gameplay.strategies.attributes.Pushable;
-import oogasalad.model.gameplay.strategies.attributes.Stoppable;
-import oogasalad.model.gameplay.strategies.attributes.Winnable;
 
 
 public class GridHelper {
@@ -96,11 +92,11 @@ public class GridHelper {
     if ((endI == grid.length - 1 || endI == 0)) {
       int indexI;
       indexI = (endI == 0) ? endI + 1 : endI - 1;
-      return grid[indexI][endJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+      return grid[indexI][endJ].stream().anyMatch(block -> block.getAttribute("Controllable"));
     } else if ((endJ == grid[0].length - 1 || endJ == 0)) {
       int indexJ;
       indexJ = (endJ == 0) ? endJ + 1 : endJ - 1;
-      return grid[endI][indexJ].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+      return grid[endI][indexJ].stream().anyMatch(block -> block.getAttribute("Controllable"));
     } else {
       return false;
     }
@@ -118,7 +114,7 @@ public class GridHelper {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
-          if (block != null && block.hasBehavior(Controllable.class)) {
+          if (block != null && block.getAttribute("Controllable")) {
             int[] a = {i, j, k};
             allControllableBlocks.add(a);
           }
@@ -141,7 +137,7 @@ public class GridHelper {
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
       if (block.getBlockName().endsWith("TextBlock") || (
-              block.getBlockName().endsWith("VisualBlock") && block.hasBehavior(Pushable.class))) {
+              block.getBlockName().endsWith("VisualBlock") && block.getAttribute("Pushable"))) {
         indicesList.add(index);
       }
     }
@@ -158,7 +154,7 @@ public class GridHelper {
    */
 
   public boolean cellHasControllable(int i, int j) {
-    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Controllable.class));
+    return grid[i][j].stream().anyMatch(block -> block.getAttribute("Controllable"));
   }
 
   /**
@@ -169,7 +165,7 @@ public class GridHelper {
    * @return True if the cell contains a block with the Winnable behavior, false otherwise.
    */
   public boolean cellHasWinning(int i, int j) {
-    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Winnable.class));
+    return grid[i][j].stream().anyMatch(block -> block.getAttribute("Winnable"));
   }
 
 
@@ -182,7 +178,7 @@ public class GridHelper {
    */
 
   public boolean cellHasStoppable(int i, int j) {
-    return grid[i][j].stream().anyMatch(block -> block.hasBehavior(Stoppable.class));
+    return grid[i][j].stream().anyMatch(block -> block.getAttribute("Stoppable"));
   }
 
   /**
@@ -199,7 +195,7 @@ public class GridHelper {
       if (block.getBlockName().endsWith("TextBlock")) {
         textBlock = true;
       }
-      if (block.hasBehavior(Pushable.class)) {
+      if (block.getAttribute("Pushable")) {
         hasPushable = true;
       }
     }

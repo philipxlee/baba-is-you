@@ -2,13 +2,14 @@ package oogasalad.model.gameplay.grid;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.strategies.Strategy;
-import oogasalad.model.gameplay.strategies.attributes.*;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.shared.observer.Observable;
@@ -25,7 +26,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   private final BlockUpdater blockUpdater;
   private final String[][][] initialConfiguration;
 
-  private final BiMap<Strategy, Strategy> strategyMap;
+  private final BiMap<String, String> strategyMap;
 
 
   /**
@@ -47,10 +48,8 @@ public class Grid extends GridHelper implements Observable<Grid> {
     InitializeGrid();
   }
   private void addMappingsToStrategyMap() {
-    Strategy Meltable = new Meltable();
-    Strategy Hotable = new Hotable();
-    strategyMap.put(Hotable, Meltable);
-    strategyMap.put(new Sinkable(), new Drownable());
+    strategyMap.put("Hotable", "Meltable");
+    strategyMap.put("Sinkable", "Drownable");
     // Add more mappings as needed
   }
 
@@ -237,56 +236,28 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   private void checkCellForDisappear(int cellI, int cellJ){
-    Strategy keyStrategy = null;
-    Strategy valueStrategy = null;
-    int subject = -1;
-    int object = -1;
+    int subjectIndex = -1;
+    int objectIndex = -1;
     for (int k = 0; k < grid[cellI][cellJ].size(); k++) {
       AbstractBlock block = grid[cellI][cellJ].get(k);
-      if(block instanceof AbstractVisualBlock){
-        List<Strategy> blockBehaviors = ((AbstractVisualBlock) block).getBehaviors();
-        for (Strategy strategy : blockBehaviors) {
-          if(strategy.equals(new Sinkable())){
-            System.out.println("found sinkable ");
+      Optional<Iterator<Entry<String, Boolean>>> optionalIterator = block.getAttributeIterator();
+
+      if (optionalIterator.isPresent()) {
+        Iterator<Map.Entry<String, Boolean>> iterator = optionalIterator.get();
+        while (iterator.hasNext()) {
+          Map.Entry<String, Boolean> entry = iterator.next();
+          if (strategyMap.containsKey(entry.getKey()) && entry.getValue()) {
+            subjectIndex = k;
           }
-          if(grid[cellI][cellJ].size() > 2 && strategy.equals(new Controllable())){
-            System.out.println("found Controllable with something else");
-          }
-          if(subject == -1 && object == -1) { //we havent found any
-            if (strategyMap.containsKey(strategy)) { //we  found key
-              keyStrategy = strategy;
-              valueStrategy = strategyMap.get(keyStrategy);
-              subject = k; //we found subject
-              break;
-            }
-            if (strategyMap.containsValue(strategy)) {
-              valueStrategy = strategy;
-              keyStrategy = strategyMap.inverse().get(valueStrategy);
-              object = k; //we found object
-              break;
-            }
-          }
-          else if(subject != -1 && object == -1){ //found subject, but not object
-            if(strategy.equals(valueStrategy)){
-              object = k;
-            }
-          }
-          else if(subject == -1 && object != -1){
-            if(strategy.equals(keyStrategy)){
-              subject = k;
-            }
+          if (strategyMap.containsValue(entry.getKey()) && entry.getValue()) {
+            objectIndex = k;
           }
         }
       }
     }
-    if(subject != -1 && object != -1){
-      grid[cellI][cellJ].remove(object);
-    }
+      if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
+        grid[cellI][cellJ].remove(objectIndex);
+      }
   }
-
-
-
-
-
 
 }

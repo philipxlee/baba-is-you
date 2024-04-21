@@ -1,4 +1,5 @@
-package oogasalad.model.gameplay.strategies.becomes;
+package oogasalad.model.gameplay.strategies;
+
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
@@ -6,14 +7,14 @@ import oogasalad.model.gameplay.grid.CellIterator;
 
 /**
  * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
- * behavior of a block when it becomes a wall.
+ * behavior of a block when it becomes Baba.
  */
-public class BecomesWall extends AbstractBecomesBehavior {
+public class BecomesBaba extends AbstractBecomesBehavior {
 
-  private static final String WALL_VISUAL_BLOCK = "WallVisualBlock";
+  private static final String BABA_VISUAL_BLOCK = "BabaVisualBlock";
 
   /**
-   * Constructor for BecomesWall.
+   * Constructor for BecomesBaba.
    *
    * @param block    block to control.
    * @param updater  updater to update block.
@@ -22,7 +23,8 @@ public class BecomesWall extends AbstractBecomesBehavior {
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
     if (onlyEmptyVisualBlock(block, iterator)) {
-      updater.updateBlock(block, WALL_VISUAL_BLOCK);
+      updater.updateBlock(block, BABA_VISUAL_BLOCK);
     }
   }
+
 }

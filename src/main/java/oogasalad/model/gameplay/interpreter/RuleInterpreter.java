@@ -1,12 +1,18 @@
 package oogasalad.model.gameplay.interpreter;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.blocks.blockvisitor.TransformationVisitor;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
+import oogasalad.shared.util.PropertiesLoader;
 
 /**
  * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's
@@ -14,13 +20,37 @@ import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
  */
 public class RuleInterpreter {
 
-  private static final String VISITOR_PACKAGE = "oogasalad.model.gameplay.blocks.blockvisitor.";
+  private static final String BLOCK_BEHAVIOR_PATH = "blockbehaviors/behaviors.properties";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
-  private static final String VISITOR_SUFFIX = "Visitor";
   private static final String REPLACEMENT = "";
+  private static final String REGEX_SPLIT = ",";
   private static final String NOUN = "NOUN";
   private static final String VERB = "VERB";
   private static final String PROPERTY = "PROPERTY";
+  private static final String TRANSFORM = "Transform";
+  private static final String ATTRIBUTE = "Attribute";
+  private static final String ATTRIBUTE_VISITS = "attributeVisits";
+  private static final String BECOMES_VISITS = "becomesVisits";
+
+  private Properties properties;
+  private Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
+
+
+
+  public RuleInterpreter() {
+    properties = PropertiesLoader.loadProperties(BLOCK_BEHAVIOR_PATH);
+    behaviorMap = new HashMap<>();
+    loadBehaviorMappings();
+  }
+
+  private void loadBehaviorMappings() {
+    // Load and map attribute and transformation behaviors
+    String attributes = properties.getProperty(ATTRIBUTE_VISITS);
+    String transforms = properties.getProperty(BECOMES_VISITS);
+    Arrays.stream(attributes.split(REGEX_SPLIT)).forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, "Attribute"));
+    Arrays.stream(transforms.split(REGEX_SPLIT)).forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, "Transform"));
+  }
+
 
   /**
    * Interprets and applies rules across the entire grid based on the detected text block patterns.
@@ -59,7 +89,6 @@ public class RuleInterpreter {
                         .forEach(block3 -> checkAndProcessRuleAt(block1, block2, block3, grid))))));
   }
 
-
   /**
    * Processes a potential rule if the given blocks form a valid rule structure.
    *
@@ -71,8 +100,9 @@ public class RuleInterpreter {
   private void checkAndProcessRuleAt(AbstractBlock firstBlock, AbstractBlock secondBlock,
       AbstractBlock thirdBlock, List<AbstractBlock>[][] grid) throws VisitorReflectionException {
     if (isValidRule(firstBlock, secondBlock, thirdBlock)) {
-      BlockVisitor visitor = determineVisitor(thirdBlock.getBlockName());
-      applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName(), grid);
+      String property = thirdBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT);
+      BlockVisitor visitor = determineVisitor(property);
+        applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid);
     }
   }
 
@@ -113,20 +143,18 @@ public class RuleInterpreter {
   }
 
   /**
-   * Determines the visitor to instantiate based on the block name, using reflections.
+   * Determines the visitor to apply based on the property name.
    *
-   * @param blockName The name of the block for which to determine the visitor.
-   * @return The corresponding BlockVisitor instance or null if none found.
+   * @param propertyName The name of the property.
+   * @return The visitor to apply.
    */
-  private BlockVisitor determineVisitor(String blockName) {
-    String className = VISITOR_PACKAGE
-        + blockName.replace(TEXT_BLOCK_SUFFIX, REPLACEMENT)
-        + VISITOR_SUFFIX;
-    try {
-      Class<?> visitorClass = Class.forName(className);
-      return (BlockVisitor) visitorClass.getDeclaredConstructor().newInstance();
-    } catch (ReflectiveOperationException e) {
-      throw new VisitorReflectionException(blockName, e);
+  private BlockVisitor determineVisitor(String propertyName) {
+    String behaviorType = behaviorMap.get(propertyName + TEXT_BLOCK_SUFFIX);
+    if (ATTRIBUTE.equals(behaviorType)) {
+      return new AttributeVisitor(propertyName);
+    } else if (TRANSFORM.equals(behaviorType)) {
+      return new TransformationVisitor(propertyName);
     }
+    return null;
   }
 }

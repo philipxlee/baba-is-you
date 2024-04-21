@@ -4,8 +4,6 @@ import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
 
-import java.util.Objects;
-
 /**
  * Interface defining a strategy or behavior that can be applied to a visual block, including
  * interactions with other strategies.
