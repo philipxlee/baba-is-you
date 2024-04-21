@@ -5,10 +5,6 @@ import java.util.List;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
-import oogasalad.model.gameplay.strategies.attributes.Controllable;
-import oogasalad.model.gameplay.strategies.attributes.Pushable;
-import oogasalad.model.gameplay.strategies.attributes.Stoppable;
-import oogasalad.model.gameplay.strategies.attributes.Winnable;
 
 
 public class GridHelper {

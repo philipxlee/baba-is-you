@@ -1,7 +1,9 @@
 package oogasalad.model.gameplay.blocks;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
@@ -137,6 +139,10 @@ public abstract class AbstractBlock {
    */
   public boolean getAttribute(String attribute) {
     return false;
+  }
+
+  public Iterator<Entry<String, Boolean>> getAttributeIterator() {
+    return null;
   }
 
 }

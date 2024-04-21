@@ -2,8 +2,10 @@ package oogasalad.model.gameplay.blocks.visualblocks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
@@ -179,8 +181,9 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     return value;
   }
 
-  public List<Strategy>  getBehaviors(){
-    return behaviors;
+  @Override
+  public Iterator<Entry<String, Boolean>> getAttributeIterator() {
+    return attributes.entrySet().iterator();
   }
 
   /**
