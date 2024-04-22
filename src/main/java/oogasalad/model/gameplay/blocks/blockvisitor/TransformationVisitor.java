@@ -8,6 +8,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.strategies.Strategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -110,13 +111,12 @@ public class TransformationVisitor implements BlockVisitor {
    *
    * @param block block to transform.
    */
-  private void transform(AbstractVisualBlock block) {
+  private void transform(AbstractVisualBlock block) throws InvalidBlockName {
     try {
       Class<?> clazz = Class.forName(STRATEGY_PACKAGE + targetType);
       Strategy behavior = (Strategy) clazz.getDeclaredConstructor().newInstance();
       block.addBehavior(behavior);
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-             NoSuchMethodException | java.lang.reflect.InvocationTargetException e) {
+    } catch (ReflectiveOperationException e) {
       logger.error("Transformation failed: " + e.getMessage());
     }
   }

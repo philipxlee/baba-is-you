@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -35,7 +36,7 @@ public class RuleInterpreter {
   private static final String BECOMES_VISITS = "becomesVisits";
 
   private final Properties properties;
-  private final Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
+  private final Map<String, String> behaviorMap;
 
   /**
    * Constructor for the RuleInterpreter class.
@@ -95,9 +96,9 @@ public class RuleInterpreter {
       AbstractBlock thirdBlock, List<AbstractBlock>[][] grid) throws VisitorReflectionException {
     if (isValidRule(firstBlock, secondBlock, thirdBlock)) {
       String property = thirdBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT);
-      BlockVisitor visitor = determineVisitor(property);
-      applyVisitorToMatchingBlocks(visitor,
-          firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid);
+      Optional<BlockVisitor> optionalVisitor = determineVisitor(property);
+      optionalVisitor.ifPresent(visitor -> applyVisitorToMatchingBlocks(visitor,
+          firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid));
     }
   }
 
@@ -143,14 +144,14 @@ public class RuleInterpreter {
    * @param propertyName The name of the property.
    * @return The visitor to apply.
    */
-  private BlockVisitor determineVisitor(String propertyName) {
+  private Optional<BlockVisitor> determineVisitor(String propertyName) {
     String behaviorType = behaviorMap.get(propertyName + TEXT_BLOCK_SUFFIX);
     if (ATTRIBUTE.equals(behaviorType)) {
-      return new AttributeVisitor(propertyName);
+      return Optional.of(new AttributeVisitor(propertyName));
     } else if (TRANSFORM.equals(behaviorType)) {
-      return new TransformationVisitor(propertyName);
+      return Optional.of(new TransformationVisitor(propertyName));
     }
-    return null;
+    return Optional.empty();
   }
 
   /**

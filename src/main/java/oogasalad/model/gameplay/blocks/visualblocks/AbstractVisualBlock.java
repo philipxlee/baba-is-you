@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
 import oogasalad.model.gameplay.strategies.Strategy;
@@ -48,8 +49,8 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    */
   public AbstractVisualBlock(String name, int row, int col) {
     super();
-    this.name = name;
     this.properties = PropertiesLoader.loadProperties(BLOCK_PROPERTIES);
+    this.name = name;
     this.row = row;
     this.col = col;
     loadAttributeMappings();
@@ -72,7 +73,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    */
   @Override
   public boolean matches(String descriptor) {
-    String normalizedBlockName = this.name.replace(VISUAL_BLOCK, EMPTY_STRING);
+    String normalizedBlockName = name.replace(VISUAL_BLOCK, EMPTY_STRING);
     return normalizedBlockName.equalsIgnoreCase(descriptor.replace(TEXT_BLOCK, EMPTY_STRING));
   }
 
@@ -178,7 +179,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
     Optional.ofNullable(attributeTranslationMap.get(attribute))
         .ifPresentOrElse(key -> attributes.put(key, value),
             () -> {
-              throw new IllegalArgumentException("Attribute not recognized: " + attribute);
+              throw new InvalidBlockName("Attribute not recognized: " + attribute);
             });
   }
 
