@@ -19,6 +19,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
 public abstract class AbstractBlock {
 
   public static final List<String> grammarType = new ArrayList<>();
+  private static final int DEFAULT_RETURN_VALUE = 0;
 
   /**
    * Indicates whether this block is a text block. By default, a block is not a text block.
@@ -104,7 +105,7 @@ public abstract class AbstractBlock {
    * @return The row of the block.
    */
   public int getRow() {
-    return 0;
+    return DEFAULT_RETURN_VALUE;
   }
 
   /**
@@ -122,7 +123,7 @@ public abstract class AbstractBlock {
    * @return The column of the block.
    */
   public int getCol() {
-    return 0;
+    return DEFAULT_RETURN_VALUE;
   }
 
   /**
