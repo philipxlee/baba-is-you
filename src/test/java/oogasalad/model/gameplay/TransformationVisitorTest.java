@@ -90,4 +90,9 @@ public class TransformationVisitorTest {
   public void testEmptyToRock() {
     performTransformationTest("EmptyVisualBlock", "Rock", RockVisualBlock.class);
   }
+
+  @Test
+  public void testWallToFlag() {
+    performTransformationTest("WallVisualBlock", "Flag", FlagVisualBlock.class);
+  }
 }
