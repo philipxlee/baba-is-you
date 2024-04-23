@@ -8,7 +8,6 @@ import java.util.Optional;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
-import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
  * Serves as the base class for all block types within the game, defining common properties and
@@ -40,18 +39,6 @@ public abstract class AbstractBlock {
    */
   public boolean matches(String descriptor) {
     return getBlockName().equals(descriptor);
-  }
-
-  /**
-   * Checks if the block exhibits a specific behavior. This base implementation always returns
-   * false. Blocks with behaviors should override this method to confirm the presence of a
-   * behavior.
-   *
-   * @param behaviorType The behavior class to check against this block.
-   * @return false by default, indicating no behavior of the specified type.
-   */
-  public boolean hasBehavior(Class<? extends Strategy> behaviorType) {
-    return false;
   }
 
   /**
@@ -90,13 +77,12 @@ public abstract class AbstractBlock {
   }
 
   /**
-   * Gets the grammatical category of the block, useful for parsing or rule validation. By default,
-   * it returns "default". Override in subclasses to provide specific grammar.
+   * Gets the grammar associated with this block.
    *
-   * @return The grammatical category of the block as a string, DEFAULT_GRAMMAR for the base class.
+   * @return An iterator of the block's grammar.
    */
-  public List<String> getBlockGrammar() {
-    return grammarType;
+  public Iterator<String> getBlockGrammarIterator() {
+    return grammarType.iterator();
   }
 
   /**

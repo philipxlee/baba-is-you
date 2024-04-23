@@ -1,7 +1,9 @@
 package oogasalad.model.gameplay.interpreter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -111,9 +113,9 @@ public class RuleInterpreter {
    * @return true if the blocks form a valid rule; false otherwise.
    */
   private boolean isValidRule(AbstractBlock first, AbstractBlock second, AbstractBlock third) {
-    List<String> firstGrammarList = first.getBlockGrammar();
-    List<String> secondGrammarList = second.getBlockGrammar();
-    List<String> thirdGrammarList = third.getBlockGrammar();
+    List<String> firstGrammarList = iteratorToList(first.getBlockGrammarIterator());
+    List<String> secondGrammarList = iteratorToList(second.getBlockGrammarIterator());
+    List<String> thirdGrammarList = iteratorToList(third.getBlockGrammarIterator());
     return Stream.of(first, second, third).allMatch(AbstractBlock::isTextBlock)
         && firstGrammarList.contains(NOUN)
         && secondGrammarList.contains(VERB)
@@ -164,6 +166,18 @@ public class RuleInterpreter {
         .forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, ATTRIBUTE));
     Arrays.stream(transforms.split(REGEX_SPLIT))
         .forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, TRANSFORM));
+  }
+
+  /**
+   * Converts an iterator to a list.
+   *
+   * @param iterator The iterator to convert.
+   * @return The list of elements from the iterator.
+   */
+  private List<String> iteratorToList(Iterator<String> iterator) {
+    List<String> list = new ArrayList<>();
+    iterator.forEachRemaining(list::add);
+    return list;
   }
 
 }

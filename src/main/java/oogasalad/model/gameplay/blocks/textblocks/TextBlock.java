@@ -1,6 +1,7 @@
 package oogasalad.model.gameplay.blocks.textblocks;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
@@ -34,14 +35,14 @@ public class TextBlock extends AbstractBlock {
   }
 
   /**
-   * Gets the grammar associated with this text block.
+   * Retrieves the grammar associated with this text block.
    *
-   * @return A list of grammatical elements associated with this text block.
+   * @return An iterator over the grammar rules for this text block.
    */
   @Override
-  public List<String> getBlockGrammar() {
+  public Iterator<String> getBlockGrammarIterator() {
     String grammar = properties.getProperty(this.name + GRAMMAR_PROPERTY_SUFFIX);
-    return Arrays.asList(grammar.split(REGEX_DELIMITER));
+    return Arrays.asList(grammar.split(REGEX_DELIMITER)).iterator();
   }
 
   /**
