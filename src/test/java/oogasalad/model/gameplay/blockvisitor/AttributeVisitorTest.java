@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay;
+package oogasalad.model.gameplay.blockvisitor;
 
 import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.*;

@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay;
+package oogasalad.model.gameplay.interpreter;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;

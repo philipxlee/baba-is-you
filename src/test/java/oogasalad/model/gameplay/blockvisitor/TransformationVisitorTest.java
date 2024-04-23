@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay;
+package oogasalad.model.gameplay.blockvisitor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -94,5 +94,10 @@ public class TransformationVisitorTest {
   @Test
   public void testWallToFlag() {
     performTransformationTest("WallVisualBlock", "Flag", FlagVisualBlock.class);
+  }
+
+  @Test
+  public void testVisitorReflectionException() {
+    performTransformationTest("BabaVisualBlock", "Invalid", BabaVisualBlock.class);
   }
 }
