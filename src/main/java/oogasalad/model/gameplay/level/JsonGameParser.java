@@ -38,10 +38,8 @@ public class JsonGameParser {
     JsonObject gridObject = getObject(levelJson, "grid");
     JsonObject metadataJson = getObject(gridObject, "metadata");
     String difficulty = getValue(metadataJson, "difficulty");
-    String health = getValue(metadataJson, "health");
-
-    String[][][] grid = parseGrid(getObject(levelJson, "grid"));
-    return new LevelMetadata(levelName, difficulty, health, rows, columns, grid);
+    String[][][] grid = parseGrid(jsonManager.getJsonArray(gridObject, "cells"));
+    return new LevelMetadata(levelName, difficulty, rows, columns, grid);
   }
 
   /**
@@ -50,12 +48,11 @@ public class JsonGameParser {
    * @param gridJson The JsonObject containing the grid data.
    * @return A 3D String array representing the cells in the level's grid.
    */
-  private String[][][] parseGrid(JsonObject gridJson) {
-    JsonArray cellsArray = gridJson.getAsJsonArray("cells");
-    String[][][] cells = new String[cellsArray.size()][][];
+  private String[][][] parseGrid(JsonArray gridJson) {
+    String[][][] cells = new String[gridJson.size()][][];
 
-    for (int i = 0; i < cellsArray.size(); i++) {
-      JsonArray layer = cellsArray.get(i).getAsJsonArray();
+    for (int i = 0; i < gridJson.size(); i++) {
+      JsonArray layer = gridJson.get(i).getAsJsonArray();
       cells[i] = new String[layer.size()][];
 
       for (int j = 0; j < layer.size(); j++) {

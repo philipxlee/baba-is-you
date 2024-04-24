@@ -42,6 +42,7 @@ public class ElementsPane {
   private VBox layout;
   private boolean removeMode = false;
   private String language;
+  private String difficulty;
 
   public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
     this.factory = new WidgetFactory();
@@ -73,6 +74,12 @@ public class ElementsPane {
     ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50,
         "combo-box-white", language), new ArrayList<>(Arrays.asList("Easy", "Medium",
         "Hard")), "Medium");
+
+    difficultyComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+      if (newValue != null) {
+        difficulty = newValue;
+      }
+    });
 
     HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth(), 15);
 
@@ -183,7 +190,8 @@ public class ElementsPane {
           String authorName = authorNameField.getText();
 
           // Proceed with saving the JSON using the provided details
-          LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, builderPane.gridHeight, builderPane.gridWidth);
+          LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
+              builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName);
           levelController.serializeLevel();
 
           // Optionally, show a success message
@@ -292,7 +300,7 @@ public class ElementsPane {
           int height = pair.getValue();
           builderPane.updateGridSize(width, height);
           LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
-                  width);
+                  width, "Easy", "BabaIsUs");
           levelController.resetLevel(levelMetadata);
       });
     });

@@ -33,10 +33,14 @@ public class LevelParser {
     JsonObject metadataJson = new JsonObject();
     JsonObject gridSizeObject = new JsonObject();
     JsonObject grid = new JsonObject();
+    JsonObject metadataObject = new JsonObject();
+    jsonManager.addProperty(metadataObject, "author", metadata.authorName());
+    jsonManager.addProperty(metadataObject, "difficulty", metadata.difficulty());
     buildJsonObject(metadataJson, metadata, gridSizeObject);
     JsonArray gridArray = turnGridToJson(level);
     jsonManager.addArrayToJson(grid, "cells", gridArray);
-    jsonManager.addArrayToJson(metadataJson, "grid", gridArray);
+    jsonManager.addObject(metadataJson, "grid", grid);
+    jsonManager.addObject(grid, "metadata", metadataObject);
     return metadataJson;
   }
 
@@ -65,7 +69,7 @@ public class LevelParser {
     jsonManager.addProperty(metadataJson, "levelName", metadata.levelName());
 
     jsonManager.addProperty(gridSizeObject, "rows", String.valueOf(metadata.rows()));
-    jsonManager.addProperty(gridSizeObject, "cols", String.valueOf(metadata.cols()));
+    jsonManager.addProperty(gridSizeObject, "columns", String.valueOf(metadata.cols()));
 
     jsonManager.addObject(metadataJson, "gridSize", gridSizeObject);
   }
