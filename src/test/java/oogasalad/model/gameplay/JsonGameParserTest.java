@@ -28,7 +28,6 @@ public class JsonGameParserTest {
     assertNotNull(parsedLevel);
     assertEquals("TestLevel", parsedLevel.getLevelMetadata().levelName());
     assertEquals("Easy", parsedLevel.getLevelMetadata().difficulty());
-    assertEquals("3", parsedLevel.getLevelMetadata().health());
     assertEquals(2, parsedLevel.getLevelMetadata().rows());
     assertEquals(2, parsedLevel.getLevelMetadata().columns());
     assertTrue(parsedLevel.getLevelMetadata().initialConfiguration().getClass().isArray());
