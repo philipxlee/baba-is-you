@@ -14,32 +14,49 @@ import java.util.stream.StreamSupport;
 import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.database.gamedata.ReplySchema;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 
 /**
  * Fetches data from the MongoDB database.
+ *
+ * @author Philip Lee.
  */
 public class DataFetcher {
 
   private static final Logger logger = LogManager.getLogger(DataFetcher.class);
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+  private static final String COLLECTION_DATA = "collection.data";
+  private static final String COLLECTION_COMMENTS = "collection.comments";
+  private static final String FIELD_USERNAME = "field.username";
+  private static final String FIELD_LEVEL_NAME = "field.levelName";
+  private static final String FIELD_TIME_SPENT = "field.timeSpent";
+  private static final String FIELD_DATE = "field.date";
+  private static final String FIELD_COMMENT = "field.comment";
+  private static final String FIELD_REPLIES = "field.replies";
+  private static final String FIELD_REPLY = "field.reply";
+  private static final String UNKNOWN_NAME = "Unknown";
   private static final int DISPLAY_LIMIT = 10;
   private static final int NONE = 0;
+  private static DataFetcher instance;
 
   private final MongoDatabase database;
   private final Properties properties;
 
   /**
-   * Constructor for the DataFetcher class.
+   * Provides the global access point to the singleton instance of the DataFetcher. This uses the
+   * singleton pattern to ensure that only one instance of the DataFetcher is created.
    *
-   * @param database the database
+   * @param database the database instance required to create the DataFetcher
+   * @return the singleton instance of the DataFetcher
    */
-  public DataFetcher(MongoDatabase database) {
-    this.database = database;
-    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
+  public static DataFetcher getInstance(MongoDatabase database) {
+    if (instance == null) {
+      instance = new DataFetcher(database);
+    }
+    return instance;
   }
 
   /**
@@ -50,32 +67,36 @@ public class DataFetcher {
    */
   public boolean isUsernameAvailable(String username) {
     MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty("collection.data"));
+        properties.getProperty(COLLECTION_DATA));
     long count = collection.countDocuments(
-        Filters.eq(properties.getProperty("field.username"), username));
+        Filters.eq(properties.getProperty(FIELD_USERNAME), username));
     return count == NONE;
   }
 
   /**
    * Returns an iterator over the top players for a given level.
+   *
    * @param currentLevelName the name of the current level
    * @return an iterator over the leaderboard data
    */
   public Iterator<LeaderboardData> getTopPlayersIterator(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(properties.getProperty("collection.data"));
+    MongoCollection<Document> collection = database.getCollection(
+        properties.getProperty(COLLECTION_DATA)
+    );
+
     Iterable<Document> documents = collection
-        .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
-        .sort(Sorts.ascending(properties.getProperty("field.timeSpent")))
+        .find(Filters.eq(properties.getProperty(FIELD_LEVEL_NAME), currentLevelName))
+        .sort(Sorts.ascending(properties.getProperty(FIELD_TIME_SPENT)))
         .limit(DISPLAY_LIMIT);
 
     logger.info("Retrieved top players for level: " + currentLevelName);
 
     return StreamSupport.stream(documents.spliterator(), false)
         .map(document -> new LeaderboardData(
-            document.getString(properties.getProperty("field.username")),
-            document.getString(properties.getProperty("field.levelName")),
-            document.getDate(properties.getProperty("field.date")),
-            document.getLong(properties.getProperty("field.timeSpent"))
+            document.getString(properties.getProperty(FIELD_USERNAME)),
+            document.getString(properties.getProperty(FIELD_LEVEL_NAME)),
+            document.getDate(properties.getProperty(FIELD_DATE)),
+            document.getLong(properties.getProperty(FIELD_TIME_SPENT))
         )).iterator();
   }
 
@@ -86,9 +107,11 @@ public class DataFetcher {
    * @return a list of the comments
    */
   public Iterator<CommentData> getLevelCommentsIterator(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(properties.getProperty("collection.comments"));
+    MongoCollection<Document> collection = database.getCollection(
+        properties.getProperty(COLLECTION_COMMENTS)
+    );
     Iterable<Document> documents = collection
-        .find(Filters.eq(properties.getProperty("field.levelName"), currentLevelName))
+        .find(Filters.eq(properties.getProperty(FIELD_LEVEL_NAME), currentLevelName))
         .limit(DISPLAY_LIMIT);
 
     logger.info("Retrieved comments for level: " + currentLevelName);
@@ -98,23 +121,46 @@ public class DataFetcher {
         .iterator();
   }
 
+  /**
+   * Converts a document to a CommentData object.
+   *
+   * @param document the document to convert
+   * @return the CommentData object
+   */
   private CommentData documentToCommentData(Document document) {
-    String username = document.getString(properties.getProperty("field.username"));
-    String levelName = document.getString(properties.getProperty("field.levelName"));
-    Date date = document.getDate(properties.getProperty("field.date"));
-    String comment = document.getString(properties.getProperty("field.comment"));
+    String username = document.getString(properties.getProperty(FIELD_USERNAME));
+    String levelName = document.getString(properties.getProperty(FIELD_LEVEL_NAME));
+    Date date = document.getDate(properties.getProperty(FIELD_DATE));
+    String comment = document.getString(properties.getProperty(FIELD_COMMENT));
     List<ReplySchema> replies = extractReplies(document);
     return new CommentData(username, levelName, date, comment, replies);
   }
 
+  /**
+   * Extracts the replies from a document.
+   *
+   * @param document the document
+   * @return the list of replies
+   */
   private List<ReplySchema> extractReplies(Document document) {
-    List<Document> replyDocs = document.getList(properties.getProperty("field.replies"),
+    List<Document> replyDocs = document.getList(properties.getProperty(FIELD_REPLIES),
         Document.class);
     return replyDocs == null ? new ArrayList<>() : replyDocs.stream()
         .map(doc -> new ReplySchema(
-            doc.getString(properties.getProperty("field.username")), null,
-            doc.getDate(properties.getProperty("field.date")),
-            doc.getString(properties.getProperty("field.reply"))))
+            doc.getString(properties.getProperty(FIELD_USERNAME)), UNKNOWN_NAME,
+            doc.getDate(properties.getProperty(FIELD_DATE)),
+            doc.getString(properties.getProperty(FIELD_REPLY))))
         .collect(Collectors.toList());
   }
+
+  /**
+   * Private constructor for the DataFetcher class.
+   *
+   * @param database the database
+   */
+  private DataFetcher(MongoDatabase database) {
+    this.database = database;
+    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
+  }
+
 }

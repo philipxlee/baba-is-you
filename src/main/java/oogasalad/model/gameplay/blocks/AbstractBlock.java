@@ -8,15 +8,17 @@ import java.util.Optional;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
-import oogasalad.model.gameplay.strategies.Strategy;
 
 /**
  * Serves as the base class for all block types within the game, defining common properties and
  * behaviors. Subclasses should override methods as necessary to provide specific functionality.
+ *
+ * @author Philip Lee.
  */
 public abstract class AbstractBlock {
 
   public static final List<String> grammarType = new ArrayList<>();
+  private static final int DEFAULT_RETURN_VALUE = 0;
 
   /**
    * Indicates whether this block is a text block. By default, a block is not a text block.
@@ -37,18 +39,6 @@ public abstract class AbstractBlock {
    */
   public boolean matches(String descriptor) {
     return getBlockName().equals(descriptor);
-  }
-
-  /**
-   * Checks if the block exhibits a specific behavior. This base implementation always returns
-   * false. Blocks with behaviors should override this method to confirm the presence of a
-   * behavior.
-   *
-   * @param behaviorType The behavior class to check against this block.
-   * @return false by default, indicating no behavior of the specified type.
-   */
-  public boolean hasBehavior(Class<? extends Strategy> behaviorType) {
-    return false;
   }
 
   /**
@@ -87,13 +77,12 @@ public abstract class AbstractBlock {
   }
 
   /**
-   * Gets the grammatical category of the block, useful for parsing or rule validation. By default,
-   * it returns "default". Override in subclasses to provide specific grammar.
+   * Gets the grammar associated with this block.
    *
-   * @return The grammatical category of the block as a string, DEFAULT_GRAMMAR for the base class.
+   * @return An iterator of the block's grammar.
    */
-  public List<String> getBlockGrammar() {
-    return grammarType;
+  public Iterator<String> getBlockGrammarIterator() {
+    return grammarType.iterator();
   }
 
   /**
@@ -102,7 +91,7 @@ public abstract class AbstractBlock {
    * @return The row of the block.
    */
   public int getRow() {
-    return 0;
+    return DEFAULT_RETURN_VALUE;
   }
 
   /**
@@ -120,7 +109,7 @@ public abstract class AbstractBlock {
    * @return The column of the block.
    */
   public int getCol() {
-    return 0;
+    return DEFAULT_RETURN_VALUE;
   }
 
   /**

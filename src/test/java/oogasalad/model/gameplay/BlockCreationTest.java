@@ -77,7 +77,7 @@ public class BlockCreationTest {
     TextBlock youTextBlock = new TextBlock("You");
     assertTrue(youTextBlock.isTextBlock());
     assertEquals("YouTextBlock", youTextBlock.getBlockName());
-    assertNotNull(youTextBlock.getBlockGrammar());
+    assertNotNull(youTextBlock.getBlockGrammarIterator());
   }
 
   @Test
@@ -85,7 +85,7 @@ public class BlockCreationTest {
     TextBlock winTextBlock = new TextBlock("Win");
     assertTrue(winTextBlock.isTextBlock());
     assertEquals("WinTextBlock", winTextBlock.getBlockName());
-    assertNotNull(winTextBlock.getBlockGrammar());
+    assertNotNull(winTextBlock.getBlockGrammarIterator());
   }
 
   @Test
@@ -93,7 +93,7 @@ public class BlockCreationTest {
     TextBlock flagTextBlock = new TextBlock("Flag");
     assertTrue(flagTextBlock.isTextBlock());
     assertEquals("FlagTextBlock", flagTextBlock.getBlockName());
-    assertNotNull(flagTextBlock.getBlockGrammar());
+    assertNotNull(flagTextBlock.getBlockGrammarIterator());
   }
 
   @Test
@@ -101,7 +101,7 @@ public class BlockCreationTest {
     TextBlock rockTextBlock = new TextBlock("Rock");
     assertTrue(rockTextBlock.isTextBlock());
     assertEquals("RockTextBlock", rockTextBlock.getBlockName());
-    assertNotNull(rockTextBlock.getBlockGrammar());
+    assertNotNull(rockTextBlock.getBlockGrammarIterator());
   }
 
   @Test
@@ -109,7 +109,7 @@ public class BlockCreationTest {
     TextBlock babaTextBlock = new TextBlock("Baba");
     assertTrue(babaTextBlock.isTextBlock());
     assertEquals("BabaTextBlock", babaTextBlock.getBlockName());
-    assertNotNull(babaTextBlock.getBlockGrammar());
+    assertNotNull(babaTextBlock.getBlockGrammarIterator());
   }
 
   @Test
@@ -117,7 +117,7 @@ public class BlockCreationTest {
     TextBlock wallTextBlock = new TextBlock("Wall");
     assertTrue(wallTextBlock.isTextBlock());
     assertEquals("WallTextBlock", wallTextBlock.getBlockName());
-    assertNotNull(wallTextBlock.getBlockGrammar());
+    assertNotNull(wallTextBlock.getBlockGrammarIterator());
   }
 
   @Test
@@ -125,7 +125,7 @@ public class BlockCreationTest {
     TextBlock emptyTextBlock = new TextBlock("Empty");
     assertTrue(emptyTextBlock.isTextBlock());
     assertEquals("EmptyTextBlock", emptyTextBlock.getBlockName());
-    assertNotNull(emptyTextBlock.getBlockGrammar());
+    assertNotNull(emptyTextBlock.getBlockGrammarIterator());
   }
 
   @Test

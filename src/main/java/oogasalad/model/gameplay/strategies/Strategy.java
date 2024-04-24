@@ -7,10 +7,11 @@ import oogasalad.model.gameplay.grid.CellIterator;
 /**
  * Interface defining a strategy or behavior that can be applied to a visual block, including
  * interactions with other strategies.
+ *
+ * @author Philip Lee.
  */
 public interface Strategy {
 
   void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator);
-
 
 }

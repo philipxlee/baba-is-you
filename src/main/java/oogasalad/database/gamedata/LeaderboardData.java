@@ -2,16 +2,19 @@ package oogasalad.database.gamedata;
 
 import java.util.Date;
 import java.util.Properties;
-import oogasalad.shared.util.PropertiesLoader;
 import org.bson.Document;
 
 /**
  * Stores and manages leaderboard data for a game session.
+ *
+ * @author Philip Lee.
  */
 public class LeaderboardData extends AbstractGameData {
 
-  private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
-  private final Properties properties;
+  private static final String FIELD_USERNAME = "field.username";
+  private static final String FIELD_LEVEL_NAME = "field.levelName";
+  private static final String FIELD_TIME_SPENT = "field.timeSpent";
+  private static final String FIELD_DATE = "field.date";
   private final long timeSpent;
 
   /**
@@ -25,7 +28,6 @@ public class LeaderboardData extends AbstractGameData {
   public LeaderboardData(String username, String levelName, Date date, long timeSpent) {
     super(username, levelName, date);
     this.timeSpent = timeSpent;
-    this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
   /**
@@ -35,10 +37,11 @@ public class LeaderboardData extends AbstractGameData {
    */
   @Override
   public Document toDocument() {
-    return new Document(properties.getProperty("field.username"), username)
-        .append(properties.getProperty("field.levelName"), levelName)
-        .append(properties.getProperty("field.date"), date)
-        .append(properties.getProperty("field.timeSpent"), timeSpent);
+    Properties properties = getDatabaseProperties();
+    return new Document(properties.getProperty(FIELD_USERNAME), getUsername())
+        .append(properties.getProperty(FIELD_LEVEL_NAME), getLevelName())
+        .append(properties.getProperty(FIELD_DATE), getDate())
+        .append(properties.getProperty(FIELD_TIME_SPENT), timeSpent);
   }
 
   /**
