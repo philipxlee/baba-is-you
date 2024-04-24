@@ -6,17 +6,21 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import java.util.Properties;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * DatabaseConfig is a class that manages the connection to the MongoDB database.
+ *
+ * @author Philip Lee.
  */
 public class DatabaseConfig {
 
   private static final Logger logger = LogManager.getLogger(DatabaseConfig.class);
   private static final String DATABASE_PROPERTIES_PATH = "database/database.properties";
+  private static final String CONNECTION_STRING = "mongo.connection.string";
+  private static final String DATABASE_NAME = "mongo.database.name";
   private MongoClient mongoClient;
   private String databaseName;
 
@@ -47,8 +51,8 @@ public class DatabaseConfig {
 
   private void createDatabaseConnection() {
     Properties properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
-    String connectionString = properties.getProperty("mongo.connection.string");
-    databaseName = properties.getProperty("mongo.database.name");
+    String connectionString = properties.getProperty(CONNECTION_STRING);
+    databaseName = properties.getProperty(DATABASE_NAME);
     MongoClientSettings settings = MongoClientSettings.builder()
         .applyConnectionString(new ConnectionString(connectionString))
         .build();

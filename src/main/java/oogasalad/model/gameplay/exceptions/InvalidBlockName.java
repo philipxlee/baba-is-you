@@ -2,6 +2,8 @@ package oogasalad.model.gameplay.exceptions;
 
 /**
  * Exception thrown when the block name is invalid.
+ *
+ * @author Philip Lee.
  */
 public class InvalidBlockName extends RuntimeException {
 

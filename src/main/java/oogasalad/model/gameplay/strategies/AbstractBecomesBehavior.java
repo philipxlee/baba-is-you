@@ -7,6 +7,8 @@ import oogasalad.model.gameplay.grid.CellIterator;
 /**
  * Abstract class that provides common behaviors for 'becomes' strategies. This class encapsulates
  * methods to check the presence of non-empty visual blocks and text blocks within a grid cell.
+ *
+ * @author Philip Lee.
  */
 public abstract class AbstractBecomesBehavior implements Strategy {
 

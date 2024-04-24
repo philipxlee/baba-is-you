@@ -2,6 +2,11 @@ package oogasalad.model.gameplay.blocks.visualblocks;
 
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
+/**
+ * A visual block that represents the Water block in the game.
+ *
+ * @author Philip Lee.
+ */
 public class WaterVisualBlock extends AbstractVisualBlock {
 
   /**
