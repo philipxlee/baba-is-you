@@ -1,7 +1,7 @@
 package oogasalad.database.gamedata;
 
-import java.util.Date;
 import java.util.Properties;
+import oogasalad.database.records.LeaderboardRecord;
 import org.bson.Document;
 
 /**
@@ -20,15 +20,13 @@ public class LeaderboardData extends AbstractGameData {
   /**
    * Constructor for the LeaderboardData class.
    *
-   * @param username  The username of the player.
-   * @param levelName The name of the level.
-   * @param date      The date the game was played.
-   * @param timeSpent The time spent in the game.
+   * @param leaderboardRecord the record of the leaderboard data
    */
-  public LeaderboardData(String username, String levelName, Date date, long timeSpent) {
-    super(username, levelName, date);
-    this.timeSpent = timeSpent;
+  public LeaderboardData(LeaderboardRecord leaderboardRecord) {
+    super(leaderboardRecord.getLeaderboardUsername(), leaderboardRecord.getLeaderboardLevelName(), leaderboardRecord.getLeaderboardDate());
+    this.timeSpent = leaderboardRecord.getLeaderboardTimeSpent();
   }
+
 
   /**
    * Converts the leaderboard data to a Document.
