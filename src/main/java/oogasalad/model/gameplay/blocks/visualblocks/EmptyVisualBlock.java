@@ -28,4 +28,14 @@ public class EmptyVisualBlock extends AbstractVisualBlock {
   public void accept(BlockVisitor visitor) {
     visitor.visit(this);
   }
+
+  /**
+   * Determines if the block is a text block.
+   *
+   * @return false by default, indicating this is not a text block.
+   */
+  @Override
+  public boolean isEmptyVisualBlock() {
+    return true;
+  }
 }
