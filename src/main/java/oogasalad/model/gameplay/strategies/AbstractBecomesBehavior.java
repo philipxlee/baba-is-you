@@ -35,8 +35,7 @@ public abstract class AbstractBecomesBehavior implements Strategy {
     iterator.reset();
     while (iterator.hasNext()) {
       AbstractBlock currentBlock = iterator.next();
-      if (!currentBlock.getBlockName().equals(EMPTY_VISUAL_BLOCK) &&
-          !currentBlock.equals(block)) {
+      if (!currentBlock.getBlockName().equals(EMPTY_VISUAL_BLOCK) && !currentBlock.equals(block)) {
         return false;
       }
     }
