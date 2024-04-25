@@ -41,6 +41,10 @@ public abstract class AbstractBlock {
     return getBlockName().equals(descriptor);
   }
 
+  public boolean isEmptyVisualBlock() {
+    return false;
+  }
+
   /**
    * Retrieves the name of the block, typically derived from the class name.
    *
