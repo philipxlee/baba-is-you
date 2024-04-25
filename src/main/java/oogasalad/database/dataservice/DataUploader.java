@@ -67,12 +67,9 @@ public class DataUploader {
    * Saves the player leaderboard data to the database.
    */
   public void savePlayerLeaderboardData(long startTime, long endTime) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty(COLLECTION_DATA));
-    LeaderboardData leaderboardData = gameSession.getLeaderboardData();
-    Document leaderboardDocument = leaderboardData.toDocument();
-    leaderboardDocument.append(properties.getProperty(FIELD_TIME_SPENT),
-        endTime - startTime);
+    MongoCollection<Document> collection = database
+        .getCollection(properties.getProperty(COLLECTION_DATA));
+    Document leaderboardDocument = buildLeaderboardDocument(startTime, endTime);
     collection.insertOne(leaderboardDocument);
     logger.info("Player data saved successfully.");
   }
@@ -103,6 +100,20 @@ public class DataUploader {
     Document replyDocument = createReplyDocument(playerUsername, reply);
     updateCommentWithReply(commentsCollection, commenterUsername, replyDocument);
     logger.info("Reply added successfully.");
+  }
+
+  /**
+   * Builds the leaderboard document.
+   *
+   * @param startTime start time
+   * @param endTime  end time
+   * @return the leaderboard document
+   */
+  private Document buildLeaderboardDocument(long startTime, long endTime) {
+    LeaderboardData leaderboardData = gameSession.getLeaderboardData();
+    Document leaderboardDocument = leaderboardData.toDocument();
+    leaderboardDocument.append(properties.getProperty(FIELD_TIME_SPENT), endTime - startTime);
+    return leaderboardDocument;
   }
 
   /**

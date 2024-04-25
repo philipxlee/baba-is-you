@@ -66,10 +66,10 @@ public class DataFetcher {
    * @return true if the username is available, false otherwise
    */
   public boolean isUsernameAvailable(String username) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty(COLLECTION_DATA));
-    long count = collection.countDocuments(
-        Filters.eq(properties.getProperty(FIELD_USERNAME), username));
+    MongoCollection<Document> collection = database
+        .getCollection(properties.getProperty(COLLECTION_DATA));
+    long count = collection
+        .countDocuments(Filters.eq(properties.getProperty(FIELD_USERNAME), username));
     return count == NONE;
   }
 
@@ -80,9 +80,8 @@ public class DataFetcher {
    * @return an iterator over the leaderboard data
    */
   public Iterator<LeaderboardData> getTopPlayersIterator(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty(COLLECTION_DATA)
-    );
+    MongoCollection<Document> collection = database
+        .getCollection(properties.getProperty(COLLECTION_DATA));
 
     Iterable<Document> documents = collection
         .find(Filters.eq(properties.getProperty(FIELD_LEVEL_NAME), currentLevelName))
@@ -107,9 +106,9 @@ public class DataFetcher {
    * @return a list of the comments
    */
   public Iterator<CommentData> getLevelCommentsIterator(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty(COLLECTION_COMMENTS)
-    );
+    MongoCollection<Document> collection = database
+        .getCollection(properties.getProperty(COLLECTION_COMMENTS));
+
     Iterable<Document> documents = collection
         .find(Filters.eq(properties.getProperty(FIELD_LEVEL_NAME), currentLevelName))
         .limit(DISPLAY_LIMIT);
@@ -121,6 +120,8 @@ public class DataFetcher {
         .iterator();
   }
 
+
+
   /**
    * Converts a document to a CommentData object.
    *
@@ -130,8 +131,8 @@ public class DataFetcher {
   private CommentData documentToCommentData(Document document) {
     String username = document.getString(properties.getProperty(FIELD_USERNAME));
     String levelName = document.getString(properties.getProperty(FIELD_LEVEL_NAME));
-    Date date = document.getDate(properties.getProperty(FIELD_DATE));
     String comment = document.getString(properties.getProperty(FIELD_COMMENT));
+    Date date = document.getDate(properties.getProperty(FIELD_DATE));
     List<ReplySchema> replies = extractReplies(document);
     return new CommentData(username, levelName, date, comment, replies);
   }
