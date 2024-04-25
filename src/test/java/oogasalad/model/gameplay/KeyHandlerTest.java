@@ -4,6 +4,7 @@ import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +23,14 @@ public class KeyHandlerTest {
     private final static int COLS = 5;
     AttributeVisitor wallVisitor;
     AttributeVisitor youVisitor;
+
+    AttributeVisitor hotVisitor;
+
+    AttributeVisitor meltVisitor;
     private  BabaVisualBlock babaBlock;
     private WallVisualBlock wallBlock;
+
+
     private final String[][][] initialConfiguration = {
             {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"FlagVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}},
             {{"EmptyVisualBlock"}, {"BabaVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"FlagVisualBlock"}},
@@ -48,6 +55,8 @@ public class KeyHandlerTest {
     public void setUp() {
         youVisitor = new AttributeVisitor("You");
         wallVisitor = new AttributeVisitor("Stop");
+        hotVisitor = new AttributeVisitor("Hot");
+        meltVisitor = new AttributeVisitor("Melt");
         grid = new Grid(ROWS, COLS, initialConfiguration);
         gameStateControllerMock = Mockito.mock(GameStateController.class);
         babaBlock = new BabaVisualBlock("Baba", 1, 1);
@@ -186,6 +195,22 @@ public class KeyHandlerTest {
         keyHandler.execute();
         assertEquals(2, grid.cellSize(1, 2));
         assertEquals(2, grid.cellSize(2, 2));
+    }
+    @Test
+    public void testMeltable(){}{
+        babaBlock.accept(meltVisitor);
+        grid.getGrid()[1][1].add(babaBlock);
+        LavaVisualBlock lavaBlock = new LavaVisualBlock("Lava", 1, 2);
+        lavaBlock.accept(hotVisitor);
+        grid.getGrid()[1][2].add(lavaBlock);
+        int nextCellSize = grid.cellSize(1, 2);
+        int presentCellSize = grid.cellSize(1, 1);
+
+        keyHandler = new RightKeyHandler(grid,gameStateControllerMock);
+        keyHandler.execute();
+
+        assertEquals(presentCellSize - 1, grid.cellSize(1, 1));
+        assertEquals(nextCellSize, grid.cellSize(1, 2));
     }
 
 }
