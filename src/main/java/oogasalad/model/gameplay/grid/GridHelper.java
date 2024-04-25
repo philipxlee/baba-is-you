@@ -136,8 +136,8 @@ public class GridHelper {
     List<Integer> indicesList = new ArrayList<>();
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
-      if (block.getBlockName().endsWith("TextBlock") || (
-              block.getBlockName().endsWith("VisualBlock") && block.getAttribute("Pushable"))) {
+      if (block.isTextBlock() || (
+              !block.isTextBlock() && block.getAttribute("Pushable"))) {
         indicesList.add(index);
       }
     }
@@ -192,7 +192,7 @@ public class GridHelper {
     boolean hasPushable = false;
     boolean textBlock = false;
     for (AbstractBlock block : grid[i][j]) {
-      if (block.getBlockName().endsWith("TextBlock")) {
+      if (block.isTextBlock()) {
         textBlock = true;
       }
       if (block.getAttribute("Pushable")) {

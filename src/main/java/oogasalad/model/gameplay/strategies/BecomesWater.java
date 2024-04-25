@@ -12,7 +12,7 @@ import oogasalad.model.gameplay.grid.CellIterator;
  */
 public class BecomesWater extends AbstractBecomesBehavior {
 
-  private static final String WaterVISUAL_BLOCK = "WaterVisualBlock";
+  private static final String WATER_VISUAL_BLOCK = "WaterVisualBlock";
 
   /**
    * Constructor for BecomesWater.
@@ -24,7 +24,7 @@ public class BecomesWater extends AbstractBecomesBehavior {
   @Override
   public void execute(AbstractBlock block, BlockUpdater updater, CellIterator iterator) {
     if (onlyEmptyVisualBlock(block, iterator)) {
-      updater.updateBlock(block, WaterVISUAL_BLOCK);
+      updater.updateBlock(block, WATER_VISUAL_BLOCK);
     }
   }
 }

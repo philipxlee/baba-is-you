@@ -1,7 +1,7 @@
 package oogasalad.database.gamedata;
 
-import java.util.Date;
 import java.util.Properties;
+import oogasalad.database.records.ReplyRecord;
 import org.bson.Document;
 
 /**
@@ -16,14 +16,12 @@ public class ReplySchema extends AbstractGameData {
   /**
    * Constructor for the ReplySchema class.
    *
-   * @param username  the username of the person who made the reply
-   * @param levelName the level at which the reply was made
-   * @param date      the date the reply was made
-   * @param replyText the text of the reply
+   * @param replyRecord the record of the reply data
    */
-  public ReplySchema(String username, String levelName, Date date, String replyText) {
-    super(username, levelName, date);
-    this.replyText = replyText;
+  public ReplySchema(ReplyRecord replyRecord) {
+    super(replyRecord.getReplyUsername(), replyRecord.getReplyLevelName(),
+        replyRecord.getReplyDate());
+    this.replyText = replyRecord.getReplyText();
   }
 
   /**
