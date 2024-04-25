@@ -61,16 +61,6 @@ public class BuilderPane {
     container.setMinWidth(root.getWidth());
     container.setAlignment(Pos.CENTER);
 
-    //Level name editor textfield
-//    TextField levelName = factory.createTextField(new WidgetConfiguration(200, 50,
-//        "text-field-dark", language));
-//    Text levelNameLabel = factory.generateLine(new WidgetConfiguration("EnterName",
-//        language));
-//    HBox nameEditor = factory.wrapInHBox(new ArrayList<>(Arrays.asList(levelNameLabel, levelName)),
-//        (int)root.getWidth());
-//
-//    container.getChildren().add(nameEditor);
-
     this.gridPane = new GridPane();
     LevelMetadata levelMetadata = levelController.getLevelMetadata();
     this.gridWidth = levelMetadata.cols();
