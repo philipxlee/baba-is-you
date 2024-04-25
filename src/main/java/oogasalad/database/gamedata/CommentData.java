@@ -1,11 +1,13 @@
 package oogasalad.database.gamedata;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import oogasalad.database.records.CommentRecord;
 import oogasalad.shared.loader.PropertiesLoader;
 import org.bson.Document;
 
@@ -31,17 +33,13 @@ public class CommentData extends AbstractGameData {
   /**
    * Constructor for the CommentData class.
    *
-   * @param username  the username of the person who made the comment
-   * @param levelName the level at which the comment was made
-   * @param date      the date the comment was made
-   * @param comment   the text of the comment
-   * @param replies   a list of replies to the comment
+   * @param commentRecord the record of the comment data.
    */
-  public CommentData(String username, String levelName, Date date, String comment,
-      List<ReplySchema> replies) {
-    super(username, levelName, date);
-    this.comment = comment;
-    this.replies = new ArrayList<>(replies);
+  public CommentData(CommentRecord commentRecord) {
+    super(commentRecord.getCommentUsername(), commentRecord.getCommentLevelName(),
+        commentRecord.getCommentDate());
+    this.comment = commentRecord.getCommentComments();
+    this.replies = getRepliesFromCommentRecord(commentRecord);
     this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
   }
 
@@ -79,6 +77,19 @@ public class CommentData extends AbstractGameData {
    */
   public Iterator<ReplySchema> getRepliesIterator() {
     return replies.iterator();
+  }
+
+
+  /**
+   * Gets the replies from the comment record's iterator of ReplySchema objects.
+   *
+   * @param commentRecord the record of the comment data
+   * @return a list of ReplySchema objects representing the replies to the comment
+   */
+  private List<ReplySchema> getRepliesFromCommentRecord(CommentRecord commentRecord) {
+    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(commentRecord
+            .getCommentReplies(), Spliterator.ORDERED), false)
+        .collect(Collectors.toList());
   }
 
 }
