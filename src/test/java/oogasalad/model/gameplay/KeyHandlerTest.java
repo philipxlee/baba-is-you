@@ -5,6 +5,7 @@ import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,9 @@ public class KeyHandlerTest {
     AttributeVisitor hotVisitor;
 
     AttributeVisitor meltVisitor;
+
+    AttributeVisitor sinkVisitor;
+    AttributeVisitor drownVisitor;
     private  BabaVisualBlock babaBlock;
     private WallVisualBlock wallBlock;
 
@@ -57,6 +61,8 @@ public class KeyHandlerTest {
         wallVisitor = new AttributeVisitor("Stop");
         hotVisitor = new AttributeVisitor("Hot");
         meltVisitor = new AttributeVisitor("Melt");
+        sinkVisitor = new AttributeVisitor("Sink");
+        drownVisitor = new AttributeVisitor("Drown");
         grid = new Grid(ROWS, COLS, initialConfiguration);
         gameStateControllerMock = Mockito.mock(GameStateController.class);
         babaBlock = new BabaVisualBlock("Baba", 1, 1);
@@ -197,12 +203,29 @@ public class KeyHandlerTest {
         assertEquals(2, grid.cellSize(2, 2));
     }
     @Test
-    public void testMeltable(){}{
+    public void testMeltable(){
         babaBlock.accept(meltVisitor);
         grid.getGrid()[1][1].add(babaBlock);
         LavaVisualBlock lavaBlock = new LavaVisualBlock("Lava", 1, 2);
         lavaBlock.accept(hotVisitor);
         grid.getGrid()[1][2].add(lavaBlock);
+        int nextCellSize = grid.cellSize(1, 2);
+        int presentCellSize = grid.cellSize(1, 1);
+
+        keyHandler = new RightKeyHandler(grid,gameStateControllerMock);
+        keyHandler.execute();
+
+        assertEquals(presentCellSize - 1, grid.cellSize(1, 1));
+        assertEquals(nextCellSize, grid.cellSize(1, 2));
+    }
+
+    @Test
+    public void testSinkable(){
+        babaBlock.accept(drownVisitor);
+        grid.getGrid()[1][1].add(babaBlock);
+        WaterVisualBlock waterBlock = new WaterVisualBlock("Water", 1, 2);
+        waterBlock.accept(sinkVisitor);
+        grid.getGrid()[1][2].add(waterBlock);
         int nextCellSize = grid.cellSize(1, 2);
         int presentCellSize = grid.cellSize(1, 1);
 
