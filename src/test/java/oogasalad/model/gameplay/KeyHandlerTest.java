@@ -202,6 +202,12 @@ public class KeyHandlerTest {
         assertEquals(2, grid.cellSize(1, 2));
         assertEquals(2, grid.cellSize(2, 2));
     }
+    /**
+     * Test method to verify the behavior of melting for a BabaBlock.
+     * The test ensures that when a BabaBlock is subjected to a meltVisitor,
+     * it melts as expected and occupies the cell where a lava block is present.
+     * The cell sizes before and after the execution of the RightKeyHandler are compared.
+     */
     @Test
     public void testMeltable(){
         babaBlock.accept(meltVisitor);
@@ -219,6 +225,12 @@ public class KeyHandlerTest {
         assertEquals(nextCellSize, grid.cellSize(1, 2));
     }
 
+    /**
+     * Test method to verify the behavior of sinking for a BabaBlock.
+     * The test ensures that when a BabaBlock is subjected to a drownVisitor,
+     * it sinks as expected and occupies the cell where a WaterVisualBlock is present.
+     * The cell sizes before and after the execution of the RightKeyHandler are compared.
+     */
     @Test
     public void testSinkable(){
         babaBlock.accept(drownVisitor);
