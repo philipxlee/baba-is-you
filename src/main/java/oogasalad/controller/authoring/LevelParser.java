@@ -95,7 +95,12 @@ public class LevelParser {
 
         // Iterate over each cell in the row
         for (String cell : row) {
-          rowArray.add(cell);
+          if (cell.startsWith("BabaVisualBlock") || cell.matches("BabaVisualBlock.*")) {
+            rowArray.add("BabaVisualBlock");
+            System.out.println(cell);
+          } else {
+            rowArray.add(cell);
+          }
         }
         singleLayerArray.add(rowArray);
       }
