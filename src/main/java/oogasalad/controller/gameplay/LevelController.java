@@ -57,6 +57,7 @@ public class LevelController {
     DatabaseController databaseController = new DatabaseController(databaseConfig.getDatabase(), levelController);
     this.sceneController = new SceneController(sceneController.getStage(), databaseController,
         levelController);
+    this.sceneController.setLanguage(sceneController.getLanguage());
     this.sceneController.initializeViews();
   }
 }

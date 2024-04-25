@@ -85,15 +85,7 @@ public class WidgetConfiguration implements AlertHandler {
     Properties properties = new Properties();
     String resourcePath = "/languages/" + language + ".properties";
     try (InputStream inputStream = getClass().getResourceAsStream(resourcePath)) {
-      if (inputStream == null) {
-        System.out.println("Resource not found: " + resourcePath + " - Loading default properties.");
-        language = "English";
-        String defaultPath = "/languages/" + language + ".properties";
-        InputStream defaultStream = getClass().getResourceAsStream(defaultPath);
-         properties.load(defaultStream);
-      } else {
         properties.load(inputStream);
-      }
     } catch (IOException e) {
       showError("ERROR", e.getMessage());
     }
