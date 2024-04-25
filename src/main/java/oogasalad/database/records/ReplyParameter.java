@@ -1,7 +1,0 @@
-package oogasalad.database.records;
-
-import java.util.Date;
-
-public record ReplyParameter(String username, String levelName, Date date, String replyText) {
-
-}

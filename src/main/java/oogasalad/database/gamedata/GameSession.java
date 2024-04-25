@@ -2,6 +2,7 @@ package oogasalad.database.gamedata;
 
 import java.util.ArrayList;
 import java.util.Date;
+import oogasalad.database.records.LeaderboardRecord;
 
 /**
  * Manages the session state for a game, including comments and leaderboard data.
@@ -24,9 +25,13 @@ public class GameSession {
    * @param levelName The name of the level.
    */
   public GameSession(String username, String levelName) {
-    this.leaderboardData = new LeaderboardData(username, levelName, DEFAULT_DATE, DEFAULT_TIME);
+    this.leaderboardData = new LeaderboardData(initializeLeaderboardRecord(username, levelName));
     this.commentData = new CommentData(username, levelName, DEFAULT_DATE, DEFAULT_COMMENT,
         DEFAULT_REPLIES);
+  }
+
+  private static LeaderboardRecord initializeLeaderboardRecord(String username, String levelName) {
+    return new LeaderboardRecord(username, levelName, DEFAULT_DATE, DEFAULT_TIME);
   }
 
   /**

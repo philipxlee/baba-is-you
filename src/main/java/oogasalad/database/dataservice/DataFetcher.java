@@ -14,6 +14,7 @@ import java.util.stream.StreamSupport;
 import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.database.gamedata.ReplySchema;
+import oogasalad.database.records.LeaderboardRecord;
 import oogasalad.shared.loader.PropertiesLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,11 +92,10 @@ public class DataFetcher {
     logger.info("Retrieved top players for level: " + currentLevelName);
 
     return StreamSupport.stream(documents.spliterator(), false)
-        .map(document -> new LeaderboardData(
-            document.getString(properties.getProperty(FIELD_USERNAME)),
+        .map(document -> new LeaderboardData(new LeaderboardRecord(document.getString(properties.getProperty(FIELD_USERNAME)),
             document.getString(properties.getProperty(FIELD_LEVEL_NAME)),
             document.getDate(properties.getProperty(FIELD_DATE)),
-            document.getLong(properties.getProperty(FIELD_TIME_SPENT))
+            document.getLong(properties.getProperty(FIELD_TIME_SPENT)))
         )).iterator();
   }
 
