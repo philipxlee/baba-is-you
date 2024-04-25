@@ -3,6 +3,7 @@ package oogasalad.view.authoring;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,16 +39,18 @@ public class BlockNameManager extends JsonManager {
         JsonObject blockObject = jsonObject.getAsJsonObject(key);
         String blockName = key;
         String imagePath = blockObject.has("imagePath") ? blockObject.get("imagePath").getAsString() : null;
-        JsonArray categories = blockObject.getAsJsonArray("category");  // Extract the categories array
-        String blockCategory = (categories != null && categories.size() > 0) ? categories.get(0).getAsString() : "Unknown";
+        JsonArray categories = blockObject.getAsJsonArray("category");
 
         // Check if the category matches or load all if no specific category is requested
-        if (category == null || category.isEmpty() || blockCategory.equals(category)) {
-          blocks.add(new BlockData(blockName, imagePath, blockCategory));
+        if (category == null || category.isEmpty() || category.equals("All")) {
+          if (categories.contains(new JsonPrimitive("All"))) {
+            blocks.add(new BlockData(blockName, imagePath, "All"));
+          }
+        } else if (categories.contains(new JsonPrimitive(category))) {
+          blocks.add(new BlockData(blockName, imagePath, category));
         }
       }
     }
     return blocks;
   }
-
 }
