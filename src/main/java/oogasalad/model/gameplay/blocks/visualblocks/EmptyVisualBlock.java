@@ -5,6 +5,8 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 /**
  * This class represents an empty visual block that does not have any behavior. It is used to
  * represent empty spaces in the grid.
+ *
+ * @author Philip Lee.
  */
 public class EmptyVisualBlock extends AbstractVisualBlock {
 

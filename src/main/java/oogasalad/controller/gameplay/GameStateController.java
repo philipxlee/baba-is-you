@@ -5,6 +5,8 @@ import oogasalad.view.gameplay.gamestates.WinScene;
 
 /**
  * Controller that manages the game over screen.
+ *
+ * @author Philip Lee.
  */
 public class GameStateController {
 

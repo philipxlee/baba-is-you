@@ -4,6 +4,8 @@ import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 
 /**
  * A visual block that represents a wall in the game.
+ *
+ * @author Philip Lee.
  */
 public class WallVisualBlock extends AbstractVisualBlock {
 

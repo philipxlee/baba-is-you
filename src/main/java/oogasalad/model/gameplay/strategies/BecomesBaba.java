@@ -8,6 +8,8 @@ import oogasalad.model.gameplay.grid.CellIterator;
 /**
  * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
  * behavior of a block when it becomes Baba.
+ *
+ * @author Philip Lee.
  */
 public class BecomesBaba extends AbstractBecomesBehavior {
 

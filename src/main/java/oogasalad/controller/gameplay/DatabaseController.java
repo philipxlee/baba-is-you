@@ -9,15 +9,16 @@ import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.gamedata.LeaderboardData;
 
 /**
- * This class is responsible for controlling the database.
+ * This class is responsible for controlling the database interactions for game play, such as
+ * managing players, comments, and leaderboard data.
+ *
+ * @author Philip Lee.
  */
 public class DatabaseController {
 
   private static final int MILLISECOND_OFFSET = 1000;
   private final MongoDatabase database;
   private final LevelController levelController;
-  private DataFetcher dataFetcher;
-  private DataUploader dataUploader;
   private GameSession gameSession;
   private String username;
   private long startTime;
@@ -25,8 +26,8 @@ public class DatabaseController {
   /**
    * Constructor for the DatabaseController class.
    *
-   * @param database       database
-   * @param levelController level controller
+   * @param database        the database connection to be used.
+   * @param levelController the controller handling level-specific data.
    */
   public DatabaseController(MongoDatabase database, LevelController levelController) {
     this.database = database;
@@ -34,113 +35,99 @@ public class DatabaseController {
   }
 
   /**
-   * Starts a new player.
+   * Initializes a new player session if the username is available.
    *
-   * @param username username
-   * @return true if the player is started, false otherwise
+   * @param username the username to start a new session.
+   * @return true if the session is started, false if the username is unavailable.
    */
   public boolean startNewPlayer(String username) {
-    if (!isUsernameAvailable(username)) {
-      return false;
+    if (isUsernameAvailable(username)) {
+      initializeGameSession(username);
+      DataUploader.getInstance(database).setGameSession(gameSession);
+      return true;
     }
-    this.username = username;
-    initializeSession(username);
-    return true;
+    return false;
   }
 
+
   /**
-   * Checks if the username is available.
+   * Checks if the provided username is available.
    *
-   * @param username username
-   * @return true if the username is available, false otherwise
+   * @param username the username to check.
+   * @return true if the username is available, false otherwise.
    */
   public boolean isUsernameAvailable(String username) {
-    initializeDataFetcher();
-    return dataFetcher.isUsernameAvailable(username);
+    return DataFetcher.getInstance(database).isUsernameAvailable(username);
   }
 
   /**
-   * Gets the top players.
+   * Retrieves an iterator over the leaderboard data for a specified level.
    *
-   * @return list of top players
+   * @param levelName the level name to get leaderboard data for.
+   * @return an iterator over LeaderboardData.
    */
   public Iterator<LeaderboardData> getTopPlayersIterator(String levelName) {
-    initializeDataFetcher();
-    return dataFetcher.getTopPlayersIterator(levelName);
+    return DataFetcher.getInstance(database).getTopPlayersIterator(levelName);
   }
 
   /**
-   * Returns an iterator over the comments for the current level.
+   * Retrieves an iterator over the comments for a specified level.
    *
-   * @return an iterator of CommentData
+   * @param levelName the level name to get comments for.
+   * @return an iterator of CommentData.
    */
   public Iterator<CommentData> getLevelCommentsIterator(String levelName) {
-    initializeDataFetcher();
-    return dataFetcher.getLevelCommentsIterator(levelName);
+    return DataFetcher.getInstance(database).getLevelCommentsIterator(levelName);
   }
 
-
   /**
-   * Saves the level comment data.
+   * Saves a comment for the current level to the database.
    *
-   * @param comment comment
+   * @param comment the comment to save.
    */
   public void saveLevelCommentData(String comment) {
-    initializeDataUploader();
-    dataUploader.saveLevelComment(comment);
+    DataUploader.getInstance(database).saveLevelComment(comment);
   }
 
   /**
-   * Saves the player data.
+   * Saves the session data for the current player to the database.
    *
-   * @param endTime end time
+   * @param endTime the end time of the session.
    */
   public void savePlayerData(long endTime) {
-    initializeDataUploader();
-    dataUploader.savePlayerLeaderboardData(startTime, endTime);
+    DataUploader.getInstance(database).savePlayerLeaderboardData(startTime, endTime);
   }
 
   /**
-   * Adds a reply to a user comment.
+   * Adds a reply to a comment for the current level.
    *
-   * @param commenterUsername comment username
-   * @param playerUsername   player username
-   * @param reply           reply
+   * @param commenterUsername the username of the commenter.
+   * @param playerUsername    the username of the player replying.
+   * @param reply             the reply content.
    */
   public void addReply(String commenterUsername, String playerUsername, String reply) {
-    initializeDataUploader();
-    dataUploader.addReplyToUserComment(commenterUsername, playerUsername, reply);
+    DataUploader.getInstance(database)
+        .addReplyToUserComment(commenterUsername, playerUsername, reply);
   }
 
   /**
-   * Gets the username.
+   * Gets the username of the player.
    *
-   * @return username
+   * @return the username of the player.
    */
   public String getUsername() {
     return username;
   }
 
-  private void initializeDataFetcher() {
-    if (dataFetcher == null) {
-      dataFetcher = new DataFetcher(database);
-    }
-  }
-
-  private void initializeDataUploader() {
-    if (dataUploader == null) {
-      dataUploader = new DataUploader(database, gameSession);
-    }
-  }
-
-  private void initializeSession(String username) {
+  /**
+   * Initializes a new game session for the player.
+   *
+   * @param username the username of the player.
+   */
+  private void initializeGameSession(String username) {
+    this.username = username;
     this.gameSession = new GameSession(username, levelController.getLevelName());
     this.startTime = System.currentTimeMillis() / MILLISECOND_OFFSET; // Convert to seconds
-    initializeDataServices();
   }
 
-  private void initializeDataServices() {
-    initializeDataFetcher();
-    initializeDataUploader();
-  }
 }

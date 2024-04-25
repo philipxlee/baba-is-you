@@ -1,4 +1,4 @@
-package oogasalad.model.gameplay;
+package oogasalad.model.gameplay.interpreter;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,8 +10,6 @@ import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
-import oogasalad.model.gameplay.strategies.attributes.Controllable;
-import oogasalad.model.gameplay.strategies.attributes.Pushable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +50,7 @@ public class RuleInterpreterTest {
     ruleInterpreter.interpretRules(grid);
     assertInstanceOf(BabaVisualBlock.class, grid[2][0].get(0),
         "BabaVisualBlock should recognize the 'Baba Is You' rule.");
-    assertTrue(grid[2][0].get(0).hasBehavior(Controllable.class),
+    assertTrue(grid[2][0].get(0).getAttribute("Controllable"),
         "BabaVisualBlock should have the Controllable behavior.");
   }
 
@@ -61,7 +59,7 @@ public class RuleInterpreterTest {
     ruleInterpreter.interpretRules(grid);
     assertInstanceOf(RockVisualBlock.class, grid[2][0].get(1),
         "RockVisualBlock should recognize the 'Rock Is Push' rule.");
-    assertTrue(grid[2][0].get(1).hasBehavior(Pushable.class),
+    assertTrue(grid[2][0].get(1).getAttribute("Pushable"),
         "RockVisualBlock should have the Pushable behavior.");
   }
 }

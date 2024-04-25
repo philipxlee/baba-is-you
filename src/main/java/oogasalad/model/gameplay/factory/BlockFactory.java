@@ -3,15 +3,20 @@ package oogasalad.model.gameplay.factory;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.blocks.textblocks.TextBlock;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Factory class for creating block instances. This class supports the creation of both text and
  * visual block types through a unified interface. It uses reflection for visual blocks and direct
  * instantiation for text blocks, abstracting the block creation process and enhancing
  * extensibility.
+ *
+ * @author Philip Lee.
  */
 public class BlockFactory {
 
+  private static final Logger logger = LogManager.getLogger(BlockFactory.class);
   private static final String PACKAGE_PREFIX = "oogasalad.model.gameplay.blocks.";
   private static final String TEXT_BLOCK_SUFFIX = "TextBlock";
   private static final String VISUAL_BLOCK_LOCATION_SUFFIX = "visualblocks.";
@@ -42,6 +47,7 @@ public class BlockFactory {
             .newInstance(blockName, row, col);
       }
     } catch (ReflectiveOperationException e) {
+      logger.fatal("Error in reflections");
       throw new InvalidBlockName("Invalid Block Name");
     }
   }
@@ -54,6 +60,7 @@ public class BlockFactory {
    */
   private void validateBlockName(Class<?> blockClass) throws InvalidBlockName {
     if (!AbstractBlock.class.isAssignableFrom(blockClass)) {
+      logger.fatal("Error in validating block name");
       throw new InvalidBlockName("Invalid block name");
     }
   }

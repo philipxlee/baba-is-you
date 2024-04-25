@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 
+/**
+ * This class represents an iterator for the blocks in a cell.
+ *
+ * @author Philip Lee.
+ */
 public class CellIterator implements Iterator<AbstractBlock> {
 
   private final List<AbstractBlock> cellBlocks;

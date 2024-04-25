@@ -8,14 +8,21 @@ import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.strategies.Strategy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class is a concrete implementation of the BlockVisitor interface. It represents the behavior
  * of a block when it is visited by a transformation visitor.
+ *
+ * @author Philip Lee.
  */
 public class TransformationVisitor implements BlockVisitor {
 
+  private static final Logger logger = LogManager.getLogger(TransformationVisitor.class);
   private static final String PREFIX = "Becomes";
   private static final String STRATEGY_PACKAGE = "oogasalad.model.gameplay.strategies.";
 
@@ -105,14 +112,14 @@ public class TransformationVisitor implements BlockVisitor {
    *
    * @param block block to transform.
    */
-  private void transform(AbstractVisualBlock block) {
+  private void transform(AbstractVisualBlock block) throws VisitorReflectionException {
     try {
       Class<?> clazz = Class.forName(STRATEGY_PACKAGE + targetType);
       Strategy behavior = (Strategy) clazz.getDeclaredConstructor().newInstance();
       block.addBehavior(behavior);
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-             NoSuchMethodException | java.lang.reflect.InvocationTargetException e) {
-      System.err.println("Transformation failed: " + e.getMessage());
+    } catch (ReflectiveOperationException e) {
+      logger.error("Transformation failed: " + e.getMessage());
+      throw new VisitorReflectionException("Transformation failed");
     }
   }
 }

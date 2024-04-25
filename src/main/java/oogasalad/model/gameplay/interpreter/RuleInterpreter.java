@@ -1,9 +1,12 @@
 package oogasalad.model.gameplay.interpreter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -12,11 +15,13 @@ import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.blockvisitor.BlockVisitor;
 import oogasalad.model.gameplay.blocks.blockvisitor.TransformationVisitor;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
-import oogasalad.shared.util.PropertiesLoader;
+import oogasalad.shared.loader.PropertiesLoader;
 
 /**
  * The RuleInterpreter class is responsible for interpreting and applying rules based on the game's
  * current state represented as a grid of blocks.
+ *
+ * @author Philip Lee.
  */
 public class RuleInterpreter {
 
@@ -32,25 +37,17 @@ public class RuleInterpreter {
   private static final String ATTRIBUTE_VISITS = "attributeVisits";
   private static final String BECOMES_VISITS = "becomesVisits";
 
-  private Properties properties;
-  private Map<String, String> behaviorMap; // Maps "You" to "Controllable", etc.
+  private final Properties properties;
+  private final Map<String, String> behaviorMap;
 
-
-
+  /**
+   * Constructor for the RuleInterpreter class.
+   */
   public RuleInterpreter() {
     properties = PropertiesLoader.loadProperties(BLOCK_BEHAVIOR_PATH);
     behaviorMap = new HashMap<>();
     loadBehaviorMappings();
   }
-
-  private void loadBehaviorMappings() {
-    // Load and map attribute and transformation behaviors
-    String attributes = properties.getProperty(ATTRIBUTE_VISITS);
-    String transforms = properties.getProperty(BECOMES_VISITS);
-    Arrays.stream(attributes.split(REGEX_SPLIT)).forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, "Attribute"));
-    Arrays.stream(transforms.split(REGEX_SPLIT)).forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, "Transform"));
-  }
-
 
   /**
    * Interprets and applies rules across the entire grid based on the detected text block patterns.
@@ -101,8 +98,9 @@ public class RuleInterpreter {
       AbstractBlock thirdBlock, List<AbstractBlock>[][] grid) throws VisitorReflectionException {
     if (isValidRule(firstBlock, secondBlock, thirdBlock)) {
       String property = thirdBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT);
-      BlockVisitor visitor = determineVisitor(property);
-        applyVisitorToMatchingBlocks(visitor, firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid);
+      Optional<BlockVisitor> optionalVisitor = determineVisitor(property);
+      optionalVisitor.ifPresent(visitor -> applyVisitorToMatchingBlocks(visitor,
+          firstBlock.getBlockName().replace(TEXT_BLOCK_SUFFIX, REPLACEMENT), grid));
     }
   }
 
@@ -115,9 +113,9 @@ public class RuleInterpreter {
    * @return true if the blocks form a valid rule; false otherwise.
    */
   private boolean isValidRule(AbstractBlock first, AbstractBlock second, AbstractBlock third) {
-    List<String> firstGrammarList = first.getBlockGrammar();
-    List<String> secondGrammarList = second.getBlockGrammar();
-    List<String> thirdGrammarList = third.getBlockGrammar();
+    List<String> firstGrammarList = iteratorToList(first.getBlockGrammarIterator());
+    List<String> secondGrammarList = iteratorToList(second.getBlockGrammarIterator());
+    List<String> thirdGrammarList = iteratorToList(third.getBlockGrammarIterator());
     return Stream.of(first, second, third).allMatch(AbstractBlock::isTextBlock)
         && firstGrammarList.contains(NOUN)
         && secondGrammarList.contains(VERB)
@@ -148,13 +146,38 @@ public class RuleInterpreter {
    * @param propertyName The name of the property.
    * @return The visitor to apply.
    */
-  private BlockVisitor determineVisitor(String propertyName) {
+  private Optional<BlockVisitor> determineVisitor(String propertyName) {
     String behaviorType = behaviorMap.get(propertyName + TEXT_BLOCK_SUFFIX);
     if (ATTRIBUTE.equals(behaviorType)) {
-      return new AttributeVisitor(propertyName);
+      return Optional.of(new AttributeVisitor(propertyName));
     } else if (TRANSFORM.equals(behaviorType)) {
-      return new TransformationVisitor(propertyName);
+      return Optional.of(new TransformationVisitor(propertyName));
     }
-    return null;
+    return Optional.empty();
   }
+
+  /**
+   * Loads the behavior mappings from the properties file.
+   */
+  private void loadBehaviorMappings() {
+    String attributes = properties.getProperty(ATTRIBUTE_VISITS);
+    String transforms = properties.getProperty(BECOMES_VISITS);
+    Arrays.stream(attributes.split(REGEX_SPLIT))
+        .forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, ATTRIBUTE));
+    Arrays.stream(transforms.split(REGEX_SPLIT))
+        .forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, TRANSFORM));
+  }
+
+  /**
+   * Converts an iterator to a list.
+   *
+   * @param iterator The iterator to convert.
+   * @return The list of elements from the iterator.
+   */
+  private List<String> iteratorToList(Iterator<String> iterator) {
+    List<String> list = new ArrayList<>();
+    iterator.forEachRemaining(list::add);
+    return list;
+  }
+
 }

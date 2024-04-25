@@ -5,6 +5,8 @@ import java.util.Date;
 
 /**
  * Manages the session state for a game, including comments and leaderboard data.
+ *
+ * @author Philip Lee.
  */
 public class GameSession {
 
@@ -12,7 +14,6 @@ public class GameSession {
   private static final String DEFAULT_COMMENT = "";
   private static final ArrayList<ReplySchema> DEFAULT_REPLIES = new ArrayList<>();
   private static final int DEFAULT_TIME = 0;
-
   private final CommentData commentData;
   private final LeaderboardData leaderboardData;
 
@@ -23,8 +24,9 @@ public class GameSession {
    * @param levelName The name of the level.
    */
   public GameSession(String username, String levelName) {
-    this.commentData = new CommentData(username, levelName, DEFAULT_DATE, DEFAULT_COMMENT, DEFAULT_REPLIES);
     this.leaderboardData = new LeaderboardData(username, levelName, DEFAULT_DATE, DEFAULT_TIME);
+    this.commentData = new CommentData(username, levelName, DEFAULT_DATE, DEFAULT_COMMENT,
+        DEFAULT_REPLIES);
   }
 
   /**

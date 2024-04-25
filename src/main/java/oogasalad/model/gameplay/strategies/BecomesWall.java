@@ -7,6 +7,8 @@ import oogasalad.model.gameplay.grid.CellIterator;
 /**
  * This class is a concrete implementation of the AbstractBecomesBehaviors class. It represents the
  * behavior of a block when it becomes a wall.
+ *
+ * @author Philip Lee.
  */
 public class BecomesWall extends AbstractBecomesBehavior {
 
