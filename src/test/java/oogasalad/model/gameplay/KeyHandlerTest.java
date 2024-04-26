@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyHandlerTest {
-    private KeyHandler keyHandler;
-    private Grid grid;
-    private GameStateController gameStateControllerMock;
-    private final static int ROWS = 5;
+  private KeyHandler keyHandler;
+  private Grid grid;
+  private GameStateController gameStateControllerMock;
+  private final static int ROWS = 5;
 
     private final static int COLS = 5;
     AttributeVisitor wallVisitor;
@@ -71,118 +71,118 @@ public class KeyHandlerTest {
         wallBlock = new WallVisualBlock("Wall", 0, 0);
         wallBlock.accept(wallVisitor);
 
-    }
+  }
 
 
 
 
-    /**
-     * Test method to verify the behavior of moving a block to the right using the RightKeyHandler.
-     * It checks if the size of the cell after the execution is as expected.
-     */
-    @Test
-    public void testRightKeyHandler(){
-        grid.getGrid()[0][0].add(babaBlock);
-        keyHandler = new RightKeyHandler(grid, gameStateControllerMock);
-        keyHandler.execute();
-        int size = grid.cellSize(0, 1);
-        assertEquals(2, size);
+  /**
+   * Test method to verify the behavior of moving a block to the right using the RightKeyHandler.
+   * It checks if the size of the cell after the execution is as expected.
+   */
+  @Test
+  public void testRightKeyHandler(){
+    grid.getGrid()[0][0].add(babaBlock);
+    keyHandler = new RightKeyHandler(grid, gameStateControllerMock);
+    keyHandler.execute();
+    int size = grid.cellSize(0, 1);
+    assertEquals(2, size);
 
-    }
-
-
-
-
-    /**
-     * Test method to verify the behavior of moving a block to the left using the LeftKeyHandler.
-     * It checks if the size of the cell after the execution is as expected.
-     */
-    @Test
-    public void testLeftKeyHandler(){
-        grid.getGrid()[0][1].add(babaBlock);
-        keyHandler = new LeftKeyHandler(grid, gameStateControllerMock);
-        keyHandler.execute();
-        assertEquals(2, grid.cellSize(0, 0));
-    }
+  }
 
 
 
 
-    /**
-     * Test method to verify the behavior of moving a block up using the UpKeyHandler.
-     * It checks if the size of the cell after the execution is as expected.
-     */
-    @Test
-    public void testUpKeyHandler(){
-        grid.getGrid()[1][0].add(babaBlock);
-        keyHandler = new UpKeyHandler(grid, gameStateControllerMock);
-        keyHandler.execute();
-        assertEquals(2, grid.cellSize(0, 0));
-    }
+  /**
+   * Test method to verify the behavior of moving a block to the left using the LeftKeyHandler.
+   * It checks if the size of the cell after the execution is as expected.
+   */
+  @Test
+  public void testLeftKeyHandler(){
+    grid.getGrid()[0][1].add(babaBlock);
+    keyHandler = new LeftKeyHandler(grid, gameStateControllerMock);
+    keyHandler.execute();
+    assertEquals(2, grid.cellSize(0, 0));
+  }
 
 
 
 
-
-    /**
-     * Test method to verify the behavior of moving a block down using the DownKeyHandler.
-     * It checks if the size of the cell after the execution is as expected.
-     */
-    @Test
-    public void DownKeyHandler(){
-        grid.getGrid()[0][0].add(babaBlock);
-        keyHandler = new DownKeyHandler(grid, gameStateControllerMock);
-        keyHandler.execute();
-        assertEquals(2, grid.cellSize(1, 0));
-    }
+  /**
+   * Test method to verify the behavior of moving a block up using the UpKeyHandler.
+   * It checks if the size of the cell after the execution is as expected.
+   */
+  @Test
+  public void testUpKeyHandler(){
+    grid.getGrid()[1][0].add(babaBlock);
+    keyHandler = new UpKeyHandler(grid, gameStateControllerMock);
+    keyHandler.execute();
+    assertEquals(2, grid.cellSize(0, 0));
+  }
 
 
 
 
 
-    /**
-     * Test method to verify that a block cannot move to a cell with a wall using LeftKeyHandler.
-     * It checks if the wall is still present in the same position and if the cell size remains unchanged.
-     */
-    @Test
-    public void testNotMovableToMargin(){
-        grid.getGrid()[1][1].add(wallBlock);
-        keyHandler = new LeftKeyHandler(grid,gameStateControllerMock);
-        keyHandler.execute();
-        assertEquals("Wall", grid.getBlock(1, 1, 1).getBlockName());
-        assertEquals(2, grid.cellSize(1, 1));
-    }
-
-
-
-
-    /**
-     * Test method to verify that a block can move to a cell with no obstacles using LeftKeyHandler.
-     * It checks if the size of the destination cell after the execution is as expected.
-     */
-    @Test
-    public void testMovableToMargin(){
-        grid.getGrid()[1][1].add(babaBlock);
-        keyHandler = new LeftKeyHandler(grid,gameStateControllerMock);
-        keyHandler.execute();
-        assertEquals(2, grid.cellSize(1, 0));
-    }
+  /**
+   * Test method to verify the behavior of moving a block down using the DownKeyHandler.
+   * It checks if the size of the cell after the execution is as expected.
+   */
+  @Test
+  public void DownKeyHandler(){
+    grid.getGrid()[0][0].add(babaBlock);
+    keyHandler = new DownKeyHandler(grid, gameStateControllerMock);
+    keyHandler.execute();
+    assertEquals(2, grid.cellSize(1, 0));
+  }
 
 
 
 
 
-    /**
-     * Test method to verify the phasing behavior of a block to a cell with another block.
-     * It checks if the size of the destination cell after the execution is as expected.
-     */
-    @Test
-    public void testPhasing(){
-        grid.getGrid()[1][1].add(babaBlock);
-        keyHandler = new RightKeyHandler(grid,gameStateControllerMock);
-        keyHandler.execute();
-        assertEquals(2, grid.cellSize(1, 2));
-    }
+  /**
+   * Test method to verify that a block cannot move to a cell with a wall using LeftKeyHandler.
+   * It checks if the wall is still present in the same position and if the cell size remains unchanged.
+   */
+  @Test
+  public void testNotMovableToMargin(){
+    grid.getGrid()[1][1].add(wallBlock);
+    keyHandler = new LeftKeyHandler(grid,gameStateControllerMock);
+    keyHandler.execute();
+    assertEquals("Wall", grid.getBlock(1, 1, 1).getBlockName());
+    assertEquals(2, grid.cellSize(1, 1));
+  }
+
+
+
+
+  /**
+   * Test method to verify that a block can move to a cell with no obstacles using LeftKeyHandler.
+   * It checks if the size of the destination cell after the execution is as expected.
+   */
+  @Test
+  public void testMovableToMargin(){
+    grid.getGrid()[1][1].add(babaBlock);
+    keyHandler = new LeftKeyHandler(grid,gameStateControllerMock);
+    keyHandler.execute();
+    assertEquals(2, grid.cellSize(1, 0));
+  }
+
+
+
+
+
+  /**
+   * Test method to verify the phasing behavior of a block to a cell with another block.
+   * It checks if the size of the destination cell after the execution is as expected.
+   */
+  @Test
+  public void testPhasing(){
+    grid.getGrid()[1][1].add(babaBlock);
+    keyHandler = new RightKeyHandler(grid,gameStateControllerMock);
+    keyHandler.execute();
+    assertEquals(2, grid.cellSize(1, 2));
+  }
 
 
 

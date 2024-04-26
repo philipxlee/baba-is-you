@@ -213,11 +213,10 @@ public class Grid extends GridHelper implements Observable<Grid> {
         cell.sort(new Comparator<AbstractBlock>() {
           @Override
           public int compare(AbstractBlock block1, AbstractBlock block2) {
-            if (block1.getBlockName().equals("EmptyVisualBlock") && !(block2.getBlockName()
-                    .equals("EmptyVisualBlock"))) {
+            if (block1.isEmptyVisualBlock() && !(block2.isEmptyVisualBlock())) {
               return -1;
-            } else if (!(block1.getBlockName().equals("EmptyVisualBlock"))
-                    && block2.getBlockName().equals("EmptyVisualBlock")) {
+            } else if (!(block1.isEmptyVisualBlock())
+                    && block2.isEmptyVisualBlock()) {
               return 1;
             }
             return 0;

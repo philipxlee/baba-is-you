@@ -14,6 +14,9 @@ import java.util.stream.StreamSupport;
 import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.LeaderboardData;
 import oogasalad.database.gamedata.ReplySchema;
+import oogasalad.database.records.CommentRecord;
+import oogasalad.database.records.LeaderboardRecord;
+import oogasalad.database.records.ReplyRecord;
 import oogasalad.shared.loader.PropertiesLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,10 +69,10 @@ public class DataFetcher {
    * @return true if the username is available, false otherwise
    */
   public boolean isUsernameAvailable(String username) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty(COLLECTION_DATA));
-    long count = collection.countDocuments(
-        Filters.eq(properties.getProperty(FIELD_USERNAME), username));
+    MongoCollection<Document> collection = database
+        .getCollection(properties.getProperty(COLLECTION_DATA));
+    long count = collection
+        .countDocuments(Filters.eq(properties.getProperty(FIELD_USERNAME), username));
     return count == NONE;
   }
 
@@ -80,9 +83,8 @@ public class DataFetcher {
    * @return an iterator over the leaderboard data
    */
   public Iterator<LeaderboardData> getTopPlayersIterator(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty(COLLECTION_DATA)
-    );
+    MongoCollection<Document> collection = database
+        .getCollection(properties.getProperty(COLLECTION_DATA));
 
     Iterable<Document> documents = collection
         .find(Filters.eq(properties.getProperty(FIELD_LEVEL_NAME), currentLevelName))
@@ -90,13 +92,8 @@ public class DataFetcher {
         .limit(DISPLAY_LIMIT);
 
     logger.info("Retrieved top players for level: " + currentLevelName);
-
     return StreamSupport.stream(documents.spliterator(), false)
-        .map(document -> new LeaderboardData(
-            document.getString(properties.getProperty(FIELD_USERNAME)),
-            document.getString(properties.getProperty(FIELD_LEVEL_NAME)),
-            document.getDate(properties.getProperty(FIELD_DATE)),
-            document.getLong(properties.getProperty(FIELD_TIME_SPENT))
+        .map(document -> new LeaderboardData(buildLeaderboardRecord(document)
         )).iterator();
   }
 
@@ -107,15 +104,14 @@ public class DataFetcher {
    * @return a list of the comments
    */
   public Iterator<CommentData> getLevelCommentsIterator(String currentLevelName) {
-    MongoCollection<Document> collection = database.getCollection(
-        properties.getProperty(COLLECTION_COMMENTS)
-    );
+    MongoCollection<Document> collection = database
+        .getCollection(properties.getProperty(COLLECTION_COMMENTS));
+
     Iterable<Document> documents = collection
         .find(Filters.eq(properties.getProperty(FIELD_LEVEL_NAME), currentLevelName))
         .limit(DISPLAY_LIMIT);
 
     logger.info("Retrieved comments for level: " + currentLevelName);
-
     return StreamSupport.stream(documents.spliterator(), false)
         .map(this::documentToCommentData)
         .iterator();
@@ -130,10 +126,10 @@ public class DataFetcher {
   private CommentData documentToCommentData(Document document) {
     String username = document.getString(properties.getProperty(FIELD_USERNAME));
     String levelName = document.getString(properties.getProperty(FIELD_LEVEL_NAME));
-    Date date = document.getDate(properties.getProperty(FIELD_DATE));
     String comment = document.getString(properties.getProperty(FIELD_COMMENT));
+    Date date = document.getDate(properties.getProperty(FIELD_DATE));
     List<ReplySchema> replies = extractReplies(document);
-    return new CommentData(username, levelName, date, comment, replies);
+    return new CommentData(buildCommentRecord(username, levelName, date, comment, replies));
   }
 
   /**
@@ -146,11 +142,21 @@ public class DataFetcher {
     List<Document> replyDocs = document.getList(properties.getProperty(FIELD_REPLIES),
         Document.class);
     return replyDocs == null ? new ArrayList<>() : replyDocs.stream()
-        .map(doc -> new ReplySchema(
-            doc.getString(properties.getProperty(FIELD_USERNAME)), UNKNOWN_NAME,
-            doc.getDate(properties.getProperty(FIELD_DATE)),
-            doc.getString(properties.getProperty(FIELD_REPLY))))
+        .map(doc -> new ReplySchema(buildReplyRecord(doc)))
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Builds a ReplyRecord from a document.
+   *
+   * @param doc the document
+   * @return the ReplyRecord
+   */
+  private ReplyRecord buildReplyRecord(Document doc) {
+    return new ReplyRecord(
+        doc.getString(properties.getProperty(FIELD_USERNAME)), UNKNOWN_NAME,
+        doc.getDate(properties.getProperty(FIELD_DATE)),
+        doc.getString(properties.getProperty(FIELD_REPLY)));
   }
 
   /**
@@ -161,6 +167,34 @@ public class DataFetcher {
   private DataFetcher(MongoDatabase database) {
     this.database = database;
     this.properties = PropertiesLoader.loadProperties(DATABASE_PROPERTIES_PATH);
+  }
+
+  /**
+   * Builds a LeaderboardRecord from a document.
+   *
+   * @param document the document
+   * @return the LeaderboardRecord
+   */
+  private LeaderboardRecord buildLeaderboardRecord(Document document) {
+    return new LeaderboardRecord(document.getString(properties.getProperty(FIELD_USERNAME)),
+        document.getString(properties.getProperty(FIELD_LEVEL_NAME)),
+        document.getDate(properties.getProperty(FIELD_DATE)),
+        document.getLong(properties.getProperty(FIELD_TIME_SPENT)));
+  }
+
+  /**
+   * Builds a CommentRecord from the given parameters.
+   *
+   * @param username  username
+   * @param levelName level name
+   * @param date      date
+   * @param comment   comment
+   * @param replies   replies
+   * @return the CommentRecord
+   */
+  private CommentRecord buildCommentRecord(String username, String levelName, Date date,
+      String comment, List<ReplySchema> replies) {
+    return new CommentRecord(username, levelName, date, comment, replies);
   }
 
 }
