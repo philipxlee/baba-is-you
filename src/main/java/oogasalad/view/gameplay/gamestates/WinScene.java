@@ -3,10 +3,7 @@ package oogasalad.view.gameplay.gamestates;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
-import java.util.List;
-import java.util.ArrayList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -30,7 +27,7 @@ public class WinScene implements Scene {
   private int width;
   private int height;
   private boolean statsSaved = false;
-  private String language;
+  private final String language;
 
   public WinScene(SceneController sceneController) {
     this.sceneController = sceneController;
@@ -107,7 +104,8 @@ public class WinScene implements Scene {
   }
 
   private Button createSaveStatsButton(TextArea commentField) {
-    Button saveStatsButton = factory.makeButton(new WidgetConfiguration(200, 40, "SaveStats", "button", language));
+    Button saveStatsButton = factory.makeButton(
+        new WidgetConfiguration(200, 40, "SaveStats", "button", language));
     saveStatsButton.setOnAction(event -> saveStatistics(commentField, saveStatsButton));
     return saveStatsButton;
   }
@@ -131,7 +129,8 @@ public class WinScene implements Scene {
   }
 
   private void addButtonComponents() {
-    Button playAgainButton = factory.makeButton(new WidgetConfiguration(200, 40, "PlayAgain", "button", language));
+    Button playAgainButton = factory.makeButton(
+        new WidgetConfiguration(200, 40, "PlayAgain", "button", language));
     playAgainButton.setOnAction(event -> sceneController.initializeViews());
     root.getChildren().add(playAgainButton);
   }

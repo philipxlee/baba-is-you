@@ -9,14 +9,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -24,6 +23,7 @@ import javafx.stage.Stage;
  * Factory class for making general UI widgets.
  */
 public class WidgetFactory {
+
   public static final String STYLESHEET = "style.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
@@ -56,9 +56,9 @@ public class WidgetFactory {
     return line;
   }
 
-  public Text generateSubHeader(String content) {
+  public Text generateLine(String content) {
     Text line = new Text(content);
-    line.getStyleClass().add("sub-header");
+    line.getStyleClass().add("paragraph");
     return line;
   }
 
@@ -134,6 +134,7 @@ public class WidgetFactory {
 
   /**
    * For dynamic buttons showing player information or other non-property information
+   *
    * @param configuration
    * @param label
    * @return
@@ -147,6 +148,10 @@ public class WidgetFactory {
     return button;
   }
 
+  public void changeButtonLabel(Button button, WidgetConfiguration widgetConfiguration) {
+    button.setText(widgetConfiguration.getPropertyContents());
+  }
+
   public ScrollPane makeScrollPane(FlowPane flowPane, int maxWidth) {
     ScrollPane pane = new ScrollPane(flowPane);
     pane.setFitToWidth(true);
@@ -154,6 +159,7 @@ public class WidgetFactory {
     pane.setMaxWidth(maxWidth);
     pane.setPannable(false);
     pane.setFocusTraversable(false);
+    pane.getStylesheets().add("scrollpane");
     pane.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP
           || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
@@ -175,22 +181,32 @@ public class WidgetFactory {
   }
 
   public FlowPane createFlowPane(WidgetConfiguration configuration) {
-      FlowPane flowPane = new FlowPane();
-      flowPane.setPrefSize(configuration.getWidth(), configuration.getHeight());
-      flowPane.setPadding(new Insets(10));
-      flowPane.setHgap(10);
-      flowPane.setVgap(10);
-      flowPane.setAlignment(Pos.CENTER);
-      flowPane.setFocusTraversable(false);
-      flowPane.getStyleClass().add(configuration.getCssMatch());
-      return flowPane;
+    FlowPane flowPane = new FlowPane();
+    flowPane.setPrefSize(configuration.getWidth(), configuration.getHeight());
+    flowPane.setPadding(new Insets(10));
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
+    flowPane.setAlignment(Pos.CENTER);
+    flowPane.setFocusTraversable(false);
+    flowPane.getStyleClass().add(configuration.getCssMatch());
+    return flowPane;
   }
 
   public TextField createTextField(WidgetConfiguration configuration) {
     TextField field = new TextField();
     field.setPromptText(configuration.getPropertyContents());
     field.setMinWidth(configuration.getWidth());
-    field.setMaxWidth(configuration.getWidth()+100);
+    field.setMaxWidth(configuration.getWidth() + 100);
+    field.setPrefHeight(configuration.getHeight());
+    field.getStyleClass().add(configuration.getCssMatch());
+    return field;
+  }
+
+  public TextArea createTextArea(WidgetConfiguration configuration) {
+    TextArea field = new TextArea();
+    field.setPromptText(configuration.getPropertyContents());
+    field.setMaxWidth(configuration.getWidth());
+    field.setMinHeight(configuration.getHeight());
     field.setPrefHeight(configuration.getHeight());
     field.getStyleClass().add(configuration.getCssMatch());
     return field;

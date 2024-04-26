@@ -60,7 +60,7 @@ public interface BlockVisitor {
   /**
    * Visits a WaterVisualBlock.
    *
-   * @param water  WaterVisualBlock to visit.
+   * @param water WaterVisualBlock to visit.
    */
   void visit(WaterVisualBlock water);
 

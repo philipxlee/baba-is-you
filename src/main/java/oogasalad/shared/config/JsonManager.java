@@ -54,12 +54,14 @@ public class JsonManager {
    * @param jsonObject the JsonObject to save.
    * @param fileName   the template filename of the file.
    */
-  public void saveToFile(JsonObject jsonObject, String fileName) throws IOException {
+  public File saveToFile(JsonObject jsonObject, String fileName) throws IOException {
     Stage stage = new Stage();
     File file = selectSaveFile(stage, fileName);
     if (file != null) {
       writeToFile(jsonObject, file);
+      return file;
     }
+    return null;
   }
 
   /**

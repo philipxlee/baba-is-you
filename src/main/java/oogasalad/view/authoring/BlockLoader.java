@@ -18,7 +18,7 @@ public class BlockLoader {
    * Load and display all blocks without category filtering.
    *
    * @param blocksContainer The container to add the block views to.
-   * @param jsonFileName The JSON file name where blocks are defined.
+   * @param jsonFileName    The JSON file name where blocks are defined.
    */
   public void loadBlocks(FlowPane blocksContainer, String jsonFileName) {
     try {
@@ -32,8 +32,8 @@ public class BlockLoader {
    * Load and display blocks filtered by category.
    *
    * @param blocksContainer The container to add the block views to.
-   * @param jsonFileName The JSON file name where blocks are defined.
-   * @param category The category to filter the blocks by.
+   * @param jsonFileName    The JSON file name where blocks are defined.
+   * @param category        The category to filter the blocks by.
    */
   public void loadBlocks(FlowPane blocksContainer, String jsonFileName, String category) {
     try {
@@ -47,7 +47,7 @@ public class BlockLoader {
    * Display blocks in the given container.
    *
    * @param blocksContainer The container where blocks are to be added.
-   * @param blocksData List of BlockData containing block information.
+   * @param blocksData      List of BlockData containing block information.
    */
   private void displayBlocks(FlowPane blocksContainer, List<BlockData> blocksData) {
     blocksContainer.getChildren().clear();
@@ -64,6 +64,7 @@ public class BlockLoader {
 
   /**
    * Set up drag-and-drop functionality for an ImageView.
+   *
    * @param imageView The ImageView to make draggable.
    * @param blockType The type of block, used as the identifier for the drag content.
    */

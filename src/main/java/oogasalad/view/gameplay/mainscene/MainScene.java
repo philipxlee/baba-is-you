@@ -21,8 +21,8 @@ public class MainScene implements Scene {
   private HBox root;
   private GamePane gameScene;
   private InteractionPane interactionScene;
-  private Level level;
-  private LevelController levelController;
+  private final Level level;
+  private final LevelController levelController;
   private String language;
 
   public MainScene(SceneController sceneController, LevelController levelController) {

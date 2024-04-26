@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -18,8 +17,6 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
-import oogasalad.shared.widgetfactory.WidgetFactory;
-import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
  * Class that encapsulates the grid interactions from the model and displays them. Uses the Observer
@@ -114,13 +111,12 @@ public class GamePane implements Observer<Grid> {
 
             if (block.getBlockName().contains("BabaVisual")) {
               modifiedBlockName = block.getBlockName() + currentDirection;
-              if (!animationCache.containsKey( block.getBlockName() + currentDirection)) {
+              if (!animationCache.containsKey(block.getBlockName() + currentDirection)) {
                 ImageView image = blockFactory.createBlockView(modifiedBlockName);
                 animationCache.put(modifiedBlockName, image);
               }
               visualObj = animationCache.get(modifiedBlockName);
-            }
-            else {
+            } else {
               visualObj = blockFactory.createBlockView(block.getBlockName());
             }
 
@@ -144,7 +140,7 @@ public class GamePane implements Observer<Grid> {
 
   private void calculateCellSize(int r, int c) {
     int smallerDimension = Math.min(r, c);
-    this.cellSize = Math.min(width/smallerDimension, height/smallerDimension);
+    this.cellSize = Math.min(width / smallerDimension, height / smallerDimension);
   }
 
   private void handleKeyPresses(MainScene scene) {

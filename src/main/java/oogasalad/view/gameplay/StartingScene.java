@@ -4,13 +4,11 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLD
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -39,14 +37,14 @@ public class StartingScene implements Scene {
   /**
    * Constructor for StartingScene.
    *
-   * @param sceneController      The SceneController object.
+   * @param sceneController    The SceneController object.
    * @param databaseController The PlayerDataController object.
    */
   public StartingScene(SceneController sceneController, DatabaseController databaseController,
       String language) {
     this.sceneController = sceneController;
     this.databaseController = databaseController;
-    this.language = language;
+    StartingScene.language = language;
 
   }
 
@@ -99,7 +97,7 @@ public class StartingScene implements Scene {
     List<Node> btns = createButtons(feedbackLabel);
 
     List<Node> boxes = new ArrayList<>();
-    boxes.add(factory.wrapInVBox(texts, height/2, 10));
+    boxes.add(factory.wrapInVBox(texts, height / 2, 10));
     boxes.add(factory.wrapInHBox(btns, width));
 
     root.getChildren().add(factory.wrapInVBox(boxes, height, 10));
@@ -115,6 +113,7 @@ public class StartingScene implements Scene {
     });
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 40,
         "Back", "button", language));
+    backButton.setOnAction(event -> sceneController.goToEntryPoint());
     startGame(start);
     guestButton.setOnAction(event -> sceneController.beginGame(true));
 
@@ -141,7 +140,8 @@ public class StartingScene implements Scene {
       feedbackLabel.setText("");
       checkUsernameAvailability(newValue, start, feedbackLabel);
     } else {
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameInvalid", language));
+      factory.replaceLabelContent(feedbackLabel,
+          new WidgetConfiguration("UserNameInvalid", language));
       start.setDisable(true);
     }
   }
@@ -149,9 +149,11 @@ public class StartingScene implements Scene {
   private void checkUsernameAvailability(String newValue, Button start, Label feedbackLabel) {
     if (databaseController.isUsernameAvailable(newValue.trim())) {
       start.setDisable(false);
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameAvailable", language));
+      factory.replaceLabelContent(feedbackLabel,
+          new WidgetConfiguration("UserNameAvailable", language));
     } else {
-      factory.replaceLabelContent(feedbackLabel, new WidgetConfiguration("UserNameTaken", language));
+      factory.replaceLabelContent(feedbackLabel,
+          new WidgetConfiguration("UserNameTaken", language));
       start.setDisable(true);
     }
   }
