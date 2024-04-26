@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Tooltip;
+
 
 
 import javafx.concurrent.Task;
@@ -49,6 +51,7 @@ public class ElementsPane {
     this.builderPane = builderPane;
     this.levelController = levelController;
     initializeElementsLayout();
+
   }
 
   private void initializeElementsLayout() {
@@ -205,6 +208,22 @@ public class ElementsPane {
     layout.getChildren().addAll(header, buttonsHBox, comboBoxes, descriptionBox,
         scrollPane, jsonBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+
+    Tooltip categoryTooltip = new Tooltip("Select the category of elements to display");
+    Tooltip difficultyTooltip = new Tooltip("Select the difficulty level of elements");
+    Tooltip changeGridSizeTooltip = new Tooltip("Click to change the size of the grid");
+    Tooltip removeButtonTooltip = new Tooltip("Toggle remove mode to delete blocks");
+    Tooltip gptButtonTooltip = new Tooltip("Generate a level using GPT");
+    Tooltip saveJsonButtonTooltip = new Tooltip("Save the level configuration as JSON");
+
+    // Attach tooltips to corresponding nodes
+    categoryComboBox.setTooltip(categoryTooltip);
+    difficultyComboBox.setTooltip(difficultyTooltip);
+    changeGridSizeButton.setTooltip(changeGridSizeTooltip);
+    removeButton.setTooltip(removeButtonTooltip);
+    gpt.setTooltip(gptButtonTooltip);
+    saveJson.setTooltip(saveJsonButtonTooltip);
   }
 
   private void toggleRemoveMode(Button removeButton) {
