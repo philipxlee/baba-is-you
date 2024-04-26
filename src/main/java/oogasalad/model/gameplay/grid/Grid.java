@@ -276,5 +276,8 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
+  public boolean hasEnemy(){
+    return false;
+  }
 
 }

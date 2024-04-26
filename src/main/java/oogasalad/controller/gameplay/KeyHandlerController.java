@@ -2,11 +2,7 @@ package oogasalad.controller.gameplay;
 
 import javafx.scene.input.KeyCode;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.handlers.DownKeyHandler;
-import oogasalad.model.gameplay.handlers.KeyHandler;
-import oogasalad.model.gameplay.handlers.LeftKeyHandler;
-import oogasalad.model.gameplay.handlers.RightKeyHandler;
-import oogasalad.model.gameplay.handlers.UpKeyHandler;
+import oogasalad.model.gameplay.handlers.*;
 
 public class KeyHandlerController {
 
@@ -23,6 +19,7 @@ public class KeyHandlerController {
       case DOWN -> new DownKeyHandler(grid, gameStateController);
       case LEFT -> new LeftKeyHandler(grid, gameStateController);
       case RIGHT -> new RightKeyHandler(grid, gameStateController);
+      case E -> new EnemyKeyHandler(grid, gameStateController);
       default -> null;
     };
 
