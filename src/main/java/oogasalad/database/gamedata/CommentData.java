@@ -1,5 +1,6 @@
 package oogasalad.database.gamedata;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -56,7 +57,7 @@ public class CommentData extends AbstractGameData {
 
     return new Document(properties.getProperty(FIELD_USERNAME), getUsername())
         .append(properties.getProperty(FIELD_LEVEL_NAME), getLevelName())
-        .append(properties.getProperty(FIELD_DATE), getDate())
+        .append(properties.getProperty(FIELD_DATE), new Date())
         .append(properties.getProperty(FIELD_COMMENT), comment)
         .append(properties.getProperty(FIELD_REPLIES), replyDocs);
   }

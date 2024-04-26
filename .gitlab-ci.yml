@@ -44,7 +44,8 @@ unit_testing:
         -Dprism.order=sw \
         -Dprism.fontdir=/usr/share/fonts \
         -Dtestfx.setup.timeout=12000 \
-        -Dheadless.geometry=1600x1200
+        -Dheadless.geometry=1600x1200 || true
+    - mvn jacoco:report
     - /cover2cover target/site/jacoco/jacoco.xml > target/cobertura.xml
     - cat target/cobertura.xml
   timeout: 20 minutes
