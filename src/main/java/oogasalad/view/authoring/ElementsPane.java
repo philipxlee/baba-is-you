@@ -47,7 +47,7 @@ public class ElementsPane {
   private VBox layout;
   private boolean removeMode = false;
   private String language;
-  private String difficulty;
+  private String difficulty = "Medium";
   private final GridSizeChanger gridSizeChanger;
 
   public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
@@ -155,7 +155,7 @@ public class ElementsPane {
 
     Button saveJsonButton = factory.makeButton(new WidgetConfiguration(
         200, 40, "SaveJson", "black-button", language));
-    saveJsonButton.setOnAction(event -> jsonSaver.saveJson());
+    saveJsonButton.setOnAction(event -> jsonSaver.saveJson(difficulty));
 
     // Create the Load Level button
     Button loadLevelButton = factory.makeButton(new WidgetConfiguration(

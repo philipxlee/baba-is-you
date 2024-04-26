@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.view.authoring.BuilderPane;
 
@@ -15,13 +16,17 @@ public class JsonSaver {
 
   private final LevelController levelController;
   private final BuilderPane builderPane;
+  private Level level;
+  private String difficulty;
 
   public JsonSaver(LevelController levelController, BuilderPane builderPane) {
     this.levelController = levelController;
     this.builderPane = builderPane;
+    this.level = levelController.getLevel();
   }
 
-  public void saveJson() {
+  public void saveJson(String difficulty) {
+    this.difficulty = difficulty;
     GridPane inputGrid = createInputGrid();
     Alert confirmation = createConfirmationAlert(inputGrid);
     confirmation.showAndWait().ifPresent(buttonType -> handleConfirmation(buttonType, confirmation));
@@ -54,7 +59,8 @@ public class JsonSaver {
     confirmation.setTitle("Save JSON");
     confirmation.setHeaderText("Enter level details and save JSON:");
     confirmation.getDialogPane().setContent(inputGrid);
-    confirmation.getButtonTypes().setAll(new ButtonType("Yes", ButtonBar.ButtonData.YES), new ButtonType("No", ButtonBar.ButtonData.NO));
+    confirmation.getButtonTypes().setAll(new ButtonType("Yes", ButtonBar.ButtonData.YES),
+        new ButtonType("No", ButtonBar.ButtonData.NO));
     return confirmation;
   }
 
@@ -63,10 +69,10 @@ public class JsonSaver {
       String levelName = getFieldText(0, confirmation);
       String levelDescription = getFieldText(1, confirmation);
       String authorName = getFieldText(2, confirmation);
+      String hint = getFieldText(3, confirmation);
       LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
-          builderPane.gridHeight, builderPane.gridWidth,  authorName,
-          levelController.getLevelMetadata().difficulty(),
-          levelController.getLevelMetadata().hint());
+          builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
+      levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
       File savedFile = levelController.serializeLevel();
       if (savedFile != null) {
         showAlert("Success", "JSON saved successfully!");

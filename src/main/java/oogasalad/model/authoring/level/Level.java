@@ -30,6 +30,17 @@ public class Level implements Observable<Level> {
   }
 
   /**
+   * Level Constructor. Initialized with LevelMetadata record and grid.
+   *
+   * @param levelMetadata The levelMetadata record representing the level.
+   */
+  public Level(LevelMetadata levelMetadata, Grid inputGrid) {
+    this.levelMetadata = levelMetadata;
+    grid = inputGrid;
+    observers = new ArrayList<>();
+  }
+
+  /**
    * Set Cell of a level with block type. (type must be in block types properties file).
    *
    * @param row       The row position to be modified.
@@ -102,6 +113,15 @@ public class Level implements Observable<Level> {
    */
   public LevelMetadata getLevelMetadata() {
     return levelMetadata;
+  }
+
+  /**
+   * Returns the grid.
+   *
+   * @return Current LevelMetadata.
+   */
+  public Grid getGrid() {
+    return grid;
   }
 
   /**
