@@ -115,6 +115,7 @@ public class StartingScene implements Scene {
     });
     Button backButton = factory.makeButton(new WidgetConfiguration(200, 40,
         "Back", "button", language));
+    backButton.setOnAction(event -> sceneController.goToEntryPoint());
     startGame(start);
     guestButton.setOnAction(event -> sceneController.beginGame(true));
 

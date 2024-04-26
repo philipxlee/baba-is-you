@@ -1,7 +1,9 @@
 package oogasalad.controller.gameplay;
 
 import javafx.stage.Stage;
+import oogasalad.controller.entrypoint.EntryPointController;
 import oogasalad.model.gameplay.level.Level;
+import oogasalad.shared.entrypoint.EntryPoint;
 import oogasalad.shared.scene.Scene;
 import oogasalad.view.gameplay.mainscene.MainScene;
 import oogasalad.view.gameplay.StartingScene;
@@ -98,11 +100,26 @@ public class SceneController {
    */
   public LevelController getLevelController() { return levelController; }
 
+  /**
+   * Set the language of the game.
+   * @param newLanguage the language to change to
+   */
   public void setLanguage(String newLanguage) {
     this.language = newLanguage;
   }
 
+  /**
+   * Get the language of the game.
+   * @return the current configured language
+   */
   public String getLanguage() {
     return this.language;
+  }
+
+  public void goToEntryPoint() {
+    EntryPointController entryPointController = new EntryPointController(stage);
+    entryPointController.setLanguage(this.language);
+    switchToScene(new EntryPoint(entryPointController));
+
   }
 }
