@@ -1,6 +1,7 @@
 package oogasalad.controller.authoring;
 
 import com.google.gson.JsonObject;
+import java.io.File;
 import java.io.IOException;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
@@ -51,22 +52,21 @@ public class LevelController {
    * Serialize current level to JSON using Gson library. Parse according to configuration format.
    * Save to file directory.
    */
-  public void serializeLevel() {
+  public File serializeLevel() {
     JsonObject levelJson = levelParser.parseLevelToJSON(currentLevel);
     String fileName = currentLevel.getLevelMetadata().levelName() + ".json";
     try {
-      levelParser.saveJSON(levelJson, fileName);
+      return levelParser.saveJSON(levelJson, fileName);
     } catch (IOException e) {
       e.printStackTrace();
     }
+    return null;
   }
 
   /**
    * Use GPT to randomly generate a valid level configuration.
-   *
-   * @throws Exception Thrown if error occurs with GPT client.
    */
-  public void generateLevel() throws Exception {
+  public void generateLevel() {
     openAIClient.fetchLevelConfiguration().thenAccept(json -> {
       System.out.println("Received level configuration: " + json);
     });

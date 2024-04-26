@@ -1,5 +1,6 @@
 package oogasalad.view.authoring;
 
+import java.io.File;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -55,14 +56,15 @@ public class JsonSaver {
 
         // Proceed with saving the JSON using the provided details
         LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, authorName, builderPane.gridHeight, builderPane.gridWidth);
-        levelController.serializeLevel();
-
-        // Optionally, show a success message
-        Alert success = new Alert(Alert.AlertType.INFORMATION);
-        success.setTitle("Success");
-        success.setHeaderText(null);
-        success.setContentText("JSON saved successfully!");
-        success.showAndWait();
+        File savedFile = levelController.serializeLevel(); // Get the saved file
+        if (savedFile != null) {
+          // The user selected a file, proceed with saving
+          Alert success = new Alert(Alert.AlertType.INFORMATION);
+          success.setTitle("Success");
+          success.setHeaderText(null);
+          success.setContentText("JSON saved successfully!");
+          success.showAndWait();
+        }
       }
     });
   }
