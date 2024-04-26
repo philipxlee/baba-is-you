@@ -1,4 +1,4 @@
-package oogasalad.view.authoring;
+package oogasalad.view.authoring.blockDisplay;
 
 /**
  * Data structure to hold block information.
@@ -40,12 +40,4 @@ public class BlockData {
     return imagePath;
   }
 
-  /**
-   * Gets the category of the block.
-   *
-   * @return The category of the block.
-   */
-  public String getCategory() {
-    return category;
-  }
 }

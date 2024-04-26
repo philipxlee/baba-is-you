@@ -1,4 +1,4 @@
-package oogasalad.view.authoring;
+package oogasalad.view.authoring.blockDisplay;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,8 +12,6 @@ import javafx.scene.layout.FlowPane;
 public class BlockLoader {
 
   private final BlockNameManager blockManager = new BlockNameManager();
-  private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
-
   /**
    * Load and display all blocks without category filtering.
    *

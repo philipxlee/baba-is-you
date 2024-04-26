@@ -5,7 +5,6 @@ import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
 import javafx.scene.control.SplitPane;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.controller.authoring.SceneController;
 import oogasalad.shared.scene.Scene;
 
 public class MainScene implements Scene {
