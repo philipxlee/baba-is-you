@@ -15,6 +15,7 @@ public class LevelController {
   private final LevelParser levelParser;
   private final OpenAIClient openAIClient;
   private Level currentLevel;
+  private String language;
 
   /**
    * LevelController constructor.
@@ -88,5 +89,23 @@ public class LevelController {
    */
   public LevelMetadata getLevelMetadata() {
     return currentLevel.getLevelMetadata();
+  }
+
+  /**
+   * Set the language set for the authoring env.
+   *
+   * @param newLanguage new language to change the env to
+   */
+  public void setLanguage(String newLanguage) {
+    this.language = newLanguage;
+  }
+
+  /**
+   * Get the language for the authoring env.
+   *
+   * @return the current set language
+   */
+  public String getLanguage() {
+    return this.language;
   }
 }

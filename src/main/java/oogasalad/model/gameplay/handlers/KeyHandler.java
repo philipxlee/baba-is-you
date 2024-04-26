@@ -53,9 +53,11 @@ public abstract class KeyHandler {
 
 
   /**
-   * Moves the controllable block at the specified position in the grid by the given delta in row and column indices.
-   * Checks if the move is valid, determines if the next cell contains a winning block, calculates the length of the block chain to be moved,
-   * and performs the movement accordingly. Finally, it updates the grid by checking for rules, behaviors, and notifying observers.
+   * Moves the controllable block at the specified position in the grid by the given delta in row
+   * and column indices. Checks if the move is valid, determines if the next cell contains a winning
+   * block, calculates the length of the block chain to be moved, and performs the movement
+   * accordingly. Finally, it updates the grid by checking for rules, behaviors, and notifying
+   * observers.
    *
    * @param i      The row index of the starting cell.
    * @param j      The column index of the starting cell.
@@ -88,7 +90,8 @@ public abstract class KeyHandler {
    * @param k      The index of the controllable block in the cell.
    * @param deltaI The change in row position caused by the key press.
    * @param deltaJ The change in column position caused by the key press.
-   * @return An Optional containing the length of the block chain if movement is possible, otherwise empty.
+   * @return An Optional containing the length of the block chain if movement is possible, otherwise
+   * empty.
    */
   private Optional<Integer> calculateLength(int i, int j, int k, int deltaI, int deltaJ) {
     int length = 1;

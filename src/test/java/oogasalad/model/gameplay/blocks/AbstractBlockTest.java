@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import oogasalad.model.gameplay.blocks.AbstractBlock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,8 @@ public class AbstractBlockTest {
 
   @BeforeEach
   public void setUp() {
-    block = new AbstractBlock() {};
+    block = new AbstractBlock() {
+    };
   }
 
   @Test

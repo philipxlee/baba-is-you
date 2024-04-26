@@ -1,106 +1,172 @@
 {
   "BabaTextBlock": {
     "imagePath": "/images/BabaTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "EmptyTextBlock": {
     "imagePath": "/images/EmptyTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "FlagTextBlock": {
     "imagePath": "/images/FlagTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "IsTextBlock": {
     "imagePath": "/images/IsTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "PushTextBlock": {
     "imagePath": "/images/PushTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "RockTextBlock": {
     "imagePath": "/images/RockTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "StopTextBlock": {
     "imagePath": "/images/StopTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WallTextBlock": {
     "imagePath": "/images/WallTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WinTextBlock": {
     "imagePath": "/images/WinTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "YouTextBlock": {
     "imagePath": "/images/YouTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "BabaVisualBlockRight": {
     "imagePath": "/images/baba/BabaVisualBlockRight.png",
-    "category" : ["All", "Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "BabaVisualBlockLeft": {
     "imagePath": "/images/baba/BabaVisualBlockLeft.png",
-    "category" : []
+    "category": []
   },
   "BabaVisualBlockUp": {
     "imagePath": "/images/baba/BabaVisualBlockUp.png",
-    "category" : []
+    "category": []
   },
   "BabaVisualBlockDown": {
     "imagePath": "/images/baba/BabaVisualBlockDown.png",
-    "category" : []
+    "category": []
   },
   "EmptyVisualBlock": {
     "imagePath": "/images/EmptyVisualBlock.png",
-    "category" : []
+    "category": []
   },
   "FlagVisualBlock": {
     "imagePath": "/images/FlagVisualBlock.png",
-    "category" : ["All","Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "RockVisualBlock": {
     "imagePath": "/images/RockVisualBlock.png",
-    "category" : ["All","Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "WallVisualBlock": {
     "imagePath": "/images/WallVisualBlock.png",
-    "category" : ["All","Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "LavaVisualBlock": {
     "imagePath": "/images/LavaVisualBlock.png",
-    "category" : ["All","Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "MeltTextBlock": {
     "imagePath": "/images/MeltTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "HotTextBlock": {
     "imagePath": "/images/HotTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "LavaTextBlock": {
     "imagePath": "/images/LavaTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "SinkTextBlock": {
     "imagePath": "/images/SinkTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WaterTextBlock": {
     "imagePath": "/images/WaterTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WaterVisualBlock": {
     "imagePath": "/images/WaterVisualBlock.png",
-    "category" : ["All","Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "DrownTextBlock": {
     "imagePath": "/images/DrownTextBlock.png",
-    "category" : ["All","Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   }
 }

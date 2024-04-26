@@ -4,27 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
-
-
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+
+import javafx.scene.control.ComboBox;
+
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
@@ -47,10 +45,10 @@ public class ElementsPane {
   public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
     this.gridSizeChanger = new GridSizeChanger(builderPane);
     this.factory = new WidgetFactory();
-    this.language = language;
     this.builderPane = builderPane;
     this.levelController = levelController;
     this.jsonSaver = new JsonSaver(levelController, builderPane);
+    this.language = language;
     initializeElementsLayout();
   }
 
@@ -120,7 +118,6 @@ public class ElementsPane {
         e.printStackTrace();
       }
     });
-
 
     removeButton.setOnAction(event -> {
       removeMode = !removeMode;
