@@ -116,10 +116,12 @@ public class SceneController {
     return this.language;
   }
 
+  /**
+   * Switch to entrypoint.
+   */
   public void goToEntryPoint() {
     EntryPointController entryPointController = new EntryPointController(stage);
     entryPointController.setLanguage(this.language);
     switchToScene(new EntryPoint(entryPointController));
-
   }
 }

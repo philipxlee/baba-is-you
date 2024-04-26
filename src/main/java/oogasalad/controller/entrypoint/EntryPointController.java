@@ -43,8 +43,8 @@ public class EntryPointController implements AlertHandler {
   }
 
   public void switchToAuthoringEnvironment() {
-    //TODO: add functionality to change language for authoring environment
     this.authoringEnvironment = new AuthoringEnvironment();
+    authoringEnvironment.setLanguage(language);
     authoringEnvironment.start(stage);
   }
 

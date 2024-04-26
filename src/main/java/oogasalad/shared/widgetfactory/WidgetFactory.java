@@ -148,6 +148,10 @@ public class WidgetFactory {
     return button;
   }
 
+  public void changeButtonLabel(Button button, WidgetConfiguration widgetConfiguration) {
+    button.setText(widgetConfiguration.getPropertyContents());
+  }
+
   public ScrollPane makeScrollPane(FlowPane flowPane, int maxWidth) {
     ScrollPane pane = new ScrollPane(flowPane);
     pane.setFitToWidth(true);

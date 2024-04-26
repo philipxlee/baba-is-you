@@ -42,12 +42,15 @@ public class ElementsPane {
   private VBox layout;
   private boolean removeMode = false;
   private String language;
+  private MainScene mainScene;
 
-  public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
+  public ElementsPane(BuilderPane builderPane, LevelController levelController, MainScene
+      mainScene) {
     this.factory = new WidgetFactory();
-    this.language = language;
     this.builderPane = builderPane;
     this.levelController = levelController;
+    this.language = levelController.getLanguage();
+    this.mainScene = mainScene;
     initializeElementsLayout();
   }
 
@@ -120,15 +123,7 @@ public class ElementsPane {
     });
 
 
-    removeButton.setOnAction(event -> {
-      removeMode = !removeMode;
-      if (removeMode) {
-        removeButton.setText("Removing mode: Press blocks to remove");
-      } else {
-        removeButton.setText("Remove block");
-      }
-      builderPane.setRemove(removeMode);
-    });
+    removeButton.setOnAction(e -> toggleRemoveMode(removeButton));
 
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
@@ -148,6 +143,9 @@ public class ElementsPane {
 
     Button saveJson = factory.makeButton(new WidgetConfiguration(
             200, 40, "SaveJson", "black-button", language));
+    Button entryPoint = makeEntryPointButton();
+    HBox jsonAndEntryPoint = factory.wrapInHBox(new ArrayList<>(Arrays.asList(saveJson, entryPoint)),
+        (int)layout.getWidth());
     saveJson.setOnAction(event -> {
       // Create text fields for level name, level description, and author name
       TextField levelNameField = new TextField();
@@ -196,23 +194,30 @@ public class ElementsPane {
       });
     });
 
-    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth(), 15);
-
     layout.getStyleClass().add("elements-background");
 
     HBox comboBoxes = factory.wrapInHBox(new ArrayList<>(Arrays.asList(difficultyComboBox,
         categoryComboBox)), (int) layout.getWidth());
     layout.getChildren().addAll(header, buttonsHBox, comboBoxes, descriptionBox,
-        scrollPane, jsonBox);
+        scrollPane, jsonAndEntryPoint);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
+  }
+
+  private Button makeEntryPointButton() {
+    Button entryPoint = factory.makeButton(new WidgetConfiguration(200, 40,
+        "Back", "black-button", language));
+    entryPoint.setOnAction(e -> mainScene.goToEntryPoint());
+    return entryPoint;
   }
 
   private void toggleRemoveMode(Button removeButton) {
     removeMode = !removeMode;
     if (removeMode) {
-      removeButton.setText("Removing mode: Press blocks to remove");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemovingMode", language));
     } else {
-      removeButton.setText("Remove block");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemoveBlock", language));
     }
     builderPane.setRemove(removeMode);
   }
