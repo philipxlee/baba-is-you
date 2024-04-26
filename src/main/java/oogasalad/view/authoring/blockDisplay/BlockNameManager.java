@@ -1,4 +1,4 @@
-package oogasalad.view.authoring;
+package oogasalad.view.authoring.blockDisplay;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.shared.config.JsonManager;
+import oogasalad.view.authoring.blockDisplay.BlockData;
 
 public class BlockNameManager extends JsonManager {
 

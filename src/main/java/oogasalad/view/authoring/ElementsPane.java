@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tooltip;
 
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -29,6 +28,9 @@ import javafx.stage.Stage;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.authoring.blockDisplay.BlockLoader;
+import oogasalad.view.authoring.jsonOps.JsonLoader;
+import oogasalad.view.authoring.jsonOps.JsonSaver;
 
 
 public class ElementsPane {

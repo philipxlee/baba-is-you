@@ -1,4 +1,4 @@
-package oogasalad.view.authoring;
+package oogasalad.view.authoring.blockDisplay;
 
 import java.io.IOException;
 import java.util.List;
