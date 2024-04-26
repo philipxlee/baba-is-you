@@ -14,12 +14,10 @@ import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.ComboBox;
 
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -37,7 +35,8 @@ public class ElementsPane {
 
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private final JsonSaver jsonSaver;
-  private ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
+  private final JsonLoader jsonLoader;
+  private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
@@ -54,6 +53,7 @@ public class ElementsPane {
     this.builderPane = builderPane;
     this.levelController = levelController;
     this.jsonSaver = new JsonSaver(levelController, builderPane);
+    this.jsonLoader = new JsonLoader(levelController, builderPane);
     this.language = language;
     initializeElementsLayout();
 
@@ -65,7 +65,7 @@ public class ElementsPane {
     Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
     Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
         "AuthEnv", language));
-    VBox header = factory.wrapInVBox(new ArrayList<Node>(Arrays.asList(title, subtitle)),
+    VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
         (int) layout.getHeight(), 10);
     header.setSpacing(0);
 
@@ -112,13 +112,14 @@ public class ElementsPane {
     // Button for toggling remove mode
     Button removeButton = factory.makeButton(new WidgetConfiguration(
         170, 30, "RemoveBlock", "white-button", language));
+    removeButton.setOnAction(event -> toggleRemoveMode(removeButton));
 
-    Button gpt = factory.makeButton(new WidgetConfiguration(170, 40,
+    Button gptButton = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
 
-    gpt.setOnAction(event -> showLoadingScreen());
+    gptButton.setOnAction(event -> showLoadingScreen());
 
-    gpt.setOnMouseClicked(event -> {
+    gptButton.setOnMouseClicked(event -> {
       try {
         levelController.generateLevel();
       } catch (Exception e) {
@@ -126,20 +127,10 @@ public class ElementsPane {
       }
     });
 
-    removeButton.setOnAction(event -> {
-      removeMode = !removeMode;
-      if (removeMode) {
-        removeButton.setText("Removing mode: Press blocks to remove");
-      } else {
-        removeButton.setText("Remove block");
-      }
-      builderPane.setRemove(removeMode);
-    });
-
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
     buttons.add(removeButton);
-    buttons.add(gpt);
+    buttons.add(gptButton);
     HBox buttonsHBox = factory.wrapInHBox(buttons, (int) layout.getWidth());
     buttonsHBox.setSpacing(20);
 
@@ -152,35 +143,31 @@ public class ElementsPane {
     scrollPane.setPadding(new Insets(20));
     scrollPane.setMaxHeight(350);
 
-    Button saveJson = factory.makeButton(new WidgetConfiguration(
+    Button saveJsonButton = factory.makeButton(new WidgetConfiguration(
         200, 40, "SaveJson", "black-button", language));
-    saveJson.setOnAction(event -> jsonSaver.saveJson());
+    saveJsonButton.setOnAction(event -> jsonSaver.saveJson());
 
-    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth(), 15);
+    // Create the Load Level button
+    Button loadLevelButton = factory.makeButton(new WidgetConfiguration(
+        200, 40, "LoadLevel", "black-button", language));
+    loadLevelButton.setOnAction(event -> jsonLoader.loadLevel());
+
+    List<Node> SLbuttons = new ArrayList<>();
+    SLbuttons.add(saveJsonButton);
+    SLbuttons.add(loadLevelButton);
+    HBox SLbuttonsHBox = factory.wrapInHBox(SLbuttons, (int) layout.getWidth());
+    SLbuttonsHBox.setSpacing(15);
 
     layout.getStyleClass().add("elements-background");
 
     HBox comboBoxes = factory.wrapInHBox(new ArrayList<>(Arrays.asList(difficultyComboBox,
         categoryComboBox)), (int) layout.getWidth());
     layout.getChildren().addAll(header, buttonsHBox, comboBoxes, descriptionBox,
-        scrollPane, jsonBox);
+        scrollPane, SLbuttonsHBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
 
-    Tooltip categoryTooltip = new Tooltip("Select the category of elements to display");
-    Tooltip difficultyTooltip = new Tooltip("Select the difficulty level of elements");
-    Tooltip changeGridSizeTooltip = new Tooltip("Click to change the size of the grid");
-    Tooltip removeButtonTooltip = new Tooltip("Toggle remove mode to delete blocks");
-    Tooltip gptButtonTooltip = new Tooltip("Generate a level using GPT");
-    Tooltip saveJsonButtonTooltip = new Tooltip("Save the level configuration as JSON");
-
-    // Attach tooltips to corresponding nodes
-    categoryComboBox.setTooltip(categoryTooltip);
-    difficultyComboBox.setTooltip(difficultyTooltip);
-    changeGridSizeButton.setTooltip(changeGridSizeTooltip);
-    removeButton.setTooltip(removeButtonTooltip);
-    gpt.setTooltip(gptButtonTooltip);
-    saveJson.setTooltip(saveJsonButtonTooltip);
+    TooltipManager.setTooltips(categoryComboBox, difficultyComboBox, changeGridSizeButton, removeButton, gptButton, saveJsonButton, loadLevelButton);
   }
 
   public VBox getLayout() {
@@ -197,6 +184,17 @@ public class ElementsPane {
           category); // Load blocks based on category
     }
   }
+
+  private void toggleRemoveMode(Button removeButton) {
+    removeMode = !removeMode;
+    if (removeMode) {
+      removeButton.setText("Removing mode: Press blocks to remove");
+    } else {
+      removeButton.setText("Remove block");
+    }
+    builderPane.setRemove(removeMode);
+  }
+
 
 
   private void showLoadingScreen() {
@@ -217,7 +215,7 @@ public class ElementsPane {
     loadingStage.setScene(new Scene(loadingPane, 250, 100));
 
     // Start a task for generating the level
-    Task<Void> generateTask = new Task<Void>() {
+    Task<Void> generateTask = new Task<>() {
       @Override
       protected Void call() throws Exception {
         // Simulate generation process
