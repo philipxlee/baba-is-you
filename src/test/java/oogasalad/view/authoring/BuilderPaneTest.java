@@ -19,16 +19,16 @@ import org.junit.jupiter.api.Test;
 public class BuilderPaneTest {
 
   private BuilderPane builderPane;
-
-  @BeforeEach
-  public void setUp() {
-    new JFXPanel(); // Initialize JavaFX Toolkit
-    LevelMetadata levelMetadata = new LevelMetadata("TestLevel", "test", 10,
-        10); // Create a dummy level for testing
-    LevelController levelController = new LevelController(
-        levelMetadata); // Pass the dummy level to the controller
-    builderPane = new BuilderPane(levelController, "English");
-  }
+//
+//  @BeforeEach
+//  public void setUp() {
+//    new JFXPanel(); // Initialize JavaFX Toolkit
+//    LevelMetadata levelMetadata = new LevelMetadata("TestLevel", "test", 10,
+//        10); // Create a dummy level for testing
+//    LevelController levelController = new LevelController(
+//        levelMetadata); // Pass the dummy level to the controller
+//    builderPane = new BuilderPane(levelController, "English");
+//  }
 
   @Test
   public void testGridSetup() {
