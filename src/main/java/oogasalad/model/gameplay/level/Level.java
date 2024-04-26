@@ -13,7 +13,7 @@ public class Level {
         levelMetadata.initialConfiguration());
   }
 
-  public Grid getGrid(){
+  public Grid getGrid() {
     return this.grid;
   }
 

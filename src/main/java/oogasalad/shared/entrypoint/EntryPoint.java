@@ -33,7 +33,7 @@ public class EntryPoint implements Scene {
   private int height;
   private StackPane pane;
   private javafx.scene.Scene scene;
-  private EntryPointController entryController;
+  private final EntryPointController entryController;
   private String language;
 
   public static final String STYLESHEET = "entrypoint.css";
@@ -43,6 +43,7 @@ public class EntryPoint implements Scene {
 
   /**
    * Constructor: initializes with controller
+   *
    * @param entryController Controller to handle switching between apps
    */
   public EntryPoint(EntryPointController entryController) {
@@ -51,6 +52,7 @@ public class EntryPoint implements Scene {
 
   /**
    * Initializes the scene.
+   *
    * @param width  width of scene
    * @param height height of scenes
    */
@@ -76,8 +78,8 @@ public class EntryPoint implements Scene {
     Text baba = factory.generateRedHeader(new WidgetConfiguration("Baba", language));
     Text is = factory.generateHeader(new WidgetConfiguration("Is", language));
     Text you = factory.generateRedHeader(new WidgetConfiguration("You", language));
-    HBox header = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(baba, is, you)), width/2);
-    VBox vbox = factory.wrapInVBox(header, height/3);
+    HBox header = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(baba, is, you)), width / 2);
+    VBox vbox = factory.wrapInVBox(header, height / 3);
     setUpButtons(vbox);
   }
 
@@ -97,7 +99,7 @@ public class EntryPoint implements Scene {
     });
 
     HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(authoring, gamePlay)),
-        width/2);
+        width / 2);
     buttons.setAlignment(Pos.BASELINE_CENTER);
     vbox.getChildren().add(buttons);
     setUpLanguageChooser(vbox);
@@ -105,6 +107,7 @@ public class EntryPoint implements Scene {
 
   /**
    * Sets up the combo box to select the language for the apps.
+   *
    * @param vbox header + buttons
    */
   private void setUpLanguageChooser(VBox vbox) {
@@ -146,6 +149,7 @@ public class EntryPoint implements Scene {
 
   /**
    * Returns the actual JavaFx scene associated w/ this scene.
+   *
    * @return the javafx scene object
    */
   @Override

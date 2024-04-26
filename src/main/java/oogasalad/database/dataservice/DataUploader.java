@@ -106,7 +106,7 @@ public class DataUploader {
    * Builds the leaderboard document.
    *
    * @param startTime start time
-   * @param endTime  end time
+   * @param endTime   end time
    * @return the leaderboard document
    */
   private Document buildLeaderboardDocument(long startTime, long endTime) {
