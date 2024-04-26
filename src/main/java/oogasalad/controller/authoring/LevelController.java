@@ -101,6 +101,24 @@ public class LevelController {
   }
 
   /**
+   * Set the current level.
+   *
+   * @param level new level to change the current level to
+   */
+  public void setCurrentLevel(Level level) {
+    this.currentLevel = level;
+  }
+
+  /**
+   * Return current level.
+   *
+   * @return the current set language
+   */
+  public Level getLevel() {
+    return this.currentLevel;
+  }
+
+  /**
    * Get the language for the authoring env.
    *
    * @return the current set language
