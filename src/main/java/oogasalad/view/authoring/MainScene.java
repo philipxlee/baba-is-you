@@ -13,7 +13,7 @@ public class MainScene implements Scene {
   private String language;
   private final LevelController levelController;
   private javafx.scene.Scene scene;
-  private SceneController sceneController;
+  private final SceneController sceneController;
 
   public MainScene(LevelController levelController, SceneController sceneController) {
     this.sceneController = sceneController;

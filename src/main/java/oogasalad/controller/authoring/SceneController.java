@@ -60,6 +60,7 @@ public class SceneController {
 
   /**
    * Set the language of the game.
+   *
    * @param newLanguage the language to change to
    */
   public void setLanguage(String newLanguage) {
@@ -69,6 +70,7 @@ public class SceneController {
 
   /**
    * Get the language of the game.
+   *
    * @return the current configured language
    */
   public String getLanguage() {

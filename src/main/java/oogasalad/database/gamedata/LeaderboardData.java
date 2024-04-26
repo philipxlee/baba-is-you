@@ -24,7 +24,8 @@ public class LeaderboardData extends AbstractGameData {
    * @param leaderboardRecord the record of the leaderboard data
    */
   public LeaderboardData(LeaderboardRecord leaderboardRecord) {
-    super(leaderboardRecord.getLeaderboardUsername(), leaderboardRecord.getLeaderboardLevelName(), leaderboardRecord.getLeaderboardDate());
+    super(leaderboardRecord.getLeaderboardUsername(), leaderboardRecord.getLeaderboardLevelName(),
+        leaderboardRecord.getLeaderboardDate());
     this.timeSpent = leaderboardRecord.getLeaderboardTimeSpent();
   }
 

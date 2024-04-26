@@ -1,9 +1,16 @@
 package oogasalad.model.gameplay.blockvisitor;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
-import oogasalad.model.gameplay.blocks.visualblocks.*;
+import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.EmptyVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.FlagVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class AttributeVisitorTest {
 
@@ -11,7 +18,7 @@ public class AttributeVisitorTest {
   public void testAttributeControllable() {
     String testAttribute = "You";
     String modifiedAttribute = "Controllable";
-    AttributeVisitor attributeVisitor =  new AttributeVisitor(testAttribute);
+    AttributeVisitor attributeVisitor = new AttributeVisitor(testAttribute);
 
     // Create an instance of each block type
     BabaVisualBlock baba = new BabaVisualBlock("BabaVisualBlock", 0, 0);
@@ -43,9 +50,9 @@ public class AttributeVisitorTest {
 
   @Test
   public void testAttributePushable() {
-String testAttribute = "Push";
+    String testAttribute = "Push";
     String modifiedAttribute = "Pushable";
-    AttributeVisitor attributeVisitor =  new AttributeVisitor(testAttribute);
+    AttributeVisitor attributeVisitor = new AttributeVisitor(testAttribute);
 
     // Create an instance of each block type
     BabaVisualBlock baba = new BabaVisualBlock("BabaVisualBlock", 0, 0);
@@ -79,7 +86,7 @@ String testAttribute = "Push";
   public void testAttributeMeltable() {
     String testAttribute = "Melt";
     String modifiedAttribute = "Meltable";
-    AttributeVisitor attributeVisitor =  new AttributeVisitor(testAttribute);
+    AttributeVisitor attributeVisitor = new AttributeVisitor(testAttribute);
 
     // Create an instance of each block type
     BabaVisualBlock baba = new BabaVisualBlock("BabaVisualBlock", 0, 0);
@@ -113,7 +120,7 @@ String testAttribute = "Push";
   public void testAttributeSinkable() {
     String testAttribute = "Sink";
     String modifiedAttribute = "Sinkable";
-    AttributeVisitor attributeVisitor =  new AttributeVisitor(testAttribute);
+    AttributeVisitor attributeVisitor = new AttributeVisitor(testAttribute);
 
     // Create an instance of each block type
     BabaVisualBlock baba = new BabaVisualBlock("BabaVisualBlock", 0, 0);

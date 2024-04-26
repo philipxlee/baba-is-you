@@ -5,21 +5,19 @@ import java.io.InputStream;
 import java.util.Properties;
 import javafx.scene.text.Font;
 import oogasalad.shared.alert.AlertHandler;
-import oogasalad.view.authoring.MainScene;
-import oogasalad.view.gameplay.StartingScene;
 
 /**
  * Configuration object class for use within the WidgetFactory
  */
 public class WidgetConfiguration implements AlertHandler {
 
-  private Properties styleProperties;
+  private final Properties styleProperties;
   private int width;
   private int height;
   private String cssMatch;
   private String propertyContents;
-  private Font propertyFont;
-  private String language;
+  private final Font propertyFont;
+  private final String language;
 
   /**
    * Constructor with a property files match.
@@ -29,7 +27,8 @@ public class WidgetConfiguration implements AlertHandler {
    * @param propertyName
    * @param cssMatch
    */
-  public WidgetConfiguration(int width, int height, String propertyName, String cssMatch, String language) {
+  public WidgetConfiguration(int width, int height, String propertyName, String cssMatch,
+      String language) {
     this.language = language;
     this.width = width;
     this.height = height;

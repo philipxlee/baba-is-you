@@ -15,9 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -25,6 +23,7 @@ import javafx.stage.Stage;
  * Factory class for making general UI widgets.
  */
 public class WidgetFactory {
+
   public static final String STYLESHEET = "style.css";
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
@@ -135,6 +134,7 @@ public class WidgetFactory {
 
   /**
    * For dynamic buttons showing player information or other non-property information
+   *
    * @param configuration
    * @param label
    * @return
@@ -181,22 +181,22 @@ public class WidgetFactory {
   }
 
   public FlowPane createFlowPane(WidgetConfiguration configuration) {
-      FlowPane flowPane = new FlowPane();
-      flowPane.setPrefSize(configuration.getWidth(), configuration.getHeight());
-      flowPane.setPadding(new Insets(10));
-      flowPane.setHgap(10);
-      flowPane.setVgap(10);
-      flowPane.setAlignment(Pos.CENTER);
-      flowPane.setFocusTraversable(false);
-      flowPane.getStyleClass().add(configuration.getCssMatch());
-      return flowPane;
+    FlowPane flowPane = new FlowPane();
+    flowPane.setPrefSize(configuration.getWidth(), configuration.getHeight());
+    flowPane.setPadding(new Insets(10));
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
+    flowPane.setAlignment(Pos.CENTER);
+    flowPane.setFocusTraversable(false);
+    flowPane.getStyleClass().add(configuration.getCssMatch());
+    return flowPane;
   }
 
   public TextField createTextField(WidgetConfiguration configuration) {
     TextField field = new TextField();
     field.setPromptText(configuration.getPropertyContents());
     field.setMinWidth(configuration.getWidth());
-    field.setMaxWidth(configuration.getWidth()+100);
+    field.setMaxWidth(configuration.getWidth() + 100);
     field.setPrefHeight(configuration.getHeight());
     field.getStyleClass().add(configuration.getCssMatch());
     return field;

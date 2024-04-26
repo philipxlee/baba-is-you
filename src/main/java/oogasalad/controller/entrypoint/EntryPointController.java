@@ -17,7 +17,8 @@ public class EntryPointController implements AlertHandler {
   private String language;
   private GamePlayer gamePlayer;
   private AuthoringEnvironment authoringEnvironment;
-  private Stage stage;
+  private final Stage stage;
+
   public EntryPointController(Stage stage) {
     this.stage = stage;
     this.language = "English";

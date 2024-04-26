@@ -93,14 +93,16 @@ public class LevelController {
 
   /**
    * Set the language set for the authoring env.
+   *
    * @param newLanguage new language to change the env to
    */
   public void setLanguage(String newLanguage) {
-      this.language = newLanguage;
+    this.language = newLanguage;
   }
 
   /**
    * Get the language for the authoring env.
+   *
    * @return the current set language
    */
   public String getLanguage() {

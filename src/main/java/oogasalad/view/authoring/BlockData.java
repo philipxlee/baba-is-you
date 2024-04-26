@@ -4,16 +4,17 @@ package oogasalad.view.authoring;
  * Data structure to hold block information.
  */
 public class BlockData {
-  private String name;
-  private String imagePath;
-  private String category;
+
+  private final String name;
+  private final String imagePath;
+  private final String category;
 
   /**
    * Constructs a new BlockData instance.
    *
-   * @param name The name of the block.
+   * @param name      The name of the block.
    * @param imagePath The path to the block's image file.
-   * @param category The category of the block.
+   * @param category  The category of the block.
    */
   public BlockData(String name, String imagePath, String category) {
     this.name = name;

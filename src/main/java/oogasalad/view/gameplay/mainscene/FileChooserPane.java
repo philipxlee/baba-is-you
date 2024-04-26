@@ -25,17 +25,17 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 
 public class FileChooserPane {
 
-  private WidgetFactory factory;
-  private int width;
-  private int height;
-  private Image fileIcon;
+  private final WidgetFactory factory;
+  private final int width;
+  private final int height;
+  private final Image fileIcon;
   private FlowPane flowPane;
   private File[] files;
-  private String language;
-  private VBox fileChooser;
-  private JsonManager jsonManager;
-  private LevelController levelController;
-  private SceneController sceneController;
+  private final String language;
+  private final VBox fileChooser;
+  private final JsonManager jsonManager;
+  private final LevelController levelController;
+  private final SceneController sceneController;
 
 
   public FileChooserPane(int width, int height, String language, LevelController levelController,
@@ -69,6 +69,7 @@ public class FileChooserPane {
 
   /**
    * Sets up the scrollpane used for selecting files.
+   *
    * @return a scrollpane with populated image icons representing JSON level files.
    */
   private VBox setUpFileChooser() {
@@ -109,7 +110,7 @@ public class FileChooserPane {
               dimensions, "columns"));
 
           VBox vbox = factory.wrapInVBox(new ArrayList<>(Arrays.asList(rows, cols)),
-              width-100, 10);
+              width - 100, 10);
 
           factory.createPopUpWindow(new WidgetConfiguration(width - 100,
               height / 4, "FileInformation", "root", language), vbox);

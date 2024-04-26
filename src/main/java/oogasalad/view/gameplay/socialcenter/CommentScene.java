@@ -12,7 +12,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.DatabaseController;
@@ -35,15 +34,15 @@ public class CommentScene implements Scene {
   private final SceneController sceneController;
   private javafx.scene.Scene scene;
   private VBox root;
-  private LevelController levelController;
-  private String language;
+  private final LevelController levelController;
+  private final String language;
   private int width;
   private int height;
 
   /**
    * Constructor for LeaderboardScene.
    *
-   * @param factory WidgetFactory
+   * @param factory         WidgetFactory
    * @param sceneController SceneController
    */
   public CommentScene(WidgetFactory factory, SceneController sceneController) {
@@ -106,10 +105,10 @@ public class CommentScene implements Scene {
   }
 
   private ScrollPane setUpScrollPane(VBox commentList) {
-    FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(width-500,
-        height-300, "flowpane", language));
-    ScrollPane scrollPane = factory.makeScrollPane(flowPane, width-500);
-    scrollPane.setMaxHeight(height-300);
+    FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(width - 500,
+        height - 300, "flowpane", language));
+    ScrollPane scrollPane = factory.makeScrollPane(flowPane, width - 500);
+    scrollPane.setMaxHeight(height - 300);
     scrollPane.setContent(commentList);
 
     return scrollPane;
@@ -169,12 +168,14 @@ public class CommentScene implements Scene {
       String replyText = replyInput.getText().trim();
       if (!replyText.isEmpty()) {
         DatabaseController databaseController = sceneController.getDatabaseController();
-        databaseController.addReply(comment.getUsername(), databaseController.getUsername(), replyText);
+        databaseController.addReply(comment.getUsername(), databaseController.getUsername(),
+            replyText);
         Label newReplyLabel = new Label(databaseController.getUsername() + ": " + replyText);
         newReplyLabel.getStyleClass().add("red-label");
         repliesContainer.getChildren().add(newReplyLabel);
         replyInput.clear();
-        repliesContainer.getChildren().removeAll(replyInput, submitReply);  // Remove input area after submission
+        repliesContainer.getChildren()
+            .removeAll(replyInput, submitReply);  // Remove input area after submission
         repliesContainer.getChildren().add(addReplyButton);
       }
     });

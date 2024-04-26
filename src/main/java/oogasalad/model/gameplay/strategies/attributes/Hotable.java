@@ -9,6 +9,7 @@ import oogasalad.model.gameplay.strategies.Strategy;
  * Strategy for the hotable attribute.
  */
 public class Hotable implements Strategy {
+
   /**
    * Constructor for Pushable.
    *

@@ -11,7 +11,7 @@ public class GridIterator implements Iterator<Stack<Block>> {
 
   private int currentRow;
   private int currentCol;
-  private Stack<Block>[][] cells;
+  private final Stack<Block>[][] cells;
 
   /**
    * GridIterator constructor.

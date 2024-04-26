@@ -24,9 +24,9 @@ public abstract class AbstractGameData {
   /**
    * Constructor for AbstractGameData.
    *
-   * @param username username
+   * @param username  username
    * @param levelName level name
-   * @param date date
+   * @param date      date
    */
   public AbstractGameData(String username, String levelName, Date date) {
     this.username = username;
