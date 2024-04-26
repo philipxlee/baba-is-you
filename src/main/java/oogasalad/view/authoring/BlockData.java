@@ -40,12 +40,4 @@ public class BlockData {
     return imagePath;
   }
 
-  /**
-   * Gets the category of the block.
-   *
-   * @return The category of the block.
-   */
-  public String getCategory() {
-    return category;
-  }
 }

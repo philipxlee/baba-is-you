@@ -43,10 +43,6 @@ public class BuilderPaneTest {
     assertEquals(builderPane.gridWidth * builderPane.gridHeight, gridPane.getChildren().size());
   }
 
-//    @Test
-//    public void testDragAndDropHandling() {
-//
-//    }
 
   @Test
   public void testCellIndicesCalculation() {
@@ -70,51 +66,6 @@ public class BuilderPaneTest {
     assertNotNull(blockView);
 
   }
-
-//    @Test
-//    public void testRemoveModeEventHandling() {
-//        // Testing remove mode event handling logic
-//        ImageView imageView = new ImageView();
-//
-//        // Adding the ImageView to the gridPane of BuilderPane at a specific cell
-//        int columnIndex = 2;
-//        int rowIndex = 2;
-//        builderPane.gridPane.add(imageView, columnIndex, rowIndex);
-//
-//        // Enable remove mode
-//        builderPane.setRemove(true);
-//
-//        // Simulate a mouse click event at the specified position (2, 2) within the GridPane
-//        MouseButton button = MouseButton.PRIMARY;
-//        int clickCount = 1;
-//        boolean isStill = true;
-//        boolean isShiftDown = false;
-//        boolean isControlDown = false;
-//        boolean isAltDown = false;
-//        boolean isMetaDown = false;
-//        boolean isPrimaryButtonDown = true;
-//        boolean isMiddleButtonDown = false;
-//        boolean isSecondaryButtonDown = false;
-//        boolean isSynthesized = false;
-//        boolean isPopupTrigger = false;
-//
-//        // Calculate the coordinates of the center of the cell (2, 2) relative to the GridPane
-//        Point2D cellCenter = builderPane.getCellCoordinates(columnIndex, rowIndex);
-//        double cellCenterX = cellCenter != null ? cellCenter.getX() : 0; // Use default value if cellCenter is null
-//        double cellCenterY = cellCenter != null ? cellCenter.getY() : 0; // Use default value if cellCenter is null
-//
-//        // Simulate a mouse click event at the calculated coordinates
-//        MouseEvent event = new MouseEvent(MouseEvent.MOUSE_CLICKED, cellCenterX, cellCenterY, 0, 0,
-//                button, clickCount, isStill, isShiftDown, isControlDown, isAltDown,
-//                isMetaDown, isPrimaryButtonDown, isMiddleButtonDown, isSecondaryButtonDown,
-//                isSynthesized, isPopupTrigger, null);
-//
-//        // Fire the event on the gridPane
-//        builderPane.gridPane.fireEvent(event);
-//
-//        // Verify that the ImageView is removed from the gridPane of the BuilderPane
-//        assertFalse(builderPane.gridPane.getChildren().contains(imageView));
-//    }
 
   @Test
   public void testRemoveModeSet() {

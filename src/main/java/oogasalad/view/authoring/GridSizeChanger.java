@@ -2,7 +2,6 @@ package oogasalad.view.authoring;
 
 import java.util.Optional;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -22,10 +21,16 @@ public class GridSizeChanger {
   }
 
   public void changeGridSize() {
+    Optional<Pair<Integer, Integer>> result = showGridSizeDialog();
+    result.ifPresent(this::processGridSizeChange);
+  }
+
+  private Optional<Pair<Integer, Integer>> showGridSizeDialog() {
     Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
     dialog.setTitle("Change Grid Size");
     ButtonType confirmButtonType = ButtonType.OK;
     dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
+
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
@@ -58,8 +63,13 @@ public class GridSizeChanger {
       return null;
     });
 
-    Optional<Pair<Integer, Integer>> result = dialog.showAndWait();
-    result.ifPresent(pair -> builderPane.updateGridSize(pair.getKey(), pair.getValue()));
+    return dialog.showAndWait();
+  }
+
+  private void processGridSizeChange(Pair<Integer, Integer> newSize) {
+    builderPane.gridWidth = newSize.getKey();
+    builderPane.gridHeight = newSize.getValue();
+    builderPane.setUpGrid();
   }
 
   private boolean isValidSize(int size) {
