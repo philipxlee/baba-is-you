@@ -1,105 +1,172 @@
 {
   "BabaTextBlock": {
     "imagePath": "/images/BabaTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "EmptyTextBlock": {
     "imagePath": "/images/EmptyTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "FlagTextBlock": {
     "imagePath": "/images/FlagTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "IsTextBlock": {
     "imagePath": "/images/IsTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "PushTextBlock": {
     "imagePath": "/images/PushTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "RockTextBlock": {
     "imagePath": "/images/RockTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "StopTextBlock": {
     "imagePath": "/images/StopTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WallTextBlock": {
     "imagePath": "/images/WallTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WinTextBlock": {
     "imagePath": "/images/WinTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "YouTextBlock": {
     "imagePath": "/images/YouTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "BabaVisualBlockRight": {
     "imagePath": "/images/baba/BabaVisualBlockRight.png",
-    "category" : ["Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "BabaVisualBlockLeft": {
     "imagePath": "/images/baba/BabaVisualBlockLeft.png",
-    "category" : ["Visual"]
+    "category": []
   },
   "BabaVisualBlockUp": {
     "imagePath": "/images/baba/BabaVisualBlockUp.png",
-    "category" : ["Visual"]
+    "category": []
   },
   "BabaVisualBlockDown": {
     "imagePath": "/images/baba/BabaVisualBlockDown.png",
-    "category" : ["Visual"]
+    "category": []
   },
   "EmptyVisualBlock": {
-    "imagePath": "/images/EmptyVisualBlock.png"
+    "imagePath": "/images/EmptyVisualBlock.png",
+    "category": []
   },
   "FlagVisualBlock": {
     "imagePath": "/images/FlagVisualBlock.png",
-    "category" : ["Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "RockVisualBlock": {
     "imagePath": "/images/RockVisualBlock.png",
-    "category" : ["Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "WallVisualBlock": {
     "imagePath": "/images/WallVisualBlock.png",
-    "category" : ["Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "LavaVisualBlock": {
     "imagePath": "/images/LavaVisualBlock.png",
-    "category" : ["Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "MeltTextBlock": {
     "imagePath": "/images/MeltTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "HotTextBlock": {
     "imagePath": "/images/HotTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "LavaTextBlock": {
     "imagePath": "/images/LavaTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "SinkTextBlock": {
     "imagePath": "/images/SinkTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WaterTextBlock": {
     "imagePath": "/images/WaterTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   },
   "WaterVisualBlock": {
     "imagePath": "/images/WaterVisualBlock.png",
-    "category" : ["Visual"]
+    "category": [
+      "All",
+      "Visual"
+    ]
   },
   "DrownTextBlock": {
     "imagePath": "/images/DrownTextBlock.png",
-    "category" : ["Text"]
+    "category": [
+      "All",
+      "Text"
+    ]
   }
 }

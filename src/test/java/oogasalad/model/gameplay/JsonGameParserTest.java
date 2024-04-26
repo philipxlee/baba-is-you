@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 public class JsonGameParserTest {
 
-  private JsonGameParser jsonGameParser = new JsonGameParser();
-  private JsonManager jsonManager = new JsonManager();
+  private final JsonGameParser jsonGameParser = new JsonGameParser();
+  private final JsonManager jsonManager = new JsonManager();
   private final File defaultJson = new File("data/test2.json");
 
   @Test

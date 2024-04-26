@@ -1,25 +1,24 @@
 package oogasalad.model.gameplay.grid;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.factory.BlockFactory;
-import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
+import oogasalad.model.gameplay.factory.BlockFactory;
+import oogasalad.model.gameplay.interpreter.RuleInterpreter;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 
 
 public class Grid extends GridHelper implements Observable<Grid> {
+
   private final List<Observer<Grid>> observers = new ArrayList<>();
   private final RuleInterpreter parser;
   private final BlockFactory factory;
@@ -32,8 +31,8 @@ public class Grid extends GridHelper implements Observable<Grid> {
   /**
    * Constructs a grid with the specified dimensions and initial configuration.
    *
-   * @param rows                The number of rows in the grid.
-   * @param cols                The number of columns in the grid.
+   * @param rows                 The number of rows in the grid.
+   * @param cols                 The number of columns in the grid.
    * @param initialConfiguration The initial configuration of the grid.
    * @throws InvalidBlockName if an invalid block name is encountered.
    */
@@ -47,6 +46,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
     addMappingsToStrategyMap();
     InitializeGrid();
   }
+
   private void addMappingsToStrategyMap() {
     strategyMap.put("Hotable", "Meltable");
     strategyMap.put("Sinkable", "Drownable");
@@ -189,7 +189,8 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   /**
-   * Creates blocks based on the provided block types and adds them to the specified cell in the grid.
+   * Creates blocks based on the provided block types and adds them to the specified cell in the
+   * grid.
    *
    * @param AbstractBlocks The list of abstract blocks representing the cell in the grid.
    * @param Blocktypes     The array of block types to create.
@@ -213,11 +214,10 @@ public class Grid extends GridHelper implements Observable<Grid> {
         cell.sort(new Comparator<AbstractBlock>() {
           @Override
           public int compare(AbstractBlock block1, AbstractBlock block2) {
-            if (block1.getBlockName().equals("EmptyVisualBlock") && !(block2.getBlockName()
-                    .equals("EmptyVisualBlock"))) {
+            if (block1.isEmptyVisualBlock() && !(block2.isEmptyVisualBlock())) {
               return -1;
-            } else if (!(block1.getBlockName().equals("EmptyVisualBlock"))
-                    && block2.getBlockName().equals("EmptyVisualBlock")) {
+            } else if (!(block1.isEmptyVisualBlock())
+                && block2.isEmptyVisualBlock()) {
               return 1;
             }
             return 0;
@@ -227,7 +227,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
-  private void checkForDisappear(){
+  private void checkForDisappear() {
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         checkCellForDisappear(i, j);
@@ -266,7 +266,8 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
           // If both indices are found but not matched yet, check if they complete each other
           if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
-            if (strategyMap.get(subjectStrategyKey).equals(objectStrategyValue) || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
+            if (strategyMap.get(subjectStrategyKey).equals(objectStrategyValue)
+                || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
               grid[cellI][cellJ].remove(objectIndex);
               return;
             }

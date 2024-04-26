@@ -5,35 +5,40 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
-
 
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+
+import javafx.scene.control.ComboBox;
+
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.authoring.blockDisplay.BlockLoader;
+import oogasalad.view.authoring.jsonOps.JsonLoader;
+import oogasalad.view.authoring.jsonOps.JsonSaver;
 
 
 public class ElementsPane {
 
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
-
-  private ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
+  private final JsonSaver jsonSaver;
+  private final JsonLoader jsonLoader;
+  private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
@@ -43,13 +48,18 @@ public class ElementsPane {
   private boolean removeMode = false;
   private String language;
   private String difficulty;
+  private final GridSizeChanger gridSizeChanger;
 
   public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
+    this.gridSizeChanger = new GridSizeChanger(builderPane);
     this.factory = new WidgetFactory();
-    this.language = language;
     this.builderPane = builderPane;
     this.levelController = levelController;
+    this.jsonSaver = new JsonSaver(levelController, builderPane);
+    this.jsonLoader = new JsonLoader(levelController, builderPane);
+    this.language = language;
     initializeElementsLayout();
+
   }
 
   private void initializeElementsLayout() {
@@ -58,7 +68,7 @@ public class ElementsPane {
     Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
     Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
         "AuthEnv", language));
-    VBox header = factory.wrapInVBox(new ArrayList<Node>(Arrays.asList(title, subtitle)),
+    VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
         (int) layout.getHeight(), 10);
     header.setSpacing(0);
 
@@ -104,21 +114,21 @@ public class ElementsPane {
     categoryComboBox.setOnAction(event -> updateBlocksDisplay(categoryComboBox.getValue()));
     updateBlocksDisplay(categoryComboBox.getValue());
 
-    // Button for changing grid size
     Button changeGridSizeButton = factory.makeButton(new WidgetConfiguration(
         170, 40, "ChangeGridSize", "white-button", language));
-    changeGridSizeDialog(changeGridSizeButton);
+    changeGridSizeButton.setOnAction(event -> gridSizeChanger.changeGridSize());
 
     // Button for toggling remove mode
     Button removeButton = factory.makeButton(new WidgetConfiguration(
         170, 30, "RemoveBlock", "white-button", language));
+    removeButton.setOnAction(event -> toggleRemoveMode(removeButton));
 
-    Button gpt = factory.makeButton(new WidgetConfiguration(170, 40,
+    Button gptButton = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
 
-    gpt.setOnAction(event -> showLoadingScreen());
+    gptButton.setOnAction(event -> showLoadingScreen());
 
-    gpt.setOnMouseClicked(event -> {
+    gptButton.setOnMouseClicked(event -> {
       try {
         levelController.generateLevel();
       } catch (Exception e) {
@@ -126,21 +136,10 @@ public class ElementsPane {
       }
     });
 
-
-    removeButton.setOnAction(event -> {
-      removeMode = !removeMode;
-      if (removeMode) {
-        removeButton.setText("Removing mode: Press blocks to remove");
-      } else {
-        removeButton.setText("Remove block");
-      }
-      builderPane.setRemove(removeMode);
-    });
-
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
     buttons.add(removeButton);
-    buttons.add(gpt);
+    buttons.add(gptButton);
     HBox buttonsHBox = factory.wrapInHBox(buttons, (int) layout.getWidth());
     buttonsHBox.setSpacing(20);
 
@@ -153,80 +152,32 @@ public class ElementsPane {
     scrollPane.setPadding(new Insets(20));
     scrollPane.setMaxHeight(350);
 
-    Button saveJson = factory.makeButton(new WidgetConfiguration(
-            200, 40, "SaveJson", "black-button", language));
-    saveJson.setOnAction(event -> {
-      // Create text fields for level name, level description, and author name
-      TextField levelNameField = new TextField();
-      levelNameField.setPromptText("Enter level name");
-      TextField levelDescriptionField = new TextField();
-      levelDescriptionField.setPromptText("Enter level description");
-      TextField authorNameField = new TextField();
-      authorNameField.setPromptText("Enter author name");
-      TextField hintField = new TextField();
-      hintField.setPromptText("Enter a hint");
 
-      // Create a grid pane to hold the input fields
-      GridPane inputGrid = new GridPane();
-      inputGrid.setHgap(10);
-      inputGrid.setVgap(10);
-      inputGrid.addRow(0, new Label("Level Name:"), levelNameField);
-      inputGrid.addRow(1, new Label("Level Description:"), levelDescriptionField);
-      inputGrid.addRow(2, new Label("Author Name:"), authorNameField);
-      inputGrid.addRow(3, new Label("Add a Hint:"), hintField);
+    Button saveJsonButton = factory.makeButton(new WidgetConfiguration(
+        200, 40, "SaveJson", "black-button", language));
+    saveJsonButton.setOnAction(event -> jsonSaver.saveJson());
 
-      Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-      confirmation.setTitle("Save JSON");
-      confirmation.setHeaderText("Enter level details and save JSON:");
-      confirmation.getDialogPane().setContent(inputGrid);
+    // Create the Load Level button
+    Button loadLevelButton = factory.makeButton(new WidgetConfiguration(
+        200, 40, "LoadLevel", "black-button", language));
+    loadLevelButton.setOnAction(event -> jsonLoader.loadLevel());
 
-      ButtonType yesButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-      ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-
-      confirmation.getButtonTypes().setAll(yesButton, noButton);
-
-      confirmation.showAndWait().ifPresent(buttonType -> {
-        if (buttonType == yesButton) {
-          // Retrieve values from text fields
-          String levelName = levelNameField.getText();
-          String levelDescription = levelDescriptionField.getText();
-          String authorName = authorNameField.getText();
-          String hint = hintField.getText();
-
-          // Proceed with saving the JSON using the provided details
-          LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
-              builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
-          levelController.serializeLevel();
-
-          // Optionally, show a success message
-          Alert success = new Alert(Alert.AlertType.INFORMATION);
-          success.setTitle("Success");
-          success.setHeaderText(null);
-          success.setContentText("JSON saved successfully!");
-          success.showAndWait();
-        }
-      });
-    });
-
-    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth(), 15);
+    List<Node> SLbuttons = new ArrayList<>();
+    SLbuttons.add(saveJsonButton);
+    SLbuttons.add(loadLevelButton);
+    HBox SLbuttonsHBox = factory.wrapInHBox(SLbuttons, (int) layout.getWidth());
+    SLbuttonsHBox.setSpacing(15);
 
     layout.getStyleClass().add("elements-background");
 
     HBox comboBoxes = factory.wrapInHBox(new ArrayList<>(Arrays.asList(difficultyComboBox,
         categoryComboBox)), (int) layout.getWidth());
     layout.getChildren().addAll(header, buttonsHBox, comboBoxes, descriptionBox,
-        scrollPane, jsonBox);
+        scrollPane, SLbuttonsHBox);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
-  }
 
-  private void toggleRemoveMode(Button removeButton) {
-    removeMode = !removeMode;
-    if (removeMode) {
-      removeButton.setText("Removing mode: Press blocks to remove");
-    } else {
-      removeButton.setText("Remove block");
-    }
-    builderPane.setRemove(removeMode);
+
+    TooltipManager.setTooltips(categoryComboBox, difficultyComboBox, changeGridSizeButton, removeButton, gptButton, saveJsonButton, loadLevelButton);
   }
 
   public VBox getLayout() {
@@ -244,78 +195,16 @@ public class ElementsPane {
     }
   }
 
-  private boolean isValidSize(String value) {
-    try {
-      int size = Integer.parseInt(value);
-      if (size <= 4 || size > 20) {
-        return false; // Return false if size is out of range
-      }
-      return true;
-    } catch (NumberFormatException e) {
-      return false;
+  private void toggleRemoveMode(Button removeButton) {
+    removeMode = !removeMode;
+    if (removeMode) {
+      removeButton.setText("Removing mode: Press blocks to remove");
+    } else {
+      removeButton.setText("Remove block");
     }
+    builderPane.setRemove(removeMode);
   }
 
-  private void changeGridSizeDialog(Button button) {
-    button.setOnAction(event -> {
-      Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
-      dialog.setTitle("Change Grid Size");
-      ButtonType confirmButtonType = ButtonType.OK;
-      dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
-      GridPane grid = new GridPane();
-      grid.setHgap(10);
-      grid.setVgap(10);
-      TextField widthField = new TextField();
-      widthField.setPromptText("Width");
-      TextField heightField = new TextField();
-      heightField.setPromptText("Height");
-      grid.add(new Label("Width:"), 0, 0);
-      grid.add(widthField, 1, 0);
-      grid.add(new Label("Height:"), 0, 1);
-      grid.add(heightField, 1, 1);
-      Button confirmButton = (Button) dialog.getDialogPane().lookupButton(confirmButtonType);
-
-      dialog.getDialogPane().setContent(grid);
-      dialog.setResultConverter(dialogButton -> {
-        if (dialogButton == confirmButtonType) {
-          try {
-            int width = Integer.parseInt(widthField.getText());
-            int height = Integer.parseInt(heightField.getText());
-            if (isValidSize(String.valueOf(width)) && isValidSize(String.valueOf(height))) {
-              return new Pair<>(width, height);
-            } else {
-              if (!isValidSize(String.valueOf(width))) {
-                showErrorMessage(resourceBundle.getString("grid_size_error_message"));
-              } else if (!isValidSize(String.valueOf(height))) {
-                showErrorMessage(resourceBundle.getString("grid_size_error_message"));
-              }
-              return null;
-            }
-          } catch (NumberFormatException e) {
-            showErrorMessage(resourceBundle.getString("invalid_number_error_message"));
-            return null;
-          }
-        }
-        return null;
-      });
-
-      dialog.showAndWait().ifPresent(pair -> {
-          int width = pair.getKey();
-          int height = pair.getValue();
-          builderPane.updateGridSize(width, height);
-          LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
-                  width, "Easy", "BabaIsUs", "Try harder");
-          levelController.resetLevel(levelMetadata);
-      });
-    });
-  }
-  private void showErrorMessage(String message) {
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(null);
-    alert.setContentText(message);
-    alert.showAndWait();
-  }
 
   private void showLoadingScreen() {
     // Create a progress bar for the loading screen
@@ -335,7 +224,7 @@ public class ElementsPane {
     loadingStage.setScene(new Scene(loadingPane, 250, 100));
 
     // Start a task for generating the level
-    Task<Void> generateTask = new Task<Void>() {
+    Task<Void> generateTask = new Task<>() {
       @Override
       protected Void call() throws Exception {
         // Simulate generation process
@@ -362,6 +251,4 @@ public class ElementsPane {
     // Start the task
     new Thread(generateTask).start();
   }
-
-
 }

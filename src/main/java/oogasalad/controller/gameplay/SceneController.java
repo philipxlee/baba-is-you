@@ -1,10 +1,12 @@
 package oogasalad.controller.gameplay;
 
 import javafx.stage.Stage;
+import oogasalad.controller.entrypoint.EntryPointController;
 import oogasalad.model.gameplay.level.Level;
+import oogasalad.shared.entrypoint.EntryPoint;
 import oogasalad.shared.scene.Scene;
-import oogasalad.view.gameplay.mainscene.MainScene;
 import oogasalad.view.gameplay.StartingScene;
+import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
  * SceneController is Controller that manages Scenes and the JavaFX Stage.
@@ -16,8 +18,8 @@ public class SceneController {
   private final Stage stage;
   private final DatabaseController databaseController;
   private boolean isGuestSession;
-  private Level level;
-  private LevelController levelController;
+  private final Level level;
+  private final LevelController levelController;
   private String language;
 
   /**
@@ -96,13 +98,34 @@ public class SceneController {
   /**
    * Return level controller.
    */
-  public LevelController getLevelController() { return levelController; }
+  public LevelController getLevelController() {
+    return levelController;
+  }
 
+  /**
+   * Set the language of the game.
+   *
+   * @param newLanguage the language to change to
+   */
   public void setLanguage(String newLanguage) {
     this.language = newLanguage;
   }
 
+  /**
+   * Get the language of the game.
+   *
+   * @return the current configured language
+   */
   public String getLanguage() {
     return this.language;
+  }
+
+  /**
+   * Switch to entrypoint.
+   */
+  public void goToEntryPoint() {
+    EntryPointController entryPointController = new EntryPointController(stage);
+    entryPointController.setLanguage(this.language);
+    switchToScene(new EntryPoint(entryPointController));
   }
 }

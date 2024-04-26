@@ -9,7 +9,7 @@ import oogasalad.shared.config.JsonManager;
  */
 public class JsonGameParser {
 
-  private JsonManager jsonManager = new JsonManager();
+  private final JsonManager jsonManager = new JsonManager();
 
   /**
    * Parses a JsonObject representing a level into a Level object.

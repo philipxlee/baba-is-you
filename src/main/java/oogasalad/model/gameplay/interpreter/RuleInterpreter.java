@@ -160,12 +160,28 @@ public class RuleInterpreter {
    * Loads the behavior mappings from the properties file.
    */
   private void loadBehaviorMappings() {
+    buildAttributeBlockMapping();
+    buildBecomesBlockMapping();
+  }
+
+  /**
+   * Builds the mapping of attribute blocks to their respective behaviors. For example, a
+   * "YouTextBlock" maps to an "Attribute" behavior.
+   */
+  private void buildAttributeBlockMapping() {
     String attributes = properties.getProperty(ATTRIBUTE_VISITS);
-    String transforms = properties.getProperty(BECOMES_VISITS);
     Arrays.stream(attributes.split(REGEX_SPLIT))
-        .forEach(a -> behaviorMap.put(a + TEXT_BLOCK_SUFFIX, ATTRIBUTE));
+        .forEach(a -> behaviorMap.put(a, ATTRIBUTE));
+  }
+
+  /**
+   * Builds the mapping of "becomes" blocks to their respective behaviors. For example, a
+   * "TransformTextBlock" maps to a "Transform" behavior.
+   */
+  private void buildBecomesBlockMapping() {
+    String transforms = properties.getProperty(BECOMES_VISITS);
     Arrays.stream(transforms.split(REGEX_SPLIT))
-        .forEach(t -> behaviorMap.put(t + TEXT_BLOCK_SUFFIX, TRANSFORM));
+        .forEach(t -> behaviorMap.put(t, TRANSFORM));
   }
 
   /**

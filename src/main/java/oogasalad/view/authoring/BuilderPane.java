@@ -1,28 +1,18 @@
 package oogasalad.view.authoring;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
 import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
-import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 
@@ -32,14 +22,14 @@ public class BuilderPane {
   private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
   protected Pane root; // Your root node for the builder scene
   protected GridPane gridPane;
-  protected int gridWidth;
+  public int gridWidth;
   protected boolean removeMode;
-  protected int gridHeight;
+  public int gridHeight;
   private double cellSize; // Set the cell size
   private BlockViewFactory blockViewFactory;
-  private LevelController levelController;
-  private String language;
-  private WidgetFactory factory;
+  private final LevelController levelController;
+  private final String language;
+  private final WidgetFactory factory;
   private VBox container;
 
   public BuilderPane(LevelController levelController, String language) {
@@ -61,16 +51,6 @@ public class BuilderPane {
     container.setMinWidth(root.getWidth());
     container.setAlignment(Pos.CENTER);
 
-    //Level name editor textfield
-//    TextField levelName = factory.createTextField(new WidgetConfiguration(200, 50,
-//        "text-field-dark", language));
-//    Text levelNameLabel = factory.generateLine(new WidgetConfiguration("EnterName",
-//        language));
-//    HBox nameEditor = factory.wrapInHBox(new ArrayList<>(Arrays.asList(levelNameLabel, levelName)),
-//        (int)root.getWidth());
-//
-//    container.getChildren().add(nameEditor);
-
     this.gridPane = new GridPane();
     LevelMetadata levelMetadata = levelController.getLevelMetadata();
     this.gridWidth = levelMetadata.cols();
@@ -82,15 +62,14 @@ public class BuilderPane {
 
     setUpGrid();
     setUpDropHandling();
-//    root.getChildren().add(container);
   }
 
-  private void setUpGrid() {
+  protected void setUpGrid() {
     gridPane.getChildren().clear(); // Clear the existing grid
 
     // Adjust the maximum width and height available for the grid, accounting for margins
     double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
-    double availableHeight =  root.getHeight() - 2 * GRID_MARGIN - 2* gridHeight;
+    double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
     this.cellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);
@@ -120,36 +99,6 @@ public class BuilderPane {
     if (!root.getChildren().contains(gridPane)) {
 //      container.getChildren().add(factory.wrapInHBox(gridPane, (int)root.getWidth(), 15));
       root.getChildren().add(gridPane);
-    }
-  }
-
-
-  public void updateGridSize(int width, int height) {
-    // Display a confirmation dialog
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmation");
-    alert.setHeaderText("Warning: Existing game state will be deleted");
-    alert.setContentText("Would you like to proceed?");
-
-    // Add buttons for user selection
-    ButtonType buttonTypeYes = new ButtonType("Yes");
-    ButtonType buttonTypeNo = new ButtonType("No");
-
-    alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-    Optional<ButtonType> result = alert.showAndWait();
-
-    // If user confirms, clear existing cells and blocks and set up the grid with the new size
-    if (result.isPresent() && result.get() == buttonTypeYes) {
-      this.gridWidth = width;
-      this.gridHeight = height;
-
-      // Clear existing cells
-      this.gridPane.getChildren().clear();
-      this.root.getChildren().clear();
-
-      // Re-setup the grid with the new size
-      setUpGrid();
     }
   }
 
