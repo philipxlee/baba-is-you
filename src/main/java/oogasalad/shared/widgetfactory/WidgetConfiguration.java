@@ -82,9 +82,9 @@ public class WidgetConfiguration implements AlertHandler {
 
   private Properties loadProperties() {
     Properties properties = new Properties();
-    try (InputStream inputStream = getClass().getResourceAsStream(
-        "/languages/" + language + ".properties")) {
-      properties.load(inputStream);
+    String resourcePath = "/languages/" + language + ".properties";
+    try (InputStream inputStream = getClass().getResourceAsStream(resourcePath)) {
+        properties.load(inputStream);
     } catch (IOException e) {
       showError("ERROR", e.getMessage());
     }

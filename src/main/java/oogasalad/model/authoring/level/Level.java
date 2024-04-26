@@ -30,6 +30,17 @@ public class Level implements Observable<Level> {
   }
 
   /**
+   * Level Constructor. Initialized with LevelMetadata record and grid.
+   *
+   * @param levelMetadata The levelMetadata record representing the level.
+   */
+  public Level(LevelMetadata levelMetadata, Grid inputGrid) {
+    this.levelMetadata = levelMetadata;
+    grid = inputGrid;
+    observers = new ArrayList<>();
+  }
+
+  /**
    * Set Cell of a level with block type. (type must be in block types properties file).
    *
    * @param row       The row position to be modified.
@@ -58,33 +69,41 @@ public class Level implements Observable<Level> {
    * @return 3D List of strings representing the grid.
    */
   public List<List<List<String>>> getParsedGrid() {
-    // Initialize a 3D list to dynamically handle varying numbers of blocks per stack
-    List<List<List<String>>> dynamicGrid = new ArrayList<>();
+    int originalRows = levelMetadata.rows();
+    int originalCols = levelMetadata.cols();
 
-    // Iterate through the entire grid using the iterator
-    for (int row = 0; row < levelMetadata.rows(); row++) {
+    List<List<List<String>>> extendedGrid = new ArrayList<>();
+    for (int row = 0; row < originalRows + 2; row++) {
       List<List<String>> rowList = new ArrayList<>();
-      for (int col = 0; col < levelMetadata.cols(); col++) {
+      for (int col = 0; col < originalCols + 2; col++) {
         rowList.add(new ArrayList<>());
       }
-      dynamicGrid.add(rowList);
+      extendedGrid.add(rowList);
+    }
+
+    for (int row = 0; row < originalRows + 2; row++) {
+      for (int col = 0; col < originalCols + 2; col++) {
+        if (row == 0 || row == originalRows + 1 || col == 0 || col == originalCols + 1) {
+          extendedGrid.get(row).get(col).add("EmptyVisualBlock");
+        }
+      }
     }
 
     Iterator<Stack<Block>> it = grid.iterator();
-    int row = 0, col = 0;
+    int row = 1, col = 1;
     while (it.hasNext()) {
       Stack<Block> blockStack = it.next();
       for (Block block : blockStack) {
-        dynamicGrid.get(row).get(col).add(block.type().name());
+        extendedGrid.get(row).get(col).add(block.type().name());
       }
       col++;
-      if (col == levelMetadata.cols()) {
-        col = 0;
+      if (col == originalCols + 1) {
+        col = 1;
         row++;
       }
     }
 
-    return dynamicGrid;
+    return extendedGrid;
   }
 
   /**
@@ -94,6 +113,15 @@ public class Level implements Observable<Level> {
    */
   public LevelMetadata getLevelMetadata() {
     return levelMetadata;
+  }
+
+  /**
+   * Returns the grid.
+   *
+   * @return Current LevelMetadata.
+   */
+  public Grid getGrid() {
+    return grid;
   }
 
   /**
