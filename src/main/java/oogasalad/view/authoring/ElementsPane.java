@@ -163,6 +163,8 @@ public class ElementsPane {
       levelDescriptionField.setPromptText("Enter level description");
       TextField authorNameField = new TextField();
       authorNameField.setPromptText("Enter author name");
+      TextField hintField = new TextField();
+      hintField.setPromptText("Enter a hint");
 
       // Create a grid pane to hold the input fields
       GridPane inputGrid = new GridPane();
@@ -171,6 +173,7 @@ public class ElementsPane {
       inputGrid.addRow(0, new Label("Level Name:"), levelNameField);
       inputGrid.addRow(1, new Label("Level Description:"), levelDescriptionField);
       inputGrid.addRow(2, new Label("Author Name:"), authorNameField);
+      inputGrid.addRow(3, new Label("Add a Hint:"), hintField);
 
       Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
       confirmation.setTitle("Save JSON");
@@ -188,10 +191,11 @@ public class ElementsPane {
           String levelName = levelNameField.getText();
           String levelDescription = levelDescriptionField.getText();
           String authorName = authorNameField.getText();
+          String hint = hintField.getText();
 
           // Proceed with saving the JSON using the provided details
           LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
-              builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName);
+              builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
           levelController.serializeLevel();
 
           // Optionally, show a success message
@@ -300,7 +304,7 @@ public class ElementsPane {
           int height = pair.getValue();
           builderPane.updateGridSize(width, height);
           LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
-                  width, "Easy", "BabaIsUs");
+                  width, "Easy", "BabaIsUs", "Try harder");
           levelController.resetLevel(levelMetadata);
       });
     });

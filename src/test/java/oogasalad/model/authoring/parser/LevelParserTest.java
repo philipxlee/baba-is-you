@@ -24,7 +24,8 @@ class LevelParserTest {
   void setUp() throws Exception {
 
     LevelMetadata metadata = new LevelMetadata("TestLevel",
-        "This is a test level", 3, 3, "Easy", "BabaIsUs");
+        "This is a test level", 3, 3, "Easy", "BabaIsUs",
+        "Try harder");
     testLevel = new Level(metadata);
 
     parser = new LevelParser();
@@ -48,6 +49,11 @@ class LevelParserTest {
     );
 
     JsonObject gridObject = jsonManager.getJsonObject(metadataJson, "grid");
+    JsonObject metadataObject = jsonManager.getJsonObject(gridObject, "metadata");
+
+    assertEquals("Try harder", jsonManager.getValue(metadataObject, "hint"));
+    assertEquals("Easy", jsonManager.getValue(metadataObject, "difficulty"));
+    assertEquals("BabaIsUs", jsonManager.getValue(metadataObject, "author"));
     JsonArray jsonArray = jsonManager.getJsonArray(gridObject, "cells");
     JsonArray firstLayer = jsonArray.get(0).getAsJsonArray();
     JsonArray firstRow = firstLayer.get(0).getAsJsonArray();

@@ -36,6 +36,7 @@ public class LevelParser {
     JsonObject metadataObject = new JsonObject();
     jsonManager.addProperty(metadataObject, "author", metadata.authorName());
     jsonManager.addProperty(metadataObject, "difficulty", metadata.difficulty());
+    jsonManager.addProperty(metadataObject, "hint", metadata.hint());
     buildJsonObject(metadataJson, metadata, gridSizeObject);
     JsonArray gridArray = turnGridToJson(level);
     jsonManager.addArrayToJson(grid, "cells", gridArray);

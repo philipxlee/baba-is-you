@@ -21,7 +21,7 @@ public class LevelTest {
   public void setUp() throws Exception {
     // Create LevelMetadata instance
     levelMetadata = new LevelMetadata("Level1", "First Level", 5, 5,
-        "Easy", "BabaIsUS");
+        "Easy", "BabaIsUS", "Try harder");
     // Initialize Level
     level = new Level(levelMetadata);
     // Mock the Observer

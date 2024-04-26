@@ -11,7 +11,7 @@ public class AuthoringEnvironment {
   public void start(Stage stage) {
     // initialize models
     LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.",
-        10, 10, "Medium", "BabaIsUs");
+        10, 10, "Medium", "BabaIsUs", "Try harder");
 
     // initialize controllers
     LevelController levelController = new LevelController(levelMetadata);
