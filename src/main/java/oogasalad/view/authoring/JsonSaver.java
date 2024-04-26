@@ -21,52 +21,64 @@ public class JsonSaver {
   }
 
   public void saveJson() {
-    // Create text fields for level name, level description, and author name
-    TextField levelNameField = new TextField();
-    levelNameField.setPromptText("Enter level name");
-    TextField levelDescriptionField = new TextField();
-    levelDescriptionField.setPromptText("Enter level description");
-    TextField authorNameField = new TextField();
-    authorNameField.setPromptText("Enter author name");
+    GridPane inputGrid = createInputGrid();
+    Alert confirmation = createConfirmationAlert(inputGrid);
+    confirmation.showAndWait().ifPresent(buttonType -> handleConfirmation(buttonType, confirmation));
+  }
 
-    // Create a grid pane to hold the input fields
+  private GridPane createInputGrid() {
+    TextField levelNameField = createTextField("Enter level name");
+    TextField levelDescriptionField = createTextField("Enter level description");
+    TextField authorNameField = createTextField("Enter author name");
+
     GridPane inputGrid = new GridPane();
     inputGrid.setHgap(10);
     inputGrid.setVgap(10);
     inputGrid.addRow(0, new Label("Level Name:"), levelNameField);
     inputGrid.addRow(1, new Label("Level Description:"), levelDescriptionField);
     inputGrid.addRow(2, new Label("Author Name:"), authorNameField);
+    return inputGrid;
+  }
 
+  private TextField createTextField(String promptText) {
+    TextField textField = new TextField();
+    textField.setPromptText(promptText);
+    return textField;
+  }
+
+  private Alert createConfirmationAlert(GridPane inputGrid) {
     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
     confirmation.setTitle("Save JSON");
     confirmation.setHeaderText("Enter level details and save JSON:");
     confirmation.getDialogPane().setContent(inputGrid);
+    confirmation.getButtonTypes().setAll(new ButtonType("Yes", ButtonBar.ButtonData.YES), new ButtonType("No", ButtonBar.ButtonData.NO));
+    return confirmation;
+  }
 
-    ButtonType yesButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-    ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-
-    confirmation.getButtonTypes().setAll(yesButton, noButton);
-
-    confirmation.showAndWait().ifPresent(buttonType -> {
-      if (buttonType == yesButton) {
-        // Retrieve values from text fields
-        String levelName = levelNameField.getText();
-        String levelDescription = levelDescriptionField.getText();
-        String authorName = authorNameField.getText();
-
-        // Proceed with saving the JSON using the provided details
-        LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, authorName, builderPane.gridHeight, builderPane.gridWidth);
-        File savedFile = levelController.serializeLevel(); // Get the saved file
-        if (savedFile != null) {
-          // The user selected a file, proceed with saving
-          Alert success = new Alert(Alert.AlertType.INFORMATION);
-          success.setTitle("Success");
-          success.setHeaderText(null);
-          success.setContentText("JSON saved successfully!");
-          success.showAndWait();
-        }
+  private void handleConfirmation(ButtonType buttonType, Alert confirmation) {
+    if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
+      String levelName = getFieldText(0, confirmation);
+      String levelDescription = getFieldText(1, confirmation);
+      String authorName = getFieldText(2, confirmation);
+      LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, authorName, builderPane.gridHeight, builderPane.gridWidth);
+      File savedFile = levelController.serializeLevel();
+      if (savedFile != null) {
+        showAlert("Success", "JSON saved successfully!");
       }
-    });
+    }
+  }
+
+  private String getFieldText(int rowIndex, Alert confirmation) {
+    GridPane dialogContent = (GridPane) confirmation.getDialogPane().getContent();
+    return ((TextField) dialogContent.getChildren().get(rowIndex * 2 + 1)).getText();
+  }
+
+  private void showAlert(String title, String message) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
   }
 }
 
