@@ -45,7 +45,7 @@
 }
 
 .caption {
-  -fx-font-size: 20px;
+  -fx-font-size: 22px;
   -fx-fill: #FF7171;
   -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
@@ -100,6 +100,11 @@
   -fx-background-color: #343342;
 }
 
+.scrollpane {
+  -fx-border-color: #F5F5F5;
+  -fx-border-width: 10px;
+}
+
 .flowpane-gradient {
   -fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD);
  }
@@ -107,7 +112,7 @@
 .text-field {
   -fx-background-color: #F5F5F5;
   -fx-text-fill: #FF7171;
-  -fx-font-size: 16px;
+  -fx-font-size: 20px;
 }
 
 .text-field-dark {
@@ -141,4 +146,18 @@
   -fx-padding: 0;
   -fx-font-size: 30px;
   -fx-fill: #191A20;
+}
+
+.red-label {
+  -fx-font-size: 30px;
+  -fx-text-fill: #FF7171;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
+}
+
+.white-label {
+  -fx-font-size: 35px;
+  -fx-text-fill: #F5F5F5;
+  -fx-font-family: 'Bahiana';
+  -fx-text-alignment: center;
 }

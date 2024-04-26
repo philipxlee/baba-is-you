@@ -75,7 +75,6 @@ public class FileChooserPane {
     this.flowPane = factory.createFlowPane(new WidgetConfiguration(width - 50,
         height / 4, "flowpane", language));
 
-    //TODO: change to actual file #
     populateFiles(flowPane);
     ScrollPane pane = factory.makeScrollPane(flowPane, width - 50);
     Text paneLabel = factory.generateLine(new WidgetConfiguration("Games", language));

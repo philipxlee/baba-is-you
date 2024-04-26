@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
@@ -56,9 +57,9 @@ public class WidgetFactory {
     return line;
   }
 
-  public Text generateSubHeader(String content) {
+  public Text generateLine(String content) {
     Text line = new Text(content);
-    line.getStyleClass().add("sub-header");
+    line.getStyleClass().add("paragraph");
     return line;
   }
 
@@ -154,6 +155,7 @@ public class WidgetFactory {
     pane.setMaxWidth(maxWidth);
     pane.setPannable(false);
     pane.setFocusTraversable(false);
+    pane.getStylesheets().add("scrollpane");
     pane.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP
           || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
@@ -191,6 +193,16 @@ public class WidgetFactory {
     field.setPromptText(configuration.getPropertyContents());
     field.setMinWidth(configuration.getWidth());
     field.setMaxWidth(configuration.getWidth()+100);
+    field.setPrefHeight(configuration.getHeight());
+    field.getStyleClass().add(configuration.getCssMatch());
+    return field;
+  }
+
+  public TextArea createTextArea(WidgetConfiguration configuration) {
+    TextArea field = new TextArea();
+    field.setPromptText(configuration.getPropertyContents());
+    field.setMaxWidth(configuration.getWidth());
+    field.setMinHeight(configuration.getHeight());
     field.setPrefHeight(configuration.getHeight());
     field.getStyleClass().add(configuration.getCssMatch());
     return field;
