@@ -22,9 +22,9 @@ public class BuilderPane {
   private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
   protected Pane root; // Your root node for the builder scene
   protected GridPane gridPane;
-  protected int gridWidth;
+  public int gridWidth;
   protected boolean removeMode;
-  protected int gridHeight;
+  public int gridHeight;
   private double cellSize; // Set the cell size
   private BlockViewFactory blockViewFactory;
   private final LevelController levelController;

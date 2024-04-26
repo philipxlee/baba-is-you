@@ -1,4 +1,4 @@
-package oogasalad.view.authoring;
+package oogasalad.view.authoring.jsonOps;
 
 import java.io.File;
 import javafx.scene.control.Alert;
@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.LevelMetadata;
+import oogasalad.view.authoring.BuilderPane;
 
 public class JsonSaver {
 
