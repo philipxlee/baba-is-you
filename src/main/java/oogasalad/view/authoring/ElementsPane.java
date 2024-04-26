@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
-
-
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -33,7 +38,7 @@ public class ElementsPane {
 
   private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
 
-  private ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
+  private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
@@ -41,13 +46,16 @@ public class ElementsPane {
   private ScrollPane scrollPane;
   private VBox layout;
   private boolean removeMode = false;
-  private String language;
+  private final String language;
+  private final MainScene mainScene;
 
-  public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
+  public ElementsPane(BuilderPane builderPane, LevelController levelController, MainScene
+      mainScene) {
     this.factory = new WidgetFactory();
-    this.language = language;
     this.builderPane = builderPane;
     this.levelController = levelController;
+    this.language = levelController.getLanguage();
+    this.mainScene = mainScene;
     initializeElementsLayout();
   }
 
@@ -119,16 +127,7 @@ public class ElementsPane {
       }
     });
 
-
-    removeButton.setOnAction(event -> {
-      removeMode = !removeMode;
-      if (removeMode) {
-        removeButton.setText("Removing mode: Press blocks to remove");
-      } else {
-        removeButton.setText("Remove block");
-      }
-      builderPane.setRemove(removeMode);
-    });
+    removeButton.setOnAction(e -> toggleRemoveMode(removeButton));
 
     List<Node> buttons = new ArrayList<>();
     buttons.add(changeGridSizeButton);
@@ -147,7 +146,11 @@ public class ElementsPane {
     scrollPane.setMaxHeight(350);
 
     Button saveJson = factory.makeButton(new WidgetConfiguration(
-            200, 40, "SaveJson", "black-button", language));
+        200, 40, "SaveJson", "black-button", language));
+    Button entryPoint = makeEntryPointButton();
+    HBox jsonAndEntryPoint = factory.wrapInHBox(
+        new ArrayList<>(Arrays.asList(saveJson, entryPoint)),
+        (int) layout.getWidth());
     saveJson.setOnAction(event -> {
       // Create text fields for level name, level description, and author name
       TextField levelNameField = new TextField();
@@ -183,7 +186,8 @@ public class ElementsPane {
           String authorName = authorNameField.getText();
 
           // Proceed with saving the JSON using the provided details
-          LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, builderPane.gridHeight, builderPane.gridWidth);
+          LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
+              builderPane.gridHeight, builderPane.gridWidth);
           levelController.serializeLevel();
 
           // Optionally, show a success message
@@ -196,23 +200,30 @@ public class ElementsPane {
       });
     });
 
-    HBox jsonBox = factory.wrapInHBox(saveJson, (int) layout.getWidth(), 15);
-
     layout.getStyleClass().add("elements-background");
 
     HBox comboBoxes = factory.wrapInHBox(new ArrayList<>(Arrays.asList(difficultyComboBox,
         categoryComboBox)), (int) layout.getWidth());
     layout.getChildren().addAll(header, buttonsHBox, comboBoxes, descriptionBox,
-        scrollPane, jsonBox);
+        scrollPane, jsonAndEntryPoint);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
+  }
+
+  private Button makeEntryPointButton() {
+    Button entryPoint = factory.makeButton(new WidgetConfiguration(200, 40,
+        "Back", "black-button", language));
+    entryPoint.setOnAction(e -> mainScene.goToEntryPoint());
+    return entryPoint;
   }
 
   private void toggleRemoveMode(Button removeButton) {
     removeMode = !removeMode;
     if (removeMode) {
-      removeButton.setText("Removing mode: Press blocks to remove");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemovingMode", language));
     } else {
-      removeButton.setText("Remove block");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemoveBlock", language));
     }
     builderPane.setRemove(removeMode);
   }
@@ -235,10 +246,7 @@ public class ElementsPane {
   private boolean isValidSize(String value) {
     try {
       int size = Integer.parseInt(value);
-      if (size <= 4 || size > 20) {
-        return false; // Return false if size is out of range
-      }
-      return true;
+      return size > 4 && size <= 20; // Return false if size is out of range
     } catch (NumberFormatException e) {
       return false;
     }
@@ -288,15 +296,16 @@ public class ElementsPane {
       });
 
       dialog.showAndWait().ifPresent(pair -> {
-          int width = pair.getKey();
-          int height = pair.getValue();
-          builderPane.updateGridSize(width, height);
-          LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
-                  width);
-          levelController.resetLevel(levelMetadata);
+        int width = pair.getKey();
+        int height = pair.getValue();
+        builderPane.updateGridSize(width, height);
+        LevelMetadata levelMetadata = new LevelMetadata("Level Name", "Level Desc.", height,
+            width);
+        levelController.resetLevel(levelMetadata);
       });
     });
   }
+
   private void showErrorMessage(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle("Error");

@@ -2,11 +2,11 @@ package oogasalad.controller.gameplay;
 
 import com.google.gson.JsonObject;
 import javafx.scene.input.KeyCode;
+import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
-import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.shared.alert.AlertHandler;
 import oogasalad.view.gameplay.mainscene.GamePane;
 
@@ -20,7 +20,7 @@ public class GameGridController implements AlertHandler {
   private final GamePane gamePane;
   private final KeyHandlerController keyHandlerController;
   String[][][] empty = {};
-  private Level level;
+  private final Level level;
   private final JsonGameParser jsonGameParser = new JsonGameParser();
 
   public GameGridController(GamePane gamePane, KeyHandlerController keyHandlerController,

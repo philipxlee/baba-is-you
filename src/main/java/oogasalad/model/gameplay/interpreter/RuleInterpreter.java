@@ -165,8 +165,8 @@ public class RuleInterpreter {
   }
 
   /**
-   * Builds the mapping of attribute blocks to their respective behaviors.
-   * For example, a "YouTextBlock" maps to an "Attribute" behavior.
+   * Builds the mapping of attribute blocks to their respective behaviors. For example, a
+   * "YouTextBlock" maps to an "Attribute" behavior.
    */
   private void buildAttributeBlockMapping() {
     String attributes = properties.getProperty(ATTRIBUTE_VISITS);
@@ -175,8 +175,8 @@ public class RuleInterpreter {
   }
 
   /**
-   * Builds the mapping of "becomes" blocks to their respective behaviors.
-   * For example, a "TransformTextBlock" maps to a "Transform" behavior.
+   * Builds the mapping of "becomes" blocks to their respective behaviors. For example, a
+   * "TransformTextBlock" maps to a "Transform" behavior.
    */
   private void buildBecomesBlockMapping() {
     String transforms = properties.getProperty(BECOMES_VISITS);

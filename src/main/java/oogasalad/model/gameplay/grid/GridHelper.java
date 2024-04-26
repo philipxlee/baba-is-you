@@ -2,14 +2,15 @@ package oogasalad.model.gameplay.grid;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 
 
 public class GridHelper {
+
   protected final List<AbstractBlock>[][] grid;
   private final BlockFactory factory;
+
   public GridHelper(int rows, int cols) {
     this.grid = new ArrayList[rows][cols];
     this.factory = new BlockFactory();
@@ -72,16 +73,16 @@ public class GridHelper {
   /**
    * Checks if a block can be moved to the margin of the grid.
    *
-   * @param endI                   The target row index for the block.
-   * @param endJ                   The target column index for the block.
-   * @param endK                   The index of the block in the target cell.
+   * @param endI                 The target row index for the block.
+   * @param endJ                 The target column index for the block.
+   * @param endK                 The index of the block in the target cell.
    * @param controllableintialI  The initial row index of the controllable block.
    * @param controllableintialJ  The initial column index of the controllable block.
-   * @param controllableinitialK  The index of the controllable block in its initial cell.
+   * @param controllableinitialK The index of the controllable block in its initial cell.
    * @return True if the block can be moved to the margin, false otherwise.
    */
   public boolean isMovableToMargin(int endI, int endJ, int endK, int controllableintialI,
-                                   int controllableintialJ, int controllableinitialK) {
+      int controllableintialJ, int controllableinitialK) {
     boolean already_in_margin = isAlreadyInMargin(controllableintialI, controllableintialJ);
     if (already_in_margin) {
       return true;
@@ -132,12 +133,12 @@ public class GridHelper {
    * @return A list containing the indices of all pushable blocks in the cell.
    */
   public List<Integer> allPushableBlocksIndex(int i,
-                                              int j) { //Cant use stream and ForEach because we want to ensure order of element in arraylist are kept same way in indiceslist
+      int j) { //Cant use stream and ForEach because we want to ensure order of element in arraylist are kept same way in indiceslist
     List<Integer> indicesList = new ArrayList<>();
     for (int index = 0; index < grid[i][j].size(); index++) {
       AbstractBlock block = grid[i][j].get(index);
       if (block.isTextBlock() || (
-              !block.isTextBlock() && block.getAttribute("Pushable"))) {
+          !block.isTextBlock() && block.getAttribute("Pushable"))) {
         indicesList.add(index);
       }
     }
@@ -186,7 +187,8 @@ public class GridHelper {
    *
    * @param i The row index of the cell.
    * @param j The column index of the cell.
-   * @return True if the cell contains a block with the Pushable behavior or a TextBlock, false otherwise.
+   * @return True if the cell contains a block with the Pushable behavior or a TextBlock, false
+   * otherwise.
    */
   public boolean cellHasPushable(int i, int j) {
     boolean hasPushable = false;
@@ -214,17 +216,18 @@ public class GridHelper {
   }
 
   /**
-   * Checks if moving to the specified indices would cause the cell to be at the margin of the grid.
+   * Checks if moving to the specified indices would cause the cell to be at the margin of the
+   * grid.
    *
    * @param nextI The next row index.
    * @param nextJ The next column index.
-   * @return True if moving to the specified indices would lead to the cell being at the margin, false otherwise.
+   * @return True if moving to the specified indices would lead to the cell being at the margin,
+   * false otherwise.
    */
   private boolean isMovingToMargin(int nextI, int nextJ) {
     return ((nextI == grid.length - 1 || nextI == 0) || (nextJ == grid[0].length - 1
-            || nextJ == 0));
+        || nextJ == 0));
   }
-
 
 
 }
