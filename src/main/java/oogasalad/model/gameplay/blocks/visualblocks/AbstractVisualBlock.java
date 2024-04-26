@@ -18,7 +18,8 @@ import oogasalad.model.gameplay.strategies.Strategy;
 import oogasalad.shared.loader.PropertiesLoader;
 
 /**
- * Abstract base class for visual blocks in the game, handling attributes and behaviors specific to visual elements.
+ * Abstract base class for visual blocks in the game, handling attributes and behaviors specific to
+ * visual elements.
  *
  * @author Philip Lee.
  */
@@ -44,8 +45,8 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    * Constructs a new visual block with specified properties.
    *
    * @param name the identifier name of the block
-   * @param row the initial row location of the block
-   * @param col the initial column location of the block
+   * @param row  the initial row location of the block
+   * @param col  the initial column location of the block
    */
   public AbstractVisualBlock(String name, int row, int col) {
     super();
@@ -89,8 +90,8 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
   /**
    * Executes the behaviors associated with the block.
    *
-   * @param block The block to control.
-   * @param updater The updater to update the block.
+   * @param block    The block to control.
+   * @param updater  The updater to update the block.
    * @param iterator The iterator to control.
    */
   @Override
@@ -173,7 +174,7 @@ public abstract class AbstractVisualBlock extends AbstractBlock {
    * Modifies the block's attribute.
    *
    * @param attribute The attribute to modify.
-   * @param value The new value of the attribute.
+   * @param value     The new value of the attribute.
    */
   public void modifyAttribute(String attribute, boolean value) {
     Optional.ofNullable(attributeTranslationMap.get(attribute))

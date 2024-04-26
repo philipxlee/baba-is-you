@@ -1,14 +1,14 @@
 package oogasalad.model.gameplay.database;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import oogasalad.database.gamedata.CommentData;
 import oogasalad.database.gamedata.GameSession;
 import oogasalad.database.records.CommentRecord;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.Date;
-import java.util.ArrayList;
 
 public class GameSessionTest {
 

@@ -29,6 +29,7 @@
   -fx-font-size: 25px;
   -fx-fill: #191A20;
 }
+
 .white-button:hover {
   -fx-background-color: #FF7171;
 }

@@ -26,7 +26,7 @@ public class LoseScene implements Scene {
   private final SceneController sceneController;
   private int width;
   private int height;
-  private String language;
+  private final String language;
 
   public LoseScene(SceneController sceneController) {
 

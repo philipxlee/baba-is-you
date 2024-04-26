@@ -1,6 +1,8 @@
 package oogasalad.controller.authoring;
 
 import javafx.stage.Stage;
+import oogasalad.controller.entrypoint.EntryPointController;
+import oogasalad.shared.entrypoint.EntryPoint;
 import oogasalad.shared.scene.Scene;
 import oogasalad.view.authoring.MainScene;
 
@@ -44,4 +46,5 @@ public class SceneController {
     scene.initializeScene(WIDTH, HEIGHT);
     stage.setScene(scene.getScene());
   }
+
 }

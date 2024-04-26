@@ -1,28 +1,21 @@
 package oogasalad.view.authoring;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
-import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
 
@@ -37,9 +30,9 @@ public class BuilderPane {
   protected int gridHeight;
   private double cellSize; // Set the cell size
   private BlockViewFactory blockViewFactory;
-  private LevelController levelController;
-  private String language;
-  private WidgetFactory factory;
+  private final LevelController levelController;
+  private final String language;
+  private final WidgetFactory factory;
   private VBox container;
 
   public BuilderPane(LevelController levelController, String language) {
@@ -61,16 +54,6 @@ public class BuilderPane {
     container.setMinWidth(root.getWidth());
     container.setAlignment(Pos.CENTER);
 
-    //Level name editor textfield
-//    TextField levelName = factory.createTextField(new WidgetConfiguration(200, 50,
-//        "text-field-dark", language));
-//    Text levelNameLabel = factory.generateLine(new WidgetConfiguration("EnterName",
-//        language));
-//    HBox nameEditor = factory.wrapInHBox(new ArrayList<>(Arrays.asList(levelNameLabel, levelName)),
-//        (int)root.getWidth());
-//
-//    container.getChildren().add(nameEditor);
-
     this.gridPane = new GridPane();
     LevelMetadata levelMetadata = levelController.getLevelMetadata();
     this.gridWidth = levelMetadata.cols();
@@ -90,7 +73,7 @@ public class BuilderPane {
 
     // Adjust the maximum width and height available for the grid, accounting for margins
     double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
-    double availableHeight =  root.getHeight() - 2 * GRID_MARGIN - 2* gridHeight;
+    double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
     this.cellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);

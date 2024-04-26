@@ -3,12 +3,8 @@ package oogasalad.view.gameplay.socialcenter;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -30,14 +26,15 @@ public class LeaderboardScene implements Scene {
   private final SceneController sceneController;
   private javafx.scene.Scene scene;
   private VBox root;
-  private LevelController levelController;
-  private String language;
+  private final LevelController levelController;
+  private final String language;
   private int width;
   private int height;
+
   /**
    * Constructor for LeaderboardScene.
    *
-   * @param factory WidgetFactory
+   * @param factory         WidgetFactory
    * @param sceneController SceneController
    */
   public LeaderboardScene(WidgetFactory factory, SceneController sceneController) {
@@ -96,8 +93,10 @@ public class LeaderboardScene implements Scene {
       leaderboardList.getChildren().add(row);
     }
 
-    Button backButton = factory.makeButton(new WidgetConfiguration(200, 50, "Back", "button", language));
-    backButton.setOnAction(event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
+    Button backButton = factory.makeButton(
+        new WidgetConfiguration(200, 50, "Back", "button", language));
+    backButton.setOnAction(
+        event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
 
     root.getChildren().addAll(leaderboardList, backButton);
   }
@@ -106,7 +105,7 @@ public class LeaderboardScene implements Scene {
     WidgetConfiguration configuration = new WidgetConfiguration(300, 50, "row-cell", language);
     Button username = factory.makeButton(configuration, number + ". " + player.getUsername());
     Button timeSpent = factory.makeButton(configuration, player.getTimeSpent() + " seconds");
-    Button date = factory.makeButton(configuration, player.getDate().toString());
+    Button date = factory.makeButton(configuration, player.getDate());
     username.setDisable(true);
     timeSpent.setDisable(true);
     date.setDisable(true);

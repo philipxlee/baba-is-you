@@ -7,12 +7,12 @@ import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.config.JsonManager;
 
 /**
- * LevelController responds to view and allows for model to parse Json files and then load them
- * or to save game data to json files.
+ * LevelController responds to view and allows for model to parse Json files and then load them or
+ * to save game data to json files.
  */
 public class LevelController {
 
-  private Level level;
+  private final Level level;
   private final JsonGameParser jsonGameParser = new JsonGameParser();
   private final JsonManager jsonManager = new JsonManager();
   private SceneController sceneController;
@@ -43,8 +43,8 @@ public class LevelController {
   }
 
   /**
-   * Loads a new level from a file, initializes related controllers and updates the scene.
-   * This method orchestrates the loading of a new level configuration, creating necessary data
+   * Loads a new level from a file, initializes related controllers and updates the scene. This
+   * method orchestrates the loading of a new level configuration, creating necessary data
    * management and scene setup to transition to the new level.
    *
    * @param sceneController The current scene controller to be updated with new level data.
@@ -54,7 +54,8 @@ public class LevelController {
     Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
     LevelController levelController = new LevelController(newLevel);
     DatabaseConfig databaseConfig = new DatabaseConfig();
-    DatabaseController databaseController = new DatabaseController(databaseConfig.getDatabase(), levelController);
+    DatabaseController databaseController = new DatabaseController(databaseConfig.getDatabase(),
+        levelController);
     this.sceneController = new SceneController(sceneController.getStage(), databaseController,
         levelController);
     this.sceneController.initializeViews();

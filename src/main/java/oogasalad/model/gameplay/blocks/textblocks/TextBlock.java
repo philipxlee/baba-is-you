@@ -2,7 +2,6 @@ package oogasalad.model.gameplay.blocks.textblocks;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.shared.loader.PropertiesLoader;

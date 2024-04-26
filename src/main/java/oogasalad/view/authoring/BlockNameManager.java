@@ -1,7 +1,6 @@
 package oogasalad.view.authoring;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import java.io.File;
@@ -20,7 +19,8 @@ public class BlockNameManager extends JsonManager {
    * @return A list of BlockData objects extracted from the JSON file.
    * @throws IOException If an I/O error occurs.
    */
-  public List<BlockData> loadBlocksFromJsonFile(String fileName, String category) throws IOException {
+  public List<BlockData> loadBlocksFromJsonFile(String fileName, String category)
+      throws IOException {
     JsonObject jsonObject = loadJsonFromFile(new File(fileName));
     return extractBlocks(jsonObject, category);
   }
@@ -29,7 +29,7 @@ public class BlockNameManager extends JsonManager {
    * Extract blocks data from a JsonObject, optionally filtering by category.
    *
    * @param jsonObject The JsonObject containing blocks' data.
-   * @param category Optional category to filter blocks by.
+   * @param category   Optional category to filter blocks by.
    * @return A list of BlockData objects.
    */
   private List<BlockData> extractBlocks(JsonObject jsonObject, String category) {
@@ -38,7 +38,8 @@ public class BlockNameManager extends JsonManager {
       for (String key : jsonObject.keySet()) {
         JsonObject blockObject = jsonObject.getAsJsonObject(key);
         String blockName = key;
-        String imagePath = blockObject.has("imagePath") ? blockObject.get("imagePath").getAsString() : null;
+        String imagePath =
+            blockObject.has("imagePath") ? blockObject.get("imagePath").getAsString() : null;
         JsonArray categories = blockObject.getAsJsonArray("category");
 
         // Check if the category matches or load all if no specific category is requested
