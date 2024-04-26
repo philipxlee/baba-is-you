@@ -47,6 +47,7 @@ public class ElementsPane {
   private VBox layout;
   private boolean removeMode = false;
   private String language;
+  private String difficulty = "Medium";
   private final GridSizeChanger gridSizeChanger;
 
   public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
@@ -83,6 +84,12 @@ public class ElementsPane {
     ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50,
         "combo-box-white", language), new ArrayList<>(Arrays.asList("Easy", "Medium",
         "Hard")), "Medium");
+
+    difficultyComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+      if (newValue != null) {
+        difficulty = newValue;
+      }
+    });
 
     HBox descriptionBox = factory.wrapInHBox(descriptionLabel, (int) layout.getWidth(), 15);
 
@@ -145,9 +152,10 @@ public class ElementsPane {
     scrollPane.setPadding(new Insets(20));
     scrollPane.setMaxHeight(350);
 
+
     Button saveJsonButton = factory.makeButton(new WidgetConfiguration(
         200, 40, "SaveJson", "black-button", language));
-    saveJsonButton.setOnAction(event -> jsonSaver.saveJson());
+    saveJsonButton.setOnAction(event -> jsonSaver.saveJson(difficulty));
 
     // Create the Load Level button
     Button loadLevelButton = factory.makeButton(new WidgetConfiguration(
@@ -196,7 +204,6 @@ public class ElementsPane {
     }
     builderPane.setRemove(removeMode);
   }
-
 
 
   private void showLoadingScreen() {

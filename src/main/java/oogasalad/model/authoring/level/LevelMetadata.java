@@ -9,6 +9,7 @@ package oogasalad.model.authoring.level;
  * @param rows        Number of rows in level.
  * @param cols        Number of columns in level.
  */
-public record LevelMetadata(String levelName, String description, String authorName, int rows, int cols) {
+public record LevelMetadata(String levelName, String description, int rows,
+                            int cols, String difficulty, String authorName, String hint) {
 
 }
