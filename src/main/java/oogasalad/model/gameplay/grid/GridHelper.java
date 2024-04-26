@@ -204,6 +204,15 @@ public class GridHelper {
     return hasPushable || textBlock;
   }
 
+  public boolean cellHasTextBlock(int i, int j){
+    for(AbstractBlock block : grid[i][j]){
+      if(block.isTextBlock()){
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
    * Checks if the specified indices represent a cell that is already at the margin of the grid.
    *

@@ -277,8 +277,33 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
-  public boolean hasEnemy(){
+  public boolean hasEnemy(){ //
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        return grid[i][j].stream().anyMatch(block -> block.getAttribute("Enemy"));
+      }
+    }
     return false;
+  }
+
+  public boolean isPassable(int cellI, int cellJ){
+    return !cellHasStoppable(cellI, cellJ); //should return opposite of cellHasStoppabe
+  }
+
+  public void placeEnemy(int I, int J){
+
+  }
+
+  public int [] enemyPosition(){
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        if(grid[i][j].stream().anyMatch(block -> block.getAttribute("Enemy"))){
+          int [] position = {i , j};
+          return position;
+        }
+      }
+    }
+    return null;
   }
 
 }
