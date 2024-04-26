@@ -69,8 +69,8 @@ public class LevelParser {
 
     jsonManager.addProperty(metadataJson, "levelName", metadata.levelName());
 
-    jsonManager.addProperty(gridSizeObject, "rows", String.valueOf(metadata.rows()));
-    jsonManager.addProperty(gridSizeObject, "columns", String.valueOf(metadata.cols()));
+    jsonManager.addProperty(gridSizeObject, "rows", String.valueOf(metadata.rows() + 2));
+    jsonManager.addProperty(gridSizeObject, "columns", String.valueOf(metadata.cols() + 2));
 
     jsonManager.addObject(metadataJson, "gridSize", gridSizeObject);
   }
