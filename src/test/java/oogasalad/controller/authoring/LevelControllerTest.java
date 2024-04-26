@@ -16,7 +16,8 @@ public class LevelControllerTest {
   @Before
   public void setUp() throws Exception {
     // Setup mock LevelController
-    LevelMetadata levelMetadata = new LevelMetadata("testLevel", "testDesc", 7, 7);
+    LevelMetadata levelMetadata = new LevelMetadata("testLevel", "testDesc",
+        7, 7, "Easy", "BabaIsUs", "Try harder");
     levelController = new LevelController(levelMetadata);
   }
 
