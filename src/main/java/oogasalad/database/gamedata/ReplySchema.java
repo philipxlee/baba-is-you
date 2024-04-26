@@ -1,5 +1,6 @@
 package oogasalad.database.gamedata;
 
+import java.util.Date;
 import java.util.Properties;
 import oogasalad.database.records.ReplyRecord;
 import org.bson.Document;
@@ -34,7 +35,7 @@ public class ReplySchema extends AbstractGameData {
     Properties properties = getDatabaseProperties();
     return new Document(properties.getProperty("field.username"), getUsername())
         .append(properties.getProperty("field.levelName"), getLevelName())
-        .append(properties.getProperty("field.date"), getDate())
+        .append(properties.getProperty("field.date"), new Date())
         .append(properties.getProperty("field.reply"), replyText);
   }
 
