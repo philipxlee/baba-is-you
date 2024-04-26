@@ -1,5 +1,6 @@
 package oogasalad.database.gamedata;
 
+import java.util.Date;
 import java.util.Properties;
 import oogasalad.database.records.LeaderboardRecord;
 import org.bson.Document;
@@ -23,7 +24,8 @@ public class LeaderboardData extends AbstractGameData {
    * @param leaderboardRecord the record of the leaderboard data
    */
   public LeaderboardData(LeaderboardRecord leaderboardRecord) {
-    super(leaderboardRecord.getLeaderboardUsername(), leaderboardRecord.getLeaderboardLevelName(), leaderboardRecord.getLeaderboardDate());
+    super(leaderboardRecord.getLeaderboardUsername(), leaderboardRecord.getLeaderboardLevelName(),
+        leaderboardRecord.getLeaderboardDate());
     this.timeSpent = leaderboardRecord.getLeaderboardTimeSpent();
   }
 
@@ -38,7 +40,7 @@ public class LeaderboardData extends AbstractGameData {
     Properties properties = getDatabaseProperties();
     return new Document(properties.getProperty(FIELD_USERNAME), getUsername())
         .append(properties.getProperty(FIELD_LEVEL_NAME), getLevelName())
-        .append(properties.getProperty(FIELD_DATE), getDate())
+        .append(properties.getProperty(FIELD_DATE), new Date())
         .append(properties.getProperty(FIELD_TIME_SPENT), timeSpent);
   }
 

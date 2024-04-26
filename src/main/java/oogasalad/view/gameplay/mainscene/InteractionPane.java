@@ -15,13 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import oogasalad.app.GamePlayer;
-import oogasalad.controller.gameplay.DatabaseController;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
-import oogasalad.view.gameplay.StartingScene;
 import oogasalad.view.gameplay.socialcenter.CommentScene;
 import oogasalad.view.gameplay.socialcenter.LeaderboardScene;
 
@@ -92,6 +89,7 @@ public class InteractionPane {
 
   /**
    * Set up the "Baba Is You" header + the "Game Player" subtitle.
+   *
    * @return VBox with both texts
    */
   private VBox setUpHeader() {
@@ -99,12 +97,13 @@ public class InteractionPane {
     Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
         "GamePlay", language));
     VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
-        height/6, 5);
+        height / 6, 5);
     return header;
   }
 
   /**
    * Initialize the reset button (resets Baba to the original position he was at)/
+   *
    * @return reset button
    */
   private Button setUpResetButton() {
@@ -118,6 +117,7 @@ public class InteractionPane {
 
   /**
    * Initialize the load button, which lets the user upload a new game level.
+   *
    * @return load button
    */
   private Button setUpLoadButton() {
@@ -135,11 +135,12 @@ public class InteractionPane {
 
   /**
    * Initializes/arranges all buttons and elements to be centered in the Interaction Pane.
-   * @param load load button
-   * @param reset reset button
-   * @param header text with header+subtitle
+   *
+   * @param load         load button
+   * @param reset        reset button
+   * @param header       text with header+subtitle
    * @param arrowKeysBox HBox with light-up rectangles showing key presses
-   * @param background Rectangle background hosting all widgets
+   * @param background   Rectangle background hosting all widgets
    */
   private void orientPaneDisplay(Button load, Button reset, VBox header, HBox arrowKeysBox,
       Rectangle background) {
@@ -231,7 +232,8 @@ public class InteractionPane {
   private VBox setupLeaderboardButton() {
     Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
         "ViewBoard", "black-button", language));
-    leaderboardButton.setOnAction(event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
+    leaderboardButton.setOnAction(
+        event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
@@ -241,7 +243,8 @@ public class InteractionPane {
   private VBox setupCommentButton() {
     Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
         "ViewComments", "black-button", language));
-    commentButton.setOnAction(event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
+    commentButton.setOnAction(
+        event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
     VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
