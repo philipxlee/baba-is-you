@@ -7,7 +7,7 @@ import oogasalad.model.authoring.level.LevelMetadata;
 
 public class AuthoringEnvironment {
 
-  private String language = "English";
+  private String language = "";
 
   public void start(Stage stage) {
     // initialize models
@@ -17,6 +17,7 @@ public class AuthoringEnvironment {
     // initialize controllers
     LevelController levelController = new LevelController(levelMetadata);
     SceneController sceneController = new SceneController(stage, levelController);
+    sceneController.setLanguage(language);
 
     // initialize views
     sceneController.initializeViews();
