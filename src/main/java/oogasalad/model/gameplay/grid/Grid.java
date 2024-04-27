@@ -280,12 +280,24 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public boolean hasEnemy(){ //
+    System.out.println();
+    System.out.println();
+    System.out.println();System.out.println();
+    System.out.println();
+    System.out.println();
+
+    boolean hasACrab = false;
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        return grid[i][j].stream().anyMatch(block -> block.getAttribute("Winnable"));
+        for(AbstractBlock block : grid[i][j]){
+          if(!block.isTextBlock() && block.getAttribute("Killable")){
+            hasACrab = true;
+          }
+        }
       }
     }
-    return false;
+    System.out.println("Has a crab " + hasACrab);
+    return hasACrab;
   }
 
   public boolean isPassable(int cellI, int cellJ){
@@ -293,20 +305,24 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public void placeEnemy(int I, int J){
-    AbstractBlock winBlock = factory.createBlock("WinVisualBlock", I, J);
-    AttributeVisitor attributeVisitor = new AttributeVisitor("win");
-    winBlock.accept(attributeVisitor);
-    grid[I][J].add(winBlock);
-    //winBlock.modifyAttribute("kill", true)
+    AbstractBlock crabBlock = factory.createBlock("CrabVisualBlock", I, J);
+    ((AbstractVisualBlock)crabBlock).modifyAttribute("Kill", true);
+    grid[I][J].add(crabBlock);
+    ((AbstractVisualBlock)crabBlock).modifyAttribute("Kill", true);
   }
 
   public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ){
+    sortArray();
     moveBlock(fromI, fromJ, fromK, toI, toJ);
-    //sort the cell to make sure robot cell is always at end
-    AbstractBlock block = grid[toI][toJ].get(fromK);
-    //(RobotVisualBlock)block.modifyAttribute("Kill", true);
+    sortArray();
+    List<AbstractBlock> cell = grid[toI][toJ];
+    AbstractBlock crabBlock = grid[toI][toJ].get(cell.size()-1);
+    if (!crabBlock.isTextBlock()) {
+      ((AbstractVisualBlock) crabBlock).modifyAttribute("Kill", true);
+    }
 
   }
+
 
 
   public int [] enemyPosition(){
@@ -314,7 +330,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
-          if(block.getAttribute("Winnable")){
+          if(block.getAttribute("Killable")){
             int[] enemyPosition = {i, j, k};
             return enemyPosition;
           }
@@ -322,6 +338,19 @@ public class Grid extends GridHelper implements Observable<Grid> {
       }
     }
     return null;
+  }
+
+  public void setCrabAttribute(){
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if(!block.isTextBlock() && block.getBlockName().equals("CrabVisualBlock")) {
+            ((AbstractVisualBlock)block).modifyAttribute("Kill", true);
+          }
+        }
+      }
+    }
   }
 
 }

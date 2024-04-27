@@ -36,6 +36,8 @@ public class KeyHandlerTest {
   AttributeVisitor sinkVisitor;
   AttributeVisitor drownVisitor;
 
+  AttributeVisitor killVisitor;
+
   AttributeVisitor winVisitor;
   private BabaVisualBlock babaBlock;
   private WallVisualBlock wallBlock;
@@ -73,6 +75,7 @@ public class KeyHandlerTest {
     sinkVisitor = new AttributeVisitor("Sink");
     drownVisitor = new AttributeVisitor("Drown");
     winVisitor = new AttributeVisitor("Win");
+    killVisitor = new AttributeVisitor("Kill");
     grid = new Grid(ROWS, COLS, initialConfiguration);
     gameStateControllerMock = Mockito.mock(GameStateController.class);
     babaBlock = new BabaVisualBlock("Baba", 1, 1);
@@ -245,7 +248,7 @@ public class KeyHandlerTest {
   @Test
   public void testMoveEnemy(){
     BabaVisualBlock babaBlock3 = new BabaVisualBlock("Baba3", 1, 1);
-    babaBlock3.accept(winVisitor);
+    babaBlock3.accept(killVisitor);
     grid.getGrid()[2][2].add(babaBlock3);
     grid.getGrid()[4][2].add(babaBlock);
     int [] EnemyPosition = grid.enemyPosition();
@@ -276,20 +279,21 @@ public class KeyHandlerTest {
     }
 
 
+    System.out.println("here 2");
     EKH.moveEnemy();
-
+    System.out.println("here 1");
     int [] newEnemyPosition = grid.enemyPosition();
     System.out.println("new EnemyPosition is " + Arrays.toString(newEnemyPosition));
+    assertEquals(3, newEnemyPosition[0]);
+    assertEquals(newEnemyPosition[1], 2);
 
-    //assertEquals(3, newEnemyPosition[0]);
-    //assertEquals(newEnemyPosition[1], 2);
 
   }
 
   @Test
   public void testEnemyCoordinate(){
     BabaVisualBlock babaBlock3 = new BabaVisualBlock("Baba3", 1, 1);
-    babaBlock3.accept(winVisitor);
+    babaBlock3.accept(killVisitor);
     grid.getGrid()[3][2].add(babaBlock3);
 
     EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
@@ -308,9 +312,9 @@ public class KeyHandlerTest {
     grid.getGrid()[4][2].add(babaBlock);
     grid.getGrid()[3][2].add(babaBlock3);
     grid.getGrid()[2][3].add(babaBlock4);
-    BabaVisualBlock winBlock = new BabaVisualBlock("Baba3", 1, 1);
+    BabaVisualBlock crabBlock = new BabaVisualBlock("Baba3", 1, 1);
     babaBlock3.accept(winVisitor);
-    grid.getGrid()[2][2].add(winBlock);
+    grid.getGrid()[2][2].add(crabBlock);
     int [] enemy = {1, 3};
 
     EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);

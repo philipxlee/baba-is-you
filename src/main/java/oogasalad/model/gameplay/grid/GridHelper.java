@@ -2,6 +2,8 @@ package oogasalad.model.gameplay.grid;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 
@@ -41,6 +43,7 @@ public class GridHelper {
       addBlock(fromI, fromJ, "EmptyVisualBlock");
     }
   }
+
 
 
   /**
@@ -238,5 +241,24 @@ public class GridHelper {
         || nextJ == 0));
   }
 
+
+  public void sortArray(){
+    for (List<AbstractBlock>[] row : grid) {
+      for (List<AbstractBlock> blockList : row) {
+        if (blockList != null) {
+          // Filter out all CrabVisualBlock instances into a separate list
+          List<AbstractBlock> crabs = blockList.stream()
+                  .filter(block -> block.getBlockName().equals("CrabVisualBlock"))
+                  .collect(Collectors.toList());
+
+          // Remove all CrabVisualBlock instances from the original list
+          blockList.removeIf(block -> block.getBlockName().equals("CrabVisualBlock"));
+
+          // Add all CrabVisualBlock instances at the end of the list
+          blockList.addAll(crabs);
+        }
+      }
+    }
+  }
 
 }

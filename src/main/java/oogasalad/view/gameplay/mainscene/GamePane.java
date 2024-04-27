@@ -3,6 +3,10 @@ package oogasalad.view.gameplay.mainscene;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -37,6 +41,11 @@ public class GamePane implements Observer<Grid> {
   private String currentDirection = "Right";
   private Map<String, ImageView> animationCache;
 
+  private ScheduledExecutorService executorService;
+  private boolean keyPressed;
+
+  private final int DELAY = 3;
+
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
     try {
@@ -51,11 +60,13 @@ public class GamePane implements Observer<Grid> {
       this.level = initialLevel;
       this.gridController = new GameGridController(this, keyHandlerController, level);
       handleKeyPresses(scene);
+      //moveEnemy();
 
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());
     }
     renderGrid(); // Initial grid rendering
+
   }
 
   public int getWidth() {
@@ -148,6 +159,15 @@ public class GamePane implements Observer<Grid> {
         gridController.resetBlocks(); // Reset all blocks
         scene.getInteractionPane().updateKeyPress(event.getCode());
         event.consume();
+        keyPressed = true;
+      }
+      if (event.getCode().isLetterKey()) {
+        gridController.sendPlayToModel(event.getCode());
+        renderGrid(); // Render grid
+        gridController.resetBlocks(); // Reset all blocks
+        event.consume();
+        keyPressed = true;
+
       }
     });
 
@@ -158,5 +178,17 @@ public class GamePane implements Observer<Grid> {
         event.consume();
       }
     });
+  }
+
+  private void moveEnemy(){
+    executorService = Executors.newSingleThreadScheduledExecutor();
+    executorService.schedule(() -> {
+      if (!keyPressed) {
+        // No valid key pressed within 3 seconds, call moveEnemy()
+        //gridController.moveEnemy();;
+      }
+    }, DELAY, TimeUnit.SECONDS);
+
+
   }
 }

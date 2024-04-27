@@ -9,6 +9,7 @@ public class KeyHandlerController {
   private KeyHandler keyHandler;
   private final GameStateController gameStateController;
 
+
   public KeyHandlerController(GameStateController gameStateController) {
     this.gameStateController = gameStateController;
   }
@@ -28,6 +29,10 @@ public class KeyHandlerController {
       return true;
     }
     return false;
+  }
+
+  public EnemyKeyHandler createEnemy(Grid grid){
+    return new EnemyKeyHandler(grid, gameStateController);
   }
 }
 

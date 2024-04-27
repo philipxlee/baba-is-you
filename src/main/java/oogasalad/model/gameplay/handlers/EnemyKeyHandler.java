@@ -17,17 +17,22 @@ public class EnemyKeyHandler extends KeyHandler{
         super(grid, gameStateController);
         this.grid = grid;
         this.gameStateController = gameStateController;
+        System.out.println("created enemy hand");
 
     }
 
     @Override
     public void execute() {
+        System.out.println("does grid have enemy " + grid.hasEnemy());
         if(grid.hasEnemy()){
+            System.out.println("should return");
             return;
         }
         else{
             createEnemy();
         }
+
+
     }
 
     private void createEnemy(){
@@ -53,6 +58,7 @@ public class EnemyKeyHandler extends KeyHandler{
             // Mark the enemy as successfully placed
             enemyPlaced = true;
         }
+        moveEnemy();
     }
 
 
