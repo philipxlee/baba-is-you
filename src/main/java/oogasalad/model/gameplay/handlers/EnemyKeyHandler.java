@@ -56,7 +56,7 @@ public class EnemyKeyHandler extends KeyHandler{
     }
 
 
-    public void moveEnemy(){
+    public void moveEnemy(){ //would be called from the view after every 3 seconds of  no significant keypress from the player
         if(!grid.hasEnemy()){
             return;
         }
