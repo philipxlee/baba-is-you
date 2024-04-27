@@ -1,6 +1,11 @@
 package oogasalad.view.authoring.jsonOps;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -8,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.block.Block;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.view.authoring.BuilderPane;
@@ -17,19 +23,27 @@ public class JsonSaver {
   private final LevelController levelController;
   private final BuilderPane builderPane;
   private Level level;
+  LevelValidator validator;
   private String difficulty;
 
   public JsonSaver(LevelController levelController, BuilderPane builderPane) {
     this.levelController = levelController;
     this.builderPane = builderPane;
     this.level = levelController.getLevel();
+    this.validator = new LevelValidator();
   }
 
   public void saveJson(String difficulty) {
     this.difficulty = difficulty;
     GridPane inputGrid = createInputGrid();
     Alert confirmation = createConfirmationAlert(inputGrid);
-    confirmation.showAndWait().ifPresent(buttonType -> handleConfirmation(buttonType, confirmation));
+    confirmation.showAndWait().ifPresent(buttonType -> {
+      try {
+        handleConfirmation(buttonType, confirmation);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
   }
 
   private GridPane createInputGrid() {
@@ -64,18 +78,22 @@ public class JsonSaver {
     return confirmation;
   }
 
-  private void handleConfirmation(ButtonType buttonType, Alert confirmation) {
+  private void handleConfirmation(ButtonType buttonType, Alert confirmation) throws IOException {
     if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
       String levelName = getFieldText(0, confirmation);
       String levelDescription = getFieldText(1, confirmation);
       String authorName = getFieldText(2, confirmation);
       String hint = getFieldText(3, confirmation);
-      LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
-          builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
-      levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
-      File savedFile = levelController.serializeLevel();
-      if (savedFile != null) {
-        showAlert("Success", "JSON saved successfully!");
+      boolean isValidLevel = validator.validateLevel(level);
+      if (isValidLevel) {
+        LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
+        levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
+        File savedFile = levelController.serializeLevel();
+        if (savedFile != null) {
+          showAlert("Success", "JSON saved successfully!");
+        }
+      } else {
+        showAlert("Invalid Level", "The level must contain at least 2 rules: {Object 1 Is You}, {Object 2 Is Win} and at least Object 1 and Object 2. Please add the required blocks before saving.");
       }
     }
   }
@@ -90,7 +108,10 @@ public class JsonSaver {
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(message);
+    alert.setWidth(10);
+    alert.setHeight(200);
     alert.showAndWait();
   }
+
 }
 
