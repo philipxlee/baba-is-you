@@ -172,6 +172,14 @@
   "BabaVisualBlock": {
     "imagePath": "/images/baba/BabaVisualBlockDown.png",
     "category": [
+      "All",
+      "Visual"
+    ]
+  },
+  "CrabVisualBlock": {
+    "imagePath": "/images/baba/CrabVisualBlock.png",
+    "category": [
+      "All",
       "Visual"
     ]
   }

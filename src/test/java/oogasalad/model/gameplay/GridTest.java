@@ -22,6 +22,7 @@ public class GridTest {
   AttributeVisitor stopVisitor;
   AttributeVisitor winVisitor;
   AttributeVisitor youVisitor;
+  private BabaVisualBlock babaBlock;
   private final String[][][] initialConfiguration = {
       {{"BabaVisualBlock"}, {"BabaVisualBlock"}, {"FlagVisualBlock"}, {"WallVisualBlock"},
           {"EmptyVisualBlock"}},
@@ -46,6 +47,8 @@ public class GridTest {
     winVisitor = new AttributeVisitor("Win");
     stopVisitor = new AttributeVisitor("Stop");
     grid = new Grid(ROWS, COLS, initialConfiguration);
+    babaBlock = new BabaVisualBlock("Baba", 0, 0);
+
   }
 
 
@@ -167,7 +170,6 @@ public class GridTest {
    */
   @Test
   public void testCellHasControllable() {
-    BabaVisualBlock babaBlock = new BabaVisualBlock("Baba", 0, 0);
     babaBlock.accept(youVisitor);
     grid.getGrid()[0][0].add(babaBlock); // Adding a new block to cell (0, 0)
     assertTrue(grid.cellHasControllable(0, 0));
@@ -203,9 +205,18 @@ public class GridTest {
    */
   @Test
   public void testCellHasPushable() {
-    BabaVisualBlock babaBlock = new BabaVisualBlock("Baba", 0, 0);
     babaBlock.accept(pushVisitor);
     grid.getGrid()[0][0].add(babaBlock);
     assertTrue(grid.cellHasPushable(0, 0));
+  }
+
+  @Test
+  public void testEnemyPosition(){
+    babaBlock.accept(winVisitor);
+    grid.getGrid()[1][2].add(babaBlock);
+    int [] enemyPosition = grid.enemyPosition();
+    assertEquals(enemyPosition[0], 1);
+    assertEquals(enemyPosition[1], 2);
+    assertEquals(enemyPosition[2], 1);
   }
 }

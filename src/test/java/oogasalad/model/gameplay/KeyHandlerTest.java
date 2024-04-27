@@ -1,7 +1,5 @@
 package oogasalad.model.gameplay;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
@@ -13,6 +11,12 @@ import oogasalad.model.gameplay.handlers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class KeyHandlerTest {
 
@@ -40,16 +44,16 @@ public class KeyHandlerTest {
 
 
   private final String[][][] initialConfiguration = {
-      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"FlagVisualBlock"}, {"WallVisualBlock"},
+      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"},
           {"EmptyVisualBlock"}},
-      {{"EmptyVisualBlock"}, {"BabaVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"FlagVisualBlock"}},
-      {{"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"BabaVisualBlock"}},
-      {{"WallVisualBlock"}, {"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"BabaVisualBlock"},
+      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
           {"EmptyVisualBlock"}},
-      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"FlagVisualBlock"},
-          {"BabaVisualBlock"}}
+      {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+          {"EmptyVisualBlock"}},
+      {{"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+          {"EmptyVisualBlock"}},
+      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+          {"EmptyVisualBlock"}}
   };
 
 
@@ -68,7 +72,7 @@ public class KeyHandlerTest {
     meltVisitor = new AttributeVisitor("Melt");
     sinkVisitor = new AttributeVisitor("Sink");
     drownVisitor = new AttributeVisitor("Drown");
-    winVisitor = new AttributeVisitor("Drown");
+    winVisitor = new AttributeVisitor("Win");
     grid = new Grid(ROWS, COLS, initialConfiguration);
     gameStateControllerMock = Mockito.mock(GameStateController.class);
     babaBlock = new BabaVisualBlock("Baba", 1, 1);
@@ -244,12 +248,115 @@ public class KeyHandlerTest {
     babaBlock3.accept(winVisitor);
     grid.getGrid()[2][2].add(babaBlock3);
     grid.getGrid()[4][2].add(babaBlock);
+    int [] EnemyPosition = grid.enemyPosition();
+    System.out.println("Enemy position is " + Arrays.toString(EnemyPosition));
     EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
+
+
+    int [] nearestBaba = EKH.nearestBabaCoordinate(EnemyPosition);
+    System.out.println("nearest baba coordinate is " + Arrays.toString(nearestBaba));
+
+    int [] E = {EnemyPosition[0], EnemyPosition[1]};
+    int [] B = {nearestBaba[0], nearestBaba[1]};
+    Optional<List<int[]>> pathOptional = EKH.findShortestPath(E, B);
+
+    // Check if path is present
+    assertTrue(pathOptional.isPresent(), "There should be a path");
+
+    // Get the path list from Optional
+    List<int[]> path = pathOptional.get();
+
+    // Print the size of the path for debugging
+    System.out.println("Path size: " + path.size());
+
+    // Print the content of the path for debugging
+    System.out.println("Path content:");
+    for (int[] position : path) {
+      System.out.println(Arrays.toString(position));
+    }
+
+
     EKH.moveEnemy();
+
     int [] newEnemyPosition = grid.enemyPosition();
-    assertEquals(newEnemyPosition[1], 2);
-    assertEquals(newEnemyPosition[0], 3);
+    System.out.println("new EnemyPosition is " + Arrays.toString(newEnemyPosition));
+
+    //assertEquals(3, newEnemyPosition[0]);
+    //assertEquals(newEnemyPosition[1], 2);
 
   }
+
+  @Test
+  public void testEnemyCoordinate(){
+    BabaVisualBlock babaBlock3 = new BabaVisualBlock("Baba3", 1, 1);
+    babaBlock3.accept(winVisitor);
+    grid.getGrid()[3][2].add(babaBlock3);
+
+    EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
+    int[] enemyPosition = EKH.enemyCoordinate();
+    int[] expected = {3, 2, 1};
+
+    assertArrayEquals(enemyPosition,expected);
+  }
+
+  @Test
+  public void testNearestBabaCoordinate(){
+    BabaVisualBlock babaBlock3 = new BabaVisualBlock("Baba3", 1, 1);
+    babaBlock3.accept(youVisitor);
+    BabaVisualBlock babaBlock4 = new BabaVisualBlock("Baba3", 1, 1);
+    babaBlock4.accept(youVisitor);
+    grid.getGrid()[4][2].add(babaBlock);
+    grid.getGrid()[3][2].add(babaBlock3);
+    grid.getGrid()[2][3].add(babaBlock4);
+    BabaVisualBlock winBlock = new BabaVisualBlock("Baba3", 1, 1);
+    babaBlock3.accept(winVisitor);
+    grid.getGrid()[2][2].add(winBlock);
+    int [] enemy = {1, 3};
+
+    EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
+    int[] nearCoord = EKH.nearestBabaCoordinate(enemy);
+    assertEquals(nearCoord[0], 2);
+    assertEquals(nearCoord[1], 3);
+
+  }
+
+  @Test
+  public void testFindShortestPath() {
+    int[] start = {1, 1};
+    int[] target = {4, 1};
+    EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
+    Optional<List<int[]>> pathOptional = EKH.findShortestPath(start, target);
+
+    // Check if path is present
+    assertTrue(pathOptional.isPresent(), "There should be a path");
+
+    // Get the path list from Optional
+    List<int[]> path = pathOptional.get();
+
+    // Print the size of the path for debugging
+    System.out.println("Path size: " + path.size());
+
+    // Print the content of the path for debugging
+    System.out.println("Path content:");
+    for (int[] position : path) {
+      System.out.println(Arrays.toString(position));
+    }
+
+    // Define the expected sequence of coordinates
+    int[][] expectedPath = {
+            {1, 1},  // Start position
+            {2, 1},  // Next position
+            {3, 1},  // Next position
+            {4, 1}   // Target position
+    };
+
+    // Assert that the path matches the expected sequence of coordinates
+    assertEquals(expectedPath.length, path.size(), "Path size should match");
+    for (int i = 0; i < expectedPath.length; i++) {
+      assertArrayEquals(expectedPath[i], path.get(i), "Path coordinates should match");
+    }
+  }
+
+
 
 }

@@ -63,20 +63,23 @@ public class EnemyKeyHandler extends KeyHandler{
         else{
             int [] enemy = enemyCoordinate();
             int [] baba = nearestBabaCoordinate(enemy);
-            Optional<List<int[]>> shortestPathOptional = findShortestPath(enemy, baba);
+            int [] realEnemy = {enemy[0], enemy[1]};
+            int [] realBaba = {baba[0], baba[1]};
+            Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
             if(shortestPathOptional.isPresent()){
                 List<int[]> shortestPath = shortestPathOptional.get();
                 int [] nextPosition = shortestPath.get(1);
-                grid.placeEnemy(nextPosition[0], nextPosition[1]);
+                grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
+
             }
 
         }
     }
 
-    private int [] enemyCoordinate(){
+    public int [] enemyCoordinate(){
         return grid.enemyPosition();
     }
-    private int[] nearestBabaCoordinate(int[] enemyCamp) {
+    public int[] nearestBabaCoordinate(int[] enemyCamp) {
         List<int[]> allControllableBlock = grid.findControllableBlock();
 
         Comparator<int[]> distanceComparator = new Comparator<int[]>() {
@@ -102,7 +105,7 @@ public class EnemyKeyHandler extends KeyHandler{
     }
 
 
-    private Optional<List<int[]>> findShortestPath(int[] start, int[] target){
+    public Optional<List<int[]>> findShortestPath(int[] start, int[] target){
         int numRows = grid.getGridWidth();
         int numCols = grid.getGridHeight();
         int[][] distances = new int[numRows][numCols];
@@ -155,7 +158,7 @@ public class EnemyKeyHandler extends KeyHandler{
     private List<int[]> reconstructPath(int[] start, int[] target, int[][] distances) {
         List<int[]> path = new ArrayList<>();
         int[] position = target;
-        while (!position.equals(start)) {
+        while (!Arrays.equals(start, position)) {
             path.add(position);
             for (int[] dir : directions) {
                 int newRow = position[0] + dir[0];
@@ -167,6 +170,8 @@ public class EnemyKeyHandler extends KeyHandler{
                 }
             }
         }
+        path.add(start);
+
         Collections.reverse(path); // Reverse the path to start from start to target
         return path;
     }

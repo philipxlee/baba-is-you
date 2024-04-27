@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
+import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.factory.BlockFactory;
@@ -291,15 +293,31 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public void placeEnemy(int I, int J){
+    AbstractBlock winBlock = factory.createBlock("WinVisualBlock", I, J);
+    AttributeVisitor attributeVisitor = new AttributeVisitor("win");
+    winBlock.accept(attributeVisitor);
+    grid[I][J].add(winBlock);
+    //winBlock.modifyAttribute("kill", true)
+  }
+
+  public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ){
+    moveBlock(fromI, fromJ, fromK, toI, toJ);
+    //sort the cell to make sure robot cell is always at end
+    AbstractBlock block = grid[toI][toJ].get(fromK);
+    //(RobotVisualBlock)block.modifyAttribute("Kill", true);
 
   }
+
 
   public int [] enemyPosition(){
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        if(grid[i][j].stream().anyMatch(block -> block.getAttribute("Winnable"))){
-          int [] position = {i , j};
-          return position;
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if(block.getAttribute("Winnable")){
+            int[] enemyPosition = {i, j, k};
+            return enemyPosition;
+          }
         }
       }
     }
