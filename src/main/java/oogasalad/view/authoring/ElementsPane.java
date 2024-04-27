@@ -49,7 +49,7 @@ public class ElementsPane {
   private final GridSizeChanger gridSizeChanger;
 
   public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
-    this.gridSizeChanger = new GridSizeChanger(builderPane);
+    this.gridSizeChanger = new GridSizeChanger(builderPane, levelController);
     this.factory = new WidgetFactory();
     this.builderPane = builderPane;
     this.levelController = levelController;
