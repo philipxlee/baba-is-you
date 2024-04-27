@@ -238,18 +238,18 @@ public class KeyHandlerTest {
     assertEquals(nextCellSize, grid.cellSize(1, 2));
   }
 
-  //@Test
-//  public void testMoveEnemy(){
-//    BabaVisualBlock babaBlock3 = new BabaVisualBlock("Baba3", 1, 1);
-//    babaBlock3.accept(winVisitor);
-//    grid.getGrid()[2][2].add(babaBlock3);
-//    grid.getGrid()[4][2].add(babaBlock);
-//    EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
-//    EKH.moveEnemy();
-//    int [] newEnemyPosition = grid.enemyPosition();
-//    assertEquals(newEnemyPosition[1], 2);
-//    assertEquals(newEnemyPosition[0], 3);
-//
-//  }
+  @Test
+  public void testMoveEnemy(){
+    BabaVisualBlock babaBlock3 = new BabaVisualBlock("Baba3", 1, 1);
+    babaBlock3.accept(winVisitor);
+    grid.getGrid()[2][2].add(babaBlock3);
+    grid.getGrid()[4][2].add(babaBlock);
+    EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
+    EKH.moveEnemy();
+    int [] newEnemyPosition = grid.enemyPosition();
+    assertEquals(newEnemyPosition[1], 2);
+    assertEquals(newEnemyPosition[0], 3);
+
+  }
 
 }

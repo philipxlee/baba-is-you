@@ -280,7 +280,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   public boolean hasEnemy(){ //
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        return grid[i][j].stream().anyMatch(block -> block.getAttribute("Enemy"));
+        return grid[i][j].stream().anyMatch(block -> block.getAttribute("Winnable"));
       }
     }
     return false;
@@ -297,7 +297,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   public int [] enemyPosition(){
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        if(grid[i][j].stream().anyMatch(block -> block.getAttribute("Enemy"))){
+        if(grid[i][j].stream().anyMatch(block -> block.getAttribute("Winnable"))){
           int [] position = {i , j};
           return position;
         }

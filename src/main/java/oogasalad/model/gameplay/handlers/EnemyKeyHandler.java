@@ -41,7 +41,7 @@ public class EnemyKeyHandler extends KeyHandler{
             int randomRow = (int) (Math.random() * numRows);
             int randomCol = (int) (Math.random() * numCols);
 
-            // Check if the cell at the random coordinates contains a TextBlock
+            // Check if the cell at the random coordinates contains a TextBlock or winning block. dont wanna add them on top of each other
             if (grid.cellHasWinning(randomRow, randomCol) || grid.cellHasTextBlock(randomRow, randomCol)) {
                 // If it's a TextBlock, continue to the next iteration to reprocess the position
                 continue;
