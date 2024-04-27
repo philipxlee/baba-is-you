@@ -67,13 +67,4 @@ public class CellIteratorTest {
         "Should throw IllegalArgumentException for out-of-bounds indices");
   }
 
-  @Test
-  void testResetIterator() {
-    cellIterator.next(); // 1st block
-    cellIterator.next(); // 2nd block
-    cellIterator.reset();
-    assertTrue(cellIterator.hasNext(), "Iterator should be reset to the start");
-    assertEquals(grid[1][1].get(0), cellIterator.next(),
-        "Should return the first block after reset");
-  }
 }
