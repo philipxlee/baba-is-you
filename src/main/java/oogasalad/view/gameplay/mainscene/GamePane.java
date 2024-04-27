@@ -97,7 +97,6 @@ public class GamePane implements Observer<Grid> {
       for (int j = 0; j < grid[i].length; j++) {
         List<AbstractBlock> blocks = grid[i][j];
         for (int k = 0; k < blocks.size(); k++) {
-          ImageView visualObj;
           try {
             AbstractBlock block = blocks.get(k);
 
@@ -108,18 +107,13 @@ public class GamePane implements Observer<Grid> {
             // Ensure that the block does not exceed the boundaries of the cell
             offsetX = Math.min(offsetX, j * cellSize + cellSize - blockOffset);
             offsetY = Math.min(offsetY, i * cellSize + cellSize - blockOffset);
-
-//            if (block.getBlockName().contains("BabaVisual")) {
-//              modifiedBlockName = block.getBlockName() + currentDirection;
-//              if (!animationCache.containsKey(block.getBlockName() + currentDirection)) {
-//                ImageView image = blockFactory.createBlockView(modifiedBlockName);
-//                animationCache.put(modifiedBlockName, image);
-//              }
-//              visualObj = animationCache.get(modifiedBlockName);
-//            } else {
-//              visualObj = blockFactory.createBlockView(block.getBlockName());
-//            }
-            visualObj = blockFactory.createBlockView(block.getBlockName());
+            if (block.getBlockName().contains("BabaVisual")) {
+              modifiedBlockName = block.getBlockName() + currentDirection;
+            }
+            else {
+              modifiedBlockName = block.getBlockName();
+            }
+            ImageView visualObj = blockFactory.createBlockView(modifiedBlockName);
 
             if (visualObj == null) {
               gridController.showError("ERROR", "ImageView in AbstractBlockView is null");
