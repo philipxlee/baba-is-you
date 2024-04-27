@@ -47,15 +47,19 @@ public class ElementsPane {
   private String language;
   private String difficulty = "Medium";
   private final GridSizeChanger gridSizeChanger;
+  private MainScene mainScene;
 
-  public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
+
+  public ElementsPane(BuilderPane builderPane, LevelController levelController,
+      MainScene mainScene) {
     this.gridSizeChanger = new GridSizeChanger(builderPane);
+    this.mainScene = mainScene;
     this.factory = new WidgetFactory();
     this.builderPane = builderPane;
     this.levelController = levelController;
     this.jsonSaver = new JsonSaver(levelController, builderPane);
     this.jsonLoader = new JsonLoader(levelController, builderPane);
-    this.language = language;
+    this.language = levelController.getLanguage();
     initializeElementsLayout();
 
   }
@@ -154,6 +158,7 @@ public class ElementsPane {
     Button saveJsonButton = factory.makeButton(new WidgetConfiguration(
         200, 40, "SaveJson", "black-button", language));
     saveJsonButton.setOnAction(event -> jsonSaver.saveJson(difficulty));
+    Button entryPoint = makeEntryPointButton();
 
     // Create the Load Level button
     Button loadLevelButton = factory.makeButton(new WidgetConfiguration(
@@ -162,9 +167,10 @@ public class ElementsPane {
 
     List<Node> SLbuttons = new ArrayList<>();
     SLbuttons.add(saveJsonButton);
+    SLbuttons.add(entryPoint);
     SLbuttons.add(loadLevelButton);
     HBox SLbuttonsHBox = factory.wrapInHBox(SLbuttons, (int) layout.getWidth());
-    SLbuttonsHBox.setSpacing(15);
+    SLbuttonsHBox.setSpacing(10);
 
     layout.getStyleClass().add("elements-background");
 
@@ -215,6 +221,14 @@ public class ElementsPane {
     }
     builderPane.setRemove(removeMode);
   }
+
+  private Button makeEntryPointButton() {
+    Button entryPoint = factory.makeButton(new WidgetConfiguration(100, 40,
+        "Back", "black-button", language));
+    entryPoint.setOnAction(e -> mainScene.goToEntryPoint());
+    return entryPoint;
+  }
+
 
 
   private void showLoadingScreen() {
