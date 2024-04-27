@@ -7,30 +7,28 @@ import java.util.ResourceBundle;
 
 
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 
-import javafx.scene.control.ComboBox;
-
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.authoring.blockDisplay.BlockLoader;
 import oogasalad.view.authoring.jsonOps.JsonLoader;
 import oogasalad.view.authoring.jsonOps.JsonSaver;
+import oogasalad.view.authoring.HelpWizardDialog;
 
 
 public class ElementsPane {
@@ -178,6 +176,19 @@ public class ElementsPane {
 
 
     TooltipManager.setTooltips(categoryComboBox, difficultyComboBox, changeGridSizeButton, removeButton, gptButton, saveJsonButton, loadLevelButton);
+
+    layout.sceneProperty().addListener((observable, oldScene, newScene) -> {
+      if (newScene != null) {
+        setKeyboardShortcuts(newScene);
+      }
+    });
+
+    Button helpButton = new Button("?");
+    helpButton.setStyle("-fx-font-size: 3em;"); // Increase font size to make the icon larger
+    helpButton.setOnAction(event -> HelpWizardDialog.showWizardDialog());
+
+    comboBoxes.getChildren().add(helpButton);
+
   }
 
   public VBox getLayout() {
@@ -251,4 +262,15 @@ public class ElementsPane {
     // Start the task
     new Thread(generateTask).start();
   }
+
+  private void setKeyboardShortcuts(Scene scene) {
+    // Define keyboard shortcuts
+    KeyCombination saveJsonCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+    KeyCombination loadLevelCombination = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
+
+    // Assign actions to keyboard shortcuts
+    scene.getAccelerators().put(saveJsonCombination, () -> jsonSaver.saveJson(difficulty));
+    scene.getAccelerators().put(loadLevelCombination, jsonLoader::loadLevel);
+  }
+
 }
