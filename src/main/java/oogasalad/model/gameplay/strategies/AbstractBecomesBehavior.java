@@ -32,7 +32,6 @@ public abstract class AbstractBecomesBehavior implements Strategy {
    * @return true if the cell contains a non-empty visual block, false otherwise.
    */
   public boolean onlyEmptyVisualBlock(AbstractBlock block, CellIterator iterator) {
-    iterator.reset();
     while (iterator.hasNext()) {
       AbstractBlock currentBlock = iterator.next();
       if (!currentBlock.isTextBlock() && !currentBlock.equals(block)) {

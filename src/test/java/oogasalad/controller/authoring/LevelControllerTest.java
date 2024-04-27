@@ -42,3 +42,4 @@ public class LevelControllerTest {
     assertTrue(exception.getMessage().contains("Invalid block type"));
   }
 }
+
