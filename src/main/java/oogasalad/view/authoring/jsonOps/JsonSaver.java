@@ -78,7 +78,7 @@ public class JsonSaver {
     return confirmation;
   }
 
-  private void handleConfirmation(ButtonType buttonType, Alert confirmation) throws IOException {
+  public void handleConfirmation(ButtonType buttonType, Alert confirmation) throws IOException {
     if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
       String levelName = getFieldText(0, confirmation);
       String levelDescription = getFieldText(1, confirmation);
@@ -98,7 +98,7 @@ public class JsonSaver {
     }
   }
 
-  private String getFieldText(int rowIndex, Alert confirmation) {
+  public String getFieldText(int rowIndex, Alert confirmation) {
     GridPane dialogContent = (GridPane) confirmation.getDialogPane().getContent();
     return ((TextField) dialogContent.getChildren().get(rowIndex * 2 + 1)).getText();
   }

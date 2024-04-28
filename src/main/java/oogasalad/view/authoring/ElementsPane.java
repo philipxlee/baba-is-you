@@ -42,9 +42,9 @@ public class ElementsPane {
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
   private final LevelController levelController;
-  private ScrollPane scrollPane;
+  protected ScrollPane scrollPane;
   private VBox layout;
-  private boolean removeMode = false;
+  protected boolean removeMode = false;
   private String language;
   private String difficulty = "Medium";
   private final GridSizeChanger gridSizeChanger;
@@ -208,7 +208,7 @@ public class ElementsPane {
     return layout;
   }
 
-  private void updateBlocksDisplay(String category) {
+  protected void updateBlocksDisplay(String category) {
     FlowPane blocksContainer = (FlowPane) scrollPane.getContent();
     blocksContainer.getChildren().clear();
     if (category.equals("All")) {
@@ -219,7 +219,7 @@ public class ElementsPane {
     }
   }
 
-  private void toggleRemoveMode(Button removeButton) {
+  protected void toggleRemoveMode(Button removeButton) {
     removeMode = !removeMode;
     if (removeMode) {
       factory.changeButtonLabel(removeButton, new WidgetConfiguration(
@@ -232,7 +232,7 @@ public class ElementsPane {
   }
 
 
-  private Button makeEntryPointButton() {
+  protected Button makeEntryPointButton() {
     Button entryPoint = factory.makeButton(new WidgetConfiguration(100, 40,
         "Back", "black-button", language));
     entryPoint.setOnAction(e -> mainScene.goToEntryPoint());
@@ -287,7 +287,7 @@ public class ElementsPane {
     new Thread(generateTask).start();
   }
 
-  private void setKeyboardShortcuts(Scene scene) {
+  protected void setKeyboardShortcuts(Scene scene) {
     // Define keyboard shortcuts
     KeyCombination saveJsonCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
     KeyCombination loadLevelCombination = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
@@ -299,7 +299,7 @@ public class ElementsPane {
 
   }
 
-  private Runnable returnToSplashScreen() {
+  protected Runnable returnToSplashScreen() {
     Runnable goToEntryPoint = () -> mainScene.goToEntryPoint();
     return goToEntryPoint;
   }
