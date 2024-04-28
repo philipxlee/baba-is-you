@@ -73,12 +73,15 @@ public class LevelController {
    * the JSON object to extract level details and grid configuration and updates the current level's
    * grid with the new data.
    *
+   * @return
    * @throws IOException If there is an error reading from the file.
    */
-  public void loadLevel() throws IOException {
+  public Level loadLevel() throws IOException {
     JsonObject editJson = jsonManager.loadFromFile();
-    this.currentLevel = jsonParser.parseLevel(editJson);
-    this.currentLevel.getGrid().updateGrid(jsonParser.getJsonGrid(editJson));
+    Level level = jsonParser.parseLevel(editJson);
+    String[][][] jsonGrid = jsonParser.getJsonGrid(editJson);
+    level.getGrid().updateGrid(jsonGrid);
+    return level;
   }
 
   /**

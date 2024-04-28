@@ -1,5 +1,6 @@
 package oogasalad.view.authoring;
 
+import com.google.gson.JsonObject;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -10,10 +11,18 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import oogasalad.controller.authoring.JsonParser;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.block.Block;
+import oogasalad.model.authoring.level.Grid;
+import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.Stack;
 
 
 public class BuilderPane {
@@ -66,6 +75,8 @@ public class BuilderPane {
 
   protected void setUpGrid() {
     gridPane.getChildren().clear(); // Clear the existing grid
+//    root.getChildren().removeIf(node -> node instanceof ImageView
+//        || node instanceof Pane);  // Adjust if your structure requires
 
     // Adjust the maximum width and height available for the grid, accounting for margins
     double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
@@ -123,10 +134,13 @@ public class BuilderPane {
             blockView.setFitWidth(cellSize);
             blockView.setFitHeight(cellSize);
             blockView.setLayoutX(cellCoords.getX());
+            System.out.println(cellCoords.getX());
             blockView.setLayoutY(cellCoords.getY());
+            System.out.println(cellCoords.getY());
             root.getChildren().add(blockView);
             try {
               // x corresponds to column, y corresponds to row
+
               levelController.addBlockToCell((int) cellIndices.getY(), (int) cellIndices.getX(),
                   blockType);
             } catch (Exception e) {
@@ -216,5 +230,52 @@ public class BuilderPane {
   public void setRemove(boolean remove_bool) {
     removeMode = remove_bool;
     setRemoveModeEventHandlers();
+  }
+
+  public void renderLoadedGrid(Grid loadedGrid) {
+
+    // Update the grid dimensions based on the loaded grid
+    this.gridWidth = loadedGrid.getNumColumns() - 2;
+    this.gridHeight = loadedGrid.getNumRows() - 2;
+    // Set up the grid again based on the updated dimensions
+    setUpGrid();
+    levelController.getLevel().setGrid(new Grid(this.gridWidth, this.gridHeight));
+
+    // Iterate over the loaded grid and render each block
+    for (int row = 0; row < this.gridHeight; row++) {
+      for (int col = 0; col < this.gridWidth; col++) {
+        String[] blockTypes = loadedGrid.getCell(row, col);
+
+        // Render each block type in the cell
+        for (String blockType : blockTypes) {
+          if (blockType.equals("EmptyVisualBlock")) {
+            continue;
+          }
+          ImageView blockView = createBlockView(blockType);
+
+          if (blockView != null) {
+            blockView.setFitWidth(cellSize);
+            blockView.setFitHeight(cellSize);
+
+            // Calculate position based on grid coordinates
+            double xPos = col * cellSize + gridPane.getLayoutX();
+            double yPos = row * cellSize + gridPane.getLayoutY();
+
+            // Set the layout positions directly
+            blockView.setLayoutX(xPos);
+            blockView.setLayoutY(yPos);
+
+            // Add the block to the root and bring it to the front
+            root.getChildren().add(blockView);
+            blockView.toFront();
+            try {
+              levelController.addBlockToCell(row, col, blockType);
+            } catch (Exception e) {
+              System.err.println("Error adding block to cell: " + e.getMessage());
+            }
+          }
+        }
+      }
+    }
   }
 }
