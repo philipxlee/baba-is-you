@@ -41,23 +41,15 @@ public class WidgetFactory {
     return panel;
   }
 
-  public VBox hintsPanel(WidgetConfiguration configuration, String hint) {
-    Rectangle panel = new Rectangle(0, 0, configuration.getWidth(), configuration.getHeight());
-    StackPane stackPane = new StackPane();
+  public Label hintsLabel(WidgetConfiguration configuration, String hint) {
     //Create the label for the hint
     Label hintLabel = new Label();
     hintLabel.setText(hint);
-    hintLabel.getStyleClass().add("red-label");
+    hintLabel.getStyleClass().add(configuration.getCssMatch());
     hintLabel.setWrapText(true);
     hintLabel.maxWidth(configuration.getWidth());
     hintLabel.maxHeight(configuration.getHeight());
-    //add to stackpane
-    stackPane.getChildren().addAll(panel, hintLabel);
-    panel.getStyleClass().add(configuration.getCssMatch());
-    Text hints = this.generateLine(configuration.getPropertyContents());
-    VBox vbox = new VBox(hints, stackPane);
-    vbox.setSpacing(10);
-    return vbox;
+    return hintLabel;
   }
 
   public Text generateHeader(WidgetConfiguration configuration) {
@@ -191,8 +183,7 @@ public class WidgetFactory {
     return pane;
   }
 
-  public void createPopUpWindow(WidgetConfiguration configuration, Parent root) {
-    Stage popup = new Stage();
+  public void createPopUpWindow(WidgetConfiguration configuration, Parent root, Stage popup) {
     javafx.scene.Scene scene = new javafx.scene.Scene(root, configuration.getWidth(),
         configuration.getHeight());
     popup.setScene(scene);
