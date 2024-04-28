@@ -58,7 +58,7 @@ public class GamePane implements Observer<Grid> {
   private Timeline timeline;
   private long milliseconds = 0;
   private Text time;
-  private List<KeyCode> cheatKeys = Arrays.asList(KeyCode.W, KeyCode.L, KeyCode.R);
+  private List<KeyCode> cheatKeys = Arrays.asList(KeyCode.W, KeyCode.L, KeyCode.R, KeyCode.X);
 
   private boolean keyPressed;
 
@@ -69,6 +69,7 @@ public class GamePane implements Observer<Grid> {
 
   private final double DECREASE_FACTOR = 0.8;
   private Timeline timeline_Enemy;
+  private boolean babaHat = false;
 
 
   public void initializeGameGrid(int width, int height, MainScene scene,
@@ -181,7 +182,12 @@ public class GamePane implements Observer<Grid> {
             offsetX = Math.min(offsetX, j * cellSize + cellSize - blockOffset);
             offsetY = Math.min(offsetY, i * cellSize + cellSize - blockOffset);
             if (block.getBlockName().contains("BabaVisual")) {
-              modifiedBlockName = block.getBlockName() + currentDirection;
+              if (!babaHat) {
+                modifiedBlockName = block.getBlockName() + currentDirection;
+              }
+              else {
+                modifiedBlockName = "BabaHatVisualBlock";
+              }
             }
             else {
               modifiedBlockName = block.getBlockName();
@@ -227,6 +233,9 @@ public class GamePane implements Observer<Grid> {
         firstKeyPressed = true;
       }
       if (event.getCode().isLetterKey()) {
+        if (event.getCode() == KeyCode.X) {
+          babaHat = !babaHat;
+        }
         gridController.sendPlayToModel(event.getCode());
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks
@@ -249,7 +258,6 @@ public class GamePane implements Observer<Grid> {
   private void moveEnemy() {
     // Create a new Timeline
     timeline_Enemy = new Timeline();
-
     // Add a KeyFrame to the Timeline
     timeline_Enemy.getKeyFrames().add(
             new KeyFrame(Duration.seconds(currentDelay), event -> {
@@ -264,10 +272,8 @@ public class GamePane implements Observer<Grid> {
             })
 
     );
-
     // Set the cycle count to indefinite so it repeats
     timeline_Enemy.setCycleCount(Timeline.INDEFINITE);
-
     // Start the Timeline
     timeline_Enemy.play();
   }
