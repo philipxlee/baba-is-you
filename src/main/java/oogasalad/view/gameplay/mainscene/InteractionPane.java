@@ -8,8 +8,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -168,10 +171,16 @@ public class InteractionPane {
   }
 
   private HBox setUpHintsSection(VBox arrowKeysBox) {
+    FlowPane flowpane = factory.createFlowPane(new WidgetConfiguration(250, 100, "flowpane",
+        language));
+    ScrollPane scrollPane = factory.makeScrollPane(flowpane, 250);
     String hintText = levelController.getHint();
-    VBox hints = factory.hintsPanel(new WidgetConfiguration(250, 100, "Hints",
-        "hints-panel", language), hintText);
-    HBox hbox = factory.wrapInHBox(new ArrayList<>(Arrays.asList(hints, arrowKeysBox)), width);
+    Label hintLabel = factory.hintsLabel(new WidgetConfiguration(250, 100,
+        "red-label", language), hintText);
+    flowpane.getChildren().add(hintLabel);
+    Text hints = factory.generateLine(new WidgetConfiguration("Hints", language));
+    VBox vbox = new VBox(hints, scrollPane);
+    HBox hbox = factory.wrapInHBox(new ArrayList<>(Arrays.asList(vbox, arrowKeysBox)), width);
     return hbox;
   }
 
