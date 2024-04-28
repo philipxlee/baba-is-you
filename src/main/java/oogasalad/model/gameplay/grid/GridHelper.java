@@ -128,6 +128,22 @@ public class GridHelper {
     return allControllableBlocks;
   }
 
+  public List<int[]> findEnemyBlock() { //record class
+    List<int[]> allEnemyBlocks = new ArrayList<>();
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if (block != null && block.getAttribute("Killable")) {
+            int[] a = {i, j, k};
+            allEnemyBlocks.add(a);
+          }
+        }
+      }
+    }
+    return allEnemyBlocks;
+  }
+
   /**
    * Retrieves the indices of all pushable blocks in a cell.
    *
@@ -269,6 +285,9 @@ public class GridHelper {
 
   public boolean cellHasWater(int cellI, int cellJ){
     return grid[cellI][cellJ].stream().anyMatch(block -> block.getAttribute("Sinkable"));
+  }
+  public boolean cellHasEnemy(int cellI, int cellJ){
+    return grid[cellI][cellJ].stream().anyMatch(block -> block.getAttribute("Killable"));
   }
 
 }

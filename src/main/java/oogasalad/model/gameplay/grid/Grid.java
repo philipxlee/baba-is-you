@@ -296,7 +296,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public boolean isPassable(int cellI, int cellJ){
-    return !cellHasStoppable(cellI, cellJ) && !cellHasWinning(cellI, cellJ) && !cellHasLava(cellI, cellJ) && !cellHasWater(cellI, cellJ); //should return opposite of cellHasStoppabe
+    return !cellHasStoppable(cellI, cellJ) && !cellHasWinning(cellI, cellJ) && !cellHasLava(cellI, cellJ) && !cellHasWater(cellI, cellJ) && !cellHasTextBlock(cellI, cellJ); //should return opposite of cellHasStoppabe
   }
 
   public void placeEnemy(int I, int J){
@@ -349,6 +349,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public void removeBaba(int i, int j) {
+    System.out.println("calling remove BABA");
     List<AbstractBlock> cell = grid[i][j];
     Iterator<AbstractBlock> iterator = cell.iterator();
     while (iterator.hasNext()) {
@@ -368,6 +369,26 @@ public class Grid extends GridHelper implements Observable<Grid> {
         iterator.remove();
       }
     }
+  }
+  public Optional<Integer> findEnemyIndex(int cellI, int cellJ) {
+    for (int i = 0; i < grid[cellI][cellJ].size(); i++) {
+      AbstractBlock block = grid[cellI][cellJ].get(i);
+      if (block.getAttribute("Killable")) {
+        return Optional.of(i);
+      }
+    }
+    // If no enemy block is found, return Optional.empty()
+    return Optional.empty();
+  }
+
+  public boolean cellIsEmpty(int cellI, int cellJ){
+    for (int i = 0; i < grid[cellI][cellJ].size(); i++){
+      AbstractBlock block = grid[cellI][cellJ].get(i);
+      if(!block.isEmptyVisualBlock()){
+        return false;
+      }
+    }
+    return true;
   }
 
 }
