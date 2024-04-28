@@ -766,7 +766,8 @@
     ],
     "metadata": {
       "difficulty": "Easy",
-      "health": "3"
+      "health": "3",
+      "hint": "be good at the game"
     }
   }
 }

@@ -12,6 +12,12 @@
   -fx-fill: linear-gradient(to bottom, #777DA1, #9773FD);
 }
 
+.hints-panel {
+  -fx-fill: #343342;
+  -fx-stroke-width: 5px;
+  -fx-stroke: #F5F5F5;
+}
+
 .elements-background {
   -fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD);
 }
