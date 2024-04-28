@@ -17,6 +17,7 @@ public class LevelParser {
 
   private final JsonManager jsonManager;
   private Grid grid;
+  private Level level;
   /**
    * Constructs an AuthoringLevelParser object with the specified JsonManager.
    */
@@ -32,14 +33,15 @@ public class LevelParser {
    * @return A JsonObject representing the level's metadata.
    */
   public JsonObject parseLevelToJSON(Level level) {
+    this.level = level;
     LevelMetadata metadata = level.getLevelMetadata();
     JsonObject metadataJson = new JsonObject();
     JsonObject gridSizeObject = new JsonObject();
     JsonObject grid = new JsonObject();
     JsonObject metadataObject = new JsonObject();
-    jsonManager.addProperty(metadataObject, "author", metadata.authorName());
-    jsonManager.addProperty(metadataObject, "difficulty", metadata.difficulty());
-    jsonManager.addProperty(metadataObject, "hint", metadata.hint());
+    jsonManager.addProperty(metadataObject, "author", metadata.getAuthorName());
+    jsonManager.addProperty(metadataObject, "difficulty", metadata.getDifficulty());
+    jsonManager.addProperty(metadataObject, "hint", metadata.getHint());
     JsonArray gridArray = turnGridToJson(level);
     buildJsonObject(metadataJson, metadata, gridSizeObject);
     jsonManager.addArrayToJson(grid, "cells", gridArray);
@@ -71,12 +73,16 @@ public class LevelParser {
   private void buildJsonObject(JsonObject metadataJson, LevelMetadata metadata,
       JsonObject gridSizeObject) {
 
-    jsonManager.addProperty(metadataJson, "levelName", metadata.levelName());
-    jsonManager.addProperty(metadataJson, "description", metadata.description());
-    jsonManager.addProperty(gridSizeObject, "rows", String.valueOf(grid.isLoading() ? metadata.rows() :metadata.rows() + 2));
-    jsonManager.addProperty(gridSizeObject, "columns", String.valueOf( grid.isLoading() ? metadata.cols() : metadata.cols() + 2));
+    jsonManager.addProperty(metadataJson, "levelName", metadata.getLevelName());
+    jsonManager.addProperty(metadataJson, "description", metadata.getDescription());
+    System.out.println("IS IT LOADING: " + this.level.getGrid().isLoading());
+    jsonManager.addProperty(gridSizeObject, "rows", String.valueOf(this.level.getGrid().isLoading() ?
+        metadata.getRows() : metadata.getRows() + 2));
+    jsonManager.addProperty(gridSizeObject, "columns", String.valueOf(this.level.getGrid().isLoading() ?
+        metadata.getCols() : metadata.getCols() + 2));
 
     jsonManager.addObject(metadataJson, "gridSize", gridSizeObject);
+    this.level.getGrid().setLoading(false);
   }
 
   /**

@@ -25,7 +25,7 @@ public class Level implements Observable<Level> {
    */
   public Level(LevelMetadata levelMetadata) {
     this.levelMetadata = levelMetadata;
-    grid = new Grid(levelMetadata.rows(), levelMetadata.cols());
+    grid = new Grid(levelMetadata.getRows(), levelMetadata.getCols());
     observers = new ArrayList<>();
   }
 
@@ -70,8 +70,8 @@ public class Level implements Observable<Level> {
    */
   public List<List<List<String>>> getParsedGrid() {
 
-    int originalRows = grid.isLoading() ? levelMetadata.rows() - 2 : levelMetadata.rows();
-    int originalCols = grid.isLoading() ? levelMetadata.cols() - 2 : levelMetadata.cols();
+    int originalRows = grid.isLoading() ? levelMetadata.getRows() - 2 : levelMetadata.getRows();
+    int originalCols = grid.isLoading() ? levelMetadata.getCols() - 2 : levelMetadata.getCols();
 
     List<List<List<String>>> extendedGrid = new ArrayList<>();
     for (int row = 0; row < originalRows + 2; row++) {

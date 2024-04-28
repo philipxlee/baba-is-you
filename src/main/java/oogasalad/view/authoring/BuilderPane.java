@@ -53,8 +53,8 @@ public class BuilderPane {
 
     this.gridPane = new GridPane();
     LevelMetadata levelMetadata = levelController.getLevelMetadata();
-    this.gridWidth = levelMetadata.cols();
-    this.gridHeight = levelMetadata.rows();
+    this.gridWidth = levelMetadata.getCols();
+    this.gridHeight = levelMetadata.getRows();
 
     // Listen for size changes on root to re-setup the grid
     root.widthProperty().addListener((obs, oldVal, newVal) -> setUpGrid());

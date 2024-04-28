@@ -86,8 +86,9 @@ public class JsonSaver {
       String hint = getFieldText(3, confirmation);
       boolean isValidLevel = validator.validateLevel(level);
 //      if (isValidLevel) {
-//        LevelMetadata levelMetadata = levelController.getLevelMetadata();
-//        levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
+        LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
+            level.getGrid().getRows(), level.getGrid().getCols(), difficulty, authorName, hint);
+        levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
 
         File savedFile = levelController.serializeLevel();
         if (savedFile != null) {

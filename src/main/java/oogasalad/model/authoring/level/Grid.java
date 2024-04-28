@@ -52,10 +52,6 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
     }
   }
 
-  private void makeShrink(){
-
-  }
-
   /**
    * Adds a Block of a specific type to the grid. Type must be in block type properties file.
    *
@@ -173,5 +169,16 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
   }
 
 
+  public void setLoading(boolean b) {
+    loading = b;
+  }
+
+  public int getRows() {
+    return this.rows;
+  }
+
+  public int getCols() {
+    return this.columns;
+  }
 }
 

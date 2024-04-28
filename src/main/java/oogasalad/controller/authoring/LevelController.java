@@ -63,7 +63,7 @@ public class LevelController {
   public File serializeLevel() {
     JsonObject levelJson = levelParser.parseLevelToJSON(currentLevel);
 
-    String fileName = currentLevel.getLevelMetadata().levelName() + ".json";
+    String fileName = currentLevel.getLevelMetadata().getLevelName() + ".json";
     try {
       return levelParser.saveJSON(levelJson, fileName);
     } catch (IOException e) {
