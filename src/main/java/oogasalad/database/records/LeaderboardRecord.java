@@ -9,7 +9,7 @@ import java.util.Date;
  * @param levelName the name of the level
  * @param date      the date of the record
  * @param timeSpent the time spent on the level
- * @author Philip Lee
+ * @author Philip Lee.
  */
 public record LeaderboardRecord(String username, String levelName, Date date, long timeSpent) {
 
