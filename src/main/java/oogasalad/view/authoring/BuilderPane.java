@@ -239,10 +239,11 @@ public class BuilderPane {
     this.gridHeight = loadedGrid.getNumRows() - 2;
     // Set up the grid again based on the updated dimensions
     setUpGrid();
+    levelController.getLevel().setGrid(new Grid(this.gridWidth, this.gridHeight));
 
     // Iterate over the loaded grid and render each block
-    for (int row = 0; row < loadedGrid.getNumRows() - 2; row++) {
-      for (int col = 0; col < loadedGrid.getNumColumns() - 2; col++) {
+    for (int row = 0; row < this.gridHeight; row++) {
+      for (int col = 0; col < this.gridWidth; col++) {
         String[] blockTypes = loadedGrid.getCell(row, col);
 
         // Render each block type in the cell
@@ -268,11 +269,9 @@ public class BuilderPane {
             root.getChildren().add(blockView);
             blockView.toFront();
             try {
-              // x corresponds to column, y corresponds to row
-              levelController.addBlockToCell(row, col,
-                  blockType);
+              levelController.addBlockToCell(row, col, blockType);
             } catch (Exception e) {
-              e.printStackTrace();
+              System.err.println("Error adding block to cell: " + e.getMessage());
             }
           }
         }
