@@ -41,9 +41,9 @@ class LevelParserTest {
         () -> assertEquals("TestLevel", jsonManager.getValue(metadataJson,
             "levelName"), "Name should match"),
         () -> assertNotNull(jsonManager.getJsonObject(metadataJson, "gridSize")),
-        () -> assertEquals("3", jsonManager.getValue(jsonManager.getJsonObject
+        () -> assertEquals("5", jsonManager.getValue(jsonManager.getJsonObject
             (metadataJson, "gridSize"), "rows"), "Rows should match"),
-        () -> assertEquals("3", jsonManager.getValue(jsonManager.getJsonObject
+        () -> assertEquals("5", jsonManager.getValue(jsonManager.getJsonObject
                 (metadataJson, "gridSize"), "columns"),
             "Columns should match")
     );
