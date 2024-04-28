@@ -168,5 +168,9 @@
       "All",
       "Text"
     ]
+  },
+  "BabaVisualBlock": {
+    "imagePath": "/images/baba/BabaVisualBlockDown.png",
+    "category": [ ]
   }
 }

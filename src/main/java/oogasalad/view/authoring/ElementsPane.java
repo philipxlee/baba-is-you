@@ -33,7 +33,7 @@ import oogasalad.view.authoring.HelpWizardDialog;
 
 public class ElementsPane {
 
-  private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
+  public final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private final JsonSaver jsonSaver;
   private final JsonLoader jsonLoader;
   private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
@@ -284,10 +284,17 @@ public class ElementsPane {
     // Define keyboard shortcuts
     KeyCombination saveJsonCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
     KeyCombination loadLevelCombination = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
-
+    KeyCombination returntosplash = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
     // Assign actions to keyboard shortcuts
     scene.getAccelerators().put(saveJsonCombination, () -> jsonSaver.saveJson(difficulty));
     scene.getAccelerators().put(loadLevelCombination, jsonLoader::loadLevel);
+    scene.getAccelerators().put(returntosplash, returnToSplashScreen());
+
+  }
+
+  private Runnable returnToSplashScreen() {
+    Runnable goToEntryPoint = () -> mainScene.goToEntryPoint();
+    return goToEntryPoint;
   }
 
 }

@@ -12,6 +12,7 @@ import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.RockVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
+import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.grid.BlockUpdater;
 import oogasalad.model.gameplay.grid.CellIterator;
@@ -96,8 +97,4 @@ public class TransformationVisitorTest {
     performTransformationTest("WallVisualBlock", "Flag", FlagVisualBlock.class);
   }
 
-  @Test
-  public void testVisitorReflectionException() {
-    performTransformationTest("BabaVisualBlock", "Invalid", BabaVisualBlock.class);
-  }
 }

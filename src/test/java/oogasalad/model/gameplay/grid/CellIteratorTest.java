@@ -1,17 +1,15 @@
-package oogasalad.model.gameplay;
+package oogasalad.model.gameplay.grid;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.grid.CellIterator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,10 +26,16 @@ public class CellIteratorTest {
         grid[i][j] = new ArrayList<>();
       }
     }
-    grid[1][1].add(mock(AbstractBlock.class));
-    grid[1][1].add(mock(AbstractBlock.class));
-    grid[1][1].add(mock(AbstractBlock.class));
+    // Using TestBlock instances directly instead of mocking
+    grid[1][1].add(new TestBlock());
+    grid[1][1].add(new TestBlock());
+    grid[1][1].add(new TestBlock());
     cellIterator = new CellIterator(grid, 1, 1);
+  }
+
+  // A simple concrete subclass of AbstractBlock for testing
+  static class TestBlock extends AbstractBlock {
+    // Implement any abstract methods or leave blank if the abstract class has no abstract methods
   }
 
   @Test
@@ -53,7 +57,6 @@ public class CellIteratorTest {
     cellIterator.next(); // 1st block
     cellIterator.next(); // 2nd block
     cellIterator.next(); // 3rd block
-
     assertThrows(NoSuchElementException.class, cellIterator::next,
         "Should throw exception when no more elements");
   }
@@ -64,13 +67,4 @@ public class CellIteratorTest {
         "Should throw IllegalArgumentException for out-of-bounds indices");
   }
 
-  @Test
-  void testResetIterator() {
-    cellIterator.next(); // 1st block
-    cellIterator.next(); // 2nd block
-    cellIterator.reset();
-    assertTrue(cellIterator.hasNext(), "Iterator should be reset to the start");
-    assertEquals(grid[1][1].get(0), cellIterator.next(),
-        "Should return the first block after reset");
-  }
 }

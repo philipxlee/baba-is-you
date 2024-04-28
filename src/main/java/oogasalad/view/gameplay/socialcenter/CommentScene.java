@@ -169,7 +169,8 @@ public class CommentScene implements Scene {
         DatabaseController databaseController = sceneController.getDatabaseController();
         databaseController.addReply(comment.getUsername(), databaseController.getUsername(),
             replyText);
-        Label newReplyLabel = new Label(databaseController.getUsername() + ": " + replyText);
+        Label newReplyLabel = new Label((databaseController.getUsername() == null ? "Anonymous"
+            : databaseController.getUsername()) + ": " + replyText);
         newReplyLabel.getStyleClass().add("red-label");
         repliesContainer.getChildren().add(newReplyLabel);
         replyInput.clear();

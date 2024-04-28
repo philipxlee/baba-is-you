@@ -53,11 +53,4 @@ public class CellIterator implements Iterator<AbstractBlock> {
     return cellBlocks.get(currentIndex++);
   }
 
-  /**
-   * Resets the iterator to the beginning of the cell.
-   */
-  public void reset() {
-    this.currentIndex = 0;
-  }
-
 }
