@@ -1,6 +1,5 @@
 package oogasalad.view.gameplay.mainscene;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.Event;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,7 +22,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
@@ -163,53 +161,57 @@ public class GamePane implements Observer<Grid> {
     List<AbstractBlock>[][] grid = gridController.getGameGrid().getGrid();
     calculateCellSize(grid.length, grid[0].length);
     double blockOffset = 0; // Offset for displaying stacked blocks
-    String modifiedBlockName;
 
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         List<AbstractBlock> blocks = grid[i][j];
         for (int k = 0; k < blocks.size(); k++) {
-          try {
-            AbstractBlock block = blocks.get(k);
-
-            //TODO: refactor
-
-            // Calculate the offset position for each block within the same cell
-            double offsetX = j * cellSize + k * blockOffset;
-            double offsetY = i * cellSize + k * blockOffset;
-
-            // Ensure that the block does not exceed the boundaries of the cell
-            offsetX = Math.min(offsetX, j * cellSize + cellSize - blockOffset);
-            offsetY = Math.min(offsetY, i * cellSize + cellSize - blockOffset);
-            if (block.getBlockName().contains("BabaVisual") && block.getAttribute("Controllable")) {
-              if (!babaHat) {
-                modifiedBlockName = block.getBlockName() + currentDirection;
-              }
-              else {
-                modifiedBlockName = "BabaHatVisualBlock";
-              }
-            }
-            else {
-              modifiedBlockName = block.getBlockName();
-            }
-            ImageView visualObj = blockFactory.createBlockView(modifiedBlockName);
-
-            if (visualObj == null) {
-              gridController.showError("ERROR", "ImageView in AbstractBlockView is null");
-            }
-            visualObj.setFitWidth(cellSize - k * blockOffset);
-            visualObj.setFitHeight(cellSize - k * blockOffset);
-            visualObj.setPreserveRatio(true);
-            visualObj.setX(offsetX);
-            visualObj.setY(offsetY);
-            root.getChildren().add(visualObj);
-
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
+          initializeBlockImage(blocks, k, j, i, blockOffset);
         }
       }
     }
+  }
+
+  private void initializeBlockImage(List<AbstractBlock> blocks, int k, int j, int i, double blockOffset) {
+    try {
+      AbstractBlock block = blocks.get(k);
+      String modifiedBlockName;
+
+      if (block.getBlockName().contains("BabaVisual") && block.getAttribute("Controllable")) {
+        if (!babaHat) {
+          modifiedBlockName = block.getBlockName() + currentDirection;
+        } else {
+          modifiedBlockName = "BabaHatVisualBlock";
+        }
+      } else {
+        modifiedBlockName = block.getBlockName();
+      }
+      ImageView visualObj = blockFactory.createBlockView(modifiedBlockName);
+
+      if (visualObj == null) {
+        gridController.showError("ERROR", "ImageView in AbstractBlockView is null");
+      }
+      formatImage(visualObj, k, blockOffset, j, i);
+    }
+    catch (Exception e) {
+      gridController.showError("ERROR", e.getMessage());
+    }
+  }
+
+  private void formatImage(ImageView visualObj, int k, double blockOffset, int j, int i) {
+    double offsetX = j * cellSize + k * blockOffset;
+    double offsetY = i * cellSize + k * blockOffset;
+
+    // Ensure that the block does not exceed the boundaries of the cell
+    offsetX = Math.min(offsetX, j * cellSize + cellSize - blockOffset);
+    offsetY = Math.min(offsetY, i * cellSize + cellSize - blockOffset);
+
+    visualObj.setFitWidth(cellSize - k * blockOffset);
+    visualObj.setFitHeight(cellSize - k * blockOffset);
+    visualObj.setPreserveRatio(true);
+    visualObj.setX(offsetX);
+    visualObj.setY(offsetY);
+    root.getChildren().add(visualObj);
   }
 
   private void calculateCellSize(int r, int c) {
@@ -233,18 +235,9 @@ public class GamePane implements Observer<Grid> {
         firstKeyPressed = true;
       }
       if (event.getCode().isLetterKey()) {
-        if (event.getCode() == KeyCode.X) {
-          babaHat = !babaHat;
-        }
-        gridController.sendPlayToModel(event.getCode());
-        renderGrid(); // Render grid
-        gridController.resetBlocks(); // Reset all blocks
-        event.consume();
-        keyPressed = true;
-        firstKeyPressed = true;
+        handleLetterKeyPresses(event);
       }
     });
-
     // For key press visualizer
     this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_RELEASED, event -> {
       if (event.getCode().isArrowKey()) {
@@ -252,6 +245,18 @@ public class GamePane implements Observer<Grid> {
         event.consume();
       }
     });
+  }
+
+  private void handleLetterKeyPresses(KeyEvent event) {
+      if (event.getCode() == KeyCode.X) {
+        babaHat = !babaHat;
+      }
+      gridController.sendPlayToModel(event.getCode());
+      renderGrid(); // Render grid
+      gridController.resetBlocks(); // Reset all blocks
+      event.consume();
+      keyPressed = true;
+      firstKeyPressed = true;
   }
 
 
