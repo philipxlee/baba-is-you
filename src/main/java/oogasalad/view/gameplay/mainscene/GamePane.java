@@ -1,13 +1,23 @@
 package oogasalad.view.gameplay.mainscene;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
@@ -17,6 +27,8 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
  * Class that encapsulates the grid interactions from the model and displays them. Uses the Observer
@@ -36,6 +48,10 @@ public class GamePane implements Observer<Grid> {
   private Level level;
   private String currentDirection = "Right";
   private Map<String, ImageView> animationCache;
+  private WidgetFactory factory;
+  private Timeline timeline;
+  private long milliseconds = 0;
+  private Text time;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
@@ -46,16 +62,51 @@ public class GamePane implements Observer<Grid> {
       this.height = height;
       this.root = new Group();
       this.scene = scene;
+      this.sceneController = sceneController;
       this.keyHandlerController = new KeyHandlerController(
           new GameStateController(sceneController));
       this.level = initialLevel;
       this.gridController = new GameGridController(this, keyHandlerController, level);
+      this.factory = new WidgetFactory();
+      this.time = factory.generateLine("00:00:00");
       handleKeyPresses(scene);
 
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());
     }
     renderGrid(); // Initial grid rendering
+    startTimer();
+  }
+
+  private HBox setUpTimer() {
+    Text timer = factory.generateLine(new WidgetConfiguration("Timer",
+        sceneController.getLanguage()));
+    HBox text = factory.wrapInHBox(new ArrayList<>(Arrays.asList(timer, time)), (int)
+        (timer.getWrappingWidth()+ time.getWrappingWidth()));
+    text.setAlignment(Pos.TOP_RIGHT);
+    text.setPadding(new Insets(20));
+    return text;
+  }
+
+  private void startTimer() {
+    timeline = new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        milliseconds++;
+        updateTimer();
+      }
+    }));
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+  }
+
+  private void updateTimer() {
+    long min = milliseconds / (60 * 1000);
+    long sec = (milliseconds / 1000) % 60;
+    long mill = milliseconds % 1000;
+
+    String timerString = String.format("%02d:%02d:%03d", min, sec, mill);
+    time.setText(timerString);
   }
 
   public int getWidth() {
@@ -76,13 +127,13 @@ public class GamePane implements Observer<Grid> {
   }
 
   protected Pane setUpScreen() {
-    StackPane gameScreen = new StackPane(root);
+    StackPane gameScreen = new StackPane(root, setUpTimer());
     gameScreen.setAlignment(Pos.CENTER);
     gameScreen.setPrefWidth(width);
 
     Pane pane = new Pane();
     pane.setPrefSize(width, height);
-    pane.getChildren().add(gameScreen);
+    pane.getChildren().addAll(gameScreen);
     return pane;
   }
 
