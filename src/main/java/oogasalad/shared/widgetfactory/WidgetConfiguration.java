@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import javafx.scene.text.Font;
 import oogasalad.shared.alert.AlertHandler;
+import oogasalad.shared.loader.PropertiesLoader;
 
 /**
  * Configuration object class for use within the WidgetFactory
@@ -81,35 +82,7 @@ public class WidgetConfiguration implements AlertHandler {
   }
 
   private Properties loadProperties() {
-    Properties properties = new Properties();
-    String resourcePath = "/languages/" + language + ".properties";
-    InputStream inputStream = getClass().getResourceAsStream(resourcePath);
-    if (inputStream == null) {
-      // Handle the case where the resource file is not found
-      showError("Error", "Unable to find resource file: " + resourcePath);
-      return properties; // Return an empty Properties object
-    }
-
-    try {
-      properties.load(inputStream);
-    } catch (IOException e) {
-      showError("Error", "Unable to load properties file: " + e.getMessage());
-    } finally {
-      try {
-        inputStream.close();
-      } catch (IOException e) {
-        // Handle exception when closing the input stream
-        e.printStackTrace();
-      }
-    }
-
-    return properties;
-  }
-
-
-
-  public Font getFont() {
-    return propertyFont;
+    return PropertiesLoader.loadProperties("languages/" + language + ".properties");
   }
 
 }
