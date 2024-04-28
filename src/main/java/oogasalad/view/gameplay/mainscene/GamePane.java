@@ -181,7 +181,7 @@ public class GamePane implements Observer<Grid> {
             // Ensure that the block does not exceed the boundaries of the cell
             offsetX = Math.min(offsetX, j * cellSize + cellSize - blockOffset);
             offsetY = Math.min(offsetY, i * cellSize + cellSize - blockOffset);
-            if (block.getBlockName().contains("BabaVisual")) {
+            if (block.getBlockName().contains("BabaVisual") && block.getAttribute("Controllable")) {
               if (!babaHat) {
                 modifiedBlockName = block.getBlockName() + currentDirection;
               }
