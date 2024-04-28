@@ -29,7 +29,6 @@ public class GameStateController {
    * @param isWin boolean representing if the player won the game.
    */
   public void displayGameOver(boolean isWin) {
-    System.out.println("calling displayGameOver");
     gameGridController.setGameOverStatus(true);
     if (isWin) {
       sceneController.switchToScene(new WinScene(sceneController));

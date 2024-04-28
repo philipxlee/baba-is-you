@@ -60,7 +60,6 @@ public class EnemyKeyHandler extends KeyHandler{
 
     @Override
     public void moveEnemy() {
-        System.out.println("calling moveEnemy");
         List<int[]> allEnemyBlocks = grid.findEnemyBlock();
 
         if (allEnemyBlocks.isEmpty()) {
