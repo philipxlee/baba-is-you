@@ -107,4 +107,43 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
   public Iterator<Stack<Block>> iterator() {
     return new GridIterator(cells);
   }
+
+  /**
+   * Updates the current grid using the specified JSON grid data. The JSON grid includes a border of
+   * empty blocks which are ignored during the update. Only the inner part of the JSON grid is used
+   * to update the corresponding cells of the current grid. Each cell is cleared and then populated
+   * with new blocks based on the JSON grid data.
+   *
+   * @param jsonGrid A 3D array representing the new grid state with a surrounding square of empty
+   *                 blocks.
+   */
+  public void updateGrid(String[][][] jsonGrid) {
+    try {
+      int startRow = 1;
+      int endRow = jsonGrid.length - 1;
+      int startCol = 1;
+      int endCol = jsonGrid[0].length - 1;
+
+      for (int row = 0; row < cells.length; row++) {
+        for (int col = 0; col < cells[row].length; col++) {
+          int newRow = startRow + row;
+          int newCol = startCol + col;
+
+          if (newRow < endRow && newCol < endCol) {
+            cells[row][col].clear();
+
+            String[] blockTypes = jsonGrid[newRow][newCol];
+
+            for (String blockType : blockTypes) {
+              Block block = blockFactory.createBlock(blockType);
+              cells[row][col].push(block);
+            }
+          }
+        }
+      }
+      notifyObserver();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }
