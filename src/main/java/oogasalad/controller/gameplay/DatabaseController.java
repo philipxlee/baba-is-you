@@ -16,7 +16,7 @@ import oogasalad.database.gamedata.LeaderboardData;
  */
 public class DatabaseController {
 
-  private static final int MILLISECOND_OFFSET = 1000;
+  private static final int MILLISECOND_OFFSET = 1_000;
   private final MongoDatabase database;
   private final LevelController levelController;
   private GameSession gameSession;

@@ -43,6 +43,7 @@ public class MainScene implements Scene {
     this.gameScene = new GamePane();
     gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController, level);
     gameScene.getGrid().setLayoutX(1000);
+    gameScene.setGameOverStatus(false);
 
     //Initialize interaction pane1
     this.interactionScene = new InteractionPane();
@@ -53,9 +54,11 @@ public class MainScene implements Scene {
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
+
   }
 
   public void resetGame() {
+    gameScene.setGameOverStatus(false);
     sceneController.beginGame(sceneController.isGuestSession());
   }
 

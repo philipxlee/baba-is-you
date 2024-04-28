@@ -23,11 +23,11 @@ public class PropertiesLoader {
         .getClassLoader()
         .getResourceAsStream(propertiesPath)) {
       if (input == null) {
-        throw new IllegalStateException("Failed to load properties file from: " + propertiesPath);
+        throw new IllegalStateException(propertiesPath);
       }
       properties.load(input);
     } catch (IOException ex) {
-      throw new RuntimeException("Error loading properties from " + propertiesPath, ex);
+      throw new RuntimeException(propertiesPath, ex);
     }
     return properties;
   }

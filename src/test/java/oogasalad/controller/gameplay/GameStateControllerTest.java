@@ -14,6 +14,7 @@ public class GameStateControllerTest {
 
   private GameStateController gameStateController;
 
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
