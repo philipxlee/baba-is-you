@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
@@ -152,20 +153,19 @@ public class InteractionPane {
         leaderboardButton);
     // Setup comments display
     VBox commentButton = setupCommentButton();
+    Button backButton = setUpBackButton();
+    Button newWindowButton = setUpNewWindowButton();
+    HBox backAndWindow = factory.wrapInHBox(new ArrayList<>(Arrays.asList(backButton,
+        newWindowButton)), width);
 
     HBox stats = factory.wrapInHBox(factory.generateCaption(""), width, 20);
     stats.getChildren().addAll(leaderboardButton, commentButton);
 
-    // Back button
-    Button backButton = factory.makeButton(new WidgetConfiguration(150, 40,
-        "Back", "white-button", language));
-
-    backButton.setOnAction(event -> sceneController.initializeViews());
 
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
-    display.getChildren().addAll(stats, backButton);
+    display.getChildren().addAll(stats, backAndWindow);
 
     root.getChildren().addAll(background, display);
   }
@@ -204,6 +204,27 @@ public class InteractionPane {
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
     return buttonContainer;
+  }
+
+  private Button setUpNewWindowButton() {
+    Button newWindowButton = factory.makeButton(new WidgetConfiguration(150, 40,
+        "NewWindow", "white-button", language));
+    newWindowButton.setOnAction(event -> {
+      Stage stage = new Stage();
+      LevelController newLevelController = new LevelController(levelController.getLevel());
+      SceneController newSceneController = new SceneController(stage, sceneController.getDatabaseController(),
+          newLevelController);
+      newSceneController.setLanguage(language);
+      newSceneController.initializeViews();
+    });
+    return newWindowButton;
+  }
+
+  private Button setUpBackButton() {
+    Button backButton = factory.makeButton(new WidgetConfiguration(150, 40,
+        "Back", "white-button", language));
+    backButton.setOnAction(event -> sceneController.initializeViews());
+    return backButton;
   }
 
   public Group getPane() {

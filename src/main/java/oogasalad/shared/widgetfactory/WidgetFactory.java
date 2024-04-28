@@ -183,8 +183,7 @@ public class WidgetFactory {
     return pane;
   }
 
-  public void createPopUpWindow(WidgetConfiguration configuration, Parent root) {
-    Stage popup = new Stage();
+  public void createPopUpWindow(WidgetConfiguration configuration, Parent root, Stage popup) {
     javafx.scene.Scene scene = new javafx.scene.Scene(root, configuration.getWidth(),
         configuration.getHeight());
     popup.setScene(scene);
