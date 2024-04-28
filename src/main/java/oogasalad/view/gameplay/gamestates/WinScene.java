@@ -16,20 +16,25 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
  * Scene that displays when the player wins the game.
+ *
+ *  @author Philip Lee, Yasha Doddabele.
  */
 public class WinScene implements Scene {
 
-  private static final int MILLISECOND_OFFSET = 1000;
+  private static final int MILLISECOND_OFFSET = 1_000;
 
   private javafx.scene.Scene scene;
   private VBox root;
   private WidgetFactory factory;
   private final SceneController sceneController;
-  private int width;
-  private int height;
   private boolean statsSaved = false;
   private final String language;
 
+  /**
+   * Constructor for the WinScene class.
+   *
+   * @param sceneController the controller that manages the scenes.
+   */
   public WinScene(SceneController sceneController) {
     this.sceneController = sceneController;
     this.language = sceneController.getLanguage();
@@ -43,8 +48,6 @@ public class WinScene implements Scene {
    */
   @Override
   public void initializeScene(int width, int height) {
-    this.width = width;
-    this.height = height;
     this.factory = new WidgetFactory();
     this.root = new VBox(20);
     this.root.setAlignment(Pos.CENTER);
