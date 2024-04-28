@@ -12,6 +12,7 @@ public class EnemyKeyHandler extends KeyHandler{
     private final Grid grid;
     private final GameStateController gameStateController;
 
+
     private final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Up, down, left, right
     public EnemyKeyHandler(Grid grid, GameStateController gameStateController) {
         super(grid, gameStateController);
@@ -59,46 +60,41 @@ public class EnemyKeyHandler extends KeyHandler{
 
     @Override
     public void moveEnemy() {
+        System.out.println("calling moveEnemy");
         List<int[]> allEnemyBlocks = grid.findEnemyBlock();
 
-        if (allEnemyBlocks.isEmpty() || grid.findControllableBlock().isEmpty()) {
+        if (allEnemyBlocks.isEmpty()) {
             return;
-        } else {
-            for(int [] enemyBlock : allEnemyBlocks) {
-                int[] enemy = enemyBlock;
-                int[] realenemy = {enemy[0], enemy[1]};
-                Optional<int[]> babaOptional = nearestBabaCoordinate(enemy); // check if there is one. if none, then no baba, end game
-                if(babaOptional.isEmpty()){
+        }
+        if(grid.findControllableBlock().isEmpty()){
+            gameStateController.displayGameOver(false);
+            return;
+        }
+        if(!allEnemyBlocks.isEmpty() && !grid.findControllableBlock().isEmpty()){
+            for(int [] enemyBlock : allEnemyBlocks){
+                int[] enemy = {enemyBlock[0], enemyBlock[1]};
+                Optional<int[]> babaOptional = nearestBabaCoordinate(enemy);
+                if(babaOptional.isEmpty()){ //we removed all the BABA's
+                    gameStateController.displayGameOver(false);
                     break;
                 }
-                int [] baba = babaOptional.get();
-                System.out.println("nearest baba is: " + Arrays.toString(baba));
-                System.out.println("enemy block is: " + Arrays.toString(enemy));
-                int[] realBaba = {baba[0], baba[1]};
-                if (Arrays.equals(realenemy, realBaba)) {
-                    System.out.println("enemy and baba are in same place");
-                    grid.removeBaba(realBaba[0], realBaba[1]);
-                    if (grid.findControllableBlock().isEmpty()) {
-                        //grid.removeEnemy(enemy[0], enemy[1]);
-                        gameStateController.displayGameOver(false);
-                        return;
-                    }
-
-                } else {
-
-                    Optional<List<int[]>> shortestPathOptional = findShortestPath(enemy, realBaba);
+                int [] babaLocation = babaOptional.get();
+                int [] baba = {babaLocation[0], babaLocation[1]};
+                if(Arrays.equals(enemy, baba)){ //they are in the same place
+                    grid.removeBaba(babaLocation[0], babaLocation[1]);
+                    continue;
+                }else{
+                    Optional<List<int[]>> shortestPathOptional = findShortestPath(enemy, baba);
                     if (shortestPathOptional.isPresent()) {
                         List<int[]> shortestPath = shortestPathOptional.get();
 
                         int[] nextPosition = shortestPath.get(1);
-                        grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
+                        grid.moveEnemy(enemyBlock[0], enemyBlock[1], enemyBlock[2], nextPosition[0], nextPosition[1]);
                     }
-
                 }
-                grid.notifyObserver();
             }
-
         }
+        grid.notifyObserver();
 
     }
 

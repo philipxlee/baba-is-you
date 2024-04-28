@@ -11,6 +11,8 @@ import oogasalad.view.gameplay.gamestates.WinScene;
 public class GameStateController {
 
   private final SceneController sceneController;
+  private GameGridController gameGridController;
+
 
   /**
    * Constructor for GameOverController.
@@ -27,6 +29,8 @@ public class GameStateController {
    * @param isWin boolean representing if the player won the game.
    */
   public void displayGameOver(boolean isWin) {
+    System.out.println("calling displayGameOver");
+    gameGridController.setGameOverStatus(true);
     if (isWin) {
       sceneController.switchToScene(new WinScene(sceneController));
     } else {
@@ -39,5 +43,10 @@ public class GameStateController {
    */
   public void restartGame() {
     sceneController.beginGame(sceneController.isGuestSession());
+    gameGridController.setGameOverStatus(false);
+  }
+
+  public void setGameGridController(GameGridController gameGridController) {
+    this.gameGridController = gameGridController;
   }
 }
