@@ -154,6 +154,8 @@ public class GamePane implements Observer<Grid> {
           try {
             AbstractBlock block = blocks.get(k);
 
+            //TODO: refactor
+
             // Calculate the offset position for each block within the same cell
             double offsetX = j * cellSize + k * blockOffset;
             double offsetY = i * cellSize + k * blockOffset;
