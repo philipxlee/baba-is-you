@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay.mainscene;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,12 +8,17 @@ import java.util.List;
 import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -52,6 +58,18 @@ public class GamePane implements Observer<Grid> {
   private Timeline timeline;
   private long milliseconds = 0;
   private Text time;
+  private List<KeyCode> cheatKeys = Arrays.asList(KeyCode.W, KeyCode.L, KeyCode.R);
+
+  private boolean keyPressed;
+
+  private boolean firstKeyPressed = false;
+
+  private final double INITIAL_DELAY = 1;
+  private double currentDelay = INITIAL_DELAY;
+
+  private final double DECREASE_FACTOR = 0.8;
+  private Timeline timeline_Enemy;
+
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
@@ -70,11 +88,13 @@ public class GamePane implements Observer<Grid> {
       this.factory = new WidgetFactory();
       this.time = factory.generateLine("00:00:00");
       handleKeyPresses(scene);
+      moveEnemy();
 
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());
     }
     renderGrid(); // Initial grid rendering
+
     startTimer();
   }
 
@@ -192,13 +212,25 @@ public class GamePane implements Observer<Grid> {
   private void handleKeyPresses(MainScene scene) {
     // For grid movement
     this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
-      if (event.getCode().isArrowKey()) {
+      if (event.getCode().isArrowKey() || cheatKeys.contains(event.getCode())) {
         gridController.sendPlayToModel(event.getCode());
-        this.currentDirection = event.getCode().getName();
+        if (event.getCode().isArrowKey()) {
+          this.currentDirection = event.getCode().getName();
+        }
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks
         scene.getInteractionPane().updateKeyPress(event.getCode());
         event.consume();
+        keyPressed = true;
+        firstKeyPressed = true;
+      }
+      if (event.getCode().isLetterKey()) {
+        gridController.sendPlayToModel(event.getCode());
+        renderGrid(); // Render grid
+        gridController.resetBlocks(); // Reset all blocks
+        event.consume();
+        keyPressed = true;
+        firstKeyPressed = true;
       }
     });
 
@@ -209,5 +241,32 @@ public class GamePane implements Observer<Grid> {
         event.consume();
       }
     });
+  }
+
+
+  private void moveEnemy() {
+    // Create a new Timeline
+    timeline_Enemy = new Timeline();
+
+    // Add a KeyFrame to the Timeline
+    timeline_Enemy.getKeyFrames().add(
+            new KeyFrame(Duration.seconds(currentDelay), event -> {
+              if (!keyPressed && firstKeyPressed) {
+                // No valid key pressed within current delay, call moveEnemy()
+                keyHandlerController.moveEnemy();
+              }
+              // Reset the keyPressed flag after each execution
+              keyPressed = false;
+              // Update delay for next cycle
+              currentDelay *= DECREASE_FACTOR; // Adjust DECREASE_FACTOR for desired slowdown rate (e.g., 0.9 for 10% decrease)
+            })
+
+    );
+
+    // Set the cycle count to indefinite so it repeats
+    timeline_Enemy.setCycleCount(Timeline.INDEFINITE);
+
+    // Start the Timeline
+    timeline_Enemy.play();
   }
 }

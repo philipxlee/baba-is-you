@@ -43,6 +43,13 @@ public class LevelController {
   }
 
   /**
+   * Returns the hint associated with the level
+   */
+  public String getHint() {
+    return level.getLevelMetadata().hint();
+  }
+
+  /**
    * Loads a new level from a file, initializes related controllers and updates the scene. This
    * method orchestrates the loading of a new level configuration, creating necessary data
    * management and scene setup to transition to the new level.

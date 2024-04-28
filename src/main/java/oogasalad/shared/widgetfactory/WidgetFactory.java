@@ -1,5 +1,7 @@
 package oogasalad.shared.widgetfactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -36,6 +39,25 @@ public class WidgetFactory {
     Rectangle panel = new Rectangle(0, 0, configuration.getWidth(), configuration.getHeight());
     panel.getStyleClass().add(configuration.getCssMatch());
     return panel;
+  }
+
+  public VBox hintsPanel(WidgetConfiguration configuration, String hint) {
+    Rectangle panel = new Rectangle(0, 0, configuration.getWidth(), configuration.getHeight());
+    StackPane stackPane = new StackPane();
+    //Create the label for the hint
+    Label hintLabel = new Label();
+    hintLabel.setText(hint);
+    hintLabel.getStyleClass().add("red-label");
+    hintLabel.setWrapText(true);
+    hintLabel.maxWidth(configuration.getWidth());
+    hintLabel.maxHeight(configuration.getHeight());
+    //add to stackpane
+    stackPane.getChildren().addAll(panel, hintLabel);
+    panel.getStyleClass().add(configuration.getCssMatch());
+    Text hints = this.generateLine(configuration.getPropertyContents());
+    VBox vbox = new VBox(hints, stackPane);
+    vbox.setSpacing(10);
+    return vbox;
   }
 
   public Text generateHeader(WidgetConfiguration configuration) {

@@ -1,7 +1,5 @@
 package oogasalad.model.gameplay;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
@@ -9,14 +7,15 @@ import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
 import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.handlers.DownKeyHandler;
-import oogasalad.model.gameplay.handlers.KeyHandler;
-import oogasalad.model.gameplay.handlers.LeftKeyHandler;
-import oogasalad.model.gameplay.handlers.RightKeyHandler;
-import oogasalad.model.gameplay.handlers.UpKeyHandler;
+import oogasalad.model.gameplay.handlers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.Arrays;
+
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class KeyHandlerTest {
 
@@ -35,21 +34,27 @@ public class KeyHandlerTest {
 
   AttributeVisitor sinkVisitor;
   AttributeVisitor drownVisitor;
+
+  AttributeVisitor killVisitor;
+
+  AttributeVisitor winVisitor;
   private BabaVisualBlock babaBlock;
   private WallVisualBlock wallBlock;
 
 
+
+
   private final String[][][] initialConfiguration = {
-      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"FlagVisualBlock"}, {"WallVisualBlock"},
+      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"},
           {"EmptyVisualBlock"}},
-      {{"EmptyVisualBlock"}, {"BabaVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"FlagVisualBlock"}},
-      {{"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
-          {"BabaVisualBlock"}},
-      {{"WallVisualBlock"}, {"FlagVisualBlock"}, {"EmptyVisualBlock"}, {"BabaVisualBlock"},
+      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"},
           {"EmptyVisualBlock"}},
-      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"FlagVisualBlock"},
-          {"BabaVisualBlock"}}
+      {{"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"},
+          {"EmptyVisualBlock"}},
+      {{"WallVisualBlock"}, {"EmptyVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+          {"EmptyVisualBlock"}},
+      {{"EmptyVisualBlock"}, {"WallVisualBlock"}, {"EmptyVisualBlock"}, {"WallVisualBlock"},
+          {"EmptyVisualBlock"}}
   };
 
 
@@ -68,6 +73,8 @@ public class KeyHandlerTest {
     meltVisitor = new AttributeVisitor("Melt");
     sinkVisitor = new AttributeVisitor("Sink");
     drownVisitor = new AttributeVisitor("Drown");
+    winVisitor = new AttributeVisitor("Win");
+    killVisitor = new AttributeVisitor("Kill");
     grid = new Grid(ROWS, COLS, initialConfiguration);
     gameStateControllerMock = Mockito.mock(GameStateController.class);
     babaBlock = new BabaVisualBlock("Baba", 1, 1);
@@ -236,5 +243,23 @@ public class KeyHandlerTest {
     assertEquals(presentCellSize - 1, grid.cellSize(1, 1));
     assertEquals(nextCellSize, grid.cellSize(1, 2));
   }
+
+  @Test
+  public void testMoveEnemy(){
+    BabaVisualBlock babaBlock3 = new BabaVisualBlock("Baba3", 1, 1);
+    babaBlock3.accept(killVisitor);
+    grid.getGrid()[2][2].add(babaBlock3);
+    grid.getGrid()[4][2].add(babaBlock);
+    EnemyKeyHandler EKH = new EnemyKeyHandler(grid, gameStateControllerMock);
+    EKH.moveEnemy();
+    int [] newEnemyPosition = grid.enemyPosition();
+    System.out.println("new EnemyPosition is " + Arrays.toString(newEnemyPosition));
+    assertEquals(3, newEnemyPosition[0]);
+    assertEquals(newEnemyPosition[1], 2);
+
+
+  }
+
+
 
 }
