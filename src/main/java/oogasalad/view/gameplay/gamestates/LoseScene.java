@@ -17,6 +17,8 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
  * Scene that displays when the player loses the game.
+ *
+ * @author Philip Lee, Yasha Doddabele.
  */
 public class LoseScene implements Scene {
 
@@ -28,8 +30,12 @@ public class LoseScene implements Scene {
   private int height;
   private final String language;
 
+  /**
+   * Constructor for the LoseScene class.
+   *
+   * @param sceneController the controller that manages the scenes.
+   */
   public LoseScene(SceneController sceneController) {
-
     this.sceneController = sceneController;
     this.language = sceneController.getLanguage();
   }
@@ -64,7 +70,7 @@ public class LoseScene implements Scene {
   }
 
   /**
-   * Show the lose message.
+   * Show the losing message.
    */
   private void showLoseMessage() {
     Text header = factory.generateHeader(new WidgetConfiguration("LostHeader", language));
