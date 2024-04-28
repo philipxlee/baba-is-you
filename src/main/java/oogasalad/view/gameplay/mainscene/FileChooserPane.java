@@ -124,7 +124,7 @@ public class FileChooserPane {
           dimensions, "rows"));
       Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
           dimensions, "columns"));
-      
+
       //TODO: remove when only valid jsons are in the data repo
       Text difficulty;
       if (metadata != null) {
