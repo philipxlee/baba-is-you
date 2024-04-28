@@ -296,7 +296,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public boolean isPassable(int cellI, int cellJ){
-    return !cellHasStoppable(cellI, cellJ) && !cellHasWinning(cellI, cellJ) && !cellHasLava(cellI, cellJ) && !cellHasWater(cellI, cellJ); //should return opposite of cellHasStoppabe
+    return !cellHasStoppable(cellI, cellJ) && !cellHasWinning(cellI, cellJ) && !cellHasLava(cellI, cellJ) && !cellHasWater(cellI, cellJ) && !cellHasTextBlock(cellI, cellJ); //should return opposite of cellHasStoppabe
   }
 
   public void placeEnemy(int I, int J){
