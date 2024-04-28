@@ -74,7 +74,8 @@ public class BuilderPane {
   }
 
   protected void setUpGrid() {
-    gridPane.getChildren().clear(); // Clear the existing grid
+//    gridPane.getChildren().clear(); // Clear the existing grid
+    root.getChildren().removeIf(node -> node instanceof ImageView || node instanceof Pane);  // Adjust if your structure requires
 
     // Adjust the maximum width and height available for the grid, accounting for margins
     double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
@@ -228,36 +229,36 @@ public class BuilderPane {
   }
 
   public void renderLoadedGrid(Grid loadedGrid) {
-    // Clear the existing content of the builder pane
-    gridPane.getChildren().clear();
 
     // Update the grid dimensions based on the loaded grid
-    this.gridWidth = loadedGrid.getNumColumns()-2;
-    this.gridHeight = loadedGrid.getNumRows()-2;
+    this.gridWidth = loadedGrid.getNumColumns() - 2;
+    this.gridHeight = loadedGrid.getNumRows() - 2;
 
     // Set up the grid again based on the updated dimensions
-    setUpGrid();
 
     // Iterate over the loaded grid and render each block
-    for (int row = 0; row < loadedGrid.getNumRows(); row++) {
-      for (int col = 0; col < loadedGrid.getNumColumns(); col++) {
+    for (int row = 0; row < loadedGrid.getNumRows()-2; row++) {
+      for (int col = 0; col < loadedGrid.getNumColumns()-2; col++) {
         String[] blockTypes = loadedGrid.getCell(row, col);
 
         // Render each block type in the cell
         for (String blockType : blockTypes) {
-          // Create and add block view to the grid pane
-          System.out.println(blockType);
           ImageView blockView = createBlockView(blockType);
+
           if (blockView != null) {
             blockView.setFitWidth(cellSize);
             blockView.setFitHeight(cellSize);
-            blockView.setLayoutX(col * cellSize + gridPane.getLayoutX());
-            blockView.setLayoutY(row * cellSize + gridPane.getLayoutY());
-            gridPane.getChildren().add(blockView);
+
+            // Place the block directly into the cell at the specified row and column
+            GridPane.setRowIndex(blockView, row);
+            GridPane.setColumnIndex(blockView, col);
+            root.getChildren().add(blockView);
           }
+
         }
       }
     }
+    setUpGrid();
   }
 
 
