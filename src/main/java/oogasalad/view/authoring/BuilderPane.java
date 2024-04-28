@@ -246,12 +246,13 @@ public class BuilderPane {
         // Render each block type in the cell
         for (String blockType : blockTypes) {
           // Create and add block view to the grid pane
+          System.out.println(blockType);
           ImageView blockView = createBlockView(blockType);
           if (blockView != null) {
             blockView.setFitWidth(cellSize);
             blockView.setFitHeight(cellSize);
-            blockView.setLayoutX(col * cellSize);
-            blockView.setLayoutY(row * cellSize);
+            blockView.setLayoutX(col * cellSize + gridPane.getLayoutX());
+            blockView.setLayoutY(row * cellSize + gridPane.getLayoutY());
             gridPane.getChildren().add(blockView);
           }
         }
