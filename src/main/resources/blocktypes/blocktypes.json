@@ -177,8 +177,20 @@
       "Visual"
     ]
   },
-  "BabaHatVisualBlock": {
-    "imagePath": "/images/baba/BabaHatVisualBlock.png",
+  "CuteBabaVisualBlockRight": {
+    "imagePath": "/images/baba/CuteBabaVisualBlockRight.png",
+    "category": []
+  },
+  "CuteBabaVisualBlockLeft": {
+    "imagePath": "/images/baba/CuteBabaVisualBlockLeft.png",
+    "category": []
+  },
+  "CuteBabaVisualBlockUp": {
+    "imagePath": "/images/baba/CuteBabaVisualBlockUp.png",
+    "category": []
+  },
+  "CuteBabaVisualBlockDown": {
+    "imagePath": "/images/baba/CuteBabaVisualBlockDown.png",
     "category": []
   }
 }

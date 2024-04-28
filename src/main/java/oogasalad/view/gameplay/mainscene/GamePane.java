@@ -201,7 +201,7 @@ public class GamePane implements Observer<Grid> {
         if (!babaHat) {
           modifiedBlockName = block.getBlockName() + currentDirection;
         } else {
-          modifiedBlockName = "BabaHatVisualBlock";
+          modifiedBlockName = "Cute" + block.getBlockName() + currentDirection;
         }
       } else {
         modifiedBlockName = block.getBlockName();
