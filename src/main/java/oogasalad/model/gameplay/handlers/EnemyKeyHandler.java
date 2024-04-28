@@ -23,16 +23,13 @@ public class EnemyKeyHandler extends KeyHandler{
 
     @Override
     public void execute() {
-        System.out.println("does grid have enemy " + grid.hasEnemy());
+
         if(grid.hasEnemy()){
-            System.out.println("should return");
             return;
         }
         else{
             createEnemy();
         }
-
-
     }
 
     private void createEnemy(){
@@ -58,34 +55,67 @@ public class EnemyKeyHandler extends KeyHandler{
             // Mark the enemy as successfully placed
             enemyPlaced = true;
         }
-        moveEnemy();
     }
 
 
-    public void moveEnemy(){ //would be called from the view after every 3 seconds of  no significant keypress from the player
-        if(!grid.hasEnemy()){
+    @Override
+    public void moveEnemy() {
+        if (!grid.hasEnemy()) {
+            System.out.println("Grid does not have Enemy");
             return;
-        }
-        else{
-            int [] enemy = enemyCoordinate();
-            int [] baba = nearestBabaCoordinate(enemy);
-            int [] realEnemy = {enemy[0], enemy[1]};
-            int [] realBaba = {baba[0], baba[1]};
+        } else {
+            System.out.println("Grid has Enemy");
+            int[] enemy = enemyCoordinate();
+            System.out.println("Enemy Coordinates: (" + enemy[0] + ", " + enemy[1] + ", " + enemy[2] + ")");
+            int[] baba = nearestBabaCoordinate(enemy);
+            System.out.println("Nearest Baba Coordinates: (" + baba[0] + ", " + baba[1] + ")");
+            int[] realEnemy = {enemy[0], enemy[1]};
+            int[] realBaba = {baba[0], baba[1]};
             Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
-            if(shortestPathOptional.isPresent()){
+            if (shortestPathOptional.isPresent()) {
                 List<int[]> shortestPath = shortestPathOptional.get();
-                int [] nextPosition = shortestPath.get(1);
+                System.out.println("Shortest Path:");
+                for (int[] position : shortestPath) {
+                    System.out.println("(" + position[0] + ", " + position[1] + ")");
+                }
+                int[] nextPosition = shortestPath.get(1);
+                System.out.println("Next Position: (" + nextPosition[0] + ", " + nextPosition[1] + ")");
                 grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
-
+            } else {
+                System.out.println("No shortest path found.");
             }
-
         }
     }
+
+//    public void moveEnemy(){ //would be called from the view after every 3 seconds of  no significant keypress from the player
+//        if(!grid.hasEnemy()){
+//            System.out.println("Grid does not have Enemy");
+//            return;
+//        }
+//        else{
+//            System.out.println("grid has Enemy ");
+//            int [] enemy = enemyCoordinate();
+//            int [] baba = nearestBabaCoordinate(enemy);
+//            int [] realEnemy = {enemy[0], enemy[1]};
+//            int [] realBaba = {baba[0], baba[1]};
+//            Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
+//            if(shortestPathOptional.isPresent()){
+//                List<int[]> shortestPath = shortestPathOptional.get();
+//                int [] nextPosition = shortestPath.get(1);
+//                grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
+//
+//            }
+//            //could also use try catch with a custom exception
+//
+//        }
+//    }
+
 
     public int [] enemyCoordinate(){
         return grid.enemyPosition();
     }
     public int[] nearestBabaCoordinate(int[] enemyCamp) {
+        System.out.println("inside nearestBabaCoordinate");
         List<int[]> allControllableBlock = grid.findControllableBlock();
 
         Comparator<int[]> distanceComparator = new Comparator<int[]>() {
@@ -112,6 +142,7 @@ public class EnemyKeyHandler extends KeyHandler{
 
 
     public Optional<List<int[]>> findShortestPath(int[] start, int[] target){
+        System.out.println("inside findShortestPath");
         int numRows = grid.getGridWidth();
         int numCols = grid.getGridHeight();
         int[][] distances = new int[numRows][numCols];
@@ -162,6 +193,7 @@ public class EnemyKeyHandler extends KeyHandler{
     }
 
     private List<int[]> reconstructPath(int[] start, int[] target, int[][] distances) {
+        System.out.println("inside reconstructPath");
         List<int[]> path = new ArrayList<>();
         int[] position = target;
         while (!Arrays.equals(start, position)) {

@@ -52,6 +52,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   private void addMappingsToStrategyMap() {
     strategyMap.put("Hotable", "Meltable");
     strategyMap.put("Sinkable", "Drownable");
+    strategyMap.put("Killable", "Controllable");
     // Add more mappings as needed
   }
 
@@ -296,7 +297,6 @@ public class Grid extends GridHelper implements Observable<Grid> {
         }
       }
     }
-    System.out.println("Has a crab " + hasACrab);
     return hasACrab;
   }
 
@@ -312,6 +312,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ){
+    System.out.println("calling moveBlock from enemyKeyHandler");
     sortArray();
     moveBlock(fromI, fromJ, fromK, toI, toJ);
     sortArray();

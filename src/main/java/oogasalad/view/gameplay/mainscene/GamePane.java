@@ -7,6 +7,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -45,6 +48,7 @@ public class GamePane implements Observer<Grid> {
   private boolean keyPressed;
 
   private final int DELAY = 3;
+  private Timeline timeline;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
@@ -60,7 +64,7 @@ public class GamePane implements Observer<Grid> {
       this.level = initialLevel;
       this.gridController = new GameGridController(this, keyHandlerController, level);
       handleKeyPresses(scene);
-      //moveEnemy();
+      moveEnemy();
 
     } catch (Exception e) {
       gridController.showError("ERROR", e.getClass().getName());
@@ -167,7 +171,6 @@ public class GamePane implements Observer<Grid> {
         gridController.resetBlocks(); // Reset all blocks
         event.consume();
         keyPressed = true;
-
       }
     });
 
@@ -180,15 +183,40 @@ public class GamePane implements Observer<Grid> {
     });
   }
 
-  private void moveEnemy(){
-    executorService = Executors.newSingleThreadScheduledExecutor();
-    executorService.schedule(() -> {
-      if (!keyPressed) {
-        // No valid key pressed within 3 seconds, call moveEnemy()
-        //gridController.moveEnemy();;
-      }
-    }, DELAY, TimeUnit.SECONDS);
+//  private void moveEnemy(){
+//    executorService = Executors.newSingleThreadScheduledExecutor();
+//    executorService.scheduleAtFixedRate(() -> {
+//      if (!keyPressed) {
+//        // No valid key pressed within 3 seconds, call moveEnemy()
+//        System.out.println("calling move Enemy");
+//        keyHandlerController.moveEnemy();
+//      }
+//      // Reset the keyPressed flag after each execution
+//      keyPressed = false;
+//    }, DELAY, DELAY, TimeUnit.SECONDS);
+//  }
 
+  private void moveEnemy() {
+    // Create a new Timeline
+    timeline = new Timeline();
 
+    // Add a KeyFrame to the Timeline
+    timeline.getKeyFrames().add(
+            new KeyFrame(Duration.seconds(DELAY), event -> {
+              if (!keyPressed) {
+                // No valid key pressed within 3 seconds, call moveEnemy()
+                System.out.println("calling move Enemy");
+                keyHandlerController.moveEnemy();
+              }
+              // Reset the keyPressed flag after each execution
+              keyPressed = false;
+            })
+    );
+
+    // Set the cycle count to indefinite so it repeats
+    timeline.setCycleCount(Timeline.INDEFINITE);
+
+    // Start the Timeline
+    timeline.play();
   }
 }

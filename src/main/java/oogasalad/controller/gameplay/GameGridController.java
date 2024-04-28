@@ -71,8 +71,6 @@ public class GameGridController implements AlertHandler {
     return jsonGameParser.parseLevel(jsonObject);
   }
 
-//  public void moveEnemy(){
-//    enemyKeyHandler.moveEnemy();
-//  }
+
 
 }
