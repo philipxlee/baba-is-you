@@ -3,6 +3,7 @@ package oogasalad.view.gameplay.gamestates;
 import static oogasalad.shared.widgetfactory.WidgetFactory.DEFAULT_RESOURCE_FOLDER;
 import static oogasalad.shared.widgetfactory.WidgetFactory.STYLESHEET;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -45,7 +46,7 @@ public class WinScene implements Scene {
     this.width = width;
     this.height = height;
     this.factory = new WidgetFactory();
-    this.root = new VBox();
+    this.root = new VBox(20);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
     this.scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
@@ -132,6 +133,7 @@ public class WinScene implements Scene {
     Button playAgainButton = factory.makeButton(
         new WidgetConfiguration(200, 40, "PlayAgain", "button", language));
     playAgainButton.setOnAction(event -> sceneController.initializeViews());
+    playAgainButton.setPadding(new Insets(10));
     root.getChildren().add(playAgainButton);
   }
 }
