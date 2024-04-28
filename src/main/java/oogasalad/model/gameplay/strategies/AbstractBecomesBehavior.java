@@ -12,8 +12,6 @@ import oogasalad.model.gameplay.grid.CellIterator;
  */
 public abstract class AbstractBecomesBehavior implements Strategy {
 
-  private static final String EMPTY_VISUAL_BLOCK = "EmptyVisualBlock";
-
   /**
    * Executes the behavior of the block.
    *
