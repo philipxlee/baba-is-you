@@ -22,6 +22,7 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.socialcenter.CommentScene;
 import oogasalad.view.gameplay.socialcenter.LeaderboardScene;
 import org.checkerframework.checker.units.qual.A;
+import org.checkerframework.checker.units.qual.K;
 
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
@@ -30,13 +31,6 @@ public class InteractionPane {
 
   public static final Color BASE_COLOR = Color.web("#343342");
   public static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
-  private static final int ROUNDED_CORNER = 10;
-  private static final int RECTANGLE_SIZE = 50;
-  private static final DropShadow DROP_SHADOW = new DropShadow(5, Color.GRAY);
-  Rectangle left = createRectangle(false);
-  Rectangle right = createRectangle(false);
-  Rectangle up = createRectangle(false);
-  Rectangle down = createRectangle(false);
   private Group root;
   private MainScene scene;
   private int width;
@@ -45,6 +39,7 @@ public class InteractionPane {
   private SceneController sceneController;
   private LevelController levelController;
   private String language;
+  private KeyPressDisplay keyPressDisplay;
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -65,27 +60,23 @@ public class InteractionPane {
     this.levelController = levelController;
     this.language = sceneController.getLanguage();
 
-    root.setOnKeyPressed(this::handleKeyPress);
-    root.setOnKeyReleased(this::handleKeyRelease);
+    // Setup arrow keys layout
+    keyPressDisplay = new KeyPressDisplay();
+    VBox arrowKeys = keyPressDisplay.getRoot();
+
+    root.setOnKeyPressed(keyPressDisplay::handleKeyPress);
+    root.setOnKeyReleased(keyPressDisplay::handleKeyRelease);
     root.setFocusTraversable(true);
 
     Rectangle background = factory.interactionPanel(new WidgetConfiguration(width, height,
         "interaction-background", language));
 
-    // Setup arrow keys layout
-    VBox arrowKeys = setupArrowKeys();
-//    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width, 10);
-//    arrowKeysBox.setAlignment(Pos.CENTER);
     HBox hintsAndKeys = setUpHintsSection(arrowKeys);
-
-
     //Set up header + subtitle
     VBox header = setUpHeader();
-
     //Initializes reset and load buttons
     Button reset = setUpResetButton();
     Button load = setUpLoadButton();
-
     //Orient all elements in the space
     orientPaneDisplay(load, reset, header, hintsAndKeys, background);
   }
@@ -176,60 +167,6 @@ public class InteractionPane {
     root.getChildren().addAll(background, display);
   }
 
-  private VBox setupArrowKeys() {
-    HBox topRow = new HBox(createRectangle(true), up, createRectangle(true));
-    topRow.setSpacing(5);
-    topRow.setPadding(new Insets(5));
-
-    HBox bottomRow = new HBox(left, down, right);
-    bottomRow.setSpacing(5);
-    bottomRow.setPadding(new Insets(5));
-
-    // Using VBox to stack the HBoxes vertically
-    VBox arrowKeysContainer = new VBox(topRow, bottomRow);
-    arrowKeysContainer.setSpacing(5);
-    arrowKeysContainer.setPadding(new Insets(5));
-
-    return arrowKeysContainer;
-  }
-
-  private Rectangle createRectangle(boolean transparent) {
-    Rectangle rectangle = new Rectangle(RECTANGLE_SIZE, RECTANGLE_SIZE,
-        transparent ? Color.TRANSPARENT : BASE_COLOR);
-    rectangle.setArcWidth(ROUNDED_CORNER);
-    rectangle.setArcHeight(ROUNDED_CORNER);
-    rectangle.setEffect(DROP_SHADOW);
-    return rectangle;
-  }
-
-  public void handleKeyPress(javafx.scene.input.KeyEvent event) {
-    switch (event.getCode()) {
-      case UP, DOWN, LEFT, RIGHT -> {
-        updateArrowKeyVisual(event.getCode(), HIGHLIGHT_COLOR);
-        event.consume();  // Prevent further processing by other controls.
-      }
-      default -> { /* Do nothing */ }
-    }
-  }
-
-  public void handleKeyRelease(javafx.scene.input.KeyEvent event) {
-    if (event.getCode().isArrowKey()) {
-      updateArrowKeyVisual(event.getCode(), BASE_COLOR);
-      event.consume();
-    }
-  }
-
-  private void updateArrowKeyVisual(KeyCode code, Color color) {
-    switch (code) {
-      case UP -> up.setFill(color);
-      case DOWN -> down.setFill(color);
-      case LEFT -> left.setFill(color);
-      case RIGHT -> right.setFill(color);
-      default -> {
-      }
-    }
-  }
-
   private HBox setUpHintsSection(VBox arrowKeysBox) {
     String hintText = levelController.getHint();
     VBox hints = factory.hintsPanel(new WidgetConfiguration(250, 100, "Hints",
@@ -265,15 +202,15 @@ public class InteractionPane {
   }
 
   public void updateKeyPress(KeyCode code) {
-    updateArrowKeyVisual(code, HIGHLIGHT_COLOR);
+    keyPressDisplay.updateArrowKeyVisual(code, HIGHLIGHT_COLOR);
   }
 
   public void updateKeyRelease(KeyCode code) {
-    updateArrowKeyVisual(code, BASE_COLOR);
+    keyPressDisplay.updateArrowKeyVisual(code, BASE_COLOR);
   }
 
   //For testing
-  public Rectangle getUpRectangle() {
-    return up;
-  }
+//  public Rectangle getUpRectangle() {
+//    return up;
+//  }
 }

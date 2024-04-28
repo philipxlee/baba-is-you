@@ -33,4 +33,11 @@ public class GameStateController {
       sceneController.switchToScene(new LoseScene(sceneController));
     }
   }
+
+  /**
+   * Restarts the game.
+   */
+  public void restartGame() {
+    sceneController.beginGame(sceneController.isGuestSession());
+  }
 }
