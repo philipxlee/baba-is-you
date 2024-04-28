@@ -88,7 +88,12 @@ public class EnemyKeyHandler extends KeyHandler{
                         List<int[]> shortestPath = shortestPathOptional.get();
 
                         int[] nextPosition = shortestPath.get(1);
-                        grid.moveEnemy(enemyBlock[0], enemyBlock[1], enemyBlock[2], nextPosition[0], nextPosition[1]);
+                        Optional<Integer> optionalIndex = grid.findEnemyIndex(enemyBlock[0], enemyBlock[1]);
+                        if(optionalIndex.isPresent()){
+                            int index = optionalIndex.get();
+                            grid.moveEnemy(enemyBlock[0], enemyBlock[1], index, nextPosition[0], nextPosition[1]);
+                        }
+
                     }
                 }
             }

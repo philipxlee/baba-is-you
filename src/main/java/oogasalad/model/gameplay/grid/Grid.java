@@ -370,5 +370,16 @@ public class Grid extends GridHelper implements Observable<Grid> {
       }
     }
   }
+  public Optional<Integer> findEnemyIndex(int cellI, int cellJ) {
+    for (int i = 0; i < grid[cellI][cellJ].size(); i++) {
+      AbstractBlock block = grid[cellI][cellJ].get(i);
+      if (block.getAttribute("Killable")) {
+        return Optional.of(i);
+      }
+    }
+    // If no enemy block is found, return Optional.empty()
+    return Optional.empty();
+  }
+
 
 }
