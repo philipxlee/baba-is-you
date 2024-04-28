@@ -45,7 +45,6 @@ public class GamePane implements Observer<Grid> {
   private KeyHandlerController keyHandlerController;
   private SceneController sceneController;
   private GameGridController gridController;
-
   private GameStateController gameStateController;
   private MainScene scene;
   private int width;
@@ -68,7 +67,6 @@ public class GamePane implements Observer<Grid> {
   private boolean babaHat = false;
 
   private boolean isGameOver = true;
-
 
 
   public void initializeGameGrid(int width, int height, MainScene scene,
@@ -266,7 +264,6 @@ public class GamePane implements Observer<Grid> {
       }
     });
   }
-//  }
 
   private void handleLetterKeyPresses(KeyEvent event) {
       if (event.getCode() == KeyCode.X) {
