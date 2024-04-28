@@ -349,6 +349,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public void removeBaba(int i, int j) {
+    System.out.println("calling remove BABA");
     List<AbstractBlock> cell = grid[i][j];
     Iterator<AbstractBlock> iterator = cell.iterator();
     while (iterator.hasNext()) {

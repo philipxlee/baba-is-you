@@ -23,7 +23,7 @@ public class EnemyKeyHandler extends KeyHandler{
     @Override
     public void execute() {
 
-        if(grid.hasEnemy()){
+        if( grid.findEnemyBlock().size() >= 20){
             return;
         }
         else{
@@ -43,7 +43,7 @@ public class EnemyKeyHandler extends KeyHandler{
             int randomCol = (int) (Math.random() * numCols);
 
             // Check if the cell at the random coordinates contains a TextBlock or winning block. dont wanna add them on top of each other
-            if (grid.cellHasWinning(randomRow, randomCol) || grid.cellHasTextBlock(randomRow, randomCol) || grid.cellHasWater(randomRow, randomCol) || grid.cellHasLava(randomRow, randomCol)) {
+            if (grid.cellHasWinning(randomRow, randomCol) || grid.cellHasTextBlock(randomRow, randomCol) || grid.cellHasWater(randomRow, randomCol) || grid.cellHasLava(randomRow, randomCol) || grid.cellHasEnemy(randomRow, randomCol)) {
                 // If it's a TextBlock, continue to the next iteration to reprocess the position
                 continue;
             }
@@ -59,32 +59,41 @@ public class EnemyKeyHandler extends KeyHandler{
 
     @Override
     public void moveEnemy() {
-        if (!grid.hasEnemy() || grid.findControllableBlock().isEmpty()) {
+        List<int[]> allEnemyBlocks = grid.findEnemyBlock();
+
+        if (allEnemyBlocks.isEmpty() || grid.findControllableBlock().isEmpty()) {
             return;
         } else {
-
-            int[] enemy = enemyCoordinate();
-            int[] baba = nearestBabaCoordinate(enemy);
-            int[] realEnemy = {enemy[0], enemy[1]};
-            int[] realBaba = {baba[0], baba[1]};
-            if(Arrays.equals(realEnemy, realBaba)){
-                grid.removeBaba(enemy[0], enemy[1]);
-                if(grid.findControllableBlock().isEmpty()){
-                    grid.removeEnemy(enemy[0], enemy[1]);
-                    gameStateController.displayGameOver(false);
-                    return;
-
+            for(int [] enemyBlock : allEnemyBlocks) {
+                int[] enemy = enemyBlock;
+                int[] realenemy = {enemy[0], enemy[1]};
+                Optional<int[]> babaOptional = nearestBabaCoordinate(enemy); // check if there is one. if none, then no baba, end game
+                if(babaOptional.isEmpty()){
+                    break;
                 }
+                int [] baba = babaOptional.get();
+                System.out.println("nearest baba is: " + Arrays.toString(baba));
+                System.out.println("enemy block is: " + Arrays.toString(enemy));
+                int[] realBaba = {baba[0], baba[1]};
+                if (Arrays.equals(realenemy, realBaba)) {
+                    System.out.println("enemy and baba are in same place");
+                    grid.removeBaba(realBaba[0], realBaba[1]);
+                    if (grid.findControllableBlock().isEmpty()) {
+                        //grid.removeEnemy(enemy[0], enemy[1]);
+                        gameStateController.displayGameOver(false);
+                        return;
+                    }
 
-            }
-            else {
+                } else {
 
-                Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
-                if (shortestPathOptional.isPresent()) {
-                    List<int[]> shortestPath = shortestPathOptional.get();
+                    Optional<List<int[]>> shortestPathOptional = findShortestPath(enemy, realBaba);
+                    if (shortestPathOptional.isPresent()) {
+                        List<int[]> shortestPath = shortestPathOptional.get();
 
-                    int[] nextPosition = shortestPath.get(1);
-                    grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
+                        int[] nextPosition = shortestPath.get(1);
+                        grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
+                    }
+
                 }
                 grid.notifyObserver();
             }
@@ -99,8 +108,13 @@ public class EnemyKeyHandler extends KeyHandler{
     private int [] enemyCoordinate(){
         return grid.enemyPosition();
     }
-    private int[] nearestBabaCoordinate(int[] enemyCamp) {
+
+    private Optional<int[]> nearestBabaCoordinate(int[] enemyCamp) {
         List<int[]> allControllableBlock = grid.findControllableBlock();
+
+        if (allControllableBlock.isEmpty()) {
+            return Optional.empty();
+        }
 
         Comparator<int[]> distanceComparator = new Comparator<int[]>() {
             @Override
@@ -117,8 +131,9 @@ public class EnemyKeyHandler extends KeyHandler{
         // Sort the allControllableBlock list using the custom comparator
         allControllableBlock.sort(distanceComparator);
 
-        return allControllableBlock.get(0); //would never be null, so no need of optionals
+        return Optional.of(allControllableBlock.get(0));
     }
+
 
     private int calculateDistance(int[] coordinate1, int[] coordinate2) {
         return Math.abs(coordinate1[0] - coordinate2[0]) + Math.abs(coordinate1[1] - coordinate2[1]);
