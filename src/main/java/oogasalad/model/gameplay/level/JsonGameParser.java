@@ -1,13 +1,13 @@
 package oogasalad.model.gameplay.level;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import oogasalad.shared.config.GridParser;
 import oogasalad.shared.config.JsonManager;
 
 /**
  * Parses JSON representations of game levels into Level objects.
  */
-public class JsonGameParser {
+public class JsonGameParser implements GridParser {
 
   private final JsonManager jsonManager = new JsonManager();
 
@@ -41,32 +41,6 @@ public class JsonGameParser {
     String[][][] grid = parseGrid(jsonManager.getJsonArray(gridObject, "cells"));
     String hint = getValue(metadataJson, "hint");
     return new LevelMetadata(levelName, difficulty, rows, columns, grid, hint);
-  }
-
-  /**
-   * Converts the grid data from a JsonArray into a 3D array of Strings.
-   *
-   * @param gridJson The JsonObject containing the grid data.
-   * @return A 3D String array representing the cells in the level's grid.
-   */
-  private String[][][] parseGrid(JsonArray gridJson) {
-    String[][][] cells = new String[gridJson.size()][][];
-
-    for (int i = 0; i < gridJson.size(); i++) {
-      JsonArray layer = gridJson.get(i).getAsJsonArray();
-      cells[i] = new String[layer.size()][];
-
-      for (int j = 0; j < layer.size(); j++) {
-        JsonArray row = layer.get(j).getAsJsonArray();
-        cells[i][j] = new String[row.size()];
-
-        for (int k = 0; k < row.size(); k++) {
-          cells[i][j][k] = row.get(k).getAsString();
-        }
-      }
-    }
-
-    return cells;
   }
 
   /**

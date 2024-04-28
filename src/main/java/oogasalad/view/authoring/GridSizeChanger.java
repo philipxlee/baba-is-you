@@ -8,16 +8,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-
+import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.level.Grid;
 
 
 public class GridSizeChanger {
 
   private final BuilderPane builderPane;
+  private final LevelController levelController;
 
 
-  public GridSizeChanger(BuilderPane builderPane) {
+  public GridSizeChanger(BuilderPane builderPane, LevelController levelController) {
     this.builderPane = builderPane;
+    this.levelController = levelController;
   }
 
   public void changeGridSize() {
@@ -70,6 +73,7 @@ public class GridSizeChanger {
     builderPane.gridWidth = newSize.getKey();
     builderPane.gridHeight = newSize.getValue();
     builderPane.setUpGrid();
+    levelController.getLevel().setGrid(new Grid(builderPane.gridWidth, builderPane.gridHeight));
   }
 
   private boolean isValidSize(int size) {

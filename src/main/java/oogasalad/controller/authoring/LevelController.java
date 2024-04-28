@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
+import oogasalad.shared.config.JsonManager;
 
 /**
  * LevelController handles user input to modify the current level. Provides methods to interface
@@ -16,12 +17,15 @@ public class LevelController {
   private final OpenAIClient openAIClient;
   private Level currentLevel;
   private String language;
+  private final JsonParser jsonParser;
+  private final JsonManager jsonManager = new JsonManager();
 
   /**
    * LevelController constructor.
    */
   public LevelController(LevelMetadata levelMetadata) {
     levelParser = new LevelParser();
+    jsonParser = new JsonParser();
     openAIClient = new OpenAIClient();
     currentLevel = new Level(levelMetadata);
   }
@@ -62,6 +66,19 @@ public class LevelController {
       e.printStackTrace();
     }
     return null;
+  }
+
+  /**
+   * Loads the level configuration from a JSON file and updates the current level's grid. It parses
+   * the JSON object to extract level details and grid configuration and updates the current level's
+   * grid with the new data.
+   *
+   * @throws IOException If there is an error reading from the file.
+   */
+  public void loadLevel() throws IOException {
+    JsonObject editJson = jsonManager.loadFromFile();
+    this.currentLevel = jsonParser.parseLevel(editJson);
+    this.currentLevel.getGrid().updateGrid(jsonParser.getJsonGrid(editJson));
   }
 
   /**

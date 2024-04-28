@@ -15,7 +15,7 @@ import oogasalad.shared.observer.Observer;
 public class Level implements Observable<Level> {
 
   private final LevelMetadata levelMetadata;
-  private final Grid grid;
+  private Grid grid;
   private final List<Observer<Level>> observers;
 
   /**
@@ -122,6 +122,13 @@ public class Level implements Observable<Level> {
    */
   public Grid getGrid() {
     return grid;
+  }
+
+  /**
+   * Sets the grid.
+   */
+  public void setGrid(Grid grid) {
+    this.grid = grid;
   }
 
   /**
