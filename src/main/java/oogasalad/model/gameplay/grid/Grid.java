@@ -2,13 +2,14 @@ package oogasalad.model.gameplay.grid;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
+import java.util.stream.StreamSupport;
+
 import oogasalad.model.gameplay.blocks.AbstractBlock;
+import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
+import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.factory.BlockFactory;
@@ -50,6 +51,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   private void addMappingsToStrategyMap() {
     strategyMap.put("Hotable", "Meltable");
     strategyMap.put("Sinkable", "Drownable");
+    strategyMap.put("Killable", "Controllable");
     // Add more mappings as needed
   }
 
@@ -227,7 +229,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
-  private void checkForDisappear() {
+  public void checkForDisappear() {
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         checkCellForDisappear(i, j);
@@ -267,7 +269,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
           // If both indices are found but not matched yet, check if they complete each other
           if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
             if (strategyMap.get(subjectStrategyKey).equals(objectStrategyValue)
-                || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
+                    || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
               grid[cellI][cellJ].remove(objectIndex);
               return;
             }
@@ -277,5 +279,95 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
+
+
+  public boolean hasEnemy(){ //
+    boolean hasACrab = false;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for(AbstractBlock block : grid[i][j]){
+          if(!block.isTextBlock() && block.getAttribute("Killable")){
+            hasACrab = true;
+          }
+        }
+      }
+    }
+    return hasACrab;
+  }
+
+  public boolean isPassable(int cellI, int cellJ){
+    return !cellHasStoppable(cellI, cellJ) && !cellHasWinning(cellI, cellJ) && !cellHasLava(cellI, cellJ) && !cellHasWater(cellI, cellJ); //should return opposite of cellHasStoppabe
+  }
+
+  public void placeEnemy(int I, int J){
+    AbstractBlock crabBlock = factory.createBlock("CrabVisualBlock", I, J);
+    ((AbstractVisualBlock)crabBlock).modifyAttribute("Kill", true);
+    grid[I][J].add(crabBlock);
+    ((AbstractVisualBlock)crabBlock).modifyAttribute("Kill", true);
+  }
+
+  public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ){
+    sortArray();
+    moveBlock(fromI, fromJ, fromK, toI, toJ);
+    sortArray();
+    List<AbstractBlock> cell = grid[toI][toJ];
+    AbstractBlock crabBlock = grid[toI][toJ].get(cell.size()-1);
+    if (!crabBlock.isTextBlock()) {
+      ((AbstractVisualBlock) crabBlock).modifyAttribute("Kill", true);
+    }
+
+  }
+
+
+
+  public int [] enemyPosition(){
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if(block.getAttribute("Killable")){
+            int[] enemyPosition = {i, j, k};
+            return enemyPosition;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public void setCrabAttribute(){
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if(!block.isTextBlock() && block.getBlockName().equals("CrabVisualBlock")) {
+            ((AbstractVisualBlock)block).modifyAttribute("Kill", true);
+          }
+        }
+      }
+    }
+  }
+
+  public void removeBaba(int i, int j) {
+    List<AbstractBlock> cell = grid[i][j];
+    Iterator<AbstractBlock> iterator = cell.iterator();
+    while (iterator.hasNext()) {
+      AbstractBlock block = iterator.next();
+      if (block.getAttribute("Controllable")) {
+        iterator.remove();
+      }
+    }
+  }
+
+  public void removeEnemy(int i, int j) {
+    List<AbstractBlock> cell = grid[i][j];
+    Iterator<AbstractBlock> iterator = cell.iterator();
+    while (iterator.hasNext()) {
+      AbstractBlock block = iterator.next();
+      if (block.getAttribute("Killable")) {
+        iterator.remove();
+      }
+    }
+  }
 
 }

@@ -101,10 +101,7 @@
   },
   "RockVisualBlock": {
     "imagePath": "/images/RockVisualBlock.png",
-    "category": [
-      "All",
-      "Visual"
-    ]
+    "category": []
   },
   "WallVisualBlock": {
     "imagePath": "/images/WallVisualBlock.png",
@@ -171,6 +168,13 @@
   },
   "BabaVisualBlock": {
     "imagePath": "/images/baba/BabaVisualBlockDown.png",
-    "category": [ ]
+    "category": []
+  },
+  "CrabVisualBlock": {
+    "imagePath": "/images/CrabVisualBlock.png",
+    "category": [
+      "All",
+      "Visual"
+    ]
   }
 }

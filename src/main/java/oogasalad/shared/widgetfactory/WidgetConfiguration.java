@@ -83,13 +83,30 @@ public class WidgetConfiguration implements AlertHandler {
   private Properties loadProperties() {
     Properties properties = new Properties();
     String resourcePath = "/languages/" + language + ".properties";
-    try (InputStream inputStream = getClass().getResourceAsStream(resourcePath)) {
-        properties.load(inputStream);
-    } catch (IOException e) {
-      showError("ERROR", e.getMessage());
+    InputStream inputStream = getClass().getResourceAsStream(resourcePath);
+    if (inputStream == null) {
+      // Handle the case where the resource file is not found
+      showError("Error", "Unable to find resource file: " + resourcePath);
+      return properties; // Return an empty Properties object
     }
+
+    try {
+      properties.load(inputStream);
+    } catch (IOException e) {
+      showError("Error", "Unable to load properties file: " + e.getMessage());
+    } finally {
+      try {
+        inputStream.close();
+      } catch (IOException e) {
+        // Handle exception when closing the input stream
+        e.printStackTrace();
+      }
+    }
+
     return properties;
   }
+
+
 
   public Font getFont() {
     return propertyFont;
