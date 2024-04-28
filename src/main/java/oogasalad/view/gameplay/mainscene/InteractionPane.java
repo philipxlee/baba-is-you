@@ -21,6 +21,7 @@ import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.socialcenter.CommentScene;
 import oogasalad.view.gameplay.socialcenter.LeaderboardScene;
+import org.checkerframework.checker.units.qual.A;
 
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
@@ -73,8 +74,10 @@ public class InteractionPane {
 
     // Setup arrow keys layout
     VBox arrowKeys = setupArrowKeys();
-    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width, 10);
-    arrowKeysBox.setAlignment(Pos.CENTER);
+//    HBox arrowKeysBox = factory.wrapInHBox(arrowKeys, width, 10);
+//    arrowKeysBox.setAlignment(Pos.CENTER);
+    HBox hintsAndKeys = setUpHintsSection(arrowKeys);
+
 
     //Set up header + subtitle
     VBox header = setUpHeader();
@@ -84,7 +87,7 @@ public class InteractionPane {
     Button load = setUpLoadButton();
 
     //Orient all elements in the space
-    orientPaneDisplay(load, reset, header, arrowKeysBox, background);
+    orientPaneDisplay(load, reset, header, hintsAndKeys, background);
   }
 
   /**
@@ -97,7 +100,7 @@ public class InteractionPane {
     Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
         "GamePlay", language));
     VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
-        height / 6, 5);
+        height / 6, 0);
     return header;
   }
 
@@ -146,7 +149,7 @@ public class InteractionPane {
       Rectangle background) {
     VBox leaderboardButton = setupLeaderboardButton();
     //Set up the file chooser
-    VBox display = new VBox(15);
+    VBox display = new VBox(10);
     FileChooserPane fileChooser = new FileChooserPane(width, height, language, levelController,
         sceneController);
 
@@ -158,8 +161,6 @@ public class InteractionPane {
 
     HBox stats = factory.wrapInHBox(factory.generateCaption(""), width, 20);
     stats.getChildren().addAll(leaderboardButton, commentButton);
-
-    // Combine the header and arrow keys into a single display layout
 
     // Back button
     Button backButton = factory.makeButton(new WidgetConfiguration(150, 40,
@@ -227,6 +228,14 @@ public class InteractionPane {
       default -> {
       }
     }
+  }
+
+  private HBox setUpHintsSection(VBox arrowKeysBox) {
+    String hintText = levelController.getHint();
+    VBox hints = factory.hintsPanel(new WidgetConfiguration(250, 100, "Hints",
+        "hints-panel", language), hintText);
+    HBox hbox = factory.wrapInHBox(new ArrayList<>(Arrays.asList(hints, arrowKeysBox)), width);
+    return hbox;
   }
 
   private VBox setupLeaderboardButton() {

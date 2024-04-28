@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -93,28 +95,19 @@ public class FileChooserPane {
    */
   private void populateFiles(FlowPane flowPane) {
     try {
-      for (int i = 1; i <= files.length; i++) {
+      for (int i = 0; i < files.length; i++) {
+        if (!files[i].getName().toLowerCase().endsWith(".json")) {
+          continue;
+        }
         JsonObject jsonFile = jsonManager.loadJsonFromFile(files[i]);
         String fileName = jsonManager.getValue(jsonFile, "levelName");
         ImageView imageView = new ImageView(fileIcon);
         imageView.setFitWidth(80);
         imageView.setFitHeight(80);
 
-        VBox imageAndLabel = createIconAndName(fileName, jsonFile, imageView);
+        VBox imageAndLabel = createIconAndName(fileName, imageView);
 
-        imageView.setOnMouseClicked(event -> {
-          JsonObject dimensions = jsonManager.getJsonObject(jsonFile, "gridSize");
-          Text rows = factory.generateCaption("Rows: " + jsonManager.getValue(
-              dimensions, "rows"));
-          Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
-              dimensions, "columns"));
-
-          VBox vbox = factory.wrapInVBox(new ArrayList<>(Arrays.asList(rows, cols)),
-              width - 100, 10);
-
-          factory.createPopUpWindow(new WidgetConfiguration(width - 100,
-              height / 4, "FileInformation", "root", language), vbox);
-        });
+        setImageClickEvent(imageView, jsonFile);
         flowPane.getChildren().add(imageAndLabel);
       }
     } catch (Exception e) {
@@ -122,17 +115,38 @@ public class FileChooserPane {
     }
   }
 
-  private VBox createIconAndName(String fileName, JsonObject jsonFile, ImageView imageView) {
-    Text name = factory.generateCaption(fileName);
-//    Button load = factory.makeButton(new WidgetConfiguration(150, 40,
-//        "Load", "white-button", language));
-//    load.setOnAction(event -> {
-//      try {
-//        levelController.loadNewLevel(sceneController);
-//      } catch (IOException e) {
-//        throw new RuntimeException(e);
-//      }
-//    });
+  private void setImageClickEvent(ImageView imageView, JsonObject jsonFile) {
+    imageView.setOnMouseClicked(event -> {
+      JsonObject dimensions = jsonManager.getJsonObject(jsonFile, "gridSize");
+      Text rows = factory.generateCaption("Rows: " + jsonManager.getValue(
+          dimensions, "rows"));
+      Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
+          dimensions, "columns"));
+
+      JsonObject metadata = jsonManager.getJsonObject(jsonFile, "metadata");
+      //TODO: remove when only valid jsons are in the data repo
+      Text difficulty;
+      if (metadata != null) {
+        difficulty = factory.generateCaption("Difficulty: " + jsonManager.getValue(
+            metadata, "difficulty"));
+      }
+      else {
+        difficulty = new Text();
+      }
+
+      VBox vbox = factory.wrapInVBox(new ArrayList<>(Arrays.asList(rows, cols, difficulty)),
+          width - 100, 10);
+
+      factory.createPopUpWindow(new WidgetConfiguration(width - 100,
+          height / 4, "FileInformation", "root", language), vbox);
+    });
+  }
+
+  private VBox createIconAndName(String fileName, ImageView imageView) {
+    Label name = new Label(fileName);
+    name.getStyleClass().add("caption-label");
+    name.setWrapText(true);
+    name.setPrefWidth(100);
     VBox imageAndLabel = new VBox(10);
     imageAndLabel.getChildren().addAll(imageView, name);
     return imageAndLabel;
