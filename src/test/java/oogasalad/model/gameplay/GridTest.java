@@ -22,6 +22,7 @@ public class GridTest {
   AttributeVisitor stopVisitor;
   AttributeVisitor winVisitor;
   AttributeVisitor youVisitor;
+  AttributeVisitor killVisitor;
   private BabaVisualBlock babaBlock;
   private final String[][][] initialConfiguration = {
       {{"BabaVisualBlock"}, {"BabaVisualBlock"}, {"FlagVisualBlock"}, {"WallVisualBlock"},
@@ -46,6 +47,7 @@ public class GridTest {
     pushVisitor = new AttributeVisitor("Push");
     winVisitor = new AttributeVisitor("Win");
     stopVisitor = new AttributeVisitor("Stop");
+    killVisitor = new AttributeVisitor("Kill");
     grid = new Grid(ROWS, COLS, initialConfiguration);
     babaBlock = new BabaVisualBlock("Baba", 0, 0);
 
@@ -212,7 +214,7 @@ public class GridTest {
 
   @Test
   public void testEnemyPosition(){
-    babaBlock.accept(winVisitor);
+    babaBlock.accept(killVisitor);
     grid.getGrid()[1][2].add(babaBlock);
     int [] enemyPosition = grid.enemyPosition();
     assertEquals(enemyPosition[0], 1);

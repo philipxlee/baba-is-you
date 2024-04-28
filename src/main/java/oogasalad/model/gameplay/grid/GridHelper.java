@@ -185,6 +185,8 @@ public class GridHelper {
     return grid[i][j].stream().anyMatch(block -> block.getAttribute("Stoppable"));
   }
 
+
+
   /**
    * Checks if a cell contains a block with the Pushable behavior or a TextBlock.
    *
@@ -259,6 +261,14 @@ public class GridHelper {
         }
       }
     }
+  }
+
+  public boolean cellHasLava(int cellI, int cellJ){
+    return grid[cellI][cellJ].stream().anyMatch(block -> block.getAttribute("Hotable"));
+  }
+
+  public boolean cellHasWater(int cellI, int cellJ){
+    return grid[cellI][cellJ].stream().anyMatch(block -> block.getAttribute("Sinkable"));
   }
 
 }

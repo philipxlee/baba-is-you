@@ -17,7 +17,6 @@ public class EnemyKeyHandler extends KeyHandler{
         super(grid, gameStateController);
         this.grid = grid;
         this.gameStateController = gameStateController;
-        System.out.println("created enemy hand");
 
     }
 
@@ -44,7 +43,7 @@ public class EnemyKeyHandler extends KeyHandler{
             int randomCol = (int) (Math.random() * numCols);
 
             // Check if the cell at the random coordinates contains a TextBlock or winning block. dont wanna add them on top of each other
-            if (grid.cellHasWinning(randomRow, randomCol) || grid.cellHasTextBlock(randomRow, randomCol)) {
+            if (grid.cellHasWinning(randomRow, randomCol) || grid.cellHasTextBlock(randomRow, randomCol) || grid.cellHasWater(randomRow, randomCol) || grid.cellHasLava(randomRow, randomCol)) {
                 // If it's a TextBlock, continue to the next iteration to reprocess the position
                 continue;
             }
@@ -60,43 +59,47 @@ public class EnemyKeyHandler extends KeyHandler{
 
     @Override
     public void moveEnemy() {
-        if (!grid.hasEnemy()) {
-            System.out.println("Grid does not have Enemy");
+        if (!grid.hasEnemy() || grid.findControllableBlock().isEmpty()) {
             return;
         } else {
-            System.out.println("Grid has Enemy");
+
             int[] enemy = enemyCoordinate();
-            System.out.println("Enemy Coordinates: (" + enemy[0] + ", " + enemy[1] + ", " + enemy[2] + ")");
             int[] baba = nearestBabaCoordinate(enemy);
-            System.out.println("Nearest Baba Coordinates: (" + baba[0] + ", " + baba[1] + ")");
             int[] realEnemy = {enemy[0], enemy[1]};
             int[] realBaba = {baba[0], baba[1]};
+            if(Arrays.equals(realEnemy, realBaba)){
+                grid.removeBaba(enemy[0], enemy[1]);
+                if(grid.findControllableBlock().isEmpty()){
+                    grid.removeEnemy(enemy[0], enemy[1]);
+                    gameStateController.displayGameOver(false);
+                    return;
+
+                }
+
+            }
+            else {
 
                 Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
                 if (shortestPathOptional.isPresent()) {
                     List<int[]> shortestPath = shortestPathOptional.get();
-                    System.out.println("Shortest Path:");
-                    for (int[] position : shortestPath) {
-                        System.out.println("(" + position[0] + ", " + position[1] + ")");
-                    }
+
                     int[] nextPosition = shortestPath.get(1);
-                    System.out.println("Next Position: (" + nextPosition[0] + ", " + nextPosition[1] + ")");
                     grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
-                } else {
-                    System.out.println("No shortest path found.");
                 }
+                grid.notifyObserver();
+            }
 
         }
-        grid.notifyObserver();
+
     }
 
 
 
-    public int [] enemyCoordinate(){
+
+    private int [] enemyCoordinate(){
         return grid.enemyPosition();
     }
-    public int[] nearestBabaCoordinate(int[] enemyCamp) {
-        System.out.println("inside nearestBabaCoordinate");
+    private int[] nearestBabaCoordinate(int[] enemyCamp) {
         List<int[]> allControllableBlock = grid.findControllableBlock();
 
         Comparator<int[]> distanceComparator = new Comparator<int[]>() {
@@ -122,8 +125,7 @@ public class EnemyKeyHandler extends KeyHandler{
     }
 
 
-    public Optional<List<int[]>> findShortestPath(int[] start, int[] target){
-        System.out.println("inside findShortestPath");
+    private Optional<List<int[]>> findShortestPath(int[] start, int[] target){
         int numRows = grid.getGridWidth();
         int numCols = grid.getGridHeight();
         int[][] distances = new int[numRows][numCols];
@@ -173,31 +175,8 @@ public class EnemyKeyHandler extends KeyHandler{
         }
     }
 
-//    private List<int[]> reconstructPath(int[] start, int[] target, int[][] distances) {
-//        System.out.println("inside reconstructPath");
-//        List<int[]> path = new ArrayList<>();
-//        int[] position = target;
-//        while (!Arrays.equals(start, position)) {
-//            path.add(position);
-//            for (int[] dir : directions) {
-//                int newRow = position[0] + dir[0];
-//                int newCol = position[1] + dir[1];
-//                if (newRow >= 0 && newRow < grid.getGridWidth() && newCol >= 0 && newCol < grid.getGridHeight() &&
-//                        distances[newRow][newCol] == distances[position[0]][position[1]] - 1) {
-//                    position = new int[]{newRow, newCol};
-//                    break;
-//                }
-//            }
-//        }
-//        path.add(start);
-//
-//        Collections.reverse(path); // Reverse the path to start from start to target
-//        return path;
-//    }
-//
 
     private List<int[]> reconstructPath(int[] start, int[] target, int[][] distances) {
-        System.out.println("inside reconstructPath");
         LinkedList<int[]> path = new LinkedList<>();
         int[] current = target;
 
@@ -219,7 +198,6 @@ public class EnemyKeyHandler extends KeyHandler{
                 }
             }
             if (!stepFound) {
-                System.out.println("Path reconstruction failed, possible incorrect distance mapping.");
                 break;
             }
         }

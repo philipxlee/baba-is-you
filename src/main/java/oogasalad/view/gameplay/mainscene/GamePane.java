@@ -49,8 +49,12 @@ public class GamePane implements Observer<Grid> {
 
   private boolean firstKeyPressed = false;
 
-  private final int DELAY = 1;
+  private final double INITIAL_DELAY = 1;
+  private double currentDelay = INITIAL_DELAY;
+
+  private final double DECREASE_FACTOR = 0.8;
   private Timeline timeline;
+
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
@@ -206,15 +210,17 @@ public class GamePane implements Observer<Grid> {
 
     // Add a KeyFrame to the Timeline
     timeline.getKeyFrames().add(
-            new KeyFrame(Duration.seconds(DELAY), event -> {
+            new KeyFrame(Duration.seconds(currentDelay), event -> {
               if (!keyPressed && firstKeyPressed) {
-                // No valid key pressed within 3 seconds, call moveEnemy()
-                System.out.println("calling move Enemy");
+                // No valid key pressed within current delay, call moveEnemy()
                 keyHandlerController.moveEnemy();
               }
               // Reset the keyPressed flag after each execution
               keyPressed = false;
+              // Update delay for next cycle
+              currentDelay *= DECREASE_FACTOR; // Adjust DECREASE_FACTOR for desired slowdown rate (e.g., 0.9 for 10% decrease)
             })
+
     );
 
     // Set the cycle count to indefinite so it repeats
