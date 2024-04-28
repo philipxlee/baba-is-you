@@ -31,6 +31,10 @@ public abstract class KeyHandler {
    */
   public abstract void execute();
 
+  public void moveEnemy(){
+    return;
+  }
+
   /**
    * Handles the key press event by moving controllable blocks.
    *
