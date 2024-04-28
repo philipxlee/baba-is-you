@@ -71,44 +71,25 @@ public class EnemyKeyHandler extends KeyHandler{
             System.out.println("Nearest Baba Coordinates: (" + baba[0] + ", " + baba[1] + ")");
             int[] realEnemy = {enemy[0], enemy[1]};
             int[] realBaba = {baba[0], baba[1]};
-            Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
-            if (shortestPathOptional.isPresent()) {
-                List<int[]> shortestPath = shortestPathOptional.get();
-                System.out.println("Shortest Path:");
-                for (int[] position : shortestPath) {
-                    System.out.println("(" + position[0] + ", " + position[1] + ")");
+
+                Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
+                if (shortestPathOptional.isPresent()) {
+                    List<int[]> shortestPath = shortestPathOptional.get();
+                    System.out.println("Shortest Path:");
+                    for (int[] position : shortestPath) {
+                        System.out.println("(" + position[0] + ", " + position[1] + ")");
+                    }
+                    int[] nextPosition = shortestPath.get(1);
+                    System.out.println("Next Position: (" + nextPosition[0] + ", " + nextPosition[1] + ")");
+                    grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
+                } else {
+                    System.out.println("No shortest path found.");
                 }
-                int[] nextPosition = shortestPath.get(1);
-                System.out.println("Next Position: (" + nextPosition[0] + ", " + nextPosition[1] + ")");
-                grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
-            } else {
-                System.out.println("No shortest path found.");
-            }
+
         }
+        grid.notifyObserver();
     }
 
-//    public void moveEnemy(){ //would be called from the view after every 3 seconds of  no significant keypress from the player
-//        if(!grid.hasEnemy()){
-//            System.out.println("Grid does not have Enemy");
-//            return;
-//        }
-//        else{
-//            System.out.println("grid has Enemy ");
-//            int [] enemy = enemyCoordinate();
-//            int [] baba = nearestBabaCoordinate(enemy);
-//            int [] realEnemy = {enemy[0], enemy[1]};
-//            int [] realBaba = {baba[0], baba[1]};
-//            Optional<List<int[]>> shortestPathOptional = findShortestPath(realEnemy, realBaba);
-//            if(shortestPathOptional.isPresent()){
-//                List<int[]> shortestPath = shortestPathOptional.get();
-//                int [] nextPosition = shortestPath.get(1);
-//                grid.moveEnemy(enemy[0], enemy[1], enemy[2], nextPosition[0], nextPosition[1]);
-//
-//            }
-//            //could also use try catch with a custom exception
-//
-//        }
-//    }
 
 
     public int [] enemyCoordinate(){
@@ -192,27 +173,60 @@ public class EnemyKeyHandler extends KeyHandler{
         }
     }
 
+//    private List<int[]> reconstructPath(int[] start, int[] target, int[][] distances) {
+//        System.out.println("inside reconstructPath");
+//        List<int[]> path = new ArrayList<>();
+//        int[] position = target;
+//        while (!Arrays.equals(start, position)) {
+//            path.add(position);
+//            for (int[] dir : directions) {
+//                int newRow = position[0] + dir[0];
+//                int newCol = position[1] + dir[1];
+//                if (newRow >= 0 && newRow < grid.getGridWidth() && newCol >= 0 && newCol < grid.getGridHeight() &&
+//                        distances[newRow][newCol] == distances[position[0]][position[1]] - 1) {
+//                    position = new int[]{newRow, newCol};
+//                    break;
+//                }
+//            }
+//        }
+//        path.add(start);
+//
+//        Collections.reverse(path); // Reverse the path to start from start to target
+//        return path;
+//    }
+//
+
     private List<int[]> reconstructPath(int[] start, int[] target, int[][] distances) {
         System.out.println("inside reconstructPath");
-        List<int[]> path = new ArrayList<>();
-        int[] position = target;
-        while (!Arrays.equals(start, position)) {
-            path.add(position);
-            for (int[] dir : directions) {
-                int newRow = position[0] + dir[0];
-                int newCol = position[1] + dir[1];
-                if (newRow >= 0 && newRow < grid.getGridWidth() && newCol >= 0 && newCol < grid.getGridHeight() &&
-                        distances[newRow][newCol] == distances[position[0]][position[1]] - 1) {
-                    position = new int[]{newRow, newCol};
-                    break;
+        LinkedList<int[]> path = new LinkedList<>();
+        int[] current = target;
+
+        // Add the target as the starting point of the path
+        path.addFirst(target);
+
+        while (!Arrays.equals(current, start)) {
+            boolean stepFound = false;
+            for (int[] direction : directions) {
+                int newRow = current[0] + direction[0];
+                int newCol = current[1] + direction[1];
+                if (newRow >= 0 && newRow < distances.length && newCol >= 0 && newCol < distances[0].length) {
+                    if (distances[newRow][newCol] == distances[current[0]][current[1]] - 1) {
+                        current = new int[]{newRow, newCol};
+                        path.addFirst(current);
+                        stepFound = true;
+                        break;  // Break as soon as a valid step is found
+                    }
                 }
             }
+            if (!stepFound) {
+                System.out.println("Path reconstruction failed, possible incorrect distance mapping.");
+                break;
+            }
         }
-        path.add(start);
 
-        Collections.reverse(path); // Reverse the path to start from start to target
         return path;
     }
+
 
     private boolean isValidMove(int[][] distances, int row, int col) {
         return grid.isNotOutOfBounds(row, col) && distances[row][col] == Integer.MAX_VALUE;

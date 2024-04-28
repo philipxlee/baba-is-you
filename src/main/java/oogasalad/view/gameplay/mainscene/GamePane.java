@@ -47,7 +47,9 @@ public class GamePane implements Observer<Grid> {
   private ScheduledExecutorService executorService;
   private boolean keyPressed;
 
-  private final int DELAY = 3;
+  private boolean firstKeyPressed = false;
+
+  private final int DELAY = 1;
   private Timeline timeline;
 
   public void initializeGameGrid(int width, int height, MainScene scene,
@@ -164,6 +166,7 @@ public class GamePane implements Observer<Grid> {
         scene.getInteractionPane().updateKeyPress(event.getCode());
         event.consume();
         keyPressed = true;
+        firstKeyPressed = true;
       }
       if (event.getCode().isLetterKey()) {
         gridController.sendPlayToModel(event.getCode());
@@ -171,6 +174,7 @@ public class GamePane implements Observer<Grid> {
         gridController.resetBlocks(); // Reset all blocks
         event.consume();
         keyPressed = true;
+        firstKeyPressed = true;
       }
     });
 
@@ -203,7 +207,7 @@ public class GamePane implements Observer<Grid> {
     // Add a KeyFrame to the Timeline
     timeline.getKeyFrames().add(
             new KeyFrame(Duration.seconds(DELAY), event -> {
-              if (!keyPressed) {
+              if (!keyPressed && firstKeyPressed) {
                 // No valid key pressed within 3 seconds, call moveEnemy()
                 System.out.println("calling move Enemy");
                 keyHandlerController.moveEnemy();
