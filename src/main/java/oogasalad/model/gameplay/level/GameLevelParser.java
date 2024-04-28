@@ -126,6 +126,8 @@ public class GameLevelParser {
   private JsonObject constructMetadata(Level level) {
     JsonObject metadata = new JsonObject();
     jsonManager.addProperty(metadata, "difficulty", level.getLevelMetadata().difficulty());
+    jsonManager.addProperty(metadata, "hint", level.getLevelMetadata().hint());
+    jsonManager.addProperty(metadata, "author", level.getLevelMetadata().authorName());
     return metadata;
   }
 }
