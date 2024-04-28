@@ -18,6 +18,13 @@ public class KeyHandlerController {
   }
 
   public boolean executeKey(Grid grid, KeyCode code) {
+    //Cheat keys: implement further ones here
+    switch (code) {
+      case W -> gameStateController.displayGameOver(true);
+      case L -> gameStateController.displayGameOver(false);
+      case R -> gameStateController.restartGame();
+      default -> {}
+    }
     keyHandler = switch (code) {
       case UP -> new UpKeyHandler(grid, gameStateController);
       case DOWN -> new DownKeyHandler(grid, gameStateController);
