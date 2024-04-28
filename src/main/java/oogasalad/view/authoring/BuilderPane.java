@@ -1,5 +1,6 @@
 package oogasalad.view.authoring;
 
+import com.google.gson.JsonObject;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -10,10 +11,18 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import oogasalad.controller.authoring.JsonParser;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.block.Block;
+import oogasalad.model.authoring.level.Grid;
+import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.Stack;
 
 
 public class BuilderPane {
@@ -217,4 +226,41 @@ public class BuilderPane {
     removeMode = remove_bool;
     setRemoveModeEventHandlers();
   }
+
+  public void renderLoadedGrid(Grid loadedGrid) {
+    // Clear the existing content of the builder pane
+    gridPane.getChildren().clear();
+
+    // Update the grid dimensions based on the loaded grid
+    this.gridWidth = loadedGrid.getNumColumns()-2;
+    this.gridHeight = loadedGrid.getNumRows()-2;
+
+    // Set up the grid again based on the updated dimensions
+    setUpGrid();
+
+    // Iterate over the loaded grid and render each block
+    for (int row = 0; row < loadedGrid.getNumRows(); row++) {
+      for (int col = 0; col < loadedGrid.getNumColumns(); col++) {
+        String[] blockTypes = loadedGrid.getCell(row, col);
+
+        // Render each block type in the cell
+        for (String blockType : blockTypes) {
+          // Create and add block view to the grid pane
+          ImageView blockView = createBlockView(blockType);
+          if (blockView != null) {
+            blockView.setFitWidth(cellSize);
+            blockView.setFitHeight(cellSize);
+            blockView.setLayoutX(col * cellSize);
+            blockView.setLayoutY(row * cellSize);
+            gridPane.getChildren().add(blockView);
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+
 }

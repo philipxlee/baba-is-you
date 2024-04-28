@@ -24,6 +24,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import oogasalad.controller.authoring.LevelController;
+import oogasalad.model.authoring.level.Grid;
+import oogasalad.model.authoring.level.Level;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.authoring.blockDisplay.BlockLoader;
@@ -166,7 +168,15 @@ public class ElementsPane {
         200, 40, "LoadLevel", "black-button", language));
     loadLevelButton.setOnAction(event -> {
       try {
-        levelController.loadLevel();
+        // Load the level
+        Level loadedLevel = levelController.loadLevel();
+
+        Grid loadedGrid = loadedLevel.getGrid();
+
+
+
+        builderPane.renderLoadedGrid(loadedGrid);
+
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
