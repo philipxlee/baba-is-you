@@ -85,9 +85,9 @@ public class JsonSaver {
       String authorName = getFieldText(2, confirmation);
       String hint = getFieldText(3, confirmation);
       boolean isValidLevel = validator.validateLevel(level);
-      if (isValidLevel) {
-        LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
-        levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
+//      if (isValidLevel) {
+//        LevelMetadata levelMetadata = levelController.getLevelMetadata();
+//        levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
         File savedFile = levelController.serializeLevel();
         if (savedFile != null) {
           showAlert("Success", "JSON saved successfully!");
@@ -95,7 +95,7 @@ public class JsonSaver {
       } else {
         showAlert("Invalid Level", "The level must contain at least 2 rules: {Object 1 Is You}, {Object 2 Is Win} and at least Object 1 and Object 2. Please add the required blocks before saving.");
       }
-    }
+//    }
   }
 
   private String getFieldText(int rowIndex, Alert confirmation) {

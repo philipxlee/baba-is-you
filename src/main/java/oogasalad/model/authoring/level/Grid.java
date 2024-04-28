@@ -16,14 +16,18 @@ import oogasalad.shared.observer.Observer;
 public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
 
   private final BlockFactory blockFactory;
-  private final Stack<Block>[][] cells;
+  private Stack<Block>[][] cells;
   private final List<Observer<Grid>> observers;
+  private int rows;
+  private int columns;
 
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
    */
   public Grid(int rows, int cols) {
     this.blockFactory = BlockFactory.getInstance();
+    this.rows = rows;
+    this.columns = cols;
     cells = new Stack[rows][cols];
     observers = new ArrayList<>();
     initializeGrid();
@@ -44,6 +48,10 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  private void makeShrink(){
+
   }
 
   /**
@@ -118,32 +126,211 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
    *                 blocks.
    */
   public void updateGrid(String[][][] jsonGrid) {
+    Stack<Block>[][] shrunkCells = new Stack[13][13];
+
     try {
-      int startRow = 1;
-      int endRow = jsonGrid.length - 1;
-      int startCol = 1;
-      int endCol = jsonGrid[0].length - 1;
+      for (int row = 1; row < cells.length - 1; row++) {
+        for (int col = 1; col < cells[row].length - 1; col++) {
+          Stack<Block> stack = new Stack<>();
 
-      for (int row = 0; row < cells.length; row++) {
-        for (int col = 0; col < cells[row].length; col++) {
-          int newRow = startRow + row;
-          int newCol = startCol + col;
-
-          if (newRow < endRow && newCol < endCol) {
-            cells[row][col].clear();
-
-            String[] blockTypes = jsonGrid[newRow][newCol];
+            String[] blockTypes = jsonGrid[row][col];
 
             for (String blockType : blockTypes) {
               Block block = blockFactory.createBlock(blockType);
-              cells[row][col].push(block);
+              System.out.println(block.type().name());
+              stack.push(block);
             }
+          shrunkCells[row - 1][col - 1] = stack;
           }
         }
-      }
+      this.cells = shrunkCells;
       notifyObserver();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 }
+
+
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyTextBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+RockVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    WaterTextBlock
+EmptyVisualBlock
+    IsTextBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+IsTextBlock
+    EmptyVisualBlock
+WallTextBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    BabaTextBlock
+EmptyVisualBlock
+    IsTextBlock
+EmptyVisualBlock
+    YouTextBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+WinTextBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    StopTextBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+LavaTextBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    WallVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+PushTextBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    IsTextBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+BabaVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    FlagTextBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+HotTextBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    WallVisualBlock
+EmptyVisualBlock
+    WallVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    FlagVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+DrownTextBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    WallVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+WallVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+IsTextBlock
+    EmptyVisualBlock
+YouTextBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+PushTextBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+LavaVisualBlock
+    EmptyVisualBlock
+LavaVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    EmptyVisualBlock
+EmptyVisualBlock
+    BabaVisualBlock
