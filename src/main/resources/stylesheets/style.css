@@ -12,6 +12,12 @@
   -fx-fill: linear-gradient(to bottom, #777DA1, #9773FD);
 }
 
+.hints-panel {
+  -fx-fill: #343342;
+  -fx-stroke-width: 5px;
+  -fx-stroke: #F5F5F5;
+}
+
 .elements-background {
   -fx-background-color: linear-gradient(to bottom, #777DA1, #9773FD);
 }
@@ -19,35 +25,30 @@
 .header {
   -fx-font-size: 100px;
   -fx-fill: #F5F5F5;
-  -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
 }
 
 .red-header {
   -fx-font-size: 100px;
   -fx-fill: #FF7171;
-  -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
 }
 
 .paragraph {
   -fx-font-size: 40px;
   -fx-fill: #FF7171;
-  -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
 }
 
 .sub-header {
   -fx-font-size: 40px;
   -fx-fill: #191A20;;
-  -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
 }
 
 .caption {
   -fx-font-size: 22px;
   -fx-fill: #FF7171;
-  -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
 }
 
@@ -151,13 +152,16 @@
 .red-label {
   -fx-font-size: 30px;
   -fx-text-fill: #FF7171;
-  -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
+}
+
+.caption-label {
+  -fx-font-size: 20px;
+  -fx-text-fill: #FF7171;
 }
 
 .white-label {
   -fx-font-size: 35px;
   -fx-text-fill: #F5F5F5;
-  -fx-font-family: 'Bahiana';
   -fx-text-alignment: center;
 }
