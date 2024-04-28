@@ -69,8 +69,9 @@ public class Level implements Observable<Level> {
    * @return 3D List of strings representing the grid.
    */
   public List<List<List<String>>> getParsedGrid() {
-    int originalRows = levelMetadata.rows();
-    int originalCols = levelMetadata.cols();
+
+    int originalRows = grid.isLoading() ? levelMetadata.rows() - 2 : levelMetadata.rows();
+    int originalCols = grid.isLoading() ? levelMetadata.cols() - 2 : levelMetadata.cols();
 
     List<List<List<String>>> extendedGrid = new ArrayList<>();
     for (int row = 0; row < originalRows + 2; row++) {

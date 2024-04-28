@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import oogasalad.model.authoring.level.Grid;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
@@ -15,12 +16,13 @@ import oogasalad.shared.config.JsonManager;
 public class LevelParser {
 
   private final JsonManager jsonManager;
-
+  private Grid grid;
   /**
    * Constructs an AuthoringLevelParser object with the specified JsonManager.
    */
-  public LevelParser() {
+  public LevelParser(Grid grid) {
     jsonManager = new JsonManager();
+    this.grid = grid;
   }
 
   /**
@@ -38,8 +40,8 @@ public class LevelParser {
     jsonManager.addProperty(metadataObject, "author", metadata.authorName());
     jsonManager.addProperty(metadataObject, "difficulty", metadata.difficulty());
     jsonManager.addProperty(metadataObject, "hint", metadata.hint());
-    buildJsonObject(metadataJson, metadata, gridSizeObject);
     JsonArray gridArray = turnGridToJson(level);
+    buildJsonObject(metadataJson, metadata, gridSizeObject);
     jsonManager.addArrayToJson(grid, "cells", gridArray);
     jsonManager.addObject(metadataJson, "grid", grid);
     jsonManager.addObject(grid, "metadata", metadataObject);
@@ -54,7 +56,8 @@ public class LevelParser {
    */
   private JsonArray turnGridToJson(Level level) {
     List<List<List<String>>> levelGrid = level.getParsedGrid();
-
+    System.out.println("PRINITNG PARSED GRID");
+    printParsedGrid(levelGrid);
     return convertGridToJsonArray(levelGrid);
   }
 
@@ -70,9 +73,8 @@ public class LevelParser {
 
     jsonManager.addProperty(metadataJson, "levelName", metadata.levelName());
     jsonManager.addProperty(metadataJson, "description", metadata.description());
-
-    jsonManager.addProperty(gridSizeObject, "rows", String.valueOf(metadata.rows() + 2));
-    jsonManager.addProperty(gridSizeObject, "columns", String.valueOf(metadata.cols() + 2));
+    jsonManager.addProperty(gridSizeObject, "rows", String.valueOf(grid.isLoading() ? metadata.rows() :metadata.rows() + 2));
+    jsonManager.addProperty(gridSizeObject, "columns", String.valueOf( grid.isLoading() ? metadata.cols() : metadata.cols() + 2));
 
     jsonManager.addObject(metadataJson, "gridSize", gridSizeObject);
   }
@@ -124,4 +126,22 @@ public class LevelParser {
   public File saveJSON(JsonObject jsonObject, String fileName) throws IOException {
     return jsonManager.saveToFile(jsonObject, fileName);
   }
+
+  public void printParsedGrid(List<List<List<String>>> levelGrid) {
+    int rowNum = 0;
+    for (List<List<String>> row : levelGrid) {
+      int colNum = 0;
+      System.out.println("Row " + rowNum + ":");
+      for (List<String> cell : row) {
+        System.out.print("    Column " + colNum + ": [");
+        for (String blockType : cell) {
+          System.out.print(blockType + ", ");
+        }
+        System.out.println("]");
+        colNum++;
+      }
+      rowNum++;
+    }
+  }
+
 }

@@ -27,10 +27,10 @@ public class LevelController {
    * LevelController constructor.
    */
   public LevelController(LevelMetadata levelMetadata) {
-    levelParser = new LevelParser();
     jsonParser = new JsonParser();
     openAIClient = new OpenAIClient();
     currentLevel = new Level(levelMetadata);
+    levelParser = new LevelParser(currentLevel.getGrid());
   }
 
   /**
@@ -62,6 +62,7 @@ public class LevelController {
    */
   public File serializeLevel() {
     JsonObject levelJson = levelParser.parseLevelToJSON(currentLevel);
+
     String fileName = currentLevel.getLevelMetadata().levelName() + ".json";
     try {
       return levelParser.saveJSON(levelJson, fileName);

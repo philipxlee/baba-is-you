@@ -20,6 +20,7 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
   private final List<Observer<Grid>> observers;
   private int rows;
   private int columns;
+  private boolean loading;
 
   /**
    * Grid constructor. Initialized with number of rows and number of columns.
@@ -31,6 +32,7 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
     cells = new Stack[rows][cols];
     observers = new ArrayList<>();
     initializeGrid();
+    this.loading = false;
   }
 
   /**
@@ -126,8 +128,8 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
    *                 blocks.
    */
   public void updateGrid(String[][][] jsonGrid) {
-    Stack<Block>[][] shrunkCells = new Stack[13][13];
-
+    Stack<Block>[][] shrunkCells = new Stack[rows - 2][columns - 2];
+    this.loading = true;
     try {
       for (int row = 1; row < cells.length - 1; row++) {
         for (int col = 1; col < cells[row].length - 1; col++) {
@@ -144,193 +146,32 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
           }
         }
       this.cells = shrunkCells;
+      printCells(cells);
       notifyObserver();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
+
+  public void printCells(Stack<Block>[][] shrunkCells) {
+    for (int row = 0; row < shrunkCells.length; row++) {
+      for (int col = 0; col < shrunkCells[row].length; col++) {
+        Stack<Block> stack = shrunkCells[row][col];
+        System.out.print("Cell (" + row + ", " + col + "): [");
+        // Use another loop or iterator to go through the stack without modifying it
+        for (Block block : stack) {
+          System.out.print(block.type().name() + ", ");
+        }
+        System.out.println("]");
+      }
+      System.out.println();  // Add a new line after each row for better readability
+    }
+  }
+
+  public boolean isLoading() {
+    return this.loading;
+  }
+
+
 }
 
-
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyTextBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-RockVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    WaterTextBlock
-EmptyVisualBlock
-    IsTextBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-IsTextBlock
-    EmptyVisualBlock
-WallTextBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    BabaTextBlock
-EmptyVisualBlock
-    IsTextBlock
-EmptyVisualBlock
-    YouTextBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-WinTextBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    StopTextBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-LavaTextBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    WallVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-PushTextBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    IsTextBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-BabaVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    FlagTextBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-HotTextBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    WallVisualBlock
-EmptyVisualBlock
-    WallVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    FlagVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-DrownTextBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    WallVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-WallVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-IsTextBlock
-    EmptyVisualBlock
-YouTextBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-PushTextBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-LavaVisualBlock
-    EmptyVisualBlock
-LavaVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    EmptyVisualBlock
-EmptyVisualBlock
-    BabaVisualBlock

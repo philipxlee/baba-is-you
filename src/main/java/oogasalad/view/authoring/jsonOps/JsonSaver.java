@@ -88,6 +88,7 @@ public class JsonSaver {
 //      if (isValidLevel) {
 //        LevelMetadata levelMetadata = levelController.getLevelMetadata();
 //        levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
+
         File savedFile = levelController.serializeLevel();
         if (savedFile != null) {
           showAlert("Success", "JSON saved successfully!");

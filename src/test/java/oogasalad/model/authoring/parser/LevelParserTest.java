@@ -28,7 +28,7 @@ class LevelParserTest {
         "Try harder");
     testLevel = new Level(metadata);
 
-    parser = new LevelParser();
+//    parser = new LevelParser();
   }
 
   @Test
