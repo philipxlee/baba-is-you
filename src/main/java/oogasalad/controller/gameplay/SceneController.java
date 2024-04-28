@@ -21,6 +21,7 @@ public class SceneController {
   private final Level level;
   private final LevelController levelController;
   private String language;
+  private javafx.scene.Scene previousScene;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage.
@@ -53,8 +54,16 @@ public class SceneController {
    * @param scene is new Scene to switch to.
    */
   public void switchToScene(Scene scene) {
+    previousScene = this.stage.getScene();
     scene.initializeScene(WIDTH, HEIGHT);
     stage.setScene(scene.getScene());
+  }
+
+  /**
+   * Switches to previous scene. Used for persisting game states.
+   */
+  public void switchToPreviousScene() {
+    stage.setScene(previousScene);
   }
 
   /**

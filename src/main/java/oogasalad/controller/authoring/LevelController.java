@@ -112,7 +112,7 @@ public class LevelController {
   /**
    * Return current level.
    *
-   * @return the current set language
+   * @return the current set level.
    */
   public Level getLevel() {
     return this.currentLevel;
@@ -121,7 +121,7 @@ public class LevelController {
   /**
    * Get the language for the authoring env.
    *
-   * @return the current set language
+   * @return the current set language.
    */
   public String getLanguage() {
     return this.language;
