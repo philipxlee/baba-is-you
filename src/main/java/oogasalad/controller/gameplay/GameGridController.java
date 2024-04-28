@@ -2,11 +2,8 @@ package oogasalad.controller.gameplay;
 
 import com.google.gson.JsonObject;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.StackPane;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.handlers.EnemyKeyHandler;
-import oogasalad.model.gameplay.handlers.KeyHandler;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
@@ -71,6 +68,9 @@ public class GameGridController implements AlertHandler {
     return jsonGameParser.parseLevel(jsonObject);
   }
 
+  public void setGameOverStatus(boolean status){
+    gamePane.setGameOverStatus(status);
+  }
 
 
 }

@@ -1,6 +1,5 @@
 package oogasalad.view.gameplay.mainscene;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,8 +8,6 @@ import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,7 +20,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
@@ -47,6 +43,8 @@ public class GamePane implements Observer<Grid> {
   private KeyHandlerController keyHandlerController;
   private SceneController sceneController;
   private GameGridController gridController;
+
+  private GameStateController gameStateController;
   private MainScene scene;
   private int width;
   private int height;
@@ -71,6 +69,9 @@ public class GamePane implements Observer<Grid> {
   private Timeline timeline_Enemy;
   private boolean babaHat = false;
 
+  private boolean isGameOver = true;
+
+
 
   public void initializeGameGrid(int width, int height, MainScene scene,
       SceneController sceneController, Level initialLevel) {
@@ -82,10 +83,12 @@ public class GamePane implements Observer<Grid> {
       this.root = new Group();
       this.scene = scene;
       this.sceneController = sceneController;
+      this.gameStateController = new GameStateController(sceneController);
       this.keyHandlerController = new KeyHandlerController(
-          new GameStateController(sceneController));
+          gameStateController);
       this.level = initialLevel;
       this.gridController = new GameGridController(this, keyHandlerController, level);
+      gameStateController.setGameGridController(gridController);
       this.factory = new WidgetFactory();
       this.time = factory.generateLine("00:00:00");
       handleKeyPresses(scene);
@@ -110,6 +113,7 @@ public class GamePane implements Observer<Grid> {
   }
 
   private void startTimer() {
+    isGameOver = false;
     timeline = new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -232,7 +236,7 @@ public class GamePane implements Observer<Grid> {
         keyPressed = true;
         firstKeyPressed = true;
       }
-      if (event.getCode().isLetterKey()) {
+      if (event.getCode() == KeyCode.E  || event.getCode() == KeyCode.X ) {
         if (event.getCode() == KeyCode.X) {
           babaHat = !babaHat;
         }
@@ -269,6 +273,10 @@ public class GamePane implements Observer<Grid> {
               keyPressed = false;
               // Update delay for next cycle
               currentDelay *= DECREASE_FACTOR; // Adjust DECREASE_FACTOR for desired slowdown rate (e.g., 0.9 for 10% decrease)
+              if (isGameOver) {
+                // Stop the Timeline
+                timeline_Enemy.stop();
+              }
             })
 
     );
@@ -276,5 +284,8 @@ public class GamePane implements Observer<Grid> {
     timeline_Enemy.setCycleCount(Timeline.INDEFINITE);
     // Start the Timeline
     timeline_Enemy.play();
+  }
+  public void setGameOverStatus(boolean status){
+    this.isGameOver = status;
   }
 }
