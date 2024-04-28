@@ -134,10 +134,13 @@ public class BuilderPane {
             blockView.setFitWidth(cellSize);
             blockView.setFitHeight(cellSize);
             blockView.setLayoutX(cellCoords.getX());
+            System.out.println(cellCoords.getX());
             blockView.setLayoutY(cellCoords.getY());
+            System.out.println(cellCoords.getY());
             root.getChildren().add(blockView);
             try {
               // x corresponds to column, y corresponds to row
+
               levelController.addBlockToCell((int) cellIndices.getY(), (int) cellIndices.getX(),
                   blockType);
             } catch (Exception e) {
@@ -264,6 +267,13 @@ public class BuilderPane {
             // Add the block to the root and bring it to the front
             root.getChildren().add(blockView);
             blockView.toFront();
+            try {
+              // x corresponds to column, y corresponds to row
+              levelController.addBlockToCell(row, col,
+                  blockType);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         }
       }
