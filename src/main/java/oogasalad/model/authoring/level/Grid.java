@@ -146,4 +146,32 @@ public class Grid implements Observable<Grid>, Iterable<Stack<Block>> {
       e.printStackTrace();
     }
   }
+
+  public int getNumRows() {
+    return cells.length;
+  }
+
+  public int getNumColumns() {
+    if (cells.length == 0) {
+      return 0;
+    }
+    return cells[0].length;
+  }
+
+  public String[] getCell(int row, int col) {
+    if (row < 0 || row >= cells.length || col < 0 || col >= cells[row].length) {
+      return new String[0]; // Return an empty array if the cell is out of bounds
+    }
+
+    Stack<Block> cellStack = cells[row][col];
+    String[] blockTypes = new String[cellStack.size()];
+
+    // Retrieve the type of each block in the cell and store it in the array
+    for (int i = 0; i < cellStack.size(); i++) {
+      Block block = cellStack.get(i);
+      blockTypes[i] = block.getType().name(); // Assuming BlockType has a name method
+    }
+
+    return blockTypes;
+  }
 }
