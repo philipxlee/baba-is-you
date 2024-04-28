@@ -117,13 +117,14 @@ public class FileChooserPane {
 
   private void setImageClickEvent(ImageView imageView, JsonObject jsonFile) {
     imageView.setOnMouseClicked(event -> {
+      JsonObject gridObject = jsonManager.getJsonObject(jsonFile, "grid");
+      JsonObject metadata = jsonManager.getJsonObject(gridObject, "metadata");
       JsonObject dimensions = jsonManager.getJsonObject(jsonFile, "gridSize");
       Text rows = factory.generateCaption("Rows: " + jsonManager.getValue(
           dimensions, "rows"));
       Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
           dimensions, "columns"));
-
-      JsonObject metadata = jsonManager.getJsonObject(jsonFile, "metadata");
+      
       //TODO: remove when only valid jsons are in the data repo
       Text difficulty;
       if (metadata != null) {
@@ -133,7 +134,6 @@ public class FileChooserPane {
       else {
         difficulty = new Text();
       }
-
       VBox vbox = factory.wrapInVBox(new ArrayList<>(Arrays.asList(rows, cols, difficulty)),
           width - 100, 10);
 

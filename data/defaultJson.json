@@ -1,5 +1,5 @@
 {
-  "levelName": "TestLevel",
+  "levelName": "DefaultLevel",
   "gridSize": {
     "rows": "15",
     "columns": "15"
