@@ -68,4 +68,5 @@ public class MainScene implements Scene {
   public javafx.scene.Scene getScene() {
     return this.scene;
   }
+
 }

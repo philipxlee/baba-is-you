@@ -58,13 +58,13 @@ public class CellIteratorTest {
     cellIterator.next(); // 2nd block
     cellIterator.next(); // 3rd block
     assertThrows(NoSuchElementException.class, cellIterator::next,
-        "Should throw exception when no more elements");
+            "Should throw exception when no more elements");
   }
 
   @Test
   void testOutOfBounds_ThrowsException() {
     assertThrows(IllegalArgumentException.class, () -> new CellIterator(grid, 3, 3),
-        "Should throw IllegalArgumentException for out-of-bounds indices");
+            "Should throw IllegalArgumentException for out-of-bounds indices");
   }
 
 }
