@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay.mainscene;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
@@ -33,6 +35,7 @@ import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.gamestates.PauseScene;
 
 /**
  * Class that encapsulates the grid interactions from the model and displays them. Uses the Observer
@@ -51,20 +54,15 @@ public class GamePane implements Observer<Grid> {
   private BlockViewFactory blockFactory;
   private Level level;
   private String currentDirection = "Right";
-  private Map<String, ImageView> animationCache;
   private WidgetFactory factory;
   private Timeline timeline;
   private long milliseconds = 0;
   private Text time;
   private List<KeyCode> cheatKeys = Arrays.asList(KeyCode.W, KeyCode.L, KeyCode.R, KeyCode.X);
-
   private boolean keyPressed;
-
   private boolean firstKeyPressed = false;
-
   private final double INITIAL_DELAY = 1;
   private double currentDelay = INITIAL_DELAY;
-
   private final double DECREASE_FACTOR = 0.8;
   private Timeline timeline_Enemy;
   private boolean babaHat = false;
@@ -74,7 +72,6 @@ public class GamePane implements Observer<Grid> {
       SceneController sceneController, Level initialLevel) {
     try {
       this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
-      this.animationCache = new HashMap<>();
       this.width = width;
       this.height = height;
       this.root = new Group();
@@ -119,6 +116,23 @@ public class GamePane implements Observer<Grid> {
     timeline.play();
   }
 
+  private void pauseTimer() {
+    timeline.pause();
+  }
+
+  private ImageView setUpPauseButton() {
+    InputStream stream = getClass().getResourceAsStream("/images/PauseImage.png");
+    ImageView pauseBtn = new ImageView(new Image(stream));
+    pauseBtn.setOnMouseClicked(event -> {
+      sceneController.switchToScene(new PauseScene(sceneController, milliseconds, timeline));
+      pauseTimer();
+    });
+    pauseBtn.setFitHeight(cellSize);
+    pauseBtn.setFitWidth(cellSize);
+    StackPane.setAlignment(pauseBtn, Pos.BOTTOM_RIGHT);
+    return pauseBtn;
+  }
+
   private void updateTimer() {
     long min = milliseconds / (60 * 1000);
     long sec = (milliseconds / 1000) % 60;
@@ -146,7 +160,7 @@ public class GamePane implements Observer<Grid> {
   }
 
   protected Pane setUpScreen() {
-    StackPane gameScreen = new StackPane(root, setUpTimer());
+    StackPane gameScreen = new StackPane(root, setUpTimer(), setUpPauseButton());
     gameScreen.setAlignment(Pos.CENTER);
     gameScreen.setPrefWidth(width);
 
