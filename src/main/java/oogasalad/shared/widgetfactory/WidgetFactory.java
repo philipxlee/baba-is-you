@@ -119,7 +119,7 @@ public class WidgetFactory {
     return vbox;
   }
 
-  public Button makeButton(WidgetConfiguration configuration) {
+  public static Button makeButton(WidgetConfiguration configuration) {
     Button button = new Button(configuration.getPropertyContents());
     button.setPrefWidth(configuration.getWidth());
     button.setPrefHeight(configuration.getHeight());
