@@ -1,5 +1,6 @@
 package oogasalad.view.authoring;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -163,7 +164,13 @@ public class ElementsPane {
     // Create the Load Level button
     Button loadLevelButton = factory.makeButton(new WidgetConfiguration(
         200, 40, "LoadLevel", "black-button", language));
-    loadLevelButton.setOnAction(event -> jsonLoader.loadLevel());
+    loadLevelButton.setOnAction(event -> {
+      try {
+        levelController.loadLevel();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
 
     List<Node> SLbuttons = new ArrayList<>();
     SLbuttons.add(saveJsonButton);
