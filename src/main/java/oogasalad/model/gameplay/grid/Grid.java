@@ -267,17 +267,13 @@ public class Grid extends GridHelper implements Observable<Grid> {
           }
 
           // If both indices are found but not matched yet, check if they complete each other
-// If both indices are found but not matched yet, check if they complete each other
           if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
             if (strategyMap.get(subjectStrategyKey).equals(objectStrategyValue)
-                    || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)
-                    || strategyMap.get(objectStrategyValue).equals(subjectStrategyKey)
-                    || strategyMap.inverse().get(subjectStrategyKey).equals(objectStrategyValue)) {
+                    || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
               grid[cellI][cellJ].remove(objectIndex);
               return;
             }
           }
-
         }
       }
     }
