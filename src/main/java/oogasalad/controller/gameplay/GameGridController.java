@@ -2,6 +2,7 @@ package oogasalad.controller.gameplay;
 
 import com.google.gson.JsonObject;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.EnemyKeyHandler;
@@ -17,7 +18,6 @@ import oogasalad.view.gameplay.mainscene.GamePane;
  * grid.x
  */
 public class GameGridController implements AlertHandler {
-
   private Grid gameGrid;
   private final GamePane gamePane;
   private final KeyHandlerController keyHandlerController;

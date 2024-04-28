@@ -1,8 +1,12 @@
 package oogasalad.view.gameplay.mainscene;
 
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -10,11 +14,22 @@ import java.util.concurrent.TimeUnit;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+=======
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+>>>>>>> main
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
@@ -24,6 +39,8 @@ import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.observer.Observer;
+import oogasalad.shared.widgetfactory.WidgetConfiguration;
+import oogasalad.shared.widgetfactory.WidgetFactory;
 
 /**
  * Class that encapsulates the grid interactions from the model and displays them. Uses the Observer
@@ -43,8 +60,12 @@ public class GamePane implements Observer<Grid> {
   private Level level;
   private String currentDirection = "Right";
   private Map<String, ImageView> animationCache;
+  private WidgetFactory factory;
+  private Timeline timeline;
+  private long milliseconds = 0;
+  private Text time;
+  private List<KeyCode> cheatKeys = Arrays.asList(KeyCode.W, KeyCode.L, KeyCode.R);
 
-  private ScheduledExecutorService executorService;
   private boolean keyPressed;
 
   private boolean firstKeyPressed = false;
@@ -53,7 +74,7 @@ public class GamePane implements Observer<Grid> {
   private double currentDelay = INITIAL_DELAY;
 
   private final double DECREASE_FACTOR = 0.8;
-  private Timeline timeline;
+  private Timeline timeline_Enemy;
 
 
   public void initializeGameGrid(int width, int height, MainScene scene,
@@ -65,10 +86,13 @@ public class GamePane implements Observer<Grid> {
       this.height = height;
       this.root = new Group();
       this.scene = scene;
+      this.sceneController = sceneController;
       this.keyHandlerController = new KeyHandlerController(
           new GameStateController(sceneController));
       this.level = initialLevel;
       this.gridController = new GameGridController(this, keyHandlerController, level);
+      this.factory = new WidgetFactory();
+      this.time = factory.generateLine("00:00:00");
       handleKeyPresses(scene);
       moveEnemy();
 
@@ -77,6 +101,38 @@ public class GamePane implements Observer<Grid> {
     }
     renderGrid(); // Initial grid rendering
 
+    startTimer();
+  }
+
+  private HBox setUpTimer() {
+    Text timer = factory.generateLine(new WidgetConfiguration("Timer",
+        sceneController.getLanguage()));
+    HBox text = factory.wrapInHBox(new ArrayList<>(Arrays.asList(timer, time)), (int)
+        (timer.getWrappingWidth()+ time.getWrappingWidth()));
+    text.setAlignment(Pos.TOP_RIGHT);
+    text.setPadding(new Insets(20));
+    return text;
+  }
+
+  private void startTimer() {
+    timeline = new Timeline(new KeyFrame(Duration.millis(1), new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        milliseconds++;
+        updateTimer();
+      }
+    }));
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+  }
+
+  private void updateTimer() {
+    long min = milliseconds / (60 * 1000);
+    long sec = (milliseconds / 1000) % 60;
+    long mill = milliseconds % 1000;
+
+    String timerString = String.format("%02d:%02d:%03d", min, sec, mill);
+    time.setText(timerString);
   }
 
   public int getWidth() {
@@ -97,13 +153,13 @@ public class GamePane implements Observer<Grid> {
   }
 
   protected Pane setUpScreen() {
-    StackPane gameScreen = new StackPane(root);
+    StackPane gameScreen = new StackPane(root, setUpTimer());
     gameScreen.setAlignment(Pos.CENTER);
     gameScreen.setPrefWidth(width);
 
     Pane pane = new Pane();
     pane.setPrefSize(width, height);
-    pane.getChildren().add(gameScreen);
+    pane.getChildren().addAll(gameScreen);
     return pane;
   }
 
@@ -162,9 +218,11 @@ public class GamePane implements Observer<Grid> {
   private void handleKeyPresses(MainScene scene) {
     // For grid movement
     this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
-      if (event.getCode().isArrowKey()) {
+      if (event.getCode().isArrowKey() || cheatKeys.contains(event.getCode())) {
         gridController.sendPlayToModel(event.getCode());
-        this.currentDirection = event.getCode().getName();
+        if (event.getCode().isArrowKey()) {
+          this.currentDirection = event.getCode().getName();
+        }
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks
         scene.getInteractionPane().updateKeyPress(event.getCode());
@@ -191,25 +249,13 @@ public class GamePane implements Observer<Grid> {
     });
   }
 
-//  private void moveEnemy(){
-//    executorService = Executors.newSingleThreadScheduledExecutor();
-//    executorService.scheduleAtFixedRate(() -> {
-//      if (!keyPressed) {
-//        // No valid key pressed within 3 seconds, call moveEnemy()
-//        System.out.println("calling move Enemy");
-//        keyHandlerController.moveEnemy();
-//      }
-//      // Reset the keyPressed flag after each execution
-//      keyPressed = false;
-//    }, DELAY, DELAY, TimeUnit.SECONDS);
-//  }
 
   private void moveEnemy() {
     // Create a new Timeline
-    timeline = new Timeline();
+    timeline_Enemy = new Timeline();
 
     // Add a KeyFrame to the Timeline
-    timeline.getKeyFrames().add(
+    timeline_Enemy.getKeyFrames().add(
             new KeyFrame(Duration.seconds(currentDelay), event -> {
               if (!keyPressed && firstKeyPressed) {
                 // No valid key pressed within current delay, call moveEnemy()
@@ -224,9 +270,9 @@ public class GamePane implements Observer<Grid> {
     );
 
     // Set the cycle count to indefinite so it repeats
-    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline_Enemy.setCycleCount(Timeline.INDEFINITE);
 
     // Start the Timeline
-    timeline.play();
+    timeline_Enemy.play();
   }
 }

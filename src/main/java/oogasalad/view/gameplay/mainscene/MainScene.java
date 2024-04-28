@@ -23,7 +23,6 @@ public class MainScene implements Scene {
   private InteractionPane interactionScene;
   private final Level level;
   private final LevelController levelController;
-  private String language;
 
   public MainScene(SceneController sceneController, LevelController levelController) {
     this.sceneController = sceneController;
@@ -54,7 +53,6 @@ public class MainScene implements Scene {
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
-    //factory.addScene(this);
   }
 
   public void resetGame() {

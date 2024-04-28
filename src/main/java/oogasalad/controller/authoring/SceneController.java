@@ -15,6 +15,7 @@ public class SceneController {
   private static final int HEIGHT = 800;
   private final Stage stage;
   private final LevelController levelController;
+  private String language;
 
   /**
    * ViewController constructor. Initialized with a JavaFX stage and LevelController.
@@ -24,6 +25,7 @@ public class SceneController {
    */
   public SceneController(Stage stage, LevelController levelController) {
     this.stage = stage;
+    this.language = "English";
     this.levelController = levelController;
     stage.setTitle("Baba is Us: Authoring Environment");
     stage.setResizable(false);
@@ -34,7 +36,7 @@ public class SceneController {
    * Initialize Main Scene.
    */
   public void initializeViews() {
-    switchToScene(new MainScene(levelController));
+    switchToScene(new MainScene(levelController, this));
   }
 
   /**
@@ -47,4 +49,29 @@ public class SceneController {
     stage.setScene(scene.getScene());
   }
 
+  /**
+   * Switch to entrypoint.
+   */
+  public void goToEntryPoint() {
+    EntryPointController entryPointController = new EntryPointController(stage);
+    entryPointController.setLanguage(this.language);
+    switchToScene(new EntryPoint(entryPointController));
+  }
+
+  /**
+   * Set the language of the game.
+   * @param newLanguage the language to change to
+   */
+  public void setLanguage(String newLanguage) {
+    this.language = newLanguage;
+    this.levelController.setLanguage(newLanguage);
+  }
+
+  /**
+   * Get the language of the game.
+   * @return the current configured language
+   */
+  public String getLanguage() {
+    return this.language;
+  }
 }

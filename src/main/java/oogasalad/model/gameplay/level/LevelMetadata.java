@@ -10,6 +10,6 @@ package oogasalad.model.gameplay.level;
  * @param initialConfiguration starting state of the grid.
  */
 public record LevelMetadata(String levelName, String difficulty, int rows,
-                            int columns, String[][][] initialConfiguration) {
+                            int columns, String[][][] initialConfiguration, String hint) {
   //all private final by default
 }

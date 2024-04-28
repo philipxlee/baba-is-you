@@ -1,5 +1,6 @@
 package oogasalad.view.authoring;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +34,7 @@ import oogasalad.view.authoring.HelpWizardDialog;
 
 public class ElementsPane {
 
-  private final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
+  public final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private final JsonSaver jsonSaver;
   private final JsonLoader jsonLoader;
   private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
@@ -47,15 +48,19 @@ public class ElementsPane {
   private String language;
   private String difficulty = "Medium";
   private final GridSizeChanger gridSizeChanger;
+  private MainScene mainScene;
 
-  public ElementsPane(BuilderPane builderPane, LevelController levelController, String language) {
-    this.gridSizeChanger = new GridSizeChanger(builderPane);
+
+  public ElementsPane(BuilderPane builderPane, LevelController levelController,
+      MainScene mainScene) {
+    this.gridSizeChanger = new GridSizeChanger(builderPane, levelController);
+    this.mainScene = mainScene;
     this.factory = new WidgetFactory();
     this.builderPane = builderPane;
     this.levelController = levelController;
     this.jsonSaver = new JsonSaver(levelController, builderPane);
     this.jsonLoader = new JsonLoader(levelController, builderPane);
-    this.language = language;
+    this.language = levelController.getLanguage();
     initializeElementsLayout();
 
   }
@@ -154,17 +159,25 @@ public class ElementsPane {
     Button saveJsonButton = factory.makeButton(new WidgetConfiguration(
         200, 40, "SaveJson", "black-button", language));
     saveJsonButton.setOnAction(event -> jsonSaver.saveJson(difficulty));
+    Button entryPoint = makeEntryPointButton();
 
     // Create the Load Level button
     Button loadLevelButton = factory.makeButton(new WidgetConfiguration(
         200, 40, "LoadLevel", "black-button", language));
-    loadLevelButton.setOnAction(event -> jsonLoader.loadLevel());
+    loadLevelButton.setOnAction(event -> {
+      try {
+        levelController.loadLevel();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
 
     List<Node> SLbuttons = new ArrayList<>();
     SLbuttons.add(saveJsonButton);
+    SLbuttons.add(entryPoint);
     SLbuttons.add(loadLevelButton);
     HBox SLbuttonsHBox = factory.wrapInHBox(SLbuttons, (int) layout.getWidth());
-    SLbuttonsHBox.setSpacing(15);
+    SLbuttonsHBox.setSpacing(10);
 
     layout.getStyleClass().add("elements-background");
 
@@ -209,12 +222,23 @@ public class ElementsPane {
   private void toggleRemoveMode(Button removeButton) {
     removeMode = !removeMode;
     if (removeMode) {
-      removeButton.setText("Removing mode: Press blocks to remove");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemovingMode", language));
     } else {
-      removeButton.setText("Remove block");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemoveBlock", language));
     }
     builderPane.setRemove(removeMode);
   }
+
+
+  private Button makeEntryPointButton() {
+    Button entryPoint = factory.makeButton(new WidgetConfiguration(100, 40,
+        "Back", "black-button", language));
+    entryPoint.setOnAction(e -> mainScene.goToEntryPoint());
+    return entryPoint;
+  }
+
 
 
   private void showLoadingScreen() {
@@ -267,10 +291,17 @@ public class ElementsPane {
     // Define keyboard shortcuts
     KeyCombination saveJsonCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
     KeyCombination loadLevelCombination = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
-
+    KeyCombination returntosplash = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
     // Assign actions to keyboard shortcuts
     scene.getAccelerators().put(saveJsonCombination, () -> jsonSaver.saveJson(difficulty));
     scene.getAccelerators().put(loadLevelCombination, jsonLoader::loadLevel);
+    scene.getAccelerators().put(returntosplash, returnToSplashScreen());
+
+  }
+
+  private Runnable returnToSplashScreen() {
+    Runnable goToEntryPoint = () -> mainScene.goToEntryPoint();
+    return goToEntryPoint;
   }
 
 }
