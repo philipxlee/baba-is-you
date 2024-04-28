@@ -11,6 +11,7 @@ import static java.util.Optional.of;
 public class EnemyKeyHandler extends KeyHandler{
     private final Grid grid;
     private final GameStateController gameStateController;
+    private static final int MAX_ENEMY_COUNT = 30;
 
 
     private final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Up, down, left, right
@@ -24,7 +25,7 @@ public class EnemyKeyHandler extends KeyHandler{
     @Override
     public void execute() {
 
-        if( grid.findEnemyBlock().size() >= 20){
+        if( grid.findEnemyBlock().size() >= MAX_ENEMY_COUNT){
             return;
         }
         else{
@@ -44,7 +45,7 @@ public class EnemyKeyHandler extends KeyHandler{
             int randomCol = (int) (Math.random() * numCols);
 
             // Check if the cell at the random coordinates contains a TextBlock or winning block. dont wanna add them on top of each other
-            if (grid.cellHasWinning(randomRow, randomCol) || grid.cellHasTextBlock(randomRow, randomCol) || grid.cellHasWater(randomRow, randomCol) || grid.cellHasLava(randomRow, randomCol) || grid.cellHasEnemy(randomRow, randomCol)) {
+            if (!grid.cellIsEmpty(randomRow, randomCol)) {
                 // If it's a TextBlock, continue to the next iteration to reprocess the position
                 continue;
             }

@@ -228,7 +228,7 @@ public class GamePane implements Observer<Grid> {
         keyPressed = true;
         firstKeyPressed = true;
       }
-      if (event.getCode().isLetterKey()) {
+      if (event.getCode() == KeyCode.E) {
         gridController.sendPlayToModel(event.getCode());
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks

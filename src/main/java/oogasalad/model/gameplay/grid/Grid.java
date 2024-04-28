@@ -381,5 +381,14 @@ public class Grid extends GridHelper implements Observable<Grid> {
     return Optional.empty();
   }
 
+  public boolean cellIsEmpty(int cellI, int cellJ){
+    for (int i = 0; i < grid[cellI][cellJ].size(); i++){
+      AbstractBlock block = grid[cellI][cellJ].get(i);
+      if(!block.isEmptyVisualBlock()){
+        return false;
+      }
+    }
+    return true;
+  }
 
 }
