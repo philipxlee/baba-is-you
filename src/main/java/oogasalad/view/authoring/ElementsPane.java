@@ -215,12 +215,15 @@ public class ElementsPane {
   private void toggleRemoveMode(Button removeButton) {
     removeMode = !removeMode;
     if (removeMode) {
-      removeButton.setText("Removing mode: Press blocks to remove");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemovingMode", language));
     } else {
-      removeButton.setText("Remove block");
+      factory.changeButtonLabel(removeButton, new WidgetConfiguration(
+          "RemoveBlock", language));
     }
     builderPane.setRemove(removeMode);
   }
+
 
   private Button makeEntryPointButton() {
     Button entryPoint = factory.makeButton(new WidgetConfiguration(100, 40,

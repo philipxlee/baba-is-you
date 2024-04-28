@@ -96,7 +96,7 @@ public class LeaderboardScene implements Scene {
     Button backButton = factory.makeButton(
         new WidgetConfiguration(200, 50, "Back", "button", language));
     backButton.setOnAction(
-        event -> sceneController.switchToScene(new MainScene(sceneController, levelController)));
+        event -> sceneController.switchToPreviousScene());
 
     root.getChildren().addAll(leaderboardList, backButton);
   }
