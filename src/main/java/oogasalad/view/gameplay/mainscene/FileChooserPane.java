@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.config.JsonManager;
@@ -138,7 +139,8 @@ public class FileChooserPane {
           width - 100, 10);
 
       factory.createPopUpWindow(new WidgetConfiguration(width - 100,
-          height / 4, "FileInformation", "root", language), vbox);
+          height / 4, "FileInformation", "root", language), vbox,
+          new Stage());
     });
   }
 

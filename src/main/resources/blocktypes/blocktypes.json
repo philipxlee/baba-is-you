@@ -176,5 +176,9 @@
       "All",
       "Visual"
     ]
+  },
+  "BabaHatVisualBlock": {
+    "imagePath": "/images/baba/BabaHatVisualBlock.png",
+    "category": []
   }
 }
