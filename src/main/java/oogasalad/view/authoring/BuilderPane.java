@@ -25,6 +25,7 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import java.util.Stack;
 
 
@@ -34,6 +35,9 @@ public class BuilderPane {
   private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
   protected Pane root; // Your root node for the builder scene
   protected GridPane gridPane;
+
+  private ResourceBundle messages = ResourceBundle.getBundle("error_bundle/authoring_errors");
+
   public int gridWidth;
   protected boolean removeMode;
   public int gridHeight;
@@ -79,13 +83,13 @@ public class BuilderPane {
   protected void alertGrid() {
     // Display a confirmation dialog
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmation");
-    alert.setHeaderText("Warning: Existing game state will be deleted");
-    alert.setContentText("Would you like to proceed?");
+    alert.setTitle(messages.getString("grid.confirmationTitle"));
+    alert.setHeaderText(messages.getString("grid.warning"));
+    alert.setContentText(messages.getString("grid.changeConfirmation"));
 
     // Add buttons for user selection
-    ButtonType buttonTypeYes = new ButtonType("Yes");
-    ButtonType buttonTypeNo = new ButtonType("No");
+    ButtonType buttonTypeYes = new ButtonType(messages.getString("yes"));
+    ButtonType buttonTypeNo = new ButtonType(messages.getString("no"));
 
     alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 

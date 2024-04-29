@@ -1,6 +1,8 @@
 package oogasalad.view.authoring;
 
 import java.util.Optional;
+import java.util.ResourceBundle;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -16,6 +18,8 @@ public class GridSizeChanger {
 
   private final BuilderPane builderPane;
   private final LevelController levelController;
+
+  private ResourceBundle messages = ResourceBundle.getBundle("error_bundle/authoring_errors");
 
 
   public GridSizeChanger(BuilderPane builderPane, LevelController levelController) {
@@ -55,11 +59,11 @@ public class GridSizeChanger {
           if (isValidSize(width) && isValidSize(height)) {
             return new Pair<>(width, height);
           } else {
-            showErrorMessage("Width and height must be between 5 and 20");
+            showErrorMessage(messages.getString("grid_size_error_message"));
             return null;
           }
         } catch (NumberFormatException e) {
-          showErrorMessage("Invalid number format");
+          showErrorMessage(messages.getString("invalid_number_error_message"));
           return null;
         }
       }
