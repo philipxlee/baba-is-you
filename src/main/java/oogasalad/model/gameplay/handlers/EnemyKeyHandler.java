@@ -86,17 +86,17 @@ public class EnemyKeyHandler extends KeyHandler {
      */
     private void moveSingleEnemy(int[] enemyBlock) {
         int[] enemy = {enemyBlock[0], enemyBlock[1]};
-        Optional<int[]> babaOptional = nearestBabaCoordinate(enemy);
-        if (babaOptional.isEmpty()) {
+        Optional<int[]> controllableOptional = nearestControllableCoordinate(enemy);
+        if (controllableOptional.isEmpty()) {
             gameStateController.displayGameOver(false); // All controllable blocks have been removed
             return;
         }
-        int[] babaLocation = babaOptional.get();
-        int[] baba = {babaLocation[0], babaLocation[1]};
-        if (Arrays.equals(enemy, baba)) {
-            handleEnemyBabaOverlap(babaLocation);
+        int[] controllableLocation = controllableOptional.get();
+        int[] controllable = {controllableLocation[0], controllableLocation[1]};
+        if (Arrays.equals(enemy, controllable)) {
+            handleEnemyControllableOverlap(controllableLocation);
         } else {
-            moveEnemyTowardsBaba(enemyBlock, baba);
+            moveEnemyTowardsControllable(enemyBlock, controllable);
         }
     }
 
@@ -104,10 +104,10 @@ public class EnemyKeyHandler extends KeyHandler {
      * Moves an enemy entity towards the nearest controllable block.
      *
      * @param enemyBlock The coordinates of the enemy entity.
-     * @param baba       The coordinates of the nearest controllable block.
+     * @param controllable       The coordinates of the nearest controllable block.
      */
-    private void moveEnemyTowardsBaba(int[] enemyBlock, int[] baba) {
-        Optional<List<int[]>> shortestPathOptional = findShortestPath(enemyBlock, baba);
+    private void moveEnemyTowardsControllable(int[] enemyBlock, int[] controllable) {
+        Optional<List<int[]>> shortestPathOptional = findShortestPath(enemyBlock, controllable);
         if (shortestPathOptional.isPresent()) {
             List<int[]> shortestPath = shortestPathOptional.get();
             int[] nextPosition = shortestPath.get(1);
@@ -126,7 +126,7 @@ public class EnemyKeyHandler extends KeyHandler {
      * @param enemyCamp The coordinates of the enemy position.
      * @return Optional containing the coordinates of the nearest controllable block if found, otherwise empty.
      */
-    private Optional<int[]> nearestBabaCoordinate(int[] enemyCamp) {
+    private Optional<int[]> nearestControllableCoordinate(int[] enemyCamp) {
         List<int[]> allControllableBlock = grid.findControllableBlock();
         if (allControllableBlock.isEmpty()) {
             return Optional.empty();
@@ -348,10 +348,10 @@ public class EnemyKeyHandler extends KeyHandler {
     /**
      * Handles the situation where an enemy entity overlaps with a controllable block.
      *
-     * @param babaLocation The coordinates of the controllable block.
+     * @param controllableLocation The coordinates of the controllable block.
      */
-    private void handleEnemyBabaOverlap(int[] babaLocation) {
-        grid.removeBaba(babaLocation[0], babaLocation[1]);
+    private void handleEnemyControllableOverlap(int[] controllableLocation) {
+        grid.removeControllable(controllableLocation[0], controllableLocation[1]);
     }
 
 }
