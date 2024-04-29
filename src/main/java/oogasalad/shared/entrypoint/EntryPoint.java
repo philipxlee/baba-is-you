@@ -103,6 +103,7 @@ public class EntryPoint implements Scene {
       entryController.switchToAuthoringEnvironment();
     });
 
+    //Wraps the buttons in an HBox
     HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(authoring, gamePlay)),
         width / 2);
     buttons.setAlignment(Pos.BASELINE_CENTER);
@@ -119,7 +120,6 @@ public class EntryPoint implements Scene {
     ComboBox<String> switchLanguage = factory.makeComboBox(new WidgetConfiguration(200, 40,
         "SwitchLanguage", "combo-box", language), new ArrayList<>(Arrays.asList("English",
         "Spanish")), language);
-    //TODO: Change to be a drop down
     switchLanguage.setOnAction(event -> {
       language = switchLanguage.getValue();
       entryController.setLanguage(language);
