@@ -2,6 +2,7 @@ package oogasalad.model.gameplay.level;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.Arrays;
 import java.util.List;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.shared.config.JsonManager;
@@ -75,18 +76,24 @@ public class GameLevelParser {
   }
 
   /**
-   * Constructs the cells array from the level's initial configuration. This method delegates the
-   * construction of each row to a helper method to reduce complexity.
+   * Constructs a JsonArray representing the cells of the level's grid from the pane's current
+   * configuration. This method uses streams to process each row of the grid, which is structured as
+   * a 2D array where each element is a list of AbstractBlock objects. Each row is processed using
+   * the constructRowArray method to simplify the conversion of each list into a JsonArray.
    *
-   * @param pane The pane object containing the current configuration.
-   * @return A JsonArray representing the cells of the level's grid.
+   * @param pane The GamePane object that holds the grid controller and current game grid
+   *             configuration.
+   * @return A JsonArray where each element corresponds to a row in the grid, represented as a
+   * JsonArray of cells.
    */
   private JsonArray constructGridArray(GamePane pane) {
     JsonArray cellsArray = new JsonArray();
-    for (List<AbstractBlock>[] layer : pane.getGridController().getGameGrid().getGrid()) {
-      JsonArray layerArray = constructRowArray(layer);
-      cellsArray.add(layerArray);
-    }
+    List<AbstractBlock>[][] grid = pane.getGridController().getGameGrid().getGrid();
+
+    Arrays.stream(grid)
+        .map(this::constructRowArray)
+        .forEach(cellsArray::add);
+
     return cellsArray;
   }
 
@@ -99,10 +106,9 @@ public class GameLevelParser {
    */
   private JsonArray constructRowArray(List<AbstractBlock>[] layer) {
     JsonArray layerArray = new JsonArray();
-    for (List<AbstractBlock> row : layer) {
-      JsonArray rowArray = constructCellArray(row);
-      layerArray.add(rowArray);
-    }
+    Arrays.stream(layer)
+        .map(this::constructCellArray)
+        .forEach(layerArray::add);
     return layerArray;
   }
 
@@ -114,11 +120,9 @@ public class GameLevelParser {
    * @return A JsonArray containing the cell values.
    */
   private JsonArray constructCellArray(List<AbstractBlock> row) {
-    JsonArray rowArray = new JsonArray();
-    for (AbstractBlock cell : row) {
-      rowArray.add(cell.getBlockName());
-    }
-    return rowArray;
+    return row.stream()
+        .map(AbstractBlock::getBlockName)
+        .collect(JsonArray::new, JsonArray::add, JsonArray::addAll);
   }
 
   /**
