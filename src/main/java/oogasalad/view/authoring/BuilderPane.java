@@ -1,10 +1,13 @@
 package oogasalad.view.authoring;
 
 import com.google.gson.JsonObject;
+import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -73,10 +76,12 @@ public class BuilderPane {
     setUpDropHandling();
   }
 
+
+
   protected void setUpGrid() {
     gridPane.getChildren().clear(); // Clear the existing grid
-//    root.getChildren().removeIf(node -> node instanceof ImageView
-//        || node instanceof Pane);  // Adjust if your structure requires
+    root.getChildren().clear();
+
 
     // Adjust the maximum width and height available for the grid, accounting for margins
     double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;

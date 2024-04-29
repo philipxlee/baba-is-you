@@ -2,9 +2,11 @@ package oogasalad.controller.gameplay;
 
 import java.io.IOException;
 import oogasalad.database.DatabaseConfig;
+import oogasalad.model.gameplay.level.GameLevelParser;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.config.JsonManager;
+import oogasalad.view.gameplay.mainscene.GamePane;
 
 /**
  * LevelController responds to view and allows for model to parse Json files and then load them or
@@ -15,6 +17,7 @@ public class LevelController {
   private final Level level;
   private final JsonGameParser jsonGameParser = new JsonGameParser();
   private final JsonManager jsonManager = new JsonManager();
+  private GameLevelParser gameLevelParser = new GameLevelParser(jsonManager);
   private SceneController sceneController;
 
   /**
@@ -67,5 +70,10 @@ public class LevelController {
         levelController);
     this.sceneController.setLanguage(sceneController.getLanguage());
     this.sceneController.initializeViews();
+  }
+
+  public void saveLevel(GamePane pane) throws IOException {
+    jsonManager.saveToFile(gameLevelParser.parseLevel(level, pane),
+        level.getLevelMetadata().levelName());
   }
 }

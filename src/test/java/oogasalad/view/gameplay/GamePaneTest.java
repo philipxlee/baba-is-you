@@ -41,7 +41,7 @@ public class GamePaneTest extends ApplicationTest {
     sceneController.setLanguage("English");
     MainScene scene = new MainScene(sceneController, levelController);
     gamePane = new GamePane();
-    gamePane.initializeGameGrid(800, 600, scene, sceneController, testLevel);
+    gamePane.initializeGameGrid(800, 600, scene, sceneController, testLevel, levelController);
     stage.setScene(new javafx.scene.Scene(gamePane.setUpScreen(), 800, 600));
     stage.show();
   }
