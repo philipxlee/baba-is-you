@@ -22,10 +22,9 @@ import oogasalad.database.gamedata.ReplySchema;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
-import oogasalad.view.gameplay.mainscene.MainScene;
 
 /**
- * Scene that displays the leaderboard.
+ * Scene that displays the comments.
  */
 public class CommentScene implements Scene {
 
@@ -65,8 +64,7 @@ public class CommentScene implements Scene {
     this.root = new VBox(20);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
-    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
-        .toExternalForm());
+    applyCss(DEFAULT_RESOURCE_FOLDER, STYLESHEET);
     setUpWidgets();
   }
 
@@ -103,6 +101,11 @@ public class CommentScene implements Scene {
     root.getChildren().addAll(header, setUpScrollPane(commentList), backButton);
   }
 
+  /**
+   * Sets up the scrollpane for the comments.
+   * @param commentList list of comments to put in the scrollpane
+   * @return stylized scrollpane
+   */
   private ScrollPane setUpScrollPane(VBox commentList) {
     FlowPane flowPane = factory.createFlowPane(new WidgetConfiguration(width - 500,
         height - 300, "flowpane", language));
@@ -139,6 +142,11 @@ public class CommentScene implements Scene {
     }
   }
 
+  /**
+   * Update the replies UI whenever there is a new reply.
+   * @param comment data related to commenter
+   * @param repliesContainer current container of replies
+   */
   private void updateRepliesUI(CommentData comment, VBox repliesContainer) {
     Iterator<ReplySchema> repliesIterator = comment.getRepliesIterator();
     while (repliesIterator.hasNext()) {
@@ -158,6 +166,12 @@ public class CommentScene implements Scene {
     });
   }
 
+  /**
+   * Show a textarea for users to reply to other users.
+   * @param comment data related to commenter
+   * @param repliesContainer container of current replies
+   * @param addReplyButton reply button
+   */
   private void showReplyInput(CommentData comment, VBox repliesContainer, Button addReplyButton) {
     TextArea replyInput = factory.createTextArea(new WidgetConfiguration(600, 100,
         "CommentPrompter", "text-field", language));
@@ -179,9 +193,6 @@ public class CommentScene implements Scene {
         repliesContainer.getChildren().add(addReplyButton);
       }
     });
-
     repliesContainer.getChildren().addAll(replyInput, submitReply);
   }
-
-
 }

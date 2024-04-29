@@ -1,6 +1,7 @@
 package oogasalad.model.gameplay.level;
 
 import com.google.gson.JsonObject;
+import oogasalad.model.gameplay.exceptions.JsonParsingException;
 import oogasalad.shared.config.GridParser;
 import oogasalad.shared.config.JsonManager;
 
@@ -17,7 +18,7 @@ public class JsonGameParser implements GridParser {
    * @param levelJson The JsonObject to parse.
    * @return The Level object populated with data from the JSON.
    */
-  public Level parseLevel(JsonObject levelJson) {
+  public Level parseLevel(JsonObject levelJson) throws JsonParsingException {
 
     LevelMetadata metadata = parseLevelMetadata(levelJson);
 
@@ -30,18 +31,24 @@ public class JsonGameParser implements GridParser {
    * @param levelJson The JsonObject containing the level metadata.
    * @return A LevelMetadata object containing the extracted metadata from the JSON.
    */
-  private LevelMetadata parseLevelMetadata(JsonObject levelJson) {
-    String levelName = getValue(levelJson, "levelName");
-    JsonObject gridSize = getObject(levelJson, "gridSize");
-    int rows = Integer.parseInt(getValue(gridSize, "rows"));
-    int columns = Integer.parseInt(getValue(gridSize, "columns"));
-    JsonObject gridObject = getObject(levelJson, "grid");
-    JsonObject metadataJson = getObject(gridObject, "metadata");
-    String difficulty = getValue(metadataJson, "difficulty");
-    String[][][] grid = parseGrid(jsonManager.getJsonArray(gridObject, "cells"));
-    String authorName = getValue(metadataJson, "author");
-    String hint = getValue(metadataJson, "hint");
-    return new LevelMetadata(levelName, difficulty, rows, columns, grid, authorName, hint);
+  private LevelMetadata parseLevelMetadata(JsonObject levelJson) throws JsonParsingException {
+    try {
+      String levelName = getValue(levelJson, "levelName");
+      JsonObject gridSize = getObject(levelJson, "gridSize");
+      int rows = Integer.parseInt(getValue(gridSize, "rows"));
+      int columns = Integer.parseInt(getValue(gridSize, "columns"));
+      JsonObject gridObject = getObject(levelJson, "grid");
+      JsonObject metadataJson = getObject(gridObject, "metadata");
+      String difficulty = getValue(metadataJson, "difficulty");
+      String[][][] grid = parseGrid(jsonManager.getJsonArray(gridObject, "cells"));
+      String authorName = getValue(metadataJson, "author");
+      String hint = getValue(metadataJson, "hint");
+
+      return new LevelMetadata(levelName, difficulty, rows, columns, grid, authorName, hint);
+    } catch (NullPointerException | NumberFormatException e) {
+      throw new JsonParsingException("Could not load since no file was chosen, or the chosen"
+          + "file is invalid", e);
+    }
   }
 
   /**

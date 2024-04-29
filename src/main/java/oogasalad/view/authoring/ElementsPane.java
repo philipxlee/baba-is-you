@@ -1,6 +1,5 @@
 package oogasalad.view.authoring;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +23,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.Grid;
 import oogasalad.model.authoring.level.Level;
@@ -34,10 +32,9 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.authoring.blockDisplay.BlockLoader;
 import oogasalad.view.authoring.jsonOps.JsonLoader;
 import oogasalad.view.authoring.jsonOps.JsonSaver;
-import oogasalad.view.authoring.HelpWizardDialog;
 
 
-public class ElementsPane {
+public class ElementsPane implements AlertHandler {
 
   public final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private final JsonSaver jsonSaver;
@@ -183,8 +180,8 @@ public class ElementsPane {
         Level loadedLevel = levelController.loadLevel();
         Grid loadedGrid = loadedLevel.getGrid();
         builderPane.renderLoadedGrid(loadedGrid);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+      } catch (Exception e) {
+        showError("Error", e.getMessage());
       }
     });
 

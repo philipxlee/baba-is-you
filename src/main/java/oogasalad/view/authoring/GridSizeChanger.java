@@ -32,7 +32,6 @@ public class GridSizeChanger {
    * @param builderPane the BuilderPane associated with this changer, which displays the grid
    * @param levelController the controller responsible for managing level data and operations
    */
-
   public GridSizeChanger(BuilderPane builderPane, LevelController levelController) {
     this.builderPane = builderPane;
     this.levelController = levelController;
@@ -43,19 +42,18 @@ public class GridSizeChanger {
    * Processes the input and applies the grid size change if the input is valid.
    */
   public void changeGridSize() {
-    Optional<Pair<Integer, Integer>> result = showGridSizeDialog();
+    Optional<Integer> result = showGridSizeDialog();
     result.ifPresent(this::processGridSizeChange);
   }
 
   /**
-   * Displays a dialog to the user for entering the new grid dimensions. Validates the input
+   * Displays a dialog to the user for entering the new grid size. Validates the input
    * to ensure it meets specific criteria.
    *
-   * @return an Optional containing a Pair of integers representing the width and height
-   *         of the grid if valid input was provided, otherwise an empty Optional
+   * @return an Optional containing an Integer representing the size of the grid if valid input was provided, otherwise an empty Optional
    */
-  private Optional<Pair<Integer, Integer>> showGridSizeDialog() {
-    Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
+  private Optional<Integer> showGridSizeDialog() {
+    Dialog<Integer> dialog = new Dialog<>();
     dialog.setTitle("Change Grid Size");
     ButtonType confirmButtonType = ButtonType.OK;
     dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
@@ -63,23 +61,18 @@ public class GridSizeChanger {
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
-    TextField widthField = new TextField();
-    widthField.setPromptText("Width");
-    TextField heightField = new TextField();
-    heightField.setPromptText("Height");
-    grid.add(new Label("Width:"), 0, 0);
-    grid.add(widthField, 1, 0);
-    grid.add(new Label("Height:"), 0, 1);
-    grid.add(heightField, 1, 1);
+    TextField sizeField = new TextField();
+    sizeField.setPromptText("Size");
+    grid.add(new Label("Size:"), 0, 0);
+    grid.add(sizeField, 1, 0);
 
     dialog.getDialogPane().setContent(grid);
     dialog.setResultConverter(dialogButton -> {
       if (dialogButton == confirmButtonType) {
         try {
-          int width = Integer.parseInt(widthField.getText());
-          int height = Integer.parseInt(heightField.getText());
-          if (isValidSize(width) && isValidSize(height)) {
-            return new Pair<>(width, height);
+          int size = Integer.parseInt(sizeField.getText());
+          if (isValidSize(size)) {
+            return size;
           } else {
             showErrorMessage(messages.getString("grid_size_error_message"));
             return null;
@@ -99,20 +92,16 @@ public class GridSizeChanger {
    * Processes the grid size change by updating the BuilderPane and LevelController
    * with the new grid dimensions.
    *
-   * @param newSize a Pair containing the new width and height of the grid
+   * @param newSize the new size of the grid
    */
-  private void processGridSizeChange(Pair<Integer, Integer> newSize) {
-    builderPane.gridWidth = newSize.getKey();
-    builderPane.gridHeight = newSize.getValue();
+  private void processGridSizeChange(Integer newSize) {
+    builderPane.gridWidth = newSize;
+    builderPane.gridHeight = newSize;
     alertGrid();
     LevelMetadata levelMetadata = new LevelMetadata("", "", builderPane.gridHeight, builderPane.gridWidth, "", "", "");
     levelController.resetLevel(levelMetadata);
   }
 
-  /**
-   * Displays a confirmation alert to the user before proceeding to change the grid size.
-   * If the user confirms, the grid is reconfigured to the new size.
-   */
   /**
    * Displays a confirmation dialog when clearing the grid or making significant modifications.
    */
@@ -129,7 +118,6 @@ public class GridSizeChanger {
       builderPane.setUpGrid();
     }
   }
-
 
   /**
    * Validates the provided grid size.

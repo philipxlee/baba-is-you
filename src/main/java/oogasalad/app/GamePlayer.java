@@ -53,6 +53,10 @@ public class GamePlayer {
 
   }
 
+  /**
+   * Set the language of the gameplay environment.
+   * @param newLanguage new language to change to
+   */
   public void setLanguage(String newLanguage) {
     this.language = newLanguage;
   }
