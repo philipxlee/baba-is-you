@@ -1,8 +1,12 @@
 package oogasalad.controller.authoring;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.config.JsonManager;
@@ -15,10 +19,10 @@ public class LevelController {
 
   private final LevelParser levelParser;
   private final OpenAIClient openAIClient;
-  private Level currentLevel;
-  private String language;
   private final JsonParser jsonParser;
   private final JsonManager jsonManager = new JsonManager();
+  private Level currentLevel;
+  private String language;
 
   /**
    * LevelController constructor.
@@ -87,9 +91,36 @@ public class LevelController {
   /**
    * Use GPT to randomly generate a valid level configuration.
    */
-  public void generateLevel() {
-    openAIClient.fetchLevelConfiguration().thenAccept(json -> {
-      System.out.println("Received level configuration: " + json);
+  public void generateLevel(Consumer<Boolean> onComplete) {
+    openAIClient.fetchLevelConfiguration().thenAccept(jsonString -> {
+      Gson gson = new Gson();
+      JsonElement element = gson.fromJson(jsonString, JsonElement.class);
+      if (element.isJsonObject()) {
+        JsonObject jsonObject = element.getAsJsonObject();
+        if (jsonObject.has("choices")) {
+          JsonArray choices = jsonObject.getAsJsonArray("choices");
+          if (choices.size() > 0) {
+            JsonObject firstChoice = choices.get(0).getAsJsonObject();
+            if (firstChoice.has("message")) {
+              JsonObject message = firstChoice.getAsJsonObject("message");
+              if (message.has("content")) {
+                String levelJson = message.get("content").getAsString();
+                String jsonContent = levelJson.replaceAll("```json", "").replaceAll("```", "").trim();
+                JsonObject levelJsonObject = gson.fromJson(jsonContent, JsonObject.class);
+                currentLevel = jsonParser.parseLevel(levelJsonObject);
+                String[][][] jsonGrid = jsonParser.getJsonGrid(levelJsonObject);
+                currentLevel.getGrid().updateGrid(jsonGrid);
+                System.out.println(currentLevel.getParsedGrid());
+                onComplete.accept(true); // Notify success
+              }
+            }
+          }
+        } else {
+          onComplete.accept(false); // Notify failure
+        }
+      } else {
+        onComplete.accept(false); // Notify failure
+      }
     });
   }
 
@@ -109,15 +140,6 @@ public class LevelController {
    */
   public LevelMetadata getLevelMetadata() {
     return currentLevel.getLevelMetadata();
-  }
-
-  /**
-   * Set the language set for the authoring env.
-   *
-   * @param newLanguage new language to change the env to
-   */
-  public void setLanguage(String newLanguage) {
-    this.language = newLanguage;
   }
 
   /**
@@ -145,5 +167,14 @@ public class LevelController {
    */
   public String getLanguage() {
     return this.language;
+  }
+
+  /**
+   * Set the language set for the authoring env.
+   *
+   * @param newLanguage new language to change the env to
+   */
+  public void setLanguage(String newLanguage) {
+    this.language = newLanguage;
   }
 }
