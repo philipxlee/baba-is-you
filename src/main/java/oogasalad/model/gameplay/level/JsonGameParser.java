@@ -39,8 +39,9 @@ public class JsonGameParser implements GridParser {
     JsonObject metadataJson = getObject(gridObject, "metadata");
     String difficulty = getValue(metadataJson, "difficulty");
     String[][][] grid = parseGrid(jsonManager.getJsonArray(gridObject, "cells"));
+    String authorName = getValue(metadataJson, "author");
     String hint = getValue(metadataJson, "hint");
-    return new LevelMetadata(levelName, difficulty, rows, columns, grid, hint);
+    return new LevelMetadata(levelName, difficulty, rows, columns, grid, authorName, hint);
   }
 
   /**
