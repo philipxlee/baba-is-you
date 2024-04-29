@@ -17,6 +17,14 @@ public class KeyHandlerController {
         this.gameStateController = gameStateController;
     }
 
+    /**
+     * Executes the corresponding action based on the provided key code.
+     * If the key code matches any predefined cheat keys, the corresponding action is executed immediately.
+     * Otherwise, a key handler is instantiated based on the key code and executed to perform the appropriate action.
+     * @param grid The grid object representing the game state.
+     * @param code The key code corresponding to the pressed key.
+     * @return True if the action was executed successfully, false otherwise.
+     */
     public boolean executeKey(Grid grid, KeyCode code) {
         this.grid = grid;
         //Cheat keys: implement further ones here
@@ -43,6 +51,10 @@ public class KeyHandlerController {
         return false;
     }
 
+    /**
+     * Moves the enemy in the game grid.
+     * This method instantiates an enemy key handler and calls its moveEnemy method to move the enemy.
+     */
     public void moveEnemy() {
         enemyKeyHandler = new EnemyKeyHandler(this.grid, this.gameStateController);
         enemyKeyHandler.moveEnemy();
