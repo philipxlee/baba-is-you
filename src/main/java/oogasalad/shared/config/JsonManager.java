@@ -26,6 +26,7 @@ public class JsonManager implements AlertHandler {
 
   private static final Gson gson = new Gson();
   private static final Logger logger = LogManager.getLogger(JsonManager.class);
+  private File file;
 
   /**
    * loadFromFile() is responsible for loading in JSON data from a JSON file that a user selects.
@@ -34,7 +35,6 @@ public class JsonManager implements AlertHandler {
    */
   public JsonObject loadFromFile() throws FileLoadingException {
     Stage stage = new Stage();
-    File file = null;
     try {
       file = selectFile(stage);
       if (file == null) {
