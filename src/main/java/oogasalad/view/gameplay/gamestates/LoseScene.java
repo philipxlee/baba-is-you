@@ -82,6 +82,7 @@ public class LoseScene implements Scene {
 
     Button start = factory.makeButton(new WidgetConfiguration(200, 40,
         "TryAgain", "button", language));
+    start.setId("tryAgainButton");
     texts.add(start);
     start.setOnAction(event -> {
       sceneController.beginGame(sceneController.isGuestSession());
