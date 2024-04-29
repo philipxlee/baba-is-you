@@ -153,5 +153,4 @@ public class GridSizeChanger {
     alert.setContentText(message);
     alert.showAndWait();
   }
-
 }

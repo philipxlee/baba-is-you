@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
@@ -15,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -26,6 +28,7 @@ import javafx.util.Callback;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.Grid;
 import oogasalad.model.authoring.level.Level;
+import oogasalad.shared.alert.AlertHandler;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.authoring.blockDisplay.BlockLoader;
@@ -136,13 +139,16 @@ public class ElementsPane {
 
     Button gptButton = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
-    gptButton.setOnAction(event -> showLoadingScreen());
 
     gptButton.setOnMouseClicked(event -> {
       try {
-        levelController.generateLevel();
+        generateLevel();
       } catch (Exception e) {
-        e.printStackTrace();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("GPT Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Error with generate function. Try again :(");
+        alert.showAndWait();
       }
     });
 
@@ -249,9 +255,7 @@ public class ElementsPane {
     return entryPoint;
   }
 
-
-
-  private void showLoadingScreen() {
+  private void generateLevel() {
     // Create a progress bar for the loading screen
     ProgressBar progressBar = new ProgressBar();
     progressBar.setPrefWidth(200);
@@ -268,33 +272,26 @@ public class ElementsPane {
     loadingStage.setTitle(messages.getString("loadingTitle"));
 
     loadingStage.setScene(new Scene(loadingPane, 250, 100));
-
-    // Start a task for generating the level
-    Task<Void> generateTask = new Task<>() {
-      @Override
-      protected Void call() throws Exception {
-        // Simulate generation process
-        for (int i = 0; i <= 100; i++) {
-          updateProgress(i, 100);
-          Thread.sleep(50);
-        }
-        return null;
-      }
-    };
-
-    // Bind the progress of the task to the progress bar
-    progressBar.progressProperty().bind(generateTask.progressProperty());
-
-    // When the task completes, close the loading screen
-    generateTask.setOnSucceeded(event -> {
-      loadingStage.close();
-    });
-
-    // Showing the loading screen
     loadingStage.show();
-
-    // Start the task
-    new Thread(generateTask).start();
+    levelController.generateLevel(success -> {
+      Platform.runLater(() -> {
+        loadingStage.close();
+        if (success) {
+          System.out.println("Level generation completed successfully.");
+          Level newLevel = levelController.getLevel();
+          Grid loadedGrid = newLevel.getGrid();
+          builderPane.renderLoadedGrid(loadedGrid);
+        } else {
+          System.out.println("Failed to generate level.");
+          Alert alert = new Alert(AlertType.ERROR);
+          alert.setTitle("Failed to Generate Level");
+          alert.setContentText("GPT didn't work :( Try again later.");
+          alert.setWidth(10);
+          alert.setHeight(200);
+          alert.showAndWait();
+        }
+      });
+    });
   }
 
   protected void setKeyboardShortcuts(Scene scene) {

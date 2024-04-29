@@ -15,17 +15,22 @@ import java.util.concurrent.CompletableFuture;
 public class OpenAIClient {
 
   private static final String OPENAI_CONFIG = "/openai/openai.properties";
+  private static final String PAYLOAD_CONFIG = "/openai/payload_config.properties";
   private static Properties config;
+  private static Properties payloadConfig;
 
   /**
    * OpenAIClient constructor.
    */
   public OpenAIClient() {
     config = new Properties();
-    try (InputStream inputStream = getClass().getResourceAsStream(OPENAI_CONFIG)) {
-      config.load(inputStream);
+    payloadConfig = new Properties();
+    try (InputStream configInputStream = getClass().getResourceAsStream(OPENAI_CONFIG);
+        InputStream payloadInputStream = getClass().getResourceAsStream(PAYLOAD_CONFIG)) {
+      config.load(configInputStream);
+      payloadConfig.load(payloadInputStream);
     } catch (IOException e) {
-      throw new RuntimeException("Error loading openai config", e);
+      throw new RuntimeException("Error loading properties files", e);
     }
   }
 
@@ -53,15 +58,16 @@ public class OpenAIClient {
    * @return String representing the body of the request.
    */
   private String buildPayload() {
+    String promptTemplate = payloadConfig.getProperty("payload.template");
     return """
         {
-            "model": "gpt-3.5-turbo",
+            "model": "gpt-4-turbo",
             "messages": [
-                {"role": "system", "content": "Assume you are an AI chat bot assistant."},
-                {"role": "user", "content": "Hi! How are you doing today?"}
+                {"role": "user", "content": "Assume you are an AI chat bot assistant."},
+                {"role": "user", "content": "%s"}
             ],
             "temperature": 0.7
         }
-        """;
+        """.formatted(promptTemplate);
   }
 }
