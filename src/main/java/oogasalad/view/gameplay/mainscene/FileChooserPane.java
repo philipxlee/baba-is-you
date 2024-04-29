@@ -21,6 +21,8 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.config.JsonManager;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * UI class to handle the file choosing functionality within the Interaction Pane.
@@ -39,8 +41,16 @@ public class FileChooserPane {
   private final JsonManager jsonManager;
   private final LevelController levelController;
   private final SceneController sceneController;
+  private static final Logger logger = LogManager.getLogger(FileChooserPane.class);
 
-
+  /**
+   * Initializes the file chooser in the Interaction Pane.
+   * @param width width of the file chooser
+   * @param height height of the file chooser
+   * @param language language specified
+   * @param levelController LevelController object for this pane
+   * @param sceneController SceneController object for this pane
+   */
   public FileChooserPane(int width, int height, String language, LevelController levelController,
       SceneController sceneController) {
     this.factory = new WidgetFactory();
@@ -51,13 +61,14 @@ public class FileChooserPane {
     this.sceneController = sceneController;
     this.levelController = levelController;
 
+    //Get all the files in the /data directory
     Path gamePath = Paths.get("data");
     File gameDirectory = gamePath.toFile();
     if (gameDirectory.exists() && gameDirectory.isDirectory()) {
       files = gameDirectory.listFiles();
     } else {
-      //TODO: alert
-      System.out.println("Directory does not exist or is not a directory.");
+      logger.error("File chooser culd not be initialized: directory does not exist or is"
+          + " not a directory.");
     }
 
     InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
@@ -66,6 +77,10 @@ public class FileChooserPane {
     fileChooser = setUpFileChooser();
   }
 
+  /**
+   * Returns the root of this pane
+   * @return VBox root
+   */
   public VBox getFileChooser() {
     return fileChooser;
   }
@@ -112,22 +127,28 @@ public class FileChooserPane {
         flowPane.getChildren().add(imageAndLabel);
       }
     } catch (Exception e) {
-//      System.out.println(e.getMessage());
+        logger.info("Couldn't populate file chooser: " + e.getMessage());
     }
   }
 
+  /**
+   * Sets the click event for each ImageView object in the file chooser.
+   * @param imageView the current ImageView object
+   * @param jsonFile the Json file it corresponds to
+   */
   private void setImageClickEvent(ImageView imageView, JsonObject jsonFile) {
     imageView.setOnMouseClicked(event -> {
       JsonObject gridObject = jsonManager.getJsonObject(jsonFile, "grid");
       JsonObject metadata = jsonManager.getJsonObject(gridObject, "metadata");
       JsonObject dimensions = jsonManager.getJsonObject(jsonFile, "gridSize");
+
+      //Pull out metadata from the file
       Text rows = factory.generateCaption("Rows: " + jsonManager.getValue(
           dimensions, "rows"));
       Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
           dimensions, "columns"));
-
-      //TODO: remove when only valid jsons are in the data repo
       Text difficulty;
+
       if (metadata != null) {
         difficulty = factory.generateCaption("Difficulty: " + jsonManager.getValue(
             metadata, "difficulty"));
@@ -144,6 +165,12 @@ public class FileChooserPane {
     });
   }
 
+  /**
+   * Wraps the file Icon image with the filename text in a VBox.
+   * @param fileName name of the file
+   * @param imageView file icon associated
+   * @return stylized VBox
+   */
   private VBox createIconAndName(String fileName, ImageView imageView) {
     Label name = new Label(fileName);
     name.getStyleClass().add("caption-label");

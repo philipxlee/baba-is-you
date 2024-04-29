@@ -14,6 +14,9 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.StartingScene;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Scene that displays when the player loses the game.
@@ -29,6 +32,7 @@ public class LoseScene implements Scene {
   private int width;
   private int height;
   private final String language;
+  private static final Logger logger = LogManager.getLogger(LoseScene.class);
 
   /**
    * Constructor for the LoseScene class.
@@ -38,6 +42,7 @@ public class LoseScene implements Scene {
   public LoseScene(SceneController sceneController) {
     this.sceneController = sceneController;
     this.language = sceneController.getLanguage();
+
   }
 
   /**
@@ -57,6 +62,7 @@ public class LoseScene implements Scene {
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
     showLoseMessage();
+    logger.info("Entered lose scene.");
   }
 
   /**
@@ -80,6 +86,7 @@ public class LoseScene implements Scene {
     texts.add(header);
     texts.add(content);
 
+    //Create the start over button, which takes you to the starting scene
     Button start = factory.makeButton(new WidgetConfiguration(200, 40,
         "TryAgain", "button", language));
     start.setId("tryAgainButton");

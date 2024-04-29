@@ -18,6 +18,9 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.mainscene.MainScene;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Splash screen class for beginning the GamePlay.
@@ -33,6 +36,7 @@ public class StartingScene implements Scene {
   private int width;
   private int height;
   public static String language;
+  private static final Logger logger = LogManager.getLogger(StartingScene.class);
 
   /**
    * Constructor for StartingScene.
@@ -45,6 +49,7 @@ public class StartingScene implements Scene {
     this.sceneController = sceneController;
     this.databaseController = databaseController;
     StartingScene.language = language;
+    logger.info("Entered gameplay.");
 
   }
 
@@ -82,11 +87,13 @@ public class StartingScene implements Scene {
     Text header = factory.generateHeader(new WidgetConfiguration("BabaHeader", language));
     Text content = factory.generateLine(new WidgetConfiguration("BabaRules", language));
     Text enterPrompt = factory.generateLine(new WidgetConfiguration("EnterPrompt", language));
-    Label feedbackLabel = factory.generateLabel(new WidgetConfiguration("", language));
+    Label feedbackLabel = factory.makeLabel(new WidgetConfiguration(250, 100,
+        "label", language), "");
 
     usernameField = factory.createTextField(new WidgetConfiguration(200, 40,
         "UsernamePrompter", "text-field", language));
 
+    //Add all text to a list
     List<Node> texts = new ArrayList<>();
     texts.add(header);
     texts.add(content);
@@ -96,6 +103,7 @@ public class StartingScene implements Scene {
 
     List<Node> btns = createButtons(feedbackLabel);
 
+    //Wrap the text in a vbox
     List<Node> boxes = new ArrayList<>();
     boxes.add(factory.wrapInVBox(texts, height / 2, 10));
     boxes.add(factory.wrapInHBox(btns, width));
@@ -103,6 +111,11 @@ public class StartingScene implements Scene {
     root.getChildren().add(factory.wrapInVBox(boxes, height, 10));
   }
 
+  /**
+   * Create the enter, play as guest, and back buttons for the scene.
+   * @param feedbackLabel label providing feedback to a user's input username
+   * @return List of buttons
+   */
   private List<Node> createButtons(Label feedbackLabel) {
     Button start = factory.makeButton(new WidgetConfiguration(200, 40,
         "Enter", "button", language));
@@ -125,6 +138,10 @@ public class StartingScene implements Scene {
     return btns;
   }
 
+  /**
+   * Set event handler to the start button.
+   * @param start button to start the game
+   */
   private void startGame(Button start) {
     start.setOnAction(event -> {
       if (!usernameField.getText().trim().isEmpty()) {
@@ -135,6 +152,12 @@ public class StartingScene implements Scene {
     });
   }
 
+  /**
+   * Check if a username is a valid one.
+   * @param newValue user specified username
+   * @param feedbackLabel feedback to return to the UI
+   * @param start start button
+   */
   private void checkUsernameValidity(String newValue, Label feedbackLabel, Button start) {
     if (Pattern.matches("^[\\w]+[\\w\\d_]*$", newValue)) {
       feedbackLabel.setText("");
@@ -146,6 +169,12 @@ public class StartingScene implements Scene {
     }
   }
 
+  /**
+   * Checks if the username is available in the database.
+   * @param newValue user specified username
+   * @param feedbackLabel feedback to return to the UI
+   * @param start start button
+   */
   private void checkUsernameAvailability(String newValue, Button start, Label feedbackLabel) {
     if (databaseController.isUsernameAvailable(newValue.trim())) {
       start.setDisable(false);
