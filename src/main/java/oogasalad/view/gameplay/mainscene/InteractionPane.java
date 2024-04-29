@@ -81,9 +81,8 @@ public class InteractionPane {
     //Initializes reset and load buttons
     Button reset = setUpResetButton();
     Button load = setUpLoadButton();
-    Button save = setUpSaveButton();
     //Orient all elements in the space
-    orientPaneDisplay(load, reset, header, hintsAndKeys, background, save);
+    orientPaneDisplay(load, reset, header, hintsAndKeys, background);
   }
 
   /**
@@ -97,6 +96,7 @@ public class InteractionPane {
         "GamePlay", language));
     VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
         height / 6, 0);
+    header.setId("header");
     return header;
   }
 
@@ -111,16 +111,8 @@ public class InteractionPane {
     reset.setOnAction(event -> {
       scene.resetGame();
     });
+    reset.setId("resetButton");
     return reset;
-  }
-
-  private Button setUpSaveButton() {
-    Button save = factory.makeButton(new WidgetConfiguration(100, 40,
-        "Save", "white-button", language));
-    save.setOnAction(event -> {
-
-    });
-    return save;
   }
 
   /**
@@ -138,6 +130,7 @@ public class InteractionPane {
         throw new RuntimeException(e);
       }
     });
+    load.setId("loadButton");
     return load;
   }
 
@@ -149,18 +142,17 @@ public class InteractionPane {
    * @param header       text with header+subtitle
    * @param arrowKeysBox HBox with light-up rectangles showing key presses
    * @param background   Rectangle background hosting all widgets
-   * @param save
    */
   private void orientPaneDisplay(Button load, Button reset, VBox header, HBox arrowKeysBox,
-      Rectangle background, Button save) {
+      Rectangle background) {
     VBox leaderboardButton = setupLeaderboardButton();
     //Set up the file chooser
     VBox display = new VBox(10);
     FileChooserPane fileChooser = new FileChooserPane(width, height, language, levelController,
         sceneController);
 
-    HBox loadResetSave = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset, save)), width);
-    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadResetSave,
+    HBox loadReset = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset)), width);
+    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadReset,
         leaderboardButton);
     // Setup comments display
     VBox commentButton = setupCommentButton();
@@ -200,6 +192,7 @@ public class InteractionPane {
         "ViewBoard", "black-button", language));
     leaderboardButton.setOnAction(
         event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
+    leaderboardButton.setId("leaderboardButton");
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
@@ -211,6 +204,7 @@ public class InteractionPane {
         "ViewComments", "black-button", language));
     commentButton.setOnAction(
         event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
+    commentButton.setId("commentButton");
     VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
@@ -228,6 +222,7 @@ public class InteractionPane {
       newSceneController.setLanguage(language);
       newSceneController.initializeViews();
     });
+    newWindowButton.setId("newWindowButton");
     return newWindowButton;
   }
 
@@ -235,6 +230,7 @@ public class InteractionPane {
     Button backButton = factory.makeButton(new WidgetConfiguration(150, 40,
         "Back", "white-button", language));
     backButton.setOnAction(event -> sceneController.initializeViews());
+    backButton.setId("backButton");
     return backButton;
   }
 
@@ -249,9 +245,4 @@ public class InteractionPane {
   public void updateKeyRelease(KeyCode code) {
     keyPressDisplay.updateArrowKeyVisual(code, BASE_COLOR);
   }
-
-  //For testing
-//  public Rectangle getUpRectangle() {
-//    return up;
-//  }
 }

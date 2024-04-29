@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
@@ -133,8 +134,16 @@ public class GamePane implements Observer<Grid> {
     });
     pauseBtn.setFitHeight(cellSize);
     pauseBtn.setFitWidth(cellSize);
-    StackPane.setAlignment(pauseBtn, Pos.BOTTOM_RIGHT);
     return pauseBtn;
+  }
+
+  private Button setUpSaveButton() {
+    Button save = factory.makeButton(new WidgetConfiguration(70, 30,
+        "Save", "white-button", sceneController.getLanguage()));
+    save.setOnAction(event -> {
+    });
+    save.setId("saveButton");
+    return save;
   }
 
   private void updateTimer() {
@@ -164,7 +173,10 @@ public class GamePane implements Observer<Grid> {
   }
 
   protected Pane setUpScreen() {
-    StackPane gameScreen = new StackPane(root, setUpTimer(), setUpPauseButton());
+    HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(setUpSaveButton(), setUpPauseButton())),
+        cellSize*2);
+    buttons.setAlignment(Pos.BOTTOM_RIGHT);
+    StackPane gameScreen = new StackPane(root, setUpTimer(), buttons);
     gameScreen.setAlignment(Pos.CENTER);
     gameScreen.setPrefWidth(width);
 
