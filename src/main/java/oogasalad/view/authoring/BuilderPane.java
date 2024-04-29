@@ -1,6 +1,5 @@
 package oogasalad.view.authoring;
 
-import com.google.gson.JsonObject;
 import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -14,29 +13,26 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import oogasalad.controller.authoring.JsonParser;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.model.authoring.block.Block;
+
 import oogasalad.model.authoring.level.Grid;
-import oogasalad.model.authoring.level.Level;
+
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 
-import java.awt.*;
-import java.io.IOException;
+
 import java.util.ResourceBundle;
-import java.util.Stack;
+
 
 
 public class BuilderPane {
 
-  private final int GRID_MARGIN = 10;
-  private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
+    private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
   protected Pane root; // Your root node for the builder scene
   protected GridPane gridPane;
 
-  private ResourceBundle messages = ResourceBundle.getBundle("error_bundle/authoring_errors");
+  private final ResourceBundle messages = ResourceBundle.getBundle("error_bundle/authoring_errors");
 
   public int gridWidth;
   protected boolean removeMode;
@@ -108,7 +104,8 @@ public class BuilderPane {
 
 
     // Adjust the maximum width and height available for the grid, accounting for margins
-    double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
+      int GRID_MARGIN = 10;
+      double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
     double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
 
     // Calculate cell size based on the available space and the grid dimensions
