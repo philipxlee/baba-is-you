@@ -20,6 +20,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
+import oogasalad.model.gameplay.exceptions.JsonParsingException;
+import oogasalad.shared.alert.AlertHandler;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.socialcenter.CommentScene;
@@ -30,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
  */
-public class InteractionPane {
+public class InteractionPane implements AlertHandler {
 
   public static final Color BASE_COLOR = Color.web("#343342");
   public static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
@@ -129,6 +131,8 @@ public class InteractionPane {
       } catch (IOException e) {
         logger.error("Issue setting up load button: " + e.getMessage());
         throw new RuntimeException(e);
+      } catch (JsonParsingException e) {
+        showError("Error", e.getMessage());
       }
     });
     load.setId("loadButton");

@@ -1,6 +1,8 @@
 package oogasalad.view.authoring;
 
 import java.util.Optional;
+import java.util.ResourceBundle;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -10,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.Grid;
+import oogasalad.model.authoring.level.LevelMetadata;
 
 /**
  * Manages the functionality to change the size of the grid in a BuilderPane.
@@ -21,12 +24,15 @@ public class GridSizeChanger {
   private final BuilderPane builderPane;
   private final LevelController levelController;
 
+  private ResourceBundle messages = ResourceBundle.getBundle("error_bundle/authoring_errors");
+
   /**
    * Constructs a new GridSizeChanger.
    *
    * @param builderPane the BuilderPane associated with this changer, which displays the grid
    * @param levelController the controller responsible for managing level data and operations
    */
+
   public GridSizeChanger(BuilderPane builderPane, LevelController levelController) {
     this.builderPane = builderPane;
     this.levelController = levelController;
@@ -75,11 +81,11 @@ public class GridSizeChanger {
           if (isValidSize(width) && isValidSize(height)) {
             return new Pair<>(width, height);
           } else {
-            showErrorMessage("Width and height must be between 5 and 20");
+            showErrorMessage(messages.getString("grid_size_error_message"));
             return null;
           }
         } catch (NumberFormatException e) {
-          showErrorMessage("Invalid number format");
+          showErrorMessage(messages.getString("invalid_number_error_message"));
           return null;
         }
       }
@@ -99,34 +105,31 @@ public class GridSizeChanger {
     builderPane.gridWidth = newSize.getKey();
     builderPane.gridHeight = newSize.getValue();
     alertGrid();
-    levelController.getLevel().setGrid(new Grid(builderPane.gridWidth, builderPane.gridHeight));
+    LevelMetadata levelMetadata = new LevelMetadata("", "", builderPane.gridHeight, builderPane.gridWidth, "", "", "");
+    levelController.resetLevel(levelMetadata);
   }
 
   /**
    * Displays a confirmation alert to the user before proceeding to change the grid size.
    * If the user confirms, the grid is reconfigured to the new size.
    */
+  /**
+   * Displays a confirmation dialog when clearing the grid or making significant modifications.
+   */
   protected void alertGrid() {
-    // Display a confirmation dialog
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmation");
-    alert.setHeaderText("Warning: Existing game state will be deleted");
-    alert.setContentText("Would you like to proceed?");
-
-    // Add buttons for user selection
-    ButtonType buttonTypeYes = new ButtonType("Yes");
-    ButtonType buttonTypeNo = new ButtonType("No");
-
+    alert.setTitle(messages.getString("grid.confirmationTitle"));
+    alert.setHeaderText(messages.getString("grid.warning"));
+    alert.setContentText(messages.getString("grid.changeConfirmation"));
+    ButtonType buttonTypeYes = new ButtonType(messages.getString("yes"));
+    ButtonType buttonTypeNo = new ButtonType(messages.getString("no"));
     alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
     Optional<ButtonType> result = alert.showAndWait();
-
-    // If user confirms, clear existing cells and blocks and set up the grid with the new size
     if (result.isPresent() && result.get() == buttonTypeYes) {
-      // Re-setup the grid with the new size
       builderPane.setUpGrid();
     }
   }
+
 
   /**
    * Validates the provided grid size.
@@ -145,7 +148,7 @@ public class GridSizeChanger {
    */
   private void showErrorMessage(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
+    alert.setTitle(messages.getString("error.creation"));
     alert.setHeaderText(null);
     alert.setContentText(message);
     alert.showAndWait();

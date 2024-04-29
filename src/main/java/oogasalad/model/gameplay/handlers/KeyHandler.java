@@ -1,11 +1,12 @@
 package oogasalad.model.gameplay.handlers;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.grid.GridHelper;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public abstract class KeyHandler {
 
@@ -31,9 +32,6 @@ public abstract class KeyHandler {
    */
   public abstract void execute();
 
-  public void moveEnemy(){
-    return;
-  }
 
   /**
    * Handles the key press event by moving controllable blocks.

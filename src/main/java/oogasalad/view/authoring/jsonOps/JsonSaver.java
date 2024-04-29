@@ -46,6 +46,7 @@ public class JsonSaver {
    */
   public void saveJson(String difficulty) {
     this.difficulty = difficulty;
+    this.level = levelController.getLevel();
     GridPane inputGrid = createInputGrid();
     Alert confirmation = createConfirmationAlert(inputGrid);
     confirmation.showAndWait().ifPresent(buttonType -> {

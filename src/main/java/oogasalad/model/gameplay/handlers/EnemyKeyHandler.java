@@ -2,206 +2,273 @@ package oogasalad.model.gameplay.handlers;
 
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.grid.GridHelper;
 
 import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import static java.util.Optional.of;
-
-public class EnemyKeyHandler extends KeyHandler{
+/**
+ * Class to represent the movement of the enemy character.
+ *
+ * @author Oluwagbotemi Joseph Ogunbadewa
+ */
+public class EnemyKeyHandler extends KeyHandler {
+    private static final Logger logger = LogManager.getLogger(EnemyKeyHandler.class);
     private final Grid grid;
     private final GameStateController gameStateController;
     private static final int MAX_ENEMY_COUNT = 30;
+    private final int[][] DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
 
-    private final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // Up, down, left, right
+
+    /**
+     * Constructs an EnemyKeyHandler with the specified grid and game state controller.
+     *
+     * @param grid                The grid on which enemies are placed and moved.
+     * @param gameStateController Controller for managing the game state.
+     */
     public EnemyKeyHandler(Grid grid, GameStateController gameStateController) {
         super(grid, gameStateController);
         this.grid = grid;
         this.gameStateController = gameStateController;
-
+        logger.info("Created enemy handler for artificial player");
     }
 
+
+    /**
+     * Executes the action of creating new enemies if the maximum enemy count has not been reached.
+     */
     @Override
     public void execute() {
-
-        if( grid.findEnemyBlock().size() >= MAX_ENEMY_COUNT){
-            return;
-        }
-        else{
+        if (grid.findEnemyBlock().size() < MAX_ENEMY_COUNT) {
             createEnemy();
+            logger.info("Created enemy");
         }
     }
 
-    private void createEnemy(){
-        int numRows = grid.getGridWidth();
-        int numCols = grid.getGridHeight();
-        boolean enemyPlaced = false;
-
-        // Keep trying until the enemy is successfully placed
-        while (!enemyPlaced) {
-            // Generate random coordinates within the grid
-            int randomRow = (int) (Math.random() * numRows);
-            int randomCol = (int) (Math.random() * numCols);
-
-            // Check if the cell at the random coordinates contains a TextBlock or winning block. dont wanna add them on top of each other
-            if (!grid.cellIsEmpty(randomRow, randomCol)) {
-                // If it's a TextBlock, continue to the next iteration to reprocess the position
-                continue;
-            }
-
-            // Place the enemy at the random coordinates
-            grid.placeEnemy(randomRow, randomCol);
-
-            // Mark the enemy as successfully placed
-            enemyPlaced = true;
-        }
-    }
-
-
-    @Override
+    /**
+     * Moves all enemy entities towards the nearest controllable block (player) on the grid.
+     * If no enemy entities exist or if no controllable block is found, the method returns without performing any action.
+     * If an enemy entity overlaps with a controllable block, the block is removed from the grid.
+     * Enemy entities are moved one step closer to the nearest controllable block based on the shortest path algorithm.
+     * If a valid path to the controllable block exists, the enemy entity is moved accordingly.
+     * This method also notifies the grid observer after all enemy entities have been moved.
+     */
     public void moveEnemy() {
         List<int[]> allEnemyBlocks = grid.findEnemyBlock();
-
-        if (allEnemyBlocks.isEmpty()) {
+        if (allEnemyBlocks.isEmpty() || grid.findControllableBlock().isEmpty()) {
+            handleNoMovementConditions(allEnemyBlocks);
             return;
         }
-        if(grid.findControllableBlock().isEmpty()){
+        allEnemyBlocks.forEach(this::moveSingleEnemy);
+        grid.notifyObserver();
+    }
+
+
+    /**
+     * Handles the conditions where no enemy blocks or controllable blocks are found.
+     *
+     * @param allEnemyBlocks The list of all enemy blocks on the grid.
+     */
+    private void handleNoMovementConditions(List<int[]> allEnemyBlocks) {
+        if (!allEnemyBlocks.isEmpty()) {
             gameStateController.displayGameOver(false);
+        }
+    }
+
+
+    /**
+     * Moves a single enemy entity towards the nearest controllable block.
+     *
+     * @param enemyBlock The coordinates of the enemy entity.
+     */
+    private void moveSingleEnemy(int[] enemyBlock) {
+        int[] enemy = {enemyBlock[0], enemyBlock[1]};
+        Optional<int[]> babaOptional = nearestBabaCoordinate(enemy);
+        if (babaOptional.isEmpty()) {
+            gameStateController.displayGameOver(false); // All controllable blocks have been removed
             return;
         }
-        if(!allEnemyBlocks.isEmpty() && !grid.findControllableBlock().isEmpty()){
-            for(int [] enemyBlock : allEnemyBlocks){
-                int[] enemy = {enemyBlock[0], enemyBlock[1]};
-                Optional<int[]> babaOptional = nearestBabaCoordinate(enemy);
-                if(babaOptional.isEmpty()){ //we removed all the BABA's
-                    gameStateController.displayGameOver(false);
-                    break;
-                }
-                int [] babaLocation = babaOptional.get();
-                int [] baba = {babaLocation[0], babaLocation[1]};
-                if(Arrays.equals(enemy, baba)){ //they are in the same place
-                    grid.removeBaba(babaLocation[0], babaLocation[1]);
-                    continue;
-                }else{
-                    Optional<List<int[]>> shortestPathOptional = findShortestPath(enemy, baba);
-                    if (shortestPathOptional.isPresent()) {
-                        List<int[]> shortestPath = shortestPathOptional.get();
+        int[] babaLocation = babaOptional.get();
+        int[] baba = {babaLocation[0], babaLocation[1]};
+        if (Arrays.equals(enemy, baba)) {
+            handleEnemyBabaOverlap(babaLocation);
+        } else {
+            moveEnemyTowardsBaba(enemyBlock, baba);
+        }
+    }
 
-                        int[] nextPosition = shortestPath.get(1);
-                        Optional<Integer> optionalIndex = grid.findEnemyIndex(enemyBlock[0], enemyBlock[1]);
-                        if(optionalIndex.isPresent()){
-                            int index = optionalIndex.get();
-                            grid.moveEnemy(enemyBlock[0], enemyBlock[1], index, nextPosition[0], nextPosition[1]);
-                        }
-
-                    }
-                }
+    /**
+     * Moves an enemy entity towards the nearest controllable block.
+     *
+     * @param enemyBlock The coordinates of the enemy entity.
+     * @param baba       The coordinates of the nearest controllable block.
+     */
+    private void moveEnemyTowardsBaba(int[] enemyBlock, int[] baba) {
+        Optional<List<int[]>> shortestPathOptional = findShortestPath(enemyBlock, baba);
+        if (shortestPathOptional.isPresent()) {
+            List<int[]> shortestPath = shortestPathOptional.get();
+            int[] nextPosition = shortestPath.get(1);
+            Optional<Integer> optionalIndex = grid.findEnemyIndex(enemyBlock[0], enemyBlock[1]);
+            if (optionalIndex.isPresent()) {
+                int index = optionalIndex.get();
+                grid.moveEnemy(enemyBlock[0], enemyBlock[1], index, nextPosition[0], nextPosition[1]);
             }
         }
-        grid.notifyObserver();
-
     }
 
 
-
-
-    private int [] enemyCoordinate(){
-        return grid.enemyPosition();
-    }
-
+    /**
+     * Finds the coordinates of the nearest controllable block (player) to a given enemy camp.
+     *
+     * @param enemyCamp The coordinates of the enemy position.
+     * @return Optional containing the coordinates of the nearest controllable block if found, otherwise empty.
+     */
     private Optional<int[]> nearestBabaCoordinate(int[] enemyCamp) {
         List<int[]> allControllableBlock = grid.findControllableBlock();
-
         if (allControllableBlock.isEmpty()) {
             return Optional.empty();
         }
-
-        Comparator<int[]> distanceComparator = new Comparator<int[]>() {
-            @Override
-            public int compare(int[] block1, int[] block2) {
-                // Calculate the distance of each block to the enemy camp
-                int distanceToEnemyCamp1 = calculateDistance(block1, enemyCamp);
-                int distanceToEnemyCamp2 = calculateDistance(block2, enemyCamp);
-
-                // Compare the distances
-                return Integer.compare(distanceToEnemyCamp1, distanceToEnemyCamp2);
-            }
-        };
-
-        // Sort the allControllableBlock list using the custom comparator
-        allControllableBlock.sort(distanceComparator);
-
+        sortWithCustomCompare(enemyCamp, allControllableBlock);
         return Optional.of(allControllableBlock.get(0));
     }
 
-
-    private int calculateDistance(int[] coordinate1, int[] coordinate2) {
-        return Math.abs(coordinate1[0] - coordinate2[0]) + Math.abs(coordinate1[1] - coordinate2[1]);
+    /**
+     * Sorts a list of coordinates based on their distances to a specified enemy camp using a custom comparator.
+     *
+     * @param enemyCamp            The coordinates of the enemy camp.
+     * @param allControllableBlock The list of controllable block coordinates to be sorted.
+     */
+    private void sortWithCustomCompare(int[] enemyCamp, List<int[]> allControllableBlock) {
+        Comparator<int[]> distanceComparator = new Comparator<int[]>() {
+            @Override
+            public int compare(int[] block1, int[] block2) {
+                int distanceToEnemyCamp1 = calculateDistance(block1, enemyCamp);
+                int distanceToEnemyCamp2 = calculateDistance(block2, enemyCamp);
+                return Integer.compare(distanceToEnemyCamp1, distanceToEnemyCamp2);
+            }
+        };
+        allControllableBlock.sort(distanceComparator);
     }
 
 
-    private Optional<List<int[]>> findShortestPath(int[] start, int[] target){
+    /**
+     * Finds the shortest path from a starting point to a target point using breadth-first search (BFS).
+     *
+     * @param start  The starting point coordinates.
+     * @param target The target point coordinates.
+     * @return Optional containing the shortest path as a list of coordinates if found, otherwise empty.
+     */
+    private Optional<List<int[]>> findShortestPath(int[] start, int[] target) {
         int numRows = grid.getGridWidth();
         int numCols = grid.getGridHeight();
         int[][] distances = new int[numRows][numCols];
         boolean[][] visited = new boolean[numRows][numCols];
-
         initializeArrays(distances, visited);
-
         Queue<int[]> queue = new ArrayDeque<>();
         queue.offer(start);
         visited[start[0]][start[1]] = true;
+        return determinePath(start, target, queue, distances, numRows, numCols, visited);
+    }
 
+    /**
+     * Determines the shortest path from the start coordinates to the target coordinates using a breadth-first search algorithm.
+     *
+     * @param start     The starting coordinates.
+     * @param target    The target coordinates.
+     * @param queue     The queue for BFS traversal.
+     * @param distances The distance array to track distances from start to each cell.
+     * @param numRows   The number of rows in the grid.
+     * @param numCols   The number of columns in the grid.
+     * @param visited   The boolean array to track visited cells.
+     * @return An optional containing the shortest path as a list of coordinates if found, or empty if no path exists.
+     */
+    private Optional<List<int[]>> determinePath(int[] start, int[] target, Queue<int[]> queue, int[][] distances, int numRows, int numCols, boolean[][] visited) {
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
             int row = current[0];
             int col = current[1];
-
             if (row == target[0] && col == target[1]) {
                 // Target reached, reconstruct path back to enemy
                 List<int[]> path = reconstructPath(start, target, distances);
                 return Optional.of(path);
             }
-
-            for (int[] neighbor : getNeighbors(row, col, numRows, numCols, directions, distances)) {
-                int newRow = neighbor[0];
-                int newCol = neighbor[1];
-                if (!visited[newRow][newCol] && grid.isPassable(newRow, newCol)) {
-                    visited[newRow][newCol] = true;
-                    distances[newRow][newCol] = distances[row][col] + 1;
-                    queue.offer(new int[]{newRow, newCol});
-                }
-            }
+            evaluateNeighbors(row, col, numRows, numCols, distances, visited, queue);
         }
-
-        // No path found
         return Optional.empty();
     }
 
-    //distances: A 2D array to store the shortest distances from the start position to each cell in the grid.
-    //visited: A 2D boolean array to mark cells that have been visited during the search process.
-    //initalizes the visited and distance array to signify not visited
-    private void initializeArrays(int[][] distances, boolean[][] visited) {
-        for (int i = 0; i < distances.length; i++) {
-            for (int j = 0; j < distances[0].length; j++) {
-                distances[i][j] = Integer.MAX_VALUE; //no known shortest distance, infinity
-                visited[i][j] = false;
-            }
-        }
+
+    /**
+     * Evaluates neighboring cells of a given cell during BFS traversal.
+     *
+     * @param row       The row index of the current cell.
+     * @param col       The column index of the current cell.
+     * @param numRows   The total number of rows in the grid.
+     * @param numCols   The total number of columns in the grid.
+     * @param distances The distances array used in BFS.
+     * @param visited   The visited array used in BFS.
+     * @param queue     The queue used in BFS.
+     */
+    private void evaluateNeighbors(int row, int col, int numRows, int numCols, int[][] distances, boolean[][] visited, Queue<int[]> queue) {
+        getNeighbors(row, col, numRows, numCols, DIRECTIONS, distances)
+                .stream()
+                .filter(neighbor -> !visited[neighbor[0]][neighbor[1]] && grid.isPassable(neighbor[0], neighbor[1]))
+                .forEach(neighbor -> {
+                    visited[neighbor[0]][neighbor[1]] = true;
+                    distances[neighbor[0]][neighbor[1]] = distances[row][col] + 1;
+                    queue.offer(new int[]{neighbor[0], neighbor[1]});
+                });
     }
 
 
+    /**
+     * Initializes the distances and visited arrays used in BFS.
+     *
+     * @param distances The distances array to initialize.
+     * @param visited   The visited array to initialize.
+     */
+    private void initializeArrays(int[][] distances, boolean[][] visited) {
+        IntStream.range(0, distances.length)
+                .forEach(i ->
+                        IntStream.range(0, distances[0].length)
+                                .forEach(j -> {
+                                    distances[i][j] = Integer.MAX_VALUE;
+                                    visited[i][j] = false;
+                                })
+                );
+    }
+
+
+    /**
+     * Reconstructs the shortest path from the target point to the starting point.
+     *
+     * @param start     The starting point coordinates.
+     * @param target    The target point coordinates.
+     * @param distances The distances array used in BFS.
+     * @return The reconstructed shortest path as a list of coordinates.
+     */
     private List<int[]> reconstructPath(int[] start, int[] target, int[][] distances) {
         LinkedList<int[]> path = new LinkedList<>();
-        int[] current = target;
-
-        // Add the target as the starting point of the path
         path.addFirst(target);
+        breadthSearch(start, distances, target, path);
+        return path;
+    }
 
+    /**
+     * Performs a breadth-first search to reconstruct the shortest path from the target position to the start position.
+     *
+     * @param start     The starting position of the search.
+     * @param distances A 2D array representing the distances from each cell to the target position.
+     * @param current   The current position being evaluated during the search.
+     * @param path      A linked list representing the reconstructed shortest path.
+     */
+    private void breadthSearch(int[] start, int[][] distances, int[] current, LinkedList<int[]> path) {
         while (!Arrays.equals(current, start)) {
             boolean stepFound = false;
-            for (int[] direction : directions) {
+            for (int[] direction : DIRECTIONS) {
                 int newRow = current[0] + direction[0];
                 int newCol = current[1] + direction[1];
                 if (newRow >= 0 && newRow < distances.length && newCol >= 0 && newCol < distances[0].length) {
@@ -217,25 +284,74 @@ public class EnemyKeyHandler extends KeyHandler{
                 break;
             }
         }
-
-        return path;
     }
 
 
+    /**
+     * Retrieves neighboring cells of a given cell.
+     *
+     * @param row        The row index of the cell.
+     * @param col        The column index of the cell.
+     * @param numRows    The total number of rows in the grid.
+     * @param numCols    The total number of columns in the grid.
+     * @param directions The directions array indicating possible moves.
+     * @param distances  The distances array used in BFS.
+     * @return A list of neighboring cells' coordinates.
+     */
+    private List<int[]> getNeighbors(int row, int col, int numRows, int numCols, int[][] directions, int[][] distances) {
+        return Arrays.stream(directions)
+                .map(dir -> new int[]{row + dir[0], col + dir[1]})
+                .filter(neighbor -> isValidMove(distances, neighbor[0], neighbor[1]))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Creates a new enemy entity and places it randomly on the grid.
+     */
+    private void createEnemy() {
+        int numRows = grid.getGridWidth();
+        int numCols = grid.getGridHeight();
+        while (true) {
+            // Generate random coordinates within the grid
+            int randomRow = (int) (Math.random() * numRows);
+            int randomCol = (int) (Math.random() * numCols);
+            if (grid.cellIsEmpty(randomRow, randomCol)) {
+                grid.placeEnemy(randomRow, randomCol);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Checks if a move to the specified cell is valid based on the distances array.
+     *
+     * @param distances The distances array used in BFS.
+     * @param row       The row index of the cell to check.
+     * @param col       The column index of the cell to check.
+     * @return True if the move is valid, false otherwise.
+     */
     private boolean isValidMove(int[][] distances, int row, int col) {
         return grid.isNotOutOfBounds(row, col) && distances[row][col] == Integer.MAX_VALUE;
     }
 
-    private List<int[]> getNeighbors(int row, int col, int numRows, int numCols, int[][] directions, int[][] distances) {
-        List<int[]> neighbors = new ArrayList<>();
-        for (int[] dir : directions) {
-            int newRow = row + dir[0];
-            int newCol = col + dir[1];
-            if (isValidMove(distances, newRow, newCol)) {
-                neighbors.add(new int[]{newRow, newCol});
-            }
-        }
-        return neighbors;
+    /**
+     * Calculates the Manhattan distance between two sets of coordinates.
+     *
+     * @param coordinate1 The first set of coordinates.
+     * @param coordinate2 The second set of coordinates.
+     * @return The Manhattan distance between the two sets of coordinates.
+     */
+    private int calculateDistance(int[] coordinate1, int[] coordinate2) {
+        return Math.abs(coordinate1[0] - coordinate2[0]) + Math.abs(coordinate1[1] - coordinate2[1]);
+    }
+
+    /**
+     * Handles the situation where an enemy entity overlaps with a controllable block.
+     *
+     * @param babaLocation The coordinates of the controllable block.
+     */
+    private void handleEnemyBabaOverlap(int[] babaLocation) {
+        grid.removeBaba(babaLocation[0], babaLocation[1]);
     }
 
 }

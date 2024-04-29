@@ -1,54 +1,48 @@
 package oogasalad.view.authoring;
 
-import com.google.gson.JsonObject;
-import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import oogasalad.controller.authoring.JsonParser;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.model.authoring.block.Block;
 import oogasalad.model.authoring.level.Grid;
-import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import java.util.ResourceBundle;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Stack;
-
-
+/**
+ * Represents the pane where users can build and edit levels within the authoring environment.
+ */
 public class BuilderPane {
 
-  private final int GRID_MARGIN = 10;
-  private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
-  protected Pane root; // Your root node for the builder scene
+  protected Pane root;
   protected GridPane gridPane;
+  private final ResourceBundle messages = ResourceBundle.getBundle("error_bundle/authoring_errors");
+
   public int gridWidth;
   protected boolean removeMode;
   public int gridHeight;
-  private double cellSize; // Set the cell size
+  private double cellSize;
   private BlockViewFactory blockViewFactory;
   private final LevelController levelController;
-  private final String language;
-  private final WidgetFactory factory;
-  private VBox container;
 
+  /**
+   * Constructor for BuilderPane which initializes the UI and block factory.
+   * @param levelController The controller responsible for managing level data.
+   * @param language The language setting for localization, not used directly but useful for extension.
+   */
   public BuilderPane(LevelController levelController, String language) {
-    this.factory = new WidgetFactory();
+    WidgetFactory factory = new WidgetFactory();
     this.levelController = levelController;
-    this.language = language;
     try {
+      String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
       this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
     } catch (Exception e) {
       e.printStackTrace();
@@ -56,52 +50,39 @@ public class BuilderPane {
     initializeBuilderScene();
   }
 
+  /**
+   * Initializes the visual components of the builder scene.
+   */
   public void initializeBuilderScene() {
     this.root = new Pane();
-
-    container = new VBox(10);
+    VBox container = new VBox(10);
     container.setMinWidth(root.getWidth());
     container.setAlignment(Pos.CENTER);
-
     this.gridPane = new GridPane();
     LevelMetadata levelMetadata = levelController.getLevelMetadata();
     this.gridWidth = levelMetadata.cols();
     this.gridHeight = levelMetadata.rows();
-
-    // Listen for size changes on root to re-setup the grid
     root.widthProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
     root.heightProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
-
     setUpGrid();
     setUpDropHandling();
   }
 
-
-
+  /**
+   * Sets up the grid based on the current metadata settings, adjusting for the size of the root pane.
+   */
   protected void setUpGrid() {
-    gridPane.getChildren().clear(); // Clear the existing grid
+    gridPane.getChildren().clear();
     root.getChildren().clear();
-
-
-    // Adjust the maximum width and height available for the grid, accounting for margins
-    double availableWidth = root.getWidth() - 2 * GRID_MARGIN - 2 * gridWidth;
-    double availableHeight = root.getHeight() - 2 * GRID_MARGIN - 2 * gridHeight;
-
-    // Calculate cell size based on the available space and the grid dimensions
-    this.cellSize = Math.min((availableWidth) / gridWidth, (availableHeight) / gridHeight);
-
-    // Calculate total size of the grid
-    double totalGridWidth = gridWidth * (cellSize);
-    double totalGridHeight = gridHeight * (cellSize);
-
-    // Calculate the starting positions to center the grid within the root pane, considering margins
+    double availableWidth = root.getWidth() - 20 - 2 * gridWidth;
+    double availableHeight = root.getHeight() - 20 - 2 * gridHeight;
+    cellSize = Math.min(availableWidth / gridWidth, availableHeight / gridHeight);
+    double totalGridWidth = gridWidth * cellSize;
+    double totalGridHeight = gridHeight * cellSize;
     double layoutX = (root.getWidth() - totalGridWidth) / 2;
     double layoutY = (root.getHeight() - totalGridHeight) / 2;
-
-    // Apply the calculated layout positions to the gridPane
     gridPane.setLayoutX(layoutX);
     gridPane.setLayoutY(layoutY);
-
     for (int i = 0; i < gridWidth; i++) {
       for (int j = 0; j < gridHeight; j++) {
         Pane cell = new Pane();
@@ -110,14 +91,12 @@ public class BuilderPane {
         gridPane.add(cell, i, j);
       }
     }
-
-    // Ensure the gridPane is added to the root if not already present
-    if (!root.getChildren().contains(gridPane)) {
-//      container.getChildren().add(factory.wrapInHBox(gridPane, (int)root.getWidth(), 15));
-      root.getChildren().add(gridPane);
-    }
+    root.getChildren().add(gridPane);
   }
 
+  /**
+   * Sets up handling for drag-and-drop events on the grid, enabling block placement.
+   */
   private void setUpDropHandling() {
     gridPane.setOnDragOver(event -> {
       if (event.getGestureSource() != gridPane && event.getDragboard().hasString()) {
@@ -139,19 +118,14 @@ public class BuilderPane {
             blockView.setFitWidth(cellSize);
             blockView.setFitHeight(cellSize);
             blockView.setLayoutX(cellCoords.getX());
-            System.out.println(cellCoords.getX());
             blockView.setLayoutY(cellCoords.getY());
-            System.out.println(cellCoords.getY());
             root.getChildren().add(blockView);
             try {
-              // x corresponds to column, y corresponds to row
-
-              levelController.addBlockToCell((int) cellIndices.getY(), (int) cellIndices.getX(),
-                  blockType);
+              levelController.addBlockToCell((int) cellIndices.getY(), (int) cellIndices.getX(), blockType);
             } catch (Exception e) {
               e.printStackTrace();
             }
-            setRemoveModeEventHandlers(); //allows removing after adding blocks
+            setRemoveModeEventHandlers();
             success = true;
           }
         }
@@ -161,6 +135,100 @@ public class BuilderPane {
     });
   }
 
+  /**
+   * Creates an ImageView for a given block type.
+   * @param blockType The type of block to create a view for.
+   * @return The created ImageView or null if an error occurs.
+   */
+  protected ImageView createBlockView(String blockType) {
+    try {
+      return blockViewFactory.createBlockView(blockType);
+    } catch (Exception e) {
+      System.err.println("Failed to create block view for type: " + blockType + " with error: " + e.getMessage());
+      return null;
+    }
+  }
+
+  /**
+   * Returns the root pane of this builder.
+   * @return The root pane.
+   */
+  public Pane getRoot() {
+    return root;
+  }
+
+  /**
+   * Sets event handlers for removing blocks when in remove mode.
+   */
+  protected void setRemoveModeEventHandlers() {
+    root.getChildren().forEach(node -> {
+      if (node instanceof ImageView) {
+        node.setOnMouseClicked(event -> {
+          if (removeMode) {
+            Point2D cellIndices = getCellIndices(node.getLayoutX(), node.getLayoutY());
+            try {
+              levelController.removeBlockFromCell((int) cellIndices.getY(), (int) cellIndices.getX());
+              root.getChildren().remove(node);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Toggles the removal mode for blocks.
+   * @param remove_bool True to enable removal mode, false to disable.
+   */
+  public void setRemove(boolean remove_bool) {
+    removeMode = remove_bool;
+    setRemoveModeEventHandlers();
+  }
+
+  /**
+   * Renders a grid based on a pre-loaded set of grid data.
+   * @param loadedGrid The grid data to load.
+   */
+  public void renderLoadedGrid(Grid loadedGrid) {
+    gridWidth = loadedGrid.getNumColumns() - 2;
+    gridHeight = loadedGrid.getNumRows() - 2;
+    setUpGrid();
+    levelController.getLevel().setGrid(new Grid(gridWidth, gridHeight));
+    for (int row = 0; row < gridHeight; row++) {
+      for (int col = 0; col < gridWidth; col++) {
+        String[] blockTypes = loadedGrid.getCell(row, col);
+        for (String blockType : blockTypes) {
+          if (!"EmptyVisualBlock".equals(blockType)) {
+            ImageView blockView = createBlockView(blockType);
+            if (blockView != null) {
+              blockView.setFitWidth(cellSize);
+              blockView.setFitHeight(cellSize);
+              double xPos = col * cellSize + gridPane.getLayoutX();
+              double yPos = row * cellSize + gridPane.getLayoutY();
+              blockView.setLayoutX(xPos);
+              blockView.setLayoutY(yPos);
+              root.getChildren().add(blockView);
+              blockView.toFront();
+              try {
+                levelController.addBlockToCell(row, col, blockType);
+              } catch (Exception e) {
+                System.err.println("Error adding block to cell: " + e.getMessage());
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Calculates the column and row indices for a given x, y coordinate within the grid.
+   * @param x the x-coordinate relative to the grid
+   * @param y the y-coordinate relative to the grid
+   * @return a Point2D object containing the column index (x value) and row index (y value)
+   */
   protected Point2D getCellIndices(double x, double y) {
     for (Node node : gridPane.getChildren()) {
       if (node instanceof Pane cell) {
@@ -181,7 +249,12 @@ public class BuilderPane {
     return null; // Position does not fall within any cell
   }
 
-
+  /**
+   * Calculates the pixel coordinates of the cell's upper-left corner based on a given x, y point within the grid.
+   * @param x the x-coordinate relative to the grid
+   * @param y the y-coordinate relative to the grid
+   * @return a Point2D object representing the upper-left corner of the cell at the given x, y coordinates
+   */
   protected Point2D getCellCoordinates(double x, double y) {
     for (Node node : gridPane.getChildren()) {
       if (node instanceof Pane cell) {
@@ -195,92 +268,5 @@ public class BuilderPane {
       }
     }
     return null; // Coordinates (x, y) do not fall within any cell
-  }
-
-
-  protected ImageView createBlockView(String blockType) {
-    try {
-      return blockViewFactory.createBlockView(blockType);
-    } catch (Exception e) {
-      System.err.println(
-          "Failed to create block view for type: " + blockType + " with error: " + e.getMessage());
-      return null; // Or handle this case as needed.
-    }
-  }
-
-
-  public Pane getRoot() {
-    return root;
-  }
-
-  protected void setRemoveModeEventHandlers() {
-    root.getChildren().forEach(node -> {
-      if (node instanceof ImageView) {
-        node.setOnMouseClicked(event -> {
-          if (removeMode) {
-            Point2D cellIndices = getCellIndices(node.getLayoutX(), node.getLayoutY());
-            try {
-              levelController.removeBlockFromCell((int) cellIndices.getY(),
-                  (int) cellIndices.getX());
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-            root.getChildren().remove(node);
-          }
-        });
-      }
-    });
-  }
-
-  public void setRemove(boolean remove_bool) {
-    removeMode = remove_bool;
-    setRemoveModeEventHandlers();
-  }
-
-  public void renderLoadedGrid(Grid loadedGrid) {
-
-    // Update the grid dimensions based on the loaded grid
-    this.gridWidth = loadedGrid.getNumColumns() - 2;
-    this.gridHeight = loadedGrid.getNumRows() - 2;
-    // Set up the grid again based on the updated dimensions
-    setUpGrid();
-    levelController.getLevel().setGrid(new Grid(this.gridWidth, this.gridHeight));
-
-    // Iterate over the loaded grid and render each block
-    for (int row = 0; row < this.gridHeight; row++) {
-      for (int col = 0; col < this.gridWidth; col++) {
-        String[] blockTypes = loadedGrid.getCell(row, col);
-
-        // Render each block type in the cell
-        for (String blockType : blockTypes) {
-          if (blockType.equals("EmptyVisualBlock")) {
-            continue;
-          }
-          ImageView blockView = createBlockView(blockType);
-
-          if (blockView != null) {
-            blockView.setFitWidth(cellSize);
-            blockView.setFitHeight(cellSize);
-
-            // Calculate position based on grid coordinates
-            double xPos = col * cellSize + gridPane.getLayoutX();
-            double yPos = row * cellSize + gridPane.getLayoutY();
-
-            // Set the layout positions directly
-            blockView.setLayoutX(xPos);
-            blockView.setLayoutY(yPos);
-
-            // Add the block to the root and bring it to the front
-            root.getChildren().add(blockView);
-            blockView.toFront();
-            try {
-              levelController.addBlockToCell(row, col, blockType);
-            } catch (Exception e) {
-              System.err.println("Error adding block to cell: " + e.getMessage());
-            }
-          }
-        }
-      }
-    }
   }
 }

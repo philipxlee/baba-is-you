@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import oogasalad.model.gameplay.exceptions.JsonParsingException;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.config.JsonManager;
@@ -18,7 +19,7 @@ public class JsonGameParserTest {
   private final File defaultJson = new File("data/test2.json");
 
   @Test
-  public void testParseLevel() throws IOException {
+  public void testParseLevel() throws IOException, JsonParsingException {
 
     //GIVEN a parsed level with the JsonGameParser
     Level parsedLevel = jsonGameParser.parseLevel(jsonManager.loadJsonFromFile(defaultJson));

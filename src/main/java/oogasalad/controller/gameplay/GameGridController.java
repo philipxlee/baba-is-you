@@ -3,6 +3,7 @@ package oogasalad.controller.gameplay;
 import com.google.gson.JsonObject;
 import javafx.scene.input.KeyCode;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
+import oogasalad.model.gameplay.exceptions.JsonParsingException;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
@@ -88,11 +89,10 @@ public class GameGridController implements AlertHandler {
     return this.gameGrid;
   }
 
-  @Deprecated
   /**
    * Parses an input jsonObject into a Level object.
    */
-  public Level parseJson(JsonObject jsonObject) {
+  public Level parseJson(JsonObject jsonObject) throws JsonParsingException {
     return jsonGameParser.parseLevel(jsonObject);
   }
 
