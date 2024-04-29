@@ -19,7 +19,12 @@ public class GridHelper {
   private static final String HOTABLE = "Hotable";
 
   private static final String SINKABLE = "Sinkable";
-
+  /**
+   * Constructs a new instance of the GridHelper class with the specified number of rows and columns.
+   * The constructor initializes the grid with the given dimensions and instantiates a BlockFactory.
+   * @param rows The number of rows in the grid.
+   * @param cols The number of columns in the grid.
+   */
   public GridHelper(int rows, int cols) {
     this.grid = new ArrayList[rows][cols];
     this.factory = new BlockFactory();
@@ -114,42 +119,7 @@ public class GridHelper {
   }
 
 
-  /**
-   * Finds all controllable blocks in the grid.
-   *
-   * @return A list of arrays containing the row, column, and index of each controllable block.
-   */
-  public List<int[]> findControllableBlock() { //record class
-    List<int[]> allControllableBlocks = new ArrayList<>();
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[i].length; j++) {
-        for (int k = 0; k < grid[i][j].size(); k++) {
-          AbstractBlock block = grid[i][j].get(k);
-          if (block != null && block.getAttribute("Controllable")) {
-            int[] a = {i, j, k};
-            allControllableBlocks.add(a);
-          }
-        }
-      }
-    }
-    return allControllableBlocks;
-  }
 
-  public List<int[]> findEnemyBlock() { //record class
-    List<int[]> allEnemyBlocks = new ArrayList<>();
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[i].length; j++) {
-        for (int k = 0; k < grid[i][j].size(); k++) {
-          AbstractBlock block = grid[i][j].get(k);
-          if (block != null && block.getAttribute("Killable")) {
-            int[] a = {i, j, k};
-            allEnemyBlocks.add(a);
-          }
-        }
-      }
-    }
-    return allEnemyBlocks;
-  }
 
   /**
    * Retrieves the indices of all pushable blocks in a cell.
@@ -183,30 +153,6 @@ public class GridHelper {
   public boolean cellHasAttribute(int i, int j, String attribute){
     return grid[i][j].stream().anyMatch(block -> block.getAttribute(attribute));
   }
-  /**
-   * Checks if a cell contains a block with the Winnable behavior.
-   *
-   * @param i The row index of the cell.
-   * @param j The column index of the cell.
-   * @return True if the cell contains a block with the Winnable behavior, false otherwise.
-   */
-  public boolean cellHasWinning(int i, int j) {
-    return grid[i][j].stream().anyMatch(block -> block.getAttribute("Winnable"));
-  }
-
-
-  /**
-   * Checks if a cell contains a block with the Stoppable behavior.
-   *
-   * @param i The row index of the cell.
-   * @param j The column index of the cell.
-   * @return True if the cell contains a block with the Stoppable behavior, false otherwise.
-   */
-
-  public boolean cellHasStoppable(int i, int j) {
-    return grid[i][j].stream().anyMatch(block -> block.getAttribute("Stoppable"));
-  }
-
 
 
   /**
@@ -229,15 +175,6 @@ public class GridHelper {
       }
     }
     return hasPushable || textBlock;
-  }
-
-  public boolean cellHasTextBlock(int i, int j){
-    for(AbstractBlock block : grid[i][j]){
-      if(block.isTextBlock()){
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
@@ -284,6 +221,37 @@ public class GridHelper {
       }
     }
   }
+  public boolean cellHasTextBlock(int i, int j){
+    for(AbstractBlock block : grid[i][j]){
+      if(block.isTextBlock()){
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  /**
+   * Finds all controllable blocks in the grid.
+   * @param blocktype the kind of block you want to look for in the grid
+   * @return A list of arrays containing the row, column, and index of each desired block.
+   */
+  public List<int[]> findAllPresentBlock(String blocktype) { //record class
+    List<int[]> allPresentBlock = new ArrayList<>();
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if (block != null && block.getAttribute(blocktype)) {
+            int[] a = {i, j, k};
+            allPresentBlock.add(a);
+          }
+        }
+      }
+    }
+    return allPresentBlock;
+  }
+
 
 
 }
