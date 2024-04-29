@@ -36,6 +36,8 @@ import oogasalad.shared.observer.Observer;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.gamestates.PauseScene;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class that encapsulates the grid interactions from the model and displays them. Uses the Observer
@@ -70,6 +72,7 @@ public class GamePane implements Observer<Grid> {
   private boolean babaCute = false;
   private boolean isGameOver = true;
   private LevelController levelController;
+  private static final Logger logger = LogManager.getLogger(GamePane.class);
 
 
   public void initializeGameGrid(int width, int height, MainScene scene,
@@ -98,7 +101,6 @@ public class GamePane implements Observer<Grid> {
       gridController.showError("ERROR", e.getClass().getName());
     }
     renderGrid(); // Initial grid rendering
-
     startTimer();
   }
 
@@ -123,6 +125,7 @@ public class GamePane implements Observer<Grid> {
     }));
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
+    logger.info("Timer starts for this game.");
   }
 
   private void pauseTimer() {
@@ -235,6 +238,7 @@ public class GamePane implements Observer<Grid> {
     }
     catch (Exception e) {
       gridController.showError("ERROR", e.getMessage());
+      logger.error("Error initializing block images: " + e.getMessage());
     }
   }
 

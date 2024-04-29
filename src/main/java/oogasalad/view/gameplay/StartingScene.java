@@ -18,6 +18,9 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.mainscene.MainScene;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Splash screen class for beginning the GamePlay.
@@ -33,6 +36,7 @@ public class StartingScene implements Scene {
   private int width;
   private int height;
   public static String language;
+  private static final Logger logger = LogManager.getLogger(StartingScene.class);
 
   /**
    * Constructor for StartingScene.
@@ -45,6 +49,7 @@ public class StartingScene implements Scene {
     this.sceneController = sceneController;
     this.databaseController = databaseController;
     StartingScene.language = language;
+    logger.info("Entered gameplay.");
 
   }
 

@@ -7,9 +7,12 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
+import oogasalad.database.DatabaseConfig;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainScene implements Scene {
 
@@ -23,6 +26,7 @@ public class MainScene implements Scene {
   private InteractionPane interactionScene;
   private final Level level;
   private final LevelController levelController;
+  private static final Logger logger = LogManager.getLogger(MainScene.class);
 
   public MainScene(SceneController sceneController, LevelController levelController) {
     this.sceneController = sceneController;
@@ -55,6 +59,7 @@ public class MainScene implements Scene {
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
+    logger.info("Initialized the gameplay main scene.");
 
   }
 

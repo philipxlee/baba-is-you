@@ -17,6 +17,8 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PauseScene implements Scene {
   private javafx.scene.Scene scene;
@@ -28,12 +30,14 @@ public class PauseScene implements Scene {
   private final String language;
   private long milliseconds;
   private Timeline timeline;
+  private static final Logger logger = LogManager.getLogger(PauseScene.class);
 
   public PauseScene(SceneController sceneController, long milliseconds, Timeline timeline) {
     this.sceneController = sceneController;
     this.language = sceneController.getLanguage();
     this.milliseconds = milliseconds;
     this.timeline = timeline;
+    logger.info("Entered pause scene.");
   }
 
   @Override

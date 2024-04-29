@@ -21,6 +21,8 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.config.JsonManager;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * UI class to handle the file choosing functionality within the Interaction Pane.
@@ -39,6 +41,7 @@ public class FileChooserPane {
   private final JsonManager jsonManager;
   private final LevelController levelController;
   private final SceneController sceneController;
+  private static final Logger logger = LogManager.getLogger(FileChooserPane.class);
 
 
   public FileChooserPane(int width, int height, String language, LevelController levelController,
@@ -56,8 +59,8 @@ public class FileChooserPane {
     if (gameDirectory.exists() && gameDirectory.isDirectory()) {
       files = gameDirectory.listFiles();
     } else {
-      //TODO: alert
-      System.out.println("Directory does not exist or is not a directory.");
+      logger.error("File chooser culd not be initialized: directory does not exist or is"
+          + " not a directory.");
     }
 
     InputStream stream = getClass().getResourceAsStream("/images/FileIcon.png");
@@ -112,7 +115,7 @@ public class FileChooserPane {
         flowPane.getChildren().add(imageAndLabel);
       }
     } catch (Exception e) {
-//      System.out.println(e.getMessage());
+        logger.info("Couldn't populate file chooser: " + e.getMessage());
     }
   }
 
@@ -126,7 +129,6 @@ public class FileChooserPane {
       Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
           dimensions, "columns"));
 
-      //TODO: remove when only valid jsons are in the data repo
       Text difficulty;
       if (metadata != null) {
         difficulty = factory.generateCaption("Difficulty: " + jsonManager.getValue(

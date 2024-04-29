@@ -13,6 +13,8 @@ import oogasalad.controller.gameplay.SceneController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Scene that displays when the player wins the game.
@@ -29,6 +31,7 @@ public class WinScene implements Scene {
   private final SceneController sceneController;
   private boolean statsSaved = false;
   private final String language;
+  private static final Logger logger = LogManager.getLogger(WinScene.class);
 
   /**
    * Constructor for the WinScene class.
@@ -55,6 +58,7 @@ public class WinScene implements Scene {
     this.scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
     showWinMessage();
+    logger.info("Entered win scene.");
   }
 
   /**

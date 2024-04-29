@@ -25,6 +25,8 @@ import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.socialcenter.CommentScene;
 import oogasalad.view.gameplay.socialcenter.LeaderboardScene;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.units.qual.A;
 import org.checkerframework.checker.units.qual.K;
 
@@ -44,6 +46,7 @@ public class InteractionPane {
   private LevelController levelController;
   private String language;
   private KeyPressDisplay keyPressDisplay;
+  private static final Logger logger = LogManager.getLogger(InteractionPane.class);
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -127,6 +130,7 @@ public class InteractionPane {
       try {
         levelController.loadNewLevel(sceneController);
       } catch (IOException e) {
+        logger.error("Issue setting up load button: " + e.getMessage());
         throw new RuntimeException(e);
       }
     });
