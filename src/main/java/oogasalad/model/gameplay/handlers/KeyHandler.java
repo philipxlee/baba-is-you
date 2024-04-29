@@ -2,17 +2,31 @@ package oogasalad.model.gameplay.handlers;
 
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.grid.Grid;
-import oogasalad.model.gameplay.grid.GridHelper;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+
+/**
+ * KeyHandler class defines and handles the action associated with the valid keypress.
+ *
+ * @author Oluwagbotemi Joseph Ogunbadewa.
+ */
 public abstract class KeyHandler {
 
+  private static final Logger logger = LogManager.getLogger(KeyHandler.class);
+
   private final Grid grid;
-  private GridHelper gridHelper;
   private final GameStateController gameStateController;
+  private static final String KILL = "Kill";
+  private static final String KILLABLE = "Killable";
+  private static final String CONTROLLABLE = "Controllable";
+
+  private static final String WINNABLE = "Winnable";
+  private static final String STOPPABLE = "Stoppable";
 
   /**
    * Constructs a KeyHandler object with the given grid and game state controller.
@@ -25,6 +39,7 @@ public abstract class KeyHandler {
     this.grid = grid;
     this.gameStateController = gameStateController;
     grid.checkForRules();
+    logger.info("Created KeyHandler class");
   }
 
   /**
@@ -48,9 +63,7 @@ public abstract class KeyHandler {
     } else {
       gameStateController.displayGameOver(false);
     }
-    grid.checkForRules();
-    grid.checkBehaviors();
-    grid.notifyObserver();
+    informGridOfUpdates();
   }
 
 
@@ -70,17 +83,12 @@ public abstract class KeyHandler {
   private void moveBlock(int i, int j, int k, int deltaI, int deltaJ) {
     int nextI = i + deltaI;
     int nextJ = j + deltaJ;
-    if (!isValidMove(nextI, nextJ, k)) {
-      return;
+    if (isValidMove(nextI, nextJ, k)) {
+      nextIsWinningBlock(nextI, nextJ);
+      calculateLength(i, j, k, deltaI, deltaJ)
+              .ifPresent(length -> performMovement(i, j, k, deltaI, deltaJ, length));
+      informGridOfUpdates();
     }
-    nextIsWinningBlock(nextI, nextJ);
-    calculateLength(i, j, k, deltaI,
-        deltaJ) //calculates length to move and calls perfrom movement on the length
-        .ifPresent(length -> performMovement(i, j, k, deltaI, deltaJ, length));
-
-    grid.checkForRules();
-    grid.checkBehaviors();
-    grid.notifyObserver();
   }
 
 
@@ -97,24 +105,38 @@ public abstract class KeyHandler {
    */
   private Optional<Integer> calculateLength(int i, int j, int k, int deltaI, int deltaJ) {
     int length = 1;
+    length = getLength(i, j, k, deltaI, deltaJ, length);
+    int endI = i + length * deltaI;
+    int endJ = j + length * deltaJ;
+    if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)
+            || grid.cellHasAttribute(endI, endJ, STOPPABLE) || grid.cellHasAttribute(endI, endJ, CONTROLLABLE)) {
+      return Optional.empty(); // No space to move the chain
+    }
+    return Optional.of(length);
+  }
+
+  /**
+   * Calculates the length of a sequence of pushable blocks in a given direction.
+   *
+   * @param i      The starting row index.
+   * @param j      The starting column index.
+   * @param k      The direction index.
+   * @param deltaI The change in row index for each step.
+   * @param deltaJ The change in column index for each step.
+   * @param length The initial length of the sequence.
+   * @return The length of the sequence of pushable blocks in the specified direction.
+   */
+  private int getLength(int i, int j, int k, int deltaI, int deltaJ, int length) {
     while (true) {
-      int nextI = i + length * deltaI; //gets next cell
-      int nextJ = j + length * deltaJ; // gets next cell
-      if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ)
-          && !grid.cellHasStoppable(nextI, nextJ)) {
+      int nextI = i + length * deltaI;
+      int nextJ = j + length * deltaJ;
+      if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ) && !grid.cellHasAttribute(nextI, nextJ, STOPPABLE)) {
         length++;
       } else {
         break;
       }
     }
-    int endI = i + length * deltaI;
-    int endJ = j + length * deltaJ;
-    if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)
-        || grid.cellHasStoppable(endI, endJ) || grid.cellHasControllable(endI,
-        endJ)) { //last condition makes sure you cant stack controllables
-      return Optional.empty(); // No space to move the chain
-    }
-    return Optional.of(length);
+    return length;
   }
 
 
@@ -130,25 +152,37 @@ public abstract class KeyHandler {
    */
   private void performMovement(int i, int j, int k, int deltaI, int deltaJ, int length) {
     // Move all blocks
-    for (int m = length - 1; m > 0; m--) {
-      int currentI = i + m * deltaI;
-      int currentJ = j + m * deltaJ;
-      int nextI = currentI + deltaI;
-      int nextJ = currentJ + deltaJ;
-      //move all the pushable stuffs into the next cell
-      List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
-      if (!indicesToMove.isEmpty()) {
-        int minIndex = Collections.min(indicesToMove);
-        for (int w = 0; w < indicesToMove.size(); w++) {
-          grid.moveBlock(currentI, currentJ, minIndex, nextI, nextJ);
-        }
+    IntStream.range(1, length)
+            .map(m -> length - m)
+            .forEach(m -> {
+              int currentI = i + m * deltaI;
+              int currentJ = j + m * deltaJ;
+              int nextI = currentI + deltaI;
+              int nextJ = currentJ + deltaJ;
+              List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
+              moveToIndexIfValid(indicesToMove, currentI, currentJ, nextI, nextJ);
+            });
+    grid.moveBlock(i, j, k, i + deltaI, j + deltaJ);
+    informGridOfUpdates();
+  }
+
+
+  /**
+   * Moves a block to a specified index if the list of indices to move is not empty.
+   *
+   * @param indicesToMove The list of indices to which the block should be moved.
+   * @param currentI      The current row index of the block.
+   * @param currentJ      The current column index of the block.
+   * @param nextI         The row index to which the block will be moved.
+   * @param nextJ         The column index to which the block will be moved.
+   */
+  private void moveToIndexIfValid(List<Integer> indicesToMove, int currentI, int currentJ, int nextI, int nextJ) {
+    if (!indicesToMove.isEmpty()) {
+      int minIndex = Collections.min(indicesToMove);
+      for (int w = 0; w < indicesToMove.size(); w++) {
+        grid.moveBlock(currentI, currentJ, minIndex, nextI, nextJ);
       }
     }
-    // Move controllable block last
-    grid.moveBlock(i, j, k, i + deltaI, j + deltaJ);
-    grid.checkForRules();
-    grid.checkBehaviors();
-    grid.notifyObserver();
   }
 
 
@@ -159,7 +193,7 @@ public abstract class KeyHandler {
    * @param nextJ The column index of the next cell.
    */
   private void nextIsWinningBlock(int nextI, int nextJ) {
-    if (grid.cellHasWinning(nextI, nextJ)) {
+    if (grid.cellHasAttribute(nextI, nextJ, WINNABLE)) {
       gameStateController.displayGameOver(true);
     }
   }
@@ -174,6 +208,15 @@ public abstract class KeyHandler {
    */
   private boolean isValidMove(int i, int j, int k) {
     return grid.isNotOutOfBounds(i, j);
+  }
+
+  /**
+   * Inform the grid of updates, checking its rules, behaviors and notifying the observers.
+   */
+  private void informGridOfUpdates() {
+    grid.checkForRules();
+    grid.checkBehaviors();
+    grid.notifyObserver();
   }
 
 }
