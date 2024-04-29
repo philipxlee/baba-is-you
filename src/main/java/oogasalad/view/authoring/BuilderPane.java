@@ -192,8 +192,8 @@ public class BuilderPane {
    * @param loadedGrid The grid data to load.
    */
   public void renderLoadedGrid(Grid loadedGrid) {
-    gridWidth = loadedGrid.getNumColumns() - 2;
-    gridHeight = loadedGrid.getNumRows() - 2;
+    gridWidth = loadedGrid.getNumRows() - 2;
+    gridHeight = loadedGrid.getNumColumns() - 2;
     setUpGrid();
     levelController.getLevel().setGrid(new Grid(gridWidth, gridHeight));
     for (int row = 0; row < gridHeight; row++) {
