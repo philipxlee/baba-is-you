@@ -28,8 +28,7 @@ import java.util.ResourceBundle;
 
 public class BuilderPane {
 
-    private final String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
-  protected Pane root; // Your root node for the builder scene
+    protected Pane root; // Your root node for the builder scene
   protected GridPane gridPane;
 
   private final ResourceBundle messages = ResourceBundle.getBundle("error_bundle/authoring_errors");
@@ -40,16 +39,13 @@ public class BuilderPane {
   private double cellSize; // Set the cell size
   private BlockViewFactory blockViewFactory;
   private final LevelController levelController;
-  private final String language;
-  private final WidgetFactory factory;
-  private VBox container;
 
-  public BuilderPane(LevelController levelController, String language) {
-    this.factory = new WidgetFactory();
+    public BuilderPane(LevelController levelController, String language) {
+      WidgetFactory factory = new WidgetFactory();
     this.levelController = levelController;
-    this.language = language;
-    try {
-      this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
+      try {
+        String BLOCK_CONFIG_FILE_PATH = "/blocktypes/blocktypes.json";
+        this.blockViewFactory = new BlockViewFactory(BLOCK_CONFIG_FILE_PATH);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -59,7 +55,7 @@ public class BuilderPane {
   public void initializeBuilderScene() {
     this.root = new Pane();
 
-    container = new VBox(10);
+      VBox container = new VBox(10);
     container.setMinWidth(root.getWidth());
     container.setAlignment(Pos.CENTER);
 
