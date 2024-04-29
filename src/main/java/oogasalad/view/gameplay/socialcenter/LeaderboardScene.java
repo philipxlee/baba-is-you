@@ -101,6 +101,12 @@ public class LeaderboardScene implements Scene {
     root.getChildren().addAll(leaderboardList, backButton);
   }
 
+  /**
+   * Creates a leaderboard row for a user.
+   * @param number number associated with a leaderboard score
+   * @param player player achieving the score
+   * @return HBox with all necessary leaderboard data
+   */
   private HBox createLeaderboardRow(int number, LeaderboardData player) {
     WidgetConfiguration configuration = new WidgetConfiguration(300, 50, "row-cell", language);
     Button username = factory.makeButton(configuration, number + ". " + player.getUsername());

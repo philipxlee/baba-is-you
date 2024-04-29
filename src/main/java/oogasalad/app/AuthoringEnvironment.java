@@ -5,6 +5,9 @@ import oogasalad.controller.authoring.LevelController;
 import oogasalad.controller.authoring.SceneController;
 import oogasalad.model.authoring.level.LevelMetadata;
 
+/**
+ * The app for the Authoring Environment.
+ */
 public class AuthoringEnvironment {
 
   private String language = "";
@@ -23,6 +26,10 @@ public class AuthoringEnvironment {
     sceneController.initializeViews();
   }
 
+  /**
+   * Set the language of the authoring environment.
+   * @param newLanguage new language to set to.
+   */
   public void setLanguage(String newLanguage) {
     this.language = newLanguage;
   }
