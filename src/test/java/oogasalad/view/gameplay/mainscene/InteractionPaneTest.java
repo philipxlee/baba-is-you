@@ -1,4 +1,4 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.mainscene;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;

@@ -86,6 +86,7 @@ public class LoseScene implements Scene {
     texts.add(header);
     texts.add(content);
 
+    //Create the start over button, which takes you to the starting scene
     Button start = factory.makeButton(new WidgetConfiguration(200, 40,
         "TryAgain", "button", language));
     start.setId("tryAgainButton");

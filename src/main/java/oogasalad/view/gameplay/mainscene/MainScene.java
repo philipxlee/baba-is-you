@@ -14,6 +14,9 @@ import oogasalad.shared.widgetfactory.WidgetFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Main Scene of the GamePlay, composed of the GamePane and InteractionPane.
+ */
 public class MainScene implements Scene {
 
   private final int GAMEPLAY_WIDTH = 1000;
@@ -28,12 +31,22 @@ public class MainScene implements Scene {
   private final LevelController levelController;
   private static final Logger logger = LogManager.getLogger(MainScene.class);
 
+  /**
+   * Creates the main scene.
+   * @param sceneController SceneController object for switching between scenes
+   * @param levelController LevelController object for the current level of the scene
+   */
   public MainScene(SceneController sceneController, LevelController levelController) {
     this.sceneController = sceneController;
     this.levelController = levelController;
     this.level = levelController.getLevel();
   }
 
+  /**
+   * Initializes the scene and its widgets.
+   * @param width  width of scene
+   * @param height height of scenes
+   */
   @Override
   public void initializeScene(int width, int height) {
     this.root = new HBox();
@@ -63,16 +76,27 @@ public class MainScene implements Scene {
 
   }
 
+  /**
+   * Resets the game.
+   */
   public void resetGame() {
     gameScene.setGameOverStatus(false);
     sceneController.beginGame(sceneController.isGuestSession());
   }
 
+  /**
+   * Returns the InteractionPane for this scene.
+   * @return
+   */
   public InteractionPane getInteractionPane() {
     // Assuming you have a reference to InteractionPane in MainScene
     return this.interactionScene;
   }
 
+  /**
+   * Returns the actual javafx scene object for this scene.
+   * @return javafx scene obj
+   */
   @Override
   public javafx.scene.Scene getScene() {
     return this.scene;

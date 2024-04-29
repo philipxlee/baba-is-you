@@ -43,7 +43,14 @@ public class FileChooserPane {
   private final SceneController sceneController;
   private static final Logger logger = LogManager.getLogger(FileChooserPane.class);
 
-
+  /**
+   * Initializes the file chooser in the Interaction Pane.
+   * @param width width of the file chooser
+   * @param height height of the file chooser
+   * @param language language specified
+   * @param levelController LevelController object for this pane
+   * @param sceneController SceneController object for this pane
+   */
   public FileChooserPane(int width, int height, String language, LevelController levelController,
       SceneController sceneController) {
     this.factory = new WidgetFactory();
@@ -54,6 +61,7 @@ public class FileChooserPane {
     this.sceneController = sceneController;
     this.levelController = levelController;
 
+    //Get all the files in the /data directory
     Path gamePath = Paths.get("data");
     File gameDirectory = gamePath.toFile();
     if (gameDirectory.exists() && gameDirectory.isDirectory()) {
@@ -69,6 +77,10 @@ public class FileChooserPane {
     fileChooser = setUpFileChooser();
   }
 
+  /**
+   * Returns the root of this pane
+   * @return VBox root
+   */
   public VBox getFileChooser() {
     return fileChooser;
   }
@@ -119,17 +131,24 @@ public class FileChooserPane {
     }
   }
 
+  /**
+   * Sets the click event for each ImageView object in the file chooser.
+   * @param imageView the current ImageView object
+   * @param jsonFile the Json file it corresponds to
+   */
   private void setImageClickEvent(ImageView imageView, JsonObject jsonFile) {
     imageView.setOnMouseClicked(event -> {
       JsonObject gridObject = jsonManager.getJsonObject(jsonFile, "grid");
       JsonObject metadata = jsonManager.getJsonObject(gridObject, "metadata");
       JsonObject dimensions = jsonManager.getJsonObject(jsonFile, "gridSize");
+
+      //Pull out metadata from the file
       Text rows = factory.generateCaption("Rows: " + jsonManager.getValue(
           dimensions, "rows"));
       Text cols = factory.generateCaption("Cols: " + jsonManager.getValue(
           dimensions, "columns"));
-
       Text difficulty;
+
       if (metadata != null) {
         difficulty = factory.generateCaption("Difficulty: " + jsonManager.getValue(
             metadata, "difficulty"));
@@ -146,6 +165,12 @@ public class FileChooserPane {
     });
   }
 
+  /**
+   * Wraps the file Icon image with the filename text in a VBox.
+   * @param fileName name of the file
+   * @param imageView file icon associated
+   * @return stylized VBox
+   */
   private VBox createIconAndName(String fileName, ImageView imageView) {
     Label name = new Label(fileName);
     name.getStyleClass().add("caption-label");

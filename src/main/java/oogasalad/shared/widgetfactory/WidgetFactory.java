@@ -1,7 +1,5 @@
 package oogasalad.shared.widgetfactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -32,19 +29,26 @@ public class WidgetFactory {
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
 
-  public WidgetFactory() {
-  }
-
+  /**
+   * Creates the generic interaction panel for the Gameplay Interaction pane.
+   * @param configuration configuration object specifying CSS + dimensions
+   * @return designed Rectangle
+   */
   public Rectangle interactionPanel(WidgetConfiguration configuration) {
     Rectangle panel = new Rectangle(0, 0, configuration.getWidth(), configuration.getHeight());
     panel.getStyleClass().add(configuration.getCssMatch());
     return panel;
   }
 
-  public Label hintsLabel(WidgetConfiguration configuration, String hint) {
-    //Create the label for the hint
+  /**
+   * Generates a Label object with a given css match and potential starting content.
+   * @param configuration configuration object specifying language, CSS, etc
+   * @param start potential starting text of the label
+   * @return
+   */
+  public Label makeLabel(WidgetConfiguration configuration, String start) {
     Label hintLabel = new Label();
-    hintLabel.setText(hint);
+    hintLabel.setText(start);
     hintLabel.getStyleClass().add(configuration.getCssMatch());
     hintLabel.setWrapText(true);
     hintLabel.maxWidth(configuration.getWidth());
@@ -52,42 +56,79 @@ public class WidgetFactory {
     return hintLabel;
   }
 
+  /**
+   * Generates a stylized header for the game.
+   * @param configuration obj specifying the language and property match label
+   * @return stylized Text object
+   */
   public Text generateHeader(WidgetConfiguration configuration) {
     Text header = new Text(configuration.getPropertyContents());
     header.getStyleClass().add("header");
     return header;
   }
 
+  /**
+   * Generates a stylized (red) header for the game.
+   * @param configuration obj specifying the language and property match label
+   * @return stylized Text object
+   */
   public Text generateRedHeader(WidgetConfiguration configuration) {
     Text header = new Text(configuration.getPropertyContents());
     header.getStyleClass().add("red-header");
     return header;
   }
 
+  /**
+   * Generates a stylized paragraph line for the game.
+   * @param configuration obj specifying the language and property match label
+   * @return stylized Text object
+   */
   public Text generateLine(WidgetConfiguration configuration) {
     Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("paragraph");
     return line;
   }
 
+  /**
+   * Generates a stylized paragraph line for the game. This method is for dynamic text that changes
+   * from database/user input.
+   * @param content what the line contains
+   * @return stylized Text object
+   */
   public Text generateLine(String content) {
     Text line = new Text(content);
     line.getStyleClass().add("paragraph");
     return line;
   }
 
+  /**
+   * Generates a stylized subheader for the game.
+   * @param configuration obj specifying the language and property match label
+   * @return stylized Text object
+   */
   public Text generateSubHeader(WidgetConfiguration configuration) {
     Text line = new Text(configuration.getPropertyContents());
     line.getStyleClass().add("sub-header");
     return line;
   }
 
+  /**
+   * Generates a stylized caption for the game.
+   * @param content what the caption contains (dynamic data).
+   * @return stylized Text object
+   */
   public Text generateCaption(String content) {
     Text line = new Text(content);
     line.getStyleClass().add("caption");
     return line;
   }
 
+  /**
+   * Wraps a list of given JavaFX node in a centered, padded HBox.
+   * @param toBeWrapped list of nodes to wrap
+   * @param width preferred width of the HBox
+   * @return HBox with the stylized nodes
+   */
   public HBox wrapInHBox(List<Node> toBeWrapped, int width) {
     HBox hbox = new HBox(20);
     hbox.getChildren().addAll(toBeWrapped);
@@ -97,11 +138,11 @@ public class WidgetFactory {
   }
 
   /**
-   * The single node usage.
-   *
-   * @param toBeWrapped
-   * @param width
-   * @return
+   * The single node usage of wrapping in the HBox.
+   * @param toBeWrapped Node to wrap in HBox
+   * @param width preferred width of the HBox
+   * @param spacing the spacing on the sides of the node
+   * @return stylized HBox with the node
    */
   public HBox wrapInHBox(Node toBeWrapped, int width, int spacing) {
     HBox hbox = new HBox(spacing);
@@ -111,6 +152,13 @@ public class WidgetFactory {
     return hbox;
   }
 
+  /**
+   * Wraps a list of given JavaFX nodes in a centered, padded VBox.
+   * @param toBeWrapped list of nodes to wrap
+   * @param height preferred height of the VBox
+   * @param spacing spacing of the VBox
+   * @return stylized VBox containing the list of nodes.
+   */
   public VBox wrapInVBox(List<Node> toBeWrapped, int height, int spacing) {
     VBox vbox = new VBox(spacing);
     vbox.getChildren().addAll(toBeWrapped);
@@ -119,6 +167,12 @@ public class WidgetFactory {
     return vbox;
   }
 
+  /**
+   * Wraps a given JavaFX node in a centered, padded VBox.
+   * @param toBeWrapped node to wrap
+   * @param height preferred height of the VBox
+   * @return stylized VBox containing the node.
+   */
   public VBox wrapInVBox(Node toBeWrapped, int height) {
     VBox vbox = new VBox(10);
     vbox.getChildren().add(toBeWrapped);
@@ -127,6 +181,12 @@ public class WidgetFactory {
     return vbox;
   }
 
+  /**
+   * Makes a button in the game.
+   * @param configuration config object specifying width, height, propertyName, and cssMatch for
+   * versatility.
+   * @return stylized button
+   */
   public static Button makeButton(WidgetConfiguration configuration) {
     Button button = new Button(configuration.getPropertyContents());
     button.setPrefWidth(configuration.getWidth());
@@ -152,10 +212,21 @@ public class WidgetFactory {
     return button;
   }
 
+  /**
+   * Changes the text on the button
+   * @param button button the change text on
+   * @param widgetConfiguration config obj specifying the new properties match to reference
+   */
   public void changeButtonLabel(Button button, WidgetConfiguration widgetConfiguration) {
     button.setText(widgetConfiguration.getPropertyContents());
   }
 
+  /**
+   * Creates a stylized scrollpane
+   * @param flowPane flowPane to orient the scrollpane around
+   * @param maxWidth max width the scrollpane should be
+   * @return stylized scrollpane
+   */
   public ScrollPane makeScrollPane(FlowPane flowPane, int maxWidth) {
     ScrollPane pane = new ScrollPane(flowPane);
     pane.setFitToWidth(true);
@@ -173,6 +244,12 @@ public class WidgetFactory {
     return pane;
   }
 
+  /**
+   * Creates a stylized popup window
+   * @param configuration config obj specifying css match, width, height, property name, and language
+   * @param root root Javafx node to build the scene with
+   * @param popup stage to put the scene on
+   */
   public void createPopUpWindow(WidgetConfiguration configuration, Parent root, Stage popup) {
     javafx.scene.Scene scene = new javafx.scene.Scene(root, configuration.getWidth(),
         configuration.getHeight());
@@ -183,6 +260,11 @@ public class WidgetFactory {
     popup.show();
   }
 
+  /**
+   * Creates a stylized flowpane
+   * @param configuration config obj specifying width, height, cssmatch, etc
+   * @return stylized flowpane object
+   */
   public FlowPane createFlowPane(WidgetConfiguration configuration) {
     FlowPane flowPane = new FlowPane();
     flowPane.setPrefSize(configuration.getWidth(), configuration.getHeight());
@@ -195,6 +277,11 @@ public class WidgetFactory {
     return flowPane;
   }
 
+  /**
+   * Creates a stylized text field object
+   * @param configuration config obj specifying width, height, propertyName, css match, and language
+   * @return stylized text field
+   */
   public TextField createTextField(WidgetConfiguration configuration) {
     TextField field = new TextField();
     field.setPromptText(configuration.getPropertyContents());
@@ -205,6 +292,11 @@ public class WidgetFactory {
     return field;
   }
 
+  /**
+   * Creates a stylized text area object
+   * @param configuration config obj specifying width, height, propertyName, css match, and language
+   * @return stylized text area
+   */
   public TextArea createTextArea(WidgetConfiguration configuration) {
     TextArea field = new TextArea();
     field.setPromptText(configuration.getPropertyContents());
@@ -215,17 +307,22 @@ public class WidgetFactory {
     return field;
   }
 
-  public void replaceLabelContent(Label old, WidgetConfiguration configuration) {
-    old.setText(configuration.getPropertyContents());
-  }
-
-  public Label generateLabel(WidgetConfiguration configuration) {
-    Label label = new Label();
+  /**
+   * Replaces the content on a label.
+   * @param label label to change content on
+   * @param configuration config obj specifying new property name
+   */
+  public void replaceLabelContent(Label label, WidgetConfiguration configuration) {
     label.setText(configuration.getPropertyContents());
-    label.getStyleClass().add("label");
-    return label;
   }
 
+  /**
+   * Generates a stylized combo box.
+   * @param configuration config object specifying width, height, and css match
+   * @param options list of options within the combo box
+   * @param defaultOption where the combo box starts on
+   * @return stylized combo box
+   */
   public ComboBox<String> makeComboBox(WidgetConfiguration configuration, List<String> options,
       String defaultOption) {
     ComboBox<String> categoryComboBox = new ComboBox<>();
@@ -236,6 +333,5 @@ public class WidgetFactory {
     categoryComboBox.getStyleClass().add(configuration.getCssMatch());
     return categoryComboBox;
   }
-
 }
 
