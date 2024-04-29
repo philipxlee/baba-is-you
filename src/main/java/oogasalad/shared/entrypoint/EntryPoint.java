@@ -22,6 +22,9 @@ import oogasalad.controller.entrypoint.EntryPointController;
 import oogasalad.shared.scene.Scene;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
+import oogasalad.view.gameplay.gamestates.PauseScene;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Scene representing the entry point to go to the authoring env or the gameplay.
@@ -40,6 +43,7 @@ public class EntryPoint implements Scene {
   public static final String DEFAULT_RESOURCE_PACKAGE = "stylesheets.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+  private static final Logger logger = LogManager.getLogger(EntryPoint.class);
 
   /**
    * Constructor: initializes with controller
@@ -69,6 +73,7 @@ public class EntryPoint implements Scene {
     this.scene = new javafx.scene.Scene(pane, width, height);
     getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
         .toExternalForm());
+    logger.info("Enter entrypoint.");
   }
 
   /**
@@ -98,6 +103,7 @@ public class EntryPoint implements Scene {
       entryController.switchToAuthoringEnvironment();
     });
 
+    //Wraps the buttons in an HBox
     HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(authoring, gamePlay)),
         width / 2);
     buttons.setAlignment(Pos.BASELINE_CENTER);
@@ -114,7 +120,6 @@ public class EntryPoint implements Scene {
     ComboBox<String> switchLanguage = factory.makeComboBox(new WidgetConfiguration(200, 40,
         "SwitchLanguage", "combo-box", language), new ArrayList<>(Arrays.asList("English",
         "Spanish")), language);
-    //TODO: Change to be a drop down
     switchLanguage.setOnAction(event -> {
       language = switchLanguage.getValue();
       entryController.setLanguage(language);

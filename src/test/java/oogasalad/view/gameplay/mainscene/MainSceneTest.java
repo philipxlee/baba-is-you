@@ -1,4 +1,4 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.mainscene;
 
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
@@ -27,7 +27,7 @@ public class MainSceneTest extends ApplicationTest {
             {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration, "hint");
+        2, initialConfiguration, "BabaIsUs", "hint");
     testLevel = new Level(metadata);
   }
 
