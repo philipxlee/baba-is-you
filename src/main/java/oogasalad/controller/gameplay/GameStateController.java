@@ -45,6 +45,11 @@ public class GameStateController {
     gameGridController.setGameOverStatus(false);
   }
 
+  /**
+   * Sets the game grid controller for this class.
+   * This controller is responsible for managing interactions with the game grid.
+   * @param gameGridController The game grid controller to be set.
+   */
   public void setGameGridController(GameGridController gameGridController) {
     this.gameGridController = gameGridController;
   }
