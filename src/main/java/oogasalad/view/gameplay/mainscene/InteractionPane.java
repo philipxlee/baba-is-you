@@ -21,6 +21,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
+import oogasalad.model.gameplay.exceptions.JsonParsingException;
+import oogasalad.shared.alert.AlertHandler;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.socialcenter.CommentScene;
@@ -31,7 +33,7 @@ import org.checkerframework.checker.units.qual.K;
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
  */
-public class InteractionPane {
+public class InteractionPane implements AlertHandler {
 
   public static final Color BASE_COLOR = Color.web("#343342");
   public static final Color HIGHLIGHT_COLOR = Color.web("#FFCA28");
@@ -128,6 +130,8 @@ public class InteractionPane {
         levelController.loadNewLevel(sceneController);
       } catch (IOException e) {
         throw new RuntimeException(e);
+      } catch (JsonParsingException e) {
+        showError("Error", e.getMessage());
       }
     });
     load.setId("loadButton");
