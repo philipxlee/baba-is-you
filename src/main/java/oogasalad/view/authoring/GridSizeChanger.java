@@ -72,7 +72,7 @@ public class GridSizeChanger {
   private void processGridSizeChange(Pair<Integer, Integer> newSize) {
     builderPane.gridWidth = newSize.getKey();
     builderPane.gridHeight = newSize.getValue();
-    builderPane.setUpGrid();
+    builderPane.alertGrid();
     levelController.getLevel().setGrid(new Grid(builderPane.gridWidth, builderPane.gridHeight));
   }
 
