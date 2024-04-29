@@ -10,15 +10,9 @@ public class GridHelper {
 
   protected final List<AbstractBlock>[][] grid;
   private final BlockFactory factory;
-  private static final String KILL = "Kill";
-  private static final String KILLABLE = "Killable";
-  private static final String CONTROLLABLE = "Controllable";
 
   private static final String PUSHABLE = "Pushable";
 
-  private static final String HOTABLE = "Hotable";
-
-  private static final String SINKABLE = "Sinkable";
   /**
    * Constructs a new instance of the GridHelper class with the specified number of rows and columns.
    * The constructor initializes the grid with the given dimensions and instantiates a BlockFactory.
