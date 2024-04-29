@@ -111,27 +111,23 @@ public class GridSizeChanger {
    * Displays a confirmation alert to the user before proceeding to change the grid size.
    * If the user confirms, the grid is reconfigured to the new size.
    */
+  /**
+   * Displays a confirmation dialog when clearing the grid or making significant modifications.
+   */
   protected void alertGrid() {
-    // Display a confirmation dialog
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmation");
-    alert.setHeaderText("Warning: Existing game state will be deleted");
-    alert.setContentText("Would you like to proceed?");
-
-    // Add buttons for user selection
-    ButtonType buttonTypeYes = new ButtonType("Yes");
-    ButtonType buttonTypeNo = new ButtonType("No");
-
+    alert.setTitle(messages.getString("grid.confirmationTitle"));
+    alert.setHeaderText(messages.getString("grid.warning"));
+    alert.setContentText(messages.getString("grid.changeConfirmation"));
+    ButtonType buttonTypeYes = new ButtonType(messages.getString("yes"));
+    ButtonType buttonTypeNo = new ButtonType(messages.getString("no"));
     alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
     Optional<ButtonType> result = alert.showAndWait();
-
-    // If user confirms, clear existing cells and blocks and set up the grid with the new size
     if (result.isPresent() && result.get() == buttonTypeYes) {
-      // Re-setup the grid with the new size
       builderPane.setUpGrid();
     }
   }
+
 
   /**
    * Validates the provided grid size.
@@ -150,7 +146,7 @@ public class GridSizeChanger {
    */
   private void showErrorMessage(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
+    alert.setTitle(messages.getString("error.creation"));
     alert.setHeaderText(null);
     alert.setContentText(message);
     alert.showAndWait();
