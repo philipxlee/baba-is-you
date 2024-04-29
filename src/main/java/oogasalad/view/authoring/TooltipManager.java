@@ -6,6 +6,20 @@ import javafx.scene.control.Tooltip;
 import java.util.ResourceBundle;
 
 public class TooltipManager {
+
+      /**
+       * Sets tooltips for various UI components in the authoring environment to enhance user
+       * experience by providing quick guidance on the function of each control. Tooltips are loaded
+       * from a resource bundle, allowing for easy localization and updates.
+       *
+       * @param categoryComboBox A combo box for selecting categories that should display a tooltip explaining its purpose.
+       * @param difficultyComboBox A combo box for setting the difficulty level that should display a tooltip with guidance on how to use it.
+       * @param changeGridSizeButton A button for changing grid size that should display a tooltip describing its functionality.
+       * @param removeButton A button for enabling the removal mode that should display a tooltip explaining how to use it.
+       * @param gptButton A button intended to trigger GPT-related actions, equipped with a tooltip that describes what clicking it will do.
+       * @param saveJsonButton A button for saving configurations to JSON format that should display a tooltip explaining the save functionality.
+       * @param loadLevelButton A button for loading levels that should display a tooltip providing information on how to use it.
+       */
       private static final ResourceBundle tooltips = ResourceBundle.getBundle("auth_view.tooltips");
 
       public static void setTooltips(ComboBox<String> categoryComboBox,

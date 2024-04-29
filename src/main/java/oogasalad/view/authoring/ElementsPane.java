@@ -30,7 +30,6 @@ import oogasalad.shared.alert.AlertHandler;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.authoring.blockDisplay.BlockLoader;
-import oogasalad.view.authoring.jsonOps.JsonLoader;
 import oogasalad.view.authoring.jsonOps.JsonSaver;
 
 
@@ -38,7 +37,6 @@ public class ElementsPane implements AlertHandler {
 
   public final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private final JsonSaver jsonSaver;
-  private final JsonLoader jsonLoader;
   private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
 
@@ -64,7 +62,6 @@ public class ElementsPane implements AlertHandler {
     this.builderPane = builderPane;
     this.levelController = levelController;
     this.jsonSaver = new JsonSaver(levelController, builderPane);
-    this.jsonLoader = new JsonLoader(levelController, builderPane);
     this.language = levelController.getLanguage();
     initializeElementsLayout();
 
@@ -298,7 +295,6 @@ public class ElementsPane implements AlertHandler {
     KeyCombination returntosplash = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
     // Assign actions to keyboard shortcuts
     scene.getAccelerators().put(saveJsonCombination, () -> jsonSaver.saveJson(difficulty));
-    scene.getAccelerators().put(loadLevelCombination, jsonLoader::loadLevel);
     scene.getAccelerators().put(returntosplash, returnToSplashScreen());
 
   }
