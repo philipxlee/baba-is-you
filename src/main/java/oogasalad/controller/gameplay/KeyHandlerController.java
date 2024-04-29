@@ -13,6 +13,11 @@ public class KeyHandlerController {
 
     private EnemyKeyHandler enemyKeyHandler;
 
+    /**
+     * Constructs a new instance of the KeyHandler class.
+     * The constructor initializes the game grid and game state controller.
+     * @param gameStateController The controller responsible for managing the game state.
+     */
     public KeyHandlerController(GameStateController gameStateController) {
         this.gameStateController = gameStateController;
     }
