@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -27,8 +26,8 @@ import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.gameplay.socialcenter.CommentScene;
 import oogasalad.view.gameplay.socialcenter.LeaderboardScene;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.K;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A class that encapsulates all the UI functionality for the interaction pane in the Gameplay.
@@ -46,6 +45,7 @@ public class InteractionPane implements AlertHandler {
   private LevelController levelController;
   private String language;
   private KeyPressDisplay keyPressDisplay;
+  private static final Logger logger = LogManager.getLogger(InteractionPane.class);
 
   /**
    * Sets up all widgets within the interaction pane.
@@ -129,6 +129,7 @@ public class InteractionPane implements AlertHandler {
       try {
         levelController.loadNewLevel(sceneController);
       } catch (IOException e) {
+        logger.error("Issue setting up load button: " + e.getMessage());
         throw new RuntimeException(e);
       } catch (JsonParsingException e) {
         showError("Error", e.getMessage());
@@ -177,12 +178,17 @@ public class InteractionPane implements AlertHandler {
     root.getChildren().addAll(background, display);
   }
 
+  /**
+   * Sets up the hints section, which is oriented in an HBox with the key press display.
+   * @param arrowKeysBox key press display object to orient with
+   * @return HBox with stylized hints section
+   */
   private HBox setUpHintsSection(VBox arrowKeysBox) {
-    FlowPane flowpane = factory.createFlowPane(new WidgetConfiguration(250, 100, "flowpane",
-        language));
+    FlowPane flowpane = factory.createFlowPane(new WidgetConfiguration(250, 100,
+        "flowpane", language));
     ScrollPane scrollPane = factory.makeScrollPane(flowpane, 250);
     String hintText = levelController.getHint();
-    Label hintLabel = factory.hintsLabel(new WidgetConfiguration(250, 100,
+    Label hintLabel = factory.makeLabel(new WidgetConfiguration(250, 100,
         "red-label", language), hintText);
     flowpane.getChildren().add(hintLabel);
     Text hints = factory.generateLine(new WidgetConfiguration("Hints", language));
@@ -191,6 +197,10 @@ public class InteractionPane implements AlertHandler {
     return hbox;
   }
 
+  /**
+   * Sets up the leaderboard button for the interaction pane.
+   * @return VBox with the button
+   */
   private VBox setupLeaderboardButton() {
     Button leaderboardButton = factory.makeButton(new WidgetConfiguration(200, 40,
         "ViewBoard", "black-button", language));
@@ -203,6 +213,10 @@ public class InteractionPane implements AlertHandler {
     return buttonContainer;
   }
 
+  /**
+   * Sets up the comment button for the interaction pane.
+   * @return VBox with the button
+   */
   private VBox setupCommentButton() {
     Button commentButton = factory.makeButton(new WidgetConfiguration(200, 40,
         "ViewComments", "black-button", language));
@@ -215,10 +229,15 @@ public class InteractionPane implements AlertHandler {
     return buttonContainer;
   }
 
+  /**
+   * Sets up the new window button for the interaction pane.
+   * @return new window button
+   */
   private Button setUpNewWindowButton() {
     Button newWindowButton = factory.makeButton(new WidgetConfiguration(150, 40,
         "NewWindow", "white-button", language));
     newWindowButton.setOnAction(event -> {
+      //Generate new pop up when the button is clicked
       Stage stage = new Stage();
       LevelController newLevelController = new LevelController(levelController.getLevel());
       SceneController newSceneController = new SceneController(stage, sceneController.getDatabaseController(),
@@ -230,22 +249,39 @@ public class InteractionPane implements AlertHandler {
     return newWindowButton;
   }
 
+  /**
+   * Sets up the back button for the interaction pane.
+   * @return back button
+   */
   private Button setUpBackButton() {
     Button backButton = factory.makeButton(new WidgetConfiguration(150, 40,
         "Back", "white-button", language));
+    //Back button, on click, returns to starting screen
     backButton.setOnAction(event -> sceneController.initializeViews());
     backButton.setId("backButton");
     return backButton;
   }
 
+  /**
+   * Returns the root of this scene.
+   * @return Group root
+   */
   public Group getPane() {
     return this.root;
   }
 
+  /**
+   * Updates the key press display when a key is pressed by the user.
+   * @param code KeyCode the user pressed
+   */
   public void updateKeyPress(KeyCode code) {
     keyPressDisplay.updateArrowKeyVisual(code, HIGHLIGHT_COLOR);
   }
 
+  /**
+   * Updates the key press display when a key is released by the user.
+   * @param code KeyCode the user released
+   */
   public void updateKeyRelease(KeyCode code) {
     keyPressDisplay.updateArrowKeyVisual(code, BASE_COLOR);
   }
