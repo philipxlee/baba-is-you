@@ -28,7 +28,7 @@ public class InteractionPaneTest extends ApplicationTest {
         {{"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration, "hint");
+        2, initialConfiguration, "BabaIsUs", "hint");
     testLevel = new Level(metadata);
   }
 
@@ -60,11 +60,10 @@ public class InteractionPaneTest extends ApplicationTest {
   public void testKeyPressAndRelease() {
     KeyCode keyCode = KeyCode.UP;
     push(keyCode);
-    sleep(1000); // Sleep for a second to see if the key is visually highlighted
+    sleep(1000);
     interactionPane.updateKeyPress(keyCode);
-    sleep(1000); // Sleep for a second to see if the key is visually released
+    sleep(1000);
     interactionPane.updateKeyRelease(keyCode);
-    // Assert that your key was visually highlighted and then released
   }
 
   @Test

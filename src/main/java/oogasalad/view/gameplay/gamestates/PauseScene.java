@@ -51,7 +51,9 @@ public class PauseScene implements Scene {
 
   private void showPauseScreen() {
     Text header = factory.generateHeader(new WidgetConfiguration("PauseHeader", language));
+    header.setId("header");
     Text content = factory.generateLine(new WidgetConfiguration("PauseContent", language));
+    content.setId("content");
 
     List<Node> texts = new ArrayList<>();
     texts.add(header);
@@ -63,6 +65,7 @@ public class PauseScene implements Scene {
 
     Button start = factory.makeButton(new WidgetConfiguration(200, 40,
         "Back", "button", language));
+    start.setId("backButton");
     texts.add(start);
     start.setOnAction(event -> {
       sceneController.switchToPreviousScene();

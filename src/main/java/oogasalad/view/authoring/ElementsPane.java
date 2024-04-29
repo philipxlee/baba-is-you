@@ -175,13 +175,8 @@ public class ElementsPane {
       try {
         // Load the level
         Level loadedLevel = levelController.loadLevel();
-
         Grid loadedGrid = loadedLevel.getGrid();
-
-
-
         builderPane.renderLoadedGrid(loadedGrid);
-
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

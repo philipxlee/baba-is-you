@@ -137,6 +137,7 @@ public class WinScene implements Scene {
         new WidgetConfiguration(200, 40, "PlayAgain", "button", language));
     playAgainButton.setOnAction(event -> sceneController.initializeViews());
     playAgainButton.setPadding(new Insets(10));
+    playAgainButton.setId("playAgainButton");
     root.getChildren().add(playAgainButton);
   }
 }

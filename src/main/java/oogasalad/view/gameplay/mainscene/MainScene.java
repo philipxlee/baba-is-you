@@ -41,7 +41,8 @@ public class MainScene implements Scene {
 
     //Initialize game grid
     this.gameScene = new GamePane();
-    gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController, level);
+    gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController, level,
+        levelController);
     gameScene.getGrid().setLayoutX(1000);
     gameScene.setGameOverStatus(false);
 

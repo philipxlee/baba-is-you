@@ -2,10 +2,6 @@ package oogasalad.view.authoring.jsonOps;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -13,11 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import oogasalad.controller.authoring.LevelController;
-import oogasalad.model.authoring.block.Block;
 import oogasalad.model.authoring.level.Level;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.view.authoring.BuilderPane;
 
+/**
+ * Handles the saving of level data into a JSON format, including collecting necessary metadata
+ * through a user interface. It ensures that the level meets certain validation criteria before saving.
+ */
 public class JsonSaver {
 
   private final LevelController levelController;
@@ -26,6 +25,12 @@ public class JsonSaver {
   LevelValidator validator;
   private String difficulty;
 
+  /**
+   * Constructs a JsonSaver that interacts with the given LevelController and BuilderPane.
+   *
+   * @param levelController the controller managing level-related actions
+   * @param builderPane the pane that displays the level and interfaces with the user
+   */
   public JsonSaver(LevelController levelController, BuilderPane builderPane) {
     this.levelController = levelController;
     this.builderPane = builderPane;
@@ -33,6 +38,12 @@ public class JsonSaver {
     this.validator = new LevelValidator();
   }
 
+  /**
+   * Initiates the JSON saving process by displaying a confirmation dialog with input fields
+   * for level metadata.
+   *
+   * @param difficulty the difficulty setting of the level as defined by the user
+   */
   public void saveJson(String difficulty) {
     this.difficulty = difficulty;
     GridPane inputGrid = createInputGrid();
@@ -46,6 +57,11 @@ public class JsonSaver {
     });
   }
 
+  /**
+   * Creates a grid pane with text fields for entering level metadata.
+   *
+   * @return a GridPane containing labeled text fields for user input
+   */
   private GridPane createInputGrid() {
     TextField levelNameField = createTextField("Enter level name");
     TextField levelDescriptionField = createTextField("Enter level description");
@@ -62,12 +78,24 @@ public class JsonSaver {
     return inputGrid;
   }
 
+  /**
+   * Creates a TextField with a placeholder text.
+   *
+   * @param promptText the placeholder text to display when the text field is empty
+   * @return a TextField configured with the specified placeholder text
+   */
   private TextField createTextField(String promptText) {
     TextField textField = new TextField();
     textField.setPromptText(promptText);
     return textField;
   }
 
+  /**
+   * Creates a confirmation alert that contains the input grid.
+   *
+   * @param inputGrid the GridPane containing input fields for level metadata
+   * @return an Alert configured as a confirmation dialog
+   */
   private Alert createConfirmationAlert(GridPane inputGrid) {
     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
     confirmation.setTitle("Save JSON");
@@ -78,6 +106,13 @@ public class JsonSaver {
     return confirmation;
   }
 
+  /**
+   * Handles the user's response to the save confirmation alert.
+   *
+   * @param buttonType the type of button pressed by the user
+   * @param confirmation the confirmation Alert dialog
+   * @throws IOException if there is an error during file saving
+   */
   public void handleConfirmation(ButtonType buttonType, Alert confirmation) throws IOException {
     if (buttonType.getButtonData() == ButtonBar.ButtonData.YES) {
       String levelName = getFieldText(0, confirmation);
@@ -98,11 +133,24 @@ public class JsonSaver {
     }
   }
 
+  /**
+   * Retrieves the text from a specified TextField within the dialog content.
+   *
+   * @param rowIndex the index of the row in the grid containing the TextField
+   * @param confirmation the Alert from which to retrieve the grid
+   * @return the text from the TextField at the specified row
+   */
   public String getFieldText(int rowIndex, Alert confirmation) {
     GridPane dialogContent = (GridPane) confirmation.getDialogPane().getContent();
     return ((TextField) dialogContent.getChildren().get(rowIndex * 2 + 1)).getText();
   }
 
+  /**
+   * Displays an alert message to the user.
+   *
+   * @param title the title of the alert
+   * @param message the message to display to the user
+   */
   private void showAlert(String title, String message) {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle(title);

@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay.mainscene;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
@@ -65,13 +67,13 @@ public class GamePane implements Observer<Grid> {
   private double currentDelay = INITIAL_DELAY;
   private final double DECREASE_FACTOR = 0.8;
   private Timeline timeline_Enemy;
-  private boolean babaHat = false;
-
+  private boolean babaCute = false;
   private boolean isGameOver = true;
+  private LevelController levelController;
 
 
   public void initializeGameGrid(int width, int height, MainScene scene,
-      SceneController sceneController, Level initialLevel) {
+      SceneController sceneController, Level initialLevel, LevelController levelController) {
     try {
       this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
       this.width = width;
@@ -87,6 +89,8 @@ public class GamePane implements Observer<Grid> {
       gameStateController.setGameGridController(gridController);
       this.factory = new WidgetFactory();
       this.time = factory.generateLine("00:00:00");
+      time.setId("timeText");
+      this.levelController = levelController;
       handleKeyPresses(scene);
       moveEnemy();
 
@@ -134,6 +138,7 @@ public class GamePane implements Observer<Grid> {
     });
     pauseBtn.setFitHeight(cellSize);
     pauseBtn.setFitWidth(cellSize);
+    pauseBtn.setId("pauseButton");
     return pauseBtn;
   }
 
@@ -141,6 +146,11 @@ public class GamePane implements Observer<Grid> {
     Button save = factory.makeButton(new WidgetConfiguration(70, 30,
         "Save", "white-button", sceneController.getLanguage()));
     save.setOnAction(event -> {
+      try {
+        levelController.saveLevel(this);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     });
     save.setId("saveButton");
     return save;
@@ -172,7 +182,7 @@ public class GamePane implements Observer<Grid> {
     renderGrid();
   }
 
-  protected Pane setUpScreen() {
+  public Pane setUpScreen() {
     HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(setUpSaveButton(), setUpPauseButton())),
         cellSize*2);
     buttons.setAlignment(Pos.BOTTOM_RIGHT);
@@ -208,7 +218,7 @@ public class GamePane implements Observer<Grid> {
       String modifiedBlockName;
 
       if (block.getBlockName().contains("BabaVisual") && block.getAttribute("Controllable")) {
-        if (!babaHat) {
+        if (!babaCute) {
           modifiedBlockName = block.getBlockName() + currentDirection;
         } else {
           modifiedBlockName = "Cute" + block.getBlockName() + currentDirection;
@@ -279,7 +289,7 @@ public class GamePane implements Observer<Grid> {
 
   private void handleLetterKeyPresses(KeyEvent event) {
       if (event.getCode() == KeyCode.X) {
-        babaHat = !babaHat;
+        babaCute = !babaCute;
       }
       gridController.sendPlayToModel(event.getCode());
       renderGrid(); // Render grid
@@ -315,6 +325,10 @@ public class GamePane implements Observer<Grid> {
     timeline_Enemy.setCycleCount(Timeline.INDEFINITE);
     // Start the Timeline
     timeline_Enemy.play();
+  }
+
+  public GameGridController getGridController() {
+    return this.gridController;
   }
   public void setGameOverStatus(boolean status){
     this.isGameOver = status;
