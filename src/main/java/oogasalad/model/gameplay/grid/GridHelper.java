@@ -1,4 +1,5 @@
 package oogasalad.model.gameplay.grid;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,8 +15,10 @@ public class GridHelper {
   private static final String PUSHABLE = "Pushable";
 
   /**
-   * Constructs a new instance of the GridHelper class with the specified number of rows and columns.
-   * The constructor initializes the grid with the given dimensions and instantiates a BlockFactory.
+   * Constructs a new instance of the GridHelper class with the specified number of rows and
+   * columns. The constructor initializes the grid with the given dimensions and instantiates a
+   * BlockFactory.
+   *
    * @param rows The number of rows in the grid.
    * @param cols The number of columns in the grid.
    */
@@ -49,7 +52,6 @@ public class GridHelper {
       addBlock(fromI, fromJ, "EmptyVisualBlock");
     }
   }
-
 
 
   /**
@@ -113,8 +115,6 @@ public class GridHelper {
   }
 
 
-
-
   /**
    * Retrieves the indices of all pushable blocks in a cell.
    *
@@ -139,12 +139,12 @@ public class GridHelper {
   /**
    * Checks if a cell contains a block with the Controllable behavior.
    *
-   * @param i The row index of the cell.
-   * @param j The column index of the cell.
-   *@param attribute The attribue you want to check for in the cell.
+   * @param i         The row index of the cell.
+   * @param j         The column index of the cell.
+   * @param attribute The attribue you want to check for in the cell.
    * @return True if the cell contains a block with the Controllable behavior, false otherwise.
    */
-  public boolean cellHasAttribute(int i, int j, String attribute){
+  public boolean cellHasAttribute(int i, int j, String attribute) {
     return grid[i][j].stream().anyMatch(block -> block.getAttribute(attribute));
   }
 
@@ -197,14 +197,14 @@ public class GridHelper {
   }
 
 
-  public void sortArray(){
+  public void sortArray() {
     for (List<AbstractBlock>[] row : grid) {
       for (List<AbstractBlock> blockList : row) {
         if (blockList != null) {
           // Filter out all CrabVisualBlock instances into a separate list
           List<AbstractBlock> crabs = blockList.stream()
-                  .filter(block -> block.getBlockName().equals("CrabVisualBlock"))
-                  .collect(Collectors.toList());
+              .filter(block -> block.getBlockName().equals("CrabVisualBlock"))
+              .collect(Collectors.toList());
 
           // Remove all CrabVisualBlock instances from the original list
           blockList.removeIf(block -> block.getBlockName().equals("CrabVisualBlock"));
@@ -215,9 +215,10 @@ public class GridHelper {
       }
     }
   }
-  public boolean cellHasTextBlock(int i, int j){
-    for(AbstractBlock block : grid[i][j]){
-      if(block.isTextBlock()){
+
+  public boolean cellHasTextBlock(int i, int j) {
+    for (AbstractBlock block : grid[i][j]) {
+      if (block.isTextBlock()) {
         return true;
       }
     }
@@ -227,6 +228,7 @@ public class GridHelper {
 
   /**
    * Finds all controllable blocks in the grid.
+   *
    * @param blocktype the kind of block you want to look for in the grid
    * @return A list of arrays containing the row, column, and index of each desired block.
    */
@@ -245,7 +247,6 @@ public class GridHelper {
     }
     return allPresentBlock;
   }
-
 
 
 }

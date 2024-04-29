@@ -169,7 +169,6 @@ public class InteractionPane implements AlertHandler {
     HBox stats = factory.wrapInHBox(factory.generateCaption(""), width, 20);
     stats.getChildren().addAll(leaderboardButton, commentButton);
 
-
     display.setAlignment(Pos.TOP_CENTER);
     display.prefWidth(width);
     header.setAlignment(Pos.CENTER);
@@ -180,6 +179,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Sets up the hints section, which is oriented in an HBox with the key press display.
+   *
    * @param arrowKeysBox key press display object to orient with
    * @return HBox with stylized hints section
    */
@@ -199,6 +199,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Sets up the leaderboard button for the interaction pane.
+   *
    * @return VBox with the button
    */
   private VBox setupLeaderboardButton() {
@@ -215,6 +216,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Sets up the comment button for the interaction pane.
+   *
    * @return VBox with the button
    */
   private VBox setupCommentButton() {
@@ -231,6 +233,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Sets up the new window button for the interaction pane.
+   *
    * @return new window button
    */
   private Button setUpNewWindowButton() {
@@ -240,7 +243,8 @@ public class InteractionPane implements AlertHandler {
       //Generate new pop up when the button is clicked
       Stage stage = new Stage();
       LevelController newLevelController = new LevelController(levelController.getLevel());
-      SceneController newSceneController = new SceneController(stage, sceneController.getDatabaseController(),
+      SceneController newSceneController = new SceneController(stage,
+          sceneController.getDatabaseController(),
           newLevelController);
       newSceneController.setLanguage(language);
       newSceneController.initializeViews();
@@ -251,6 +255,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Sets up the back button for the interaction pane.
+   *
    * @return back button
    */
   private Button setUpBackButton() {
@@ -264,6 +269,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Returns the root of this scene.
+   *
    * @return Group root
    */
   public Group getPane() {
@@ -272,6 +278,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Updates the key press display when a key is pressed by the user.
+   *
    * @param code KeyCode the user pressed
    */
   public void updateKeyPress(KeyCode code) {
@@ -280,6 +287,7 @@ public class InteractionPane implements AlertHandler {
 
   /**
    * Updates the key press display when a key is released by the user.
+   *
    * @param code KeyCode the user released
    */
   public void updateKeyRelease(KeyCode code) {

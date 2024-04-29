@@ -23,11 +23,11 @@ public class WidgetConfiguration implements AlertHandler {
   /**
    * Constructor with a property files match.
    *
-   * @param width width of the Javafx obj
-   * @param height its height
+   * @param width        width of the Javafx obj
+   * @param height       its height
    * @param propertyName name to fetch from properties
-   * @param cssMatch which css style to apply
-   * @param language language to use in the properties fetching
+   * @param cssMatch     which css style to apply
+   * @param language     language to use in the properties fetching
    */
   public WidgetConfiguration(int width, int height, String propertyName, String cssMatch,
       String language) {
@@ -43,8 +43,9 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Constructor without a propertyName parameter. Used for objects containing no text
-   * @param width width of the Javafx obj
-   * @param height its height
+   *
+   * @param width    width of the Javafx obj
+   * @param height   its height
    * @param cssMatch which css style to apply
    * @param language language to use in the properties fetching
    */
@@ -60,9 +61,9 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Constructor with just a string property. Used for things like headers/labels.
-   * @param propertyName name to fetch from properties
-   * @param language language to use in the properties fetching
    *
+   * @param propertyName name to fetch from properties
+   * @param language     language to use in the properties fetching
    */
   public WidgetConfiguration(String propertyName, String language) {
     this.language = language;
@@ -74,6 +75,7 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Gets the width of this configuration.
+   *
    * @return width
    */
   public int getWidth() {
@@ -82,6 +84,7 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Gets the height of this configuration.
+   *
    * @return height
    */
   public int getHeight() {
@@ -90,6 +93,7 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Gets the css match for this configuration
+   *
    * @return css match
    */
   public String getCssMatch() {
@@ -98,6 +102,7 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Gets the property name for this configuration.
+   *
    * @return property match
    */
   public String getPropertyContents() {
@@ -106,6 +111,7 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Shows an error if any of the property matching/css retrieval goes wrong.
+   *
    * @param title   the title of the alert dialog.
    * @param message the message to be displayed in the alert dialog.
    */
@@ -115,6 +121,7 @@ public class WidgetConfiguration implements AlertHandler {
 
   /**
    * Loads the language properties
+   *
    * @return Properties object for this configuration's language
    */
   private Properties loadProperties() {

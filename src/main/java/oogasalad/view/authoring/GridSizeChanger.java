@@ -13,9 +13,9 @@ import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.LevelMetadata;
 
 /**
- * Manages the functionality to change the size of the grid in a BuilderPane.
- * Provides a dialog interface for user input and handles validation and updating
- * of grid dimensions within the LevelController.
+ * Manages the functionality to change the size of the grid in a BuilderPane. Provides a dialog
+ * interface for user input and handles validation and updating of grid dimensions within the
+ * LevelController.
  */
 public class GridSizeChanger {
 
@@ -27,7 +27,7 @@ public class GridSizeChanger {
   /**
    * Constructs a new GridSizeChanger.
    *
-   * @param builderPane the BuilderPane associated with this changer, which displays the grid
+   * @param builderPane     the BuilderPane associated with this changer, which displays the grid
    * @param levelController the controller responsible for managing level data and operations
    */
   public GridSizeChanger(BuilderPane builderPane, LevelController levelController) {
@@ -36,8 +36,8 @@ public class GridSizeChanger {
   }
 
   /**
-   * Initiates the process to change the grid size by displaying a dialog for user input.
-   * Processes the input and applies the grid size change if the input is valid.
+   * Initiates the process to change the grid size by displaying a dialog for user input. Processes
+   * the input and applies the grid size change if the input is valid.
    */
   public void changeGridSize() {
     Optional<Integer> result = showGridSizeDialog();
@@ -45,10 +45,11 @@ public class GridSizeChanger {
   }
 
   /**
-   * Displays a dialog to the user for entering the new grid size. Validates the input
-   * to ensure it meets specific criteria.
+   * Displays a dialog to the user for entering the new grid size. Validates the input to ensure it
+   * meets specific criteria.
    *
-   * @return an Optional containing an Integer representing the size of the grid if valid input was provided, otherwise an empty Optional
+   * @return an Optional containing an Integer representing the size of the grid if valid input was
+   * provided, otherwise an empty Optional
    */
   private Optional<Integer> showGridSizeDialog() {
     Dialog<Integer> dialog = new Dialog<>();
@@ -87,8 +88,8 @@ public class GridSizeChanger {
   }
 
   /**
-   * Processes the grid size change by updating the BuilderPane and LevelController
-   * with the new grid dimensions.
+   * Processes the grid size change by updating the BuilderPane and LevelController with the new
+   * grid dimensions.
    *
    * @param newSize the new size of the grid
    */
@@ -96,7 +97,8 @@ public class GridSizeChanger {
     builderPane.gridWidth = newSize;
     builderPane.gridHeight = newSize;
     alertGrid();
-    LevelMetadata levelMetadata = new LevelMetadata("", "", builderPane.gridHeight, builderPane.gridWidth, "", "", "");
+    LevelMetadata levelMetadata = new LevelMetadata("", "", builderPane.gridHeight,
+        builderPane.gridWidth, "", "", "");
     levelController.resetLevel(levelMetadata);
   }
 

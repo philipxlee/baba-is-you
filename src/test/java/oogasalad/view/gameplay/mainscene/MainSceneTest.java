@@ -9,6 +9,7 @@ import oogasalad.view.gameplay.mainscene.MainScene;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MainSceneTest extends ApplicationTest {

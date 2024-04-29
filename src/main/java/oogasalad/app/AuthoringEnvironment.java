@@ -28,6 +28,7 @@ public class AuthoringEnvironment {
 
   /**
    * Set the language of the authoring environment.
+   *
    * @param newLanguage new language to set to.
    */
   public void setLanguage(String newLanguage) {

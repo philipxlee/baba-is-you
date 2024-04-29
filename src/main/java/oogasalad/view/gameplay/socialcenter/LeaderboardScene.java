@@ -102,6 +102,7 @@ public class LeaderboardScene implements Scene {
 
   /**
    * Creates a leaderboard row for a user.
+   *
    * @param number number associated with a leaderboard score
    * @param player player achieving the score
    * @return HBox with all necessary leaderboard data

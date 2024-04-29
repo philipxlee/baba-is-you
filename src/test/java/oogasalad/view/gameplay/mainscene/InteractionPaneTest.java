@@ -13,6 +13,7 @@ import oogasalad.view.gameplay.mainscene.MainScene;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -41,7 +42,8 @@ public class InteractionPaneTest extends ApplicationTest {
     MainScene scene = new MainScene(sceneController, levelController);
     WidgetFactory factory = new WidgetFactory();
     interactionPane = new InteractionPane();
-    interactionPane.initializeInteractionPane(800, 600, scene, factory, sceneController, levelController);
+    interactionPane.initializeInteractionPane(800, 600, scene, factory, sceneController,
+        levelController);
     stage.setScene(new javafx.scene.Scene(interactionPane.getPane(), 800, 600));
     stage.show();
   }

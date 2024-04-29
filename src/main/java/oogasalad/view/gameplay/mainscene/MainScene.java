@@ -33,6 +33,7 @@ public class MainScene implements Scene {
 
   /**
    * Creates the main scene.
+   *
    * @param sceneController SceneController object for switching between scenes
    * @param levelController LevelController object for the current level of the scene
    */
@@ -44,6 +45,7 @@ public class MainScene implements Scene {
 
   /**
    * Initializes the scene and its widgets.
+   *
    * @param width  width of scene
    * @param height height of scenes
    */
@@ -85,6 +87,7 @@ public class MainScene implements Scene {
 
   /**
    * Returns the InteractionPane for this scene.
+   *
    * @return
    */
   public InteractionPane getInteractionPane() {
@@ -94,6 +97,7 @@ public class MainScene implements Scene {
 
   /**
    * Returns the actual javafx scene object for this scene.
+   *
    * @return javafx scene obj
    */
   @Override

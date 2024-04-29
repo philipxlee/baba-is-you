@@ -45,9 +45,10 @@ public class FileChooserPane {
 
   /**
    * Initializes the file chooser in the Interaction Pane.
-   * @param width width of the file chooser
-   * @param height height of the file chooser
-   * @param language language specified
+   *
+   * @param width           width of the file chooser
+   * @param height          height of the file chooser
+   * @param language        language specified
    * @param levelController LevelController object for this pane
    * @param sceneController SceneController object for this pane
    */
@@ -79,6 +80,7 @@ public class FileChooserPane {
 
   /**
    * Returns the root of this pane
+   *
    * @return VBox root
    */
   public VBox getFileChooser() {
@@ -127,14 +129,15 @@ public class FileChooserPane {
         flowPane.getChildren().add(imageAndLabel);
       }
     } catch (Exception e) {
-        logger.info("Couldn't populate file chooser: " + e.getMessage());
+      logger.info("Couldn't populate file chooser: " + e.getMessage());
     }
   }
 
   /**
    * Sets the click event for each ImageView object in the file chooser.
+   *
    * @param imageView the current ImageView object
-   * @param jsonFile the Json file it corresponds to
+   * @param jsonFile  the Json file it corresponds to
    */
   private void setImageClickEvent(ImageView imageView, JsonObject jsonFile) {
     imageView.setOnMouseClicked(event -> {
@@ -152,22 +155,22 @@ public class FileChooserPane {
       if (metadata != null) {
         difficulty = factory.generateCaption("Difficulty: " + jsonManager.getValue(
             metadata, "difficulty"));
-      }
-      else {
+      } else {
         difficulty = new Text();
       }
       VBox vbox = factory.wrapInVBox(new ArrayList<>(Arrays.asList(rows, cols, difficulty)),
           width - 100, 10);
 
       factory.createPopUpWindow(new WidgetConfiguration(width - 100,
-          height / 4, "FileInformation", "root", language), vbox,
+              height / 4, "FileInformation", "root", language), vbox,
           new Stage());
     });
   }
 
   /**
    * Wraps the file Icon image with the filename text in a VBox.
-   * @param fileName name of the file
+   *
+   * @param fileName  name of the file
    * @param imageView file icon associated
    * @return stylized VBox
    */

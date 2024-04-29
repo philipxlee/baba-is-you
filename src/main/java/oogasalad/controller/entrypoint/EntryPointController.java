@@ -25,6 +25,7 @@ public class EntryPointController implements AlertHandler {
 
   /**
    * Initializes the controller with the stage.
+   *
    * @param stage JavaFx stage to set the scene
    */
   public EntryPointController(Stage stage) {
@@ -41,6 +42,7 @@ public class EntryPointController implements AlertHandler {
 
   /**
    * Switch to an input scene.
+   *
    * @param scene new scene to go to
    */
   public void switchToScene(Scene scene) {
@@ -73,6 +75,7 @@ public class EntryPointController implements AlertHandler {
 
   /**
    * Show an error on the GUI.
+   *
    * @param title   the title of the alert dialog.
    * @param message the message to be displayed in the alert dialog.
    */
@@ -82,6 +85,7 @@ public class EntryPointController implements AlertHandler {
 
   /**
    * Set the language for the entire application.
+   *
    * @param newLanguage new language to switch to
    */
   public void setLanguage(String newLanguage) {
@@ -92,6 +96,7 @@ public class EntryPointController implements AlertHandler {
 
   /**
    * Get the language for the entire application.
+   *
    * @return the current language
    */
   public String getLanguage() {

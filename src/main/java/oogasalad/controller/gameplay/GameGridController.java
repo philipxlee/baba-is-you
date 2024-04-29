@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
  * grid.
  */
 public class GameGridController implements AlertHandler {
+
   private Grid gameGrid;
   private final GamePane gamePane;
   private final KeyHandlerController keyHandlerController;
@@ -27,9 +28,10 @@ public class GameGridController implements AlertHandler {
 
   /**
    * Creates the Game grid controler.
-   * @param gamePane GamePane to send data from
+   *
+   * @param gamePane             GamePane to send data from
    * @param keyHandlerController keyHandlerController to handle key presses
-   * @param level current level for the game
+   * @param level                current level for the game
    */
   public GameGridController(GamePane gamePane, KeyHandlerController keyHandlerController,
       Level level) {
@@ -57,6 +59,7 @@ public class GameGridController implements AlertHandler {
 
   /**
    * Sends keycode information to the model.
+   *
    * @param code KeyCode pressed in the View
    */
   public void sendPlayToModel(KeyCode code) {
@@ -74,6 +77,7 @@ public class GameGridController implements AlertHandler {
 
   /**
    * Displays an error message.
+   *
    * @param title   the title of the alert dialog.
    * @param message the message to be displayed in the alert dialog.
    */
@@ -83,6 +87,7 @@ public class GameGridController implements AlertHandler {
 
   /**
    * Access only: gets the game grid.
+   *
    * @return the current Grid object
    */
   public Grid getGameGrid() {
@@ -98,9 +103,10 @@ public class GameGridController implements AlertHandler {
 
   /**
    * Sets the game over status for the game pane.
+   *
    * @param status new status to set to
    */
-  public void setGameOverStatus(boolean status){
+  public void setGameOverStatus(boolean status) {
     gamePane.setGameOverStatus(status);
   }
 

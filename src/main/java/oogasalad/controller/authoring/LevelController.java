@@ -105,7 +105,8 @@ public class LevelController {
               JsonObject message = firstChoice.getAsJsonObject("message");
               if (message.has("content")) {
                 String levelJson = message.get("content").getAsString();
-                String jsonContent = levelJson.replaceAll("```json", "").replaceAll("```", "").trim();
+                String jsonContent = levelJson.replaceAll("```json", "").replaceAll("```", "")
+                    .trim();
                 JsonObject levelJsonObject = gson.fromJson(jsonContent, JsonObject.class);
                 currentLevel = jsonParser.parseLevel(levelJsonObject);
                 String[][][] jsonGrid = jsonParser.getJsonGrid(levelJsonObject);

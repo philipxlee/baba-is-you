@@ -103,6 +103,7 @@ public class CommentScene implements Scene {
 
   /**
    * Sets up the scrollpane for the comments.
+   *
    * @param commentList list of comments to put in the scrollpane
    * @return stylized scrollpane
    */
@@ -144,7 +145,8 @@ public class CommentScene implements Scene {
 
   /**
    * Update the replies UI whenever there is a new reply.
-   * @param comment data related to commenter
+   *
+   * @param comment          data related to commenter
    * @param repliesContainer current container of replies
    */
   private void updateRepliesUI(CommentData comment, VBox repliesContainer) {
@@ -168,9 +170,10 @@ public class CommentScene implements Scene {
 
   /**
    * Show a textarea for users to reply to other users.
-   * @param comment data related to commenter
+   *
+   * @param comment          data related to commenter
    * @param repliesContainer container of current replies
-   * @param addReplyButton reply button
+   * @param addReplyButton   reply button
    */
   private void showReplyInput(CommentData comment, VBox repliesContainer, Button addReplyButton) {
     TextArea replyInput = factory.createTextArea(new WidgetConfiguration(600, 100,

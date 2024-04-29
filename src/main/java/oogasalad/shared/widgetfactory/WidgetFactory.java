@@ -31,6 +31,7 @@ public class WidgetFactory {
 
   /**
    * Creates the generic interaction panel for the Gameplay Interaction pane.
+   *
    * @param configuration configuration object specifying CSS + dimensions
    * @return designed Rectangle
    */
@@ -42,8 +43,9 @@ public class WidgetFactory {
 
   /**
    * Generates a Label object with a given css match and potential starting content.
+   *
    * @param configuration configuration object specifying language, CSS, etc
-   * @param start potential starting text of the label
+   * @param start         potential starting text of the label
    * @return
    */
   public Label makeLabel(WidgetConfiguration configuration, String start) {
@@ -58,6 +60,7 @@ public class WidgetFactory {
 
   /**
    * Generates a stylized header for the game.
+   *
    * @param configuration obj specifying the language and property match label
    * @return stylized Text object
    */
@@ -69,6 +72,7 @@ public class WidgetFactory {
 
   /**
    * Generates a stylized (red) header for the game.
+   *
    * @param configuration obj specifying the language and property match label
    * @return stylized Text object
    */
@@ -80,6 +84,7 @@ public class WidgetFactory {
 
   /**
    * Generates a stylized paragraph line for the game.
+   *
    * @param configuration obj specifying the language and property match label
    * @return stylized Text object
    */
@@ -92,6 +97,7 @@ public class WidgetFactory {
   /**
    * Generates a stylized paragraph line for the game. This method is for dynamic text that changes
    * from database/user input.
+   *
    * @param content what the line contains
    * @return stylized Text object
    */
@@ -103,6 +109,7 @@ public class WidgetFactory {
 
   /**
    * Generates a stylized subheader for the game.
+   *
    * @param configuration obj specifying the language and property match label
    * @return stylized Text object
    */
@@ -114,6 +121,7 @@ public class WidgetFactory {
 
   /**
    * Generates a stylized caption for the game.
+   *
    * @param content what the caption contains (dynamic data).
    * @return stylized Text object
    */
@@ -125,8 +133,9 @@ public class WidgetFactory {
 
   /**
    * Wraps a list of given JavaFX node in a centered, padded HBox.
+   *
    * @param toBeWrapped list of nodes to wrap
-   * @param width preferred width of the HBox
+   * @param width       preferred width of the HBox
    * @return HBox with the stylized nodes
    */
   public HBox wrapInHBox(List<Node> toBeWrapped, int width) {
@@ -139,9 +148,10 @@ public class WidgetFactory {
 
   /**
    * The single node usage of wrapping in the HBox.
+   *
    * @param toBeWrapped Node to wrap in HBox
-   * @param width preferred width of the HBox
-   * @param spacing the spacing on the sides of the node
+   * @param width       preferred width of the HBox
+   * @param spacing     the spacing on the sides of the node
    * @return stylized HBox with the node
    */
   public HBox wrapInHBox(Node toBeWrapped, int width, int spacing) {
@@ -154,9 +164,10 @@ public class WidgetFactory {
 
   /**
    * Wraps a list of given JavaFX nodes in a centered, padded VBox.
+   *
    * @param toBeWrapped list of nodes to wrap
-   * @param height preferred height of the VBox
-   * @param spacing spacing of the VBox
+   * @param height      preferred height of the VBox
+   * @param spacing     spacing of the VBox
    * @return stylized VBox containing the list of nodes.
    */
   public VBox wrapInVBox(List<Node> toBeWrapped, int height, int spacing) {
@@ -169,8 +180,9 @@ public class WidgetFactory {
 
   /**
    * Wraps a given JavaFX node in a centered, padded VBox.
+   *
    * @param toBeWrapped node to wrap
-   * @param height preferred height of the VBox
+   * @param height      preferred height of the VBox
    * @return stylized VBox containing the node.
    */
   public VBox wrapInVBox(Node toBeWrapped, int height) {
@@ -183,8 +195,9 @@ public class WidgetFactory {
 
   /**
    * Makes a button in the game.
+   *
    * @param configuration config object specifying width, height, propertyName, and cssMatch for
-   * versatility.
+   *                      versatility.
    * @return stylized button
    */
   public static Button makeButton(WidgetConfiguration configuration) {
@@ -214,7 +227,8 @@ public class WidgetFactory {
 
   /**
    * Changes the text on the button
-   * @param button button the change text on
+   *
+   * @param button              button the change text on
    * @param widgetConfiguration config obj specifying the new properties match to reference
    */
   public void changeButtonLabel(Button button, WidgetConfiguration widgetConfiguration) {
@@ -223,6 +237,7 @@ public class WidgetFactory {
 
   /**
    * Creates a stylized scrollpane
+   *
    * @param flowPane flowPane to orient the scrollpane around
    * @param maxWidth max width the scrollpane should be
    * @return stylized scrollpane
@@ -246,9 +261,11 @@ public class WidgetFactory {
 
   /**
    * Creates a stylized popup window
-   * @param configuration config obj specifying css match, width, height, property name, and language
-   * @param root root Javafx node to build the scene with
-   * @param popup stage to put the scene on
+   *
+   * @param configuration config obj specifying css match, width, height, property name, and
+   *                      language
+   * @param root          root Javafx node to build the scene with
+   * @param popup         stage to put the scene on
    */
   public void createPopUpWindow(WidgetConfiguration configuration, Parent root, Stage popup) {
     javafx.scene.Scene scene = new javafx.scene.Scene(root, configuration.getWidth(),
@@ -262,6 +279,7 @@ public class WidgetFactory {
 
   /**
    * Creates a stylized flowpane
+   *
    * @param configuration config obj specifying width, height, cssmatch, etc
    * @return stylized flowpane object
    */
@@ -279,7 +297,9 @@ public class WidgetFactory {
 
   /**
    * Creates a stylized text field object
-   * @param configuration config obj specifying width, height, propertyName, css match, and language
+   *
+   * @param configuration config obj specifying width, height, propertyName, css match, and
+   *                      language
    * @return stylized text field
    */
   public TextField createTextField(WidgetConfiguration configuration) {
@@ -294,7 +314,9 @@ public class WidgetFactory {
 
   /**
    * Creates a stylized text area object
-   * @param configuration config obj specifying width, height, propertyName, css match, and language
+   *
+   * @param configuration config obj specifying width, height, propertyName, css match, and
+   *                      language
    * @return stylized text area
    */
   public TextArea createTextArea(WidgetConfiguration configuration) {
@@ -309,7 +331,8 @@ public class WidgetFactory {
 
   /**
    * Replaces the content on a label.
-   * @param label label to change content on
+   *
+   * @param label         label to change content on
    * @param configuration config obj specifying new property name
    */
   public void replaceLabelContent(Label label, WidgetConfiguration configuration) {
@@ -318,8 +341,9 @@ public class WidgetFactory {
 
   /**
    * Generates a stylized combo box.
+   *
    * @param configuration config object specifying width, height, and css match
-   * @param options list of options within the combo box
+   * @param options       list of options within the combo box
    * @param defaultOption where the combo box starts on
    * @return stylized combo box
    */

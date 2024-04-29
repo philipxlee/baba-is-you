@@ -35,8 +35,10 @@ public class BuilderPane {
 
   /**
    * Constructor for BuilderPane which initializes the UI and block factory.
+   *
    * @param levelController The controller responsible for managing level data.
-   * @param language The language setting for localization, not used directly but useful for extension.
+   * @param language        The language setting for localization, not used directly but useful for
+   *                        extension.
    */
   public BuilderPane(LevelController levelController, String language) {
     WidgetFactory factory = new WidgetFactory();
@@ -69,7 +71,8 @@ public class BuilderPane {
   }
 
   /**
-   * Sets up the grid based on the current metadata settings, adjusting for the size of the root pane.
+   * Sets up the grid based on the current metadata settings, adjusting for the size of the root
+   * pane.
    */
   protected void setUpGrid() {
     gridPane.getChildren().clear();
@@ -121,7 +124,8 @@ public class BuilderPane {
             blockView.setLayoutY(cellCoords.getY());
             root.getChildren().add(blockView);
             try {
-              levelController.addBlockToCell((int) cellIndices.getY(), (int) cellIndices.getX(), blockType);
+              levelController.addBlockToCell((int) cellIndices.getY(), (int) cellIndices.getX(),
+                  blockType);
             } catch (Exception e) {
               e.printStackTrace();
             }
@@ -137,6 +141,7 @@ public class BuilderPane {
 
   /**
    * Creates an ImageView for a given block type.
+   *
    * @param blockType The type of block to create a view for.
    * @return The created ImageView or null if an error occurs.
    */
@@ -144,13 +149,15 @@ public class BuilderPane {
     try {
       return blockViewFactory.createBlockView(blockType);
     } catch (Exception e) {
-      System.err.println("Failed to create block view for type: " + blockType + " with error: " + e.getMessage());
+      System.err.println(
+          "Failed to create block view for type: " + blockType + " with error: " + e.getMessage());
       return null;
     }
   }
 
   /**
    * Returns the root pane of this builder.
+   *
    * @return The root pane.
    */
   public Pane getRoot() {
@@ -167,7 +174,8 @@ public class BuilderPane {
           if (removeMode) {
             Point2D cellIndices = getCellIndices(node.getLayoutX(), node.getLayoutY());
             try {
-              levelController.removeBlockFromCell((int) cellIndices.getY(), (int) cellIndices.getX());
+              levelController.removeBlockFromCell((int) cellIndices.getY(),
+                  (int) cellIndices.getX());
               root.getChildren().remove(node);
             } catch (Exception e) {
               e.printStackTrace();
@@ -180,6 +188,7 @@ public class BuilderPane {
 
   /**
    * Toggles the removal mode for blocks.
+   *
    * @param remove_bool True to enable removal mode, false to disable.
    */
   public void setRemove(boolean remove_bool) {
@@ -219,7 +228,6 @@ public class BuilderPane {
     }
   }
 
-
   /**
    * Renders a grid based on a pre-loaded set of grid data.
    * @param loadedGrid The grid data to load.
@@ -258,6 +266,7 @@ public class BuilderPane {
 
   /**
    * Calculates the column and row indices for a given x, y coordinate within the grid.
+   *
    * @param x the x-coordinate relative to the grid
    * @param y the y-coordinate relative to the grid
    * @return a Point2D object containing the column index (x value) and row index (y value)
@@ -283,10 +292,13 @@ public class BuilderPane {
   }
 
   /**
-   * Calculates the pixel coordinates of the cell's upper-left corner based on a given x, y point within the grid.
+   * Calculates the pixel coordinates of the cell's upper-left corner based on a given x, y point
+   * within the grid.
+   *
    * @param x the x-coordinate relative to the grid
    * @param y the y-coordinate relative to the grid
-   * @return a Point2D object representing the upper-left corner of the cell at the given x, y coordinates
+   * @return a Point2D object representing the upper-left corner of the cell at the given x, y
+   * coordinates
    */
   protected Point2D getCellCoordinates(double x, double y) {
     for (Node node : gridPane.getChildren()) {

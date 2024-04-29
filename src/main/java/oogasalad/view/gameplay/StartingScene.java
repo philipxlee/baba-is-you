@@ -112,6 +112,7 @@ public class StartingScene implements Scene {
 
   /**
    * Create the enter, play as guest, and back buttons for the scene.
+   *
    * @param feedbackLabel label providing feedback to a user's input username
    * @return List of buttons
    */
@@ -139,6 +140,7 @@ public class StartingScene implements Scene {
 
   /**
    * Set event handler to the start button.
+   *
    * @param start button to start the game
    */
   private void startGame(Button start) {
@@ -153,9 +155,10 @@ public class StartingScene implements Scene {
 
   /**
    * Check if a username is a valid one.
-   * @param newValue user specified username
+   *
+   * @param newValue      user specified username
    * @param feedbackLabel feedback to return to the UI
-   * @param start start button
+   * @param start         start button
    */
   private void checkUsernameValidity(String newValue, Label feedbackLabel, Button start) {
     if (Pattern.matches("^[\\w]+[\\w\\d_]*$", newValue)) {
@@ -170,9 +173,10 @@ public class StartingScene implements Scene {
 
   /**
    * Checks if the username is available in the database.
-   * @param newValue user specified username
+   *
+   * @param newValue      user specified username
    * @param feedbackLabel feedback to return to the UI
-   * @param start start button
+   * @param start         start button
    */
   private void checkUsernameAvailability(String newValue, Button start, Label feedbackLabel) {
     if (databaseController.isUsernameAvailable(newValue.trim())) {

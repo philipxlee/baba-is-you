@@ -25,8 +25,9 @@ public interface Scene {
 
   /**
    * Apply a CSS stylesheet to the scene
+   *
    * @param resourceFolder resource folder where the stylesheet is
-   * @param stylesheet name of the stylesheet path
+   * @param stylesheet     name of the stylesheet path
    */
   default void applyCss(String resourceFolder, String stylesheet) {
     getScene().getStylesheets().add(getClass().getResource(resourceFolder + stylesheet)

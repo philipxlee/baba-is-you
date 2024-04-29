@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * Scene that displays when the player wins the game.
  *
- *  @author Philip Lee, Yasha Doddabele.
+ * @author Philip Lee, Yasha Doddabele.
  */
 public class WinScene implements Scene {
 
@@ -112,6 +112,7 @@ public class WinScene implements Scene {
 
   /**
    * Generates the save stats button.
+   *
    * @param commentField Comment field for the user to put their stats/comments
    * @return save stats button
    */
@@ -124,7 +125,8 @@ public class WinScene implements Scene {
 
   /**
    * Saves the stats to the database.
-   * @param commentField  Comment field for the user to put their stats/comments
+   *
+   * @param commentField    Comment field for the user to put their stats/comments
    * @param saveStatsButton save stats button
    */
   private void saveStatistics(TextArea commentField, Button saveStatsButton) {

@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
  * Scene shown when the player has paused the game.
  */
 public class PauseScene implements Scene {
+
   private javafx.scene.Scene scene;
   private VBox root;
   private WidgetFactory factory;
@@ -37,9 +38,10 @@ public class PauseScene implements Scene {
 
   /**
    * Initializes the pause scene.
+   *
    * @param sceneController SceneController object to switch between scenes
-   * @param milliseconds the current time the player has paused at for the game
-   * @param timeline Timeline object of the current game
+   * @param milliseconds    the current time the player has paused at for the game
+   * @param timeline        Timeline object of the current game
    */
   public PauseScene(SceneController sceneController, long milliseconds, Timeline timeline) {
     this.sceneController = sceneController;
@@ -51,6 +53,7 @@ public class PauseScene implements Scene {
 
   /**
    * Initializes the scene.
+   *
    * @param width  width of scene
    * @param height height of scenes
    */
@@ -81,7 +84,8 @@ public class PauseScene implements Scene {
 
     //Wraps the timer header and the actual time stamp in an HBox for clarity
     Text time = factory.generateLine(formatTime());
-    HBox timeAndContent = factory.wrapInHBox(new ArrayList<>(Arrays.asList(content, time)), width/4);
+    HBox timeAndContent = factory.wrapInHBox(new ArrayList<>(Arrays.asList(content, time)),
+        width / 4);
 
     texts.add(timeAndContent);
 
@@ -101,6 +105,7 @@ public class PauseScene implements Scene {
 
   /**
    * Formats the time into minutes, seconds, and milliseconds
+   *
    * @return formatted String of the time
    */
   private String formatTime() {

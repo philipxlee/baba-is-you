@@ -39,7 +39,7 @@ public class ExtraWidgetFactoryTests extends ApplicationTest {
       Stage popup = new Stage();
 
       factory.createPopUpWindow(new WidgetConfiguration(400, 300, "BIU",
-           "root", lang), root, popup);
+          "root", lang), root, popup);
       assertEquals(400, popup.getScene().getWidth());
       assertEquals(300, popup.getScene().getHeight());
       assertEquals("Baba Is You", popup.getTitle());

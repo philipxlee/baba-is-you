@@ -86,7 +86,7 @@ public abstract class KeyHandler {
     if (isValidMove(nextI, nextJ, k)) {
       nextIsWinningBlock(nextI, nextJ);
       calculateLength(i, j, k, deltaI, deltaJ)
-              .ifPresent(length -> performMovement(i, j, k, deltaI, deltaJ, length));
+          .ifPresent(length -> performMovement(i, j, k, deltaI, deltaJ, length));
       informGridOfUpdates();
     }
   }
@@ -109,7 +109,8 @@ public abstract class KeyHandler {
     int endI = i + length * deltaI;
     int endJ = j + length * deltaJ;
     if (!isValidMove(endI, endJ, k) || !grid.isMovableToMargin(endI, endJ, k, i, j, k)
-            || grid.cellHasAttribute(endI, endJ, STOPPABLE) || grid.cellHasAttribute(endI, endJ, CONTROLLABLE)) {
+        || grid.cellHasAttribute(endI, endJ, STOPPABLE) || grid.cellHasAttribute(endI, endJ,
+        CONTROLLABLE)) {
       return Optional.empty(); // No space to move the chain
     }
     return Optional.of(length);
@@ -130,7 +131,8 @@ public abstract class KeyHandler {
     while (true) {
       int nextI = i + length * deltaI;
       int nextJ = j + length * deltaJ;
-      if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ) && !grid.cellHasAttribute(nextI, nextJ, STOPPABLE)) {
+      if (isValidMove(nextI, nextJ, k) && grid.cellHasPushable(nextI, nextJ)
+          && !grid.cellHasAttribute(nextI, nextJ, STOPPABLE)) {
         length++;
       } else {
         break;
@@ -153,15 +155,15 @@ public abstract class KeyHandler {
   private void performMovement(int i, int j, int k, int deltaI, int deltaJ, int length) {
     // Move all blocks
     IntStream.range(1, length)
-            .map(m -> length - m)
-            .forEach(m -> {
-              int currentI = i + m * deltaI;
-              int currentJ = j + m * deltaJ;
-              int nextI = currentI + deltaI;
-              int nextJ = currentJ + deltaJ;
-              List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
-              moveToIndexIfValid(indicesToMove, currentI, currentJ, nextI, nextJ);
-            });
+        .map(m -> length - m)
+        .forEach(m -> {
+          int currentI = i + m * deltaI;
+          int currentJ = j + m * deltaJ;
+          int nextI = currentI + deltaI;
+          int nextJ = currentJ + deltaJ;
+          List<Integer> indicesToMove = grid.allPushableBlocksIndex(currentI, currentJ);
+          moveToIndexIfValid(indicesToMove, currentI, currentJ, nextI, nextJ);
+        });
     grid.moveBlock(i, j, k, i + deltaI, j + deltaJ);
     informGridOfUpdates();
   }
@@ -176,7 +178,8 @@ public abstract class KeyHandler {
    * @param nextI         The row index to which the block will be moved.
    * @param nextJ         The column index to which the block will be moved.
    */
-  private void moveToIndexIfValid(List<Integer> indicesToMove, int currentI, int currentJ, int nextI, int nextJ) {
+  private void moveToIndexIfValid(List<Integer> indicesToMove, int currentI, int currentJ,
+      int nextI, int nextJ) {
     if (!indicesToMove.isEmpty()) {
       int minIndex = Collections.min(indicesToMove);
       for (int w = 0; w < indicesToMove.size(); w++) {

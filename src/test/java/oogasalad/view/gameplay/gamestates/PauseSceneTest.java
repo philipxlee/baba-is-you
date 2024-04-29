@@ -33,7 +33,7 @@ public class PauseSceneTest extends ApplicationTest {
             {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration,"BabaIsUs", "hint");
+        2, initialConfiguration, "BabaIsUs", "hint");
     testLevel = new Level(metadata);
   }
 

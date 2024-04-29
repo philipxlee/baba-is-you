@@ -7,6 +7,7 @@ import oogasalad.shared.config.GridParser;
 import oogasalad.shared.config.JsonManager;
 
 public class JsonParser implements GridParser {
+
   private final JsonManager jsonManager = new JsonManager();
 
   /**
@@ -22,8 +23,8 @@ public class JsonParser implements GridParser {
   }
 
   /**
-   * Parses metadata from a given JSON object representing a level. This metadata includes
-   * level name, description, grid dimensions, difficulty, author, and a hint.
+   * Parses metadata from a given JSON object representing a level. This metadata includes level
+   * name, description, grid dimensions, difficulty, author, and a hint.
    *
    * @param levelJson The JSON object containing the level information.
    * @return LevelMetadata object containing all parsed details from the JSON.

@@ -15,7 +15,8 @@ import oogasalad.view.authoring.BuilderPane;
 
 /**
  * Handles the saving of level data into a JSON format, including collecting necessary metadata
- * through a user interface. It ensures that the level meets certain validation criteria before saving.
+ * through a user interface. It ensures that the level meets certain validation criteria before
+ * saving.
  */
 public class JsonSaver {
 
@@ -29,7 +30,7 @@ public class JsonSaver {
    * Constructs a JsonSaver that interacts with the given LevelController and BuilderPane.
    *
    * @param levelController the controller managing level-related actions
-   * @param builderPane the pane that displays the level and interfaces with the user
+   * @param builderPane     the pane that displays the level and interfaces with the user
    */
   public JsonSaver(LevelController levelController, BuilderPane builderPane) {
     this.levelController = levelController;
@@ -39,8 +40,8 @@ public class JsonSaver {
   }
 
   /**
-   * Initiates the JSON saving process by displaying a confirmation dialog with input fields
-   * for level metadata.
+   * Initiates the JSON saving process by displaying a confirmation dialog with input fields for
+   * level metadata.
    *
    * @param difficulty the difficulty setting of the level as defined by the user
    */
@@ -110,7 +111,7 @@ public class JsonSaver {
   /**
    * Handles the user's response to the save confirmation alert.
    *
-   * @param buttonType the type of button pressed by the user
+   * @param buttonType   the type of button pressed by the user
    * @param confirmation the confirmation Alert dialog
    * @throws IOException if there is an error during file saving
    */
@@ -122,14 +123,16 @@ public class JsonSaver {
       String hint = getFieldText(3, confirmation);
       boolean isValidLevel = validator.validateLevel(level);
       if (isValidLevel) {
-        LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription, builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
+        LevelMetadata levelMetadata = new LevelMetadata(levelName, levelDescription,
+            builderPane.gridHeight, builderPane.gridWidth, difficulty, authorName, hint);
         levelController.setCurrentLevel(new Level(levelMetadata, level.getGrid()));
         File savedFile = levelController.serializeLevel();
         if (savedFile != null) {
           showAlert("Success", "JSON saved successfully!");
         }
       } else {
-        showAlert("Invalid Level", "The level must contain at least 2 rules: {Object 1 Is You}, {Object 2 Is Win} and at least Object 1 and Object 2. Please add the required blocks before saving.");
+        showAlert("Invalid Level",
+            "The level must contain at least 2 rules: {Object 1 Is You}, {Object 2 Is Win} and at least Object 1 and Object 2. Please add the required blocks before saving.");
       }
     }
   }
@@ -137,7 +140,7 @@ public class JsonSaver {
   /**
    * Retrieves the text from a specified TextField within the dialog content.
    *
-   * @param rowIndex the index of the row in the grid containing the TextField
+   * @param rowIndex     the index of the row in the grid containing the TextField
    * @param confirmation the Alert from which to retrieve the grid
    * @return the text from the TextField at the specified row
    */
@@ -149,7 +152,7 @@ public class JsonSaver {
   /**
    * Displays an alert message to the user.
    *
-   * @param title the title of the alert
+   * @param title   the title of the alert
    * @param message the message to display to the user
    */
   private void showAlert(String title, String message) {

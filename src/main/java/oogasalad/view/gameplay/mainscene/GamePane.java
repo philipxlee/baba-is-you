@@ -76,11 +76,12 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Initializes the game pane scene.
-   * @param width width of the pane
-   * @param height height of the pane
-   * @param scene the MainScene Scene object this pane belongs to
+   *
+   * @param width           width of the pane
+   * @param height          height of the pane
+   * @param scene           the MainScene Scene object this pane belongs to
    * @param sceneController sceneController used to switch b/t scenes for this pane
-   * @param initialLevel level to initialize the grid with
+   * @param initialLevel    level to initialize the grid with
    * @param levelController controller to facilitate changing level information
    */
   public void initializeGameGrid(int width, int height, MainScene scene,
@@ -116,13 +117,14 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Sets up the timer within an HBox.
+   *
    * @return the timer object in the HBox
    */
   private HBox setUpTimer() {
     Text timer = factory.generateLine(new WidgetConfiguration("Timer",
         sceneController.getLanguage()));
     HBox text = factory.wrapInHBox(new ArrayList<>(Arrays.asList(timer, time)), (int)
-        (timer.getWrappingWidth()+ time.getWrappingWidth()));
+        (timer.getWrappingWidth() + time.getWrappingWidth()));
     text.setAlignment(Pos.TOP_RIGHT);
     text.setPadding(new Insets(20));
     return text;
@@ -154,6 +156,7 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Sets up the pause button to pause the game/timer.
+   *
    * @return ImageView object representing the pause button
    */
   private ImageView setUpPauseButton() {
@@ -170,8 +173,9 @@ public class GamePane implements Observer<Grid> {
   }
 
   /**
-   * Sets up the save button, which allows user to save their progress as a
-   *JSON copy of the game at any time.
+   * Sets up the save button, which allows user to save their progress as a JSON copy of the game at
+   * any time.
+   *
    * @return save button
    */
   private Button setUpSaveButton() {
@@ -203,6 +207,7 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Gets the width of the pane
+   *
    * @return width of the pane
    */
   public int getWidth() {
@@ -211,6 +216,7 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Gets the height of the pane
+   *
    * @return height of the pane
    */
   public int getHeight() {
@@ -219,6 +225,7 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Gets the root of this pane
+   *
    * @return
    */
   public Group getGrid() {
@@ -226,8 +233,9 @@ public class GamePane implements Observer<Grid> {
   }
 
   /**
-   * Implements the update() method in the Observer interface. It calls the renderGrid() function
-   * of this class.
+   * Implements the update() method in the Observer interface. It calls the renderGrid() function of
+   * this class.
+   *
    * @param data The current (updated) state of the data.`
    */
   @Override
@@ -237,11 +245,13 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Sets up the screen with all overlayed objects + the grid.
+   *
    * @return Pane containing all game pane objects
    */
   public Pane setUpScreen() {
-    HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(setUpSaveButton(), setUpPauseButton())),
-        cellSize*2);
+    HBox buttons = factory.wrapInHBox(
+        new ArrayList<>(Arrays.asList(setUpSaveButton(), setUpPauseButton())),
+        cellSize * 2);
     buttons.setAlignment(Pos.BOTTOM_RIGHT);
     StackPane gameScreen = new StackPane(root, setUpTimer(), buttons);
     gameScreen.setAlignment(Pos.CENTER);
@@ -276,13 +286,15 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Initializes a block image for each block in the list of blocks for the cell.
-   * @param blocks blocks residing in the current cell
-   * @param k index within the block list
-   * @param j index of the column on the grid
-   * @param i index of the row on the grid
+   *
+   * @param blocks      blocks residing in the current cell
+   * @param k           index within the block list
+   * @param j           index of the column on the grid
+   * @param i           index of the row on the grid
    * @param blockOffset offset to shift the block visually within the cell by
    */
-  private void initializeBlockImage(List<AbstractBlock> blocks, int k, int j, int i, double blockOffset) {
+  private void initializeBlockImage(List<AbstractBlock> blocks, int k, int j, int i,
+      double blockOffset) {
     try {
       AbstractBlock block = blocks.get(k);
       String modifiedBlockName;
@@ -307,8 +319,7 @@ public class GamePane implements Observer<Grid> {
         logger.error("Couldn't find an image path for the current block type.");
       }
       formatImage(visualObj, k, blockOffset, j, i);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       gridController.showError("ERROR", e.getMessage());
       logger.error("Error initializing block images: " + e.getMessage());
     }
@@ -316,9 +327,10 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Formats the imageview object.
-   * @param k index within the block list
-   * @param j index of the column on the grid
-   * @param i index of the row on the grid
+   *
+   * @param k           index within the block list
+   * @param j           index of the column on the grid
+   * @param i           index of the row on the grid
    * @param blockOffset offset to shift the block visually within the cell by
    */
   private void formatImage(ImageView visualObj, int k, double blockOffset, int j, int i) {
@@ -339,6 +351,7 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Calculates the cell size to ensure all cells are squares.
+   *
    * @param r rows of the grid
    * @param c columns of the grid
    */
@@ -349,6 +362,7 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Handles a key press of any kind on the game pane.
+   *
    * @param scene the MainScene this game pane belongs to.
    */
   private void handleKeyPresses(MainScene scene) {
@@ -356,15 +370,14 @@ public class GamePane implements Observer<Grid> {
     this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
       if (event.getCode().isArrowKey()) {
         gridController.sendPlayToModel(event.getCode());
-          this.currentDirection = event.getCode().getName();
+        this.currentDirection = event.getCode().getName();
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks
         scene.getInteractionPane().updateKeyPress(event.getCode());
         event.consume();
         keyPressed = true;
         firstKeyPressed = true;
-      }
-      else if (event.getCode().isLetterKey()) {
+      } else if (event.getCode().isLetterKey()) {
         handleLetterKeyPresses(event);
       }
     });
@@ -379,18 +392,19 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Handles key presses that are letter keys.
+   *
    * @param event the KeyEvent that has just taken place
    */
   private void handleLetterKeyPresses(KeyEvent event) {
-      if (event.getCode() == KeyCode.X) {
-        babaCute = !babaCute;
-      }
-      gridController.sendPlayToModel(event.getCode());
-      renderGrid(); // Render grid
-      gridController.resetBlocks(); // Reset all blocks
-      event.consume();
-      keyPressed = true;
-      firstKeyPressed = true;
+    if (event.getCode() == KeyCode.X) {
+      babaCute = !babaCute;
+    }
+    gridController.sendPlayToModel(event.getCode());
+    renderGrid(); // Render grid
+    gridController.resetBlocks(); // Reset all blocks
+    event.consume();
+    keyPressed = true;
+    firstKeyPressed = true;
   }
 
   /**
@@ -401,20 +415,20 @@ public class GamePane implements Observer<Grid> {
     timeline_Enemy = new Timeline();
     // Add a KeyFrame to the Timeline
     timeline_Enemy.getKeyFrames().add(
-            new KeyFrame(Duration.seconds(currentDelay), event -> {
-              if (!keyPressed && firstKeyPressed) {
-                // No valid key pressed within current delay, call moveEnemy()
-                keyHandlerController.moveEnemy();
-              }
-              // Reset the keyPressed flag after each execution
-              keyPressed = false;
-              // Update delay for next cycle
-              currentDelay *= DECREASE_FACTOR; // Adjust DECREASE_FACTOR for desired slowdown rate (e.g., 0.9 for 10% decrease)
-              if (isGameOver) {
-                // Stop the Timeline
-                timeline_Enemy.stop();
-              }
-            })
+        new KeyFrame(Duration.seconds(currentDelay), event -> {
+          if (!keyPressed && firstKeyPressed) {
+            // No valid key pressed within current delay, call moveEnemy()
+            keyHandlerController.moveEnemy();
+          }
+          // Reset the keyPressed flag after each execution
+          keyPressed = false;
+          // Update delay for next cycle
+          currentDelay *= DECREASE_FACTOR; // Adjust DECREASE_FACTOR for desired slowdown rate (e.g., 0.9 for 10% decrease)
+          if (isGameOver) {
+            // Stop the Timeline
+            timeline_Enemy.stop();
+          }
+        })
 
     );
     // Set the cycle count to indefinite so it repeats
@@ -425,6 +439,7 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Returns the gameGridController for this pane.
+   *
    * @return ^
    */
   public GameGridController getGridController() {
@@ -433,9 +448,10 @@ public class GamePane implements Observer<Grid> {
 
   /**
    * Sets the game over status for this game.
+   *
    * @param status new status to set the game over status to
    */
-  public void setGameOverStatus(boolean status){
+  public void setGameOverStatus(boolean status) {
     this.isGameOver = status;
   }
 }

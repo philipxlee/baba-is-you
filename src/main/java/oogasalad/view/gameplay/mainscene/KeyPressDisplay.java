@@ -11,7 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Class that creates the interactive key press display in the interaction pane of the Gameplay scene
+ * Class that creates the interactive key press display in the interaction pane of the Gameplay
+ * scene
  */
 public class KeyPressDisplay {
 
@@ -36,6 +37,7 @@ public class KeyPressDisplay {
 
   /**
    * Returns the root of this widget.
+   *
    * @return VBox root
    */
   public VBox getRoot() {
@@ -44,6 +46,7 @@ public class KeyPressDisplay {
 
   /**
    * Sets up the light up arrow key rectangles.
+   *
    * @return VBox of the rectangles
    */
   private VBox setupArrowKeys() {
@@ -65,6 +68,7 @@ public class KeyPressDisplay {
 
   /**
    * Creates a stylized rectangle representing an arrow key on the keyboard.
+   *
    * @param transparent value of it is transparent (pressed) or not
    * @return Rectangle obj for the arrow key
    */
@@ -79,6 +83,7 @@ public class KeyPressDisplay {
 
   /**
    * Creates event handler for the pressed KeyEvent.
+   *
    * @param event the KeyEvent (pressed key) that just occurred
    */
   public void handleKeyPress(javafx.scene.input.KeyEvent event) {
@@ -93,6 +98,7 @@ public class KeyPressDisplay {
 
   /**
    * Creates event handler for the released KeyEvent.
+   *
    * @param event the KeyEvent (released key) that just occurred
    */
   public void handleKeyRelease(javafx.scene.input.KeyEvent event) {
@@ -104,7 +110,8 @@ public class KeyPressDisplay {
 
   /**
    * Updates the visual changes of the rectangles when they are pressed.
-   * @param code the current KeyCode
+   *
+   * @param code  the current KeyCode
    * @param color color to fill the rectangle
    */
   protected void updateArrowKeyVisual(KeyCode code, Color color) {

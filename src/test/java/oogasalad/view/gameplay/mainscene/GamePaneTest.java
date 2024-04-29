@@ -13,6 +13,7 @@ import oogasalad.view.gameplay.mainscene.MainScene;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class GamePaneTest extends ApplicationTest {
@@ -28,7 +29,7 @@ public class GamePaneTest extends ApplicationTest {
             {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration,"BabaIsUs","hint");
+        2, initialConfiguration, "BabaIsUs", "hint");
     testLevel = new Level(metadata);
   }
 

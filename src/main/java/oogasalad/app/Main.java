@@ -15,8 +15,8 @@ public class Main extends Application {
   /**
    * The main method for the application. This is the entry point for the application.
    *
-   * @param primaryStage the primary stage for this application, onto which
-   * the application scene can be set.
+   * @param primaryStage the primary stage for this application, onto which the application scene
+   *                     can be set.
    * @throws Exception if an error occurs
    */
   @Override

@@ -12,6 +12,7 @@ import javafx.scene.layout.FlowPane;
 public class BlockLoader {
 
   private final BlockNameManager blockManager = new BlockNameManager();
+
   /**
    * Load and display all blocks without category filtering.
    *

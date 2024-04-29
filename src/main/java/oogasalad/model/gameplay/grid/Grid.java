@@ -230,14 +230,15 @@ public class Grid extends GridHelper implements Observable<Grid> {
    */
   private void sortCellsForRender() {
     Arrays.stream(grid)
-            .flatMap(Arrays::stream)
-            .forEach(this::compareCellForRender);
+        .flatMap(Arrays::stream)
+        .forEach(this::compareCellForRender);
   }
 
 
   /**
-   * Compares blocks in a cell for rendering based on their attributes.
-   * Blocks with certain attributes are sorted to be rendered first.
+   * Compares blocks in a cell for rendering based on their attributes. Blocks with certain
+   * attributes are sorted to be rendered first.
+   *
    * @param cell The list of blocks in a cell.
    */
   private void compareCellForRender(List<AbstractBlock> cell) {
@@ -268,6 +269,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
   /**
    * Checks a specific cell in the grid for blocks that should disappear based on their attributes.
+   *
    * @param cellI The row index of the cell.
    * @param cellJ The column index of the cell.
    */
@@ -298,7 +300,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
           }
           if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
             if (strategyMap.get(subjectStrategyKey).equals(objectStrategyValue)
-                    || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
+                || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
               grid[cellI][cellJ].remove(objectIndex);
               return;
             }
@@ -309,46 +311,48 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
 
-
-
   /**
    * Checks if a cell is passable, i.e., if it does not contain blocks with certain attributes.
+   *
    * @param cellI The row index of the cell.
    * @param cellJ The column index of the cell.
    * @return True if the cell is passable, false otherwise.
    */
-  public boolean isPassable(int cellI, int cellJ){
-    return !cellHasAttribute(cellI, cellJ, STOPPABLE) && !cellHasAttribute(cellI, cellJ, WINNABLE) &&
-            !cellHasAttribute(cellI, cellJ, HOTABLE) && !cellHasAttribute(cellI, cellJ, SINKABLE) &&
-            !cellHasTextBlock(cellI, cellJ);
+  public boolean isPassable(int cellI, int cellJ) {
+    return !cellHasAttribute(cellI, cellJ, STOPPABLE) && !cellHasAttribute(cellI, cellJ, WINNABLE)
+        &&
+        !cellHasAttribute(cellI, cellJ, HOTABLE) && !cellHasAttribute(cellI, cellJ, SINKABLE) &&
+        !cellHasTextBlock(cellI, cellJ);
   }
 
   /**
    * Places an enemy block at the specified position in the grid.
+   *
    * @param I The row index where the enemy should be placed.
    * @param J The column index where the enemy should be placed.
    */
-  public void placeEnemy(int I, int J){
+  public void placeEnemy(int I, int J) {
     AbstractBlock crabBlock = factory.createBlock(CRAB_VISUAL_BLOCK, I, J);
-    ((AbstractVisualBlock)crabBlock).modifyAttribute(KILL, true);
+    ((AbstractVisualBlock) crabBlock).modifyAttribute(KILL, true);
     grid[I][J].add(crabBlock);
-    ((AbstractVisualBlock)crabBlock).modifyAttribute(KILL, true);
+    ((AbstractVisualBlock) crabBlock).modifyAttribute(KILL, true);
   }
 
   /**
    * Moves an enemy block from one position to another in the grid.
+   *
    * @param fromI The row index of the original position.
    * @param fromJ The column index of the original position.
    * @param fromK The index of the enemy block in the original cell.
-   * @param toI The row index of the target position.
-   * @param toJ The column index of the target position.
+   * @param toI   The row index of the target position.
+   * @param toJ   The column index of the target position.
    */
-  public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ){
+  public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ) {
     sortArray();
     moveBlock(fromI, fromJ, fromK, toI, toJ);
     sortArray();
     List<AbstractBlock> cell = grid[toI][toJ];
-    AbstractBlock crabBlock = grid[toI][toJ].get(cell.size()-1);
+    AbstractBlock crabBlock = grid[toI][toJ].get(cell.size() - 1);
     if (!crabBlock.isTextBlock()) {
       ((AbstractVisualBlock) crabBlock).modifyAttribute(KILL, true);
     }
@@ -356,34 +360,34 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
 
-
   /**
    * Finds the position of the enemy block in the grid.
+   *
    * @return An array containing the row index, column index, and block index of the enemy block.
    */
   public int[] enemyPosition() {
     return IntStream.range(0, grid.length)
+        .boxed()
+        .flatMap(i -> IntStream.range(0, grid[i].length)
             .boxed()
-            .flatMap(i -> IntStream.range(0, grid[i].length)
-                    .boxed()
-                    .flatMap(j -> IntStream.range(0, grid[i][j].size())
-                            .filter(k -> grid[i][j].get(k).getAttribute(KILLABLE))
-                            .mapToObj(k -> new int[]{i, j, k})))
-            .findFirst()
-            .orElse(null);
+            .flatMap(j -> IntStream.range(0, grid[i][j].size())
+                .filter(k -> grid[i][j].get(k).getAttribute(KILLABLE))
+                .mapToObj(k -> new int[]{i, j, k})))
+        .findFirst()
+        .orElse(null);
   }
 
 
   /**
    * Sets the "kill" attribute for all crab blocks in the grid.
    */
-  public void setCrabAttribute(){
+  public void setCrabAttribute() {
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
-          if(!block.isTextBlock() && block.getBlockName().equals(CRAB_VISUAL_BLOCK)) {
-            ((AbstractVisualBlock)block).modifyAttribute(KILL, true);
+          if (!block.isTextBlock() && block.getBlockName().equals(CRAB_VISUAL_BLOCK)) {
+            ((AbstractVisualBlock) block).modifyAttribute(KILL, true);
           }
         }
       }
@@ -392,6 +396,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
   /**
    * Removes controllable blocks from a specified cell in the grid.
+   *
    * @param i The row index of the cell.
    * @param j The column index of the cell.
    */
@@ -408,6 +413,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
   /**
    * Finds the index of the enemy block in a specified cell.
+   *
    * @param cellI The row index of the cell.
    * @param cellJ The column index of the cell.
    * @return The index of the enemy block, or empty if not found.
@@ -424,14 +430,15 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
   /**
    * Checks if a cell in the grid is empty.
+   *
    * @param cellI The row index of the cell.
    * @param cellJ The column index of the cell.
    * @return True if the cell is empty, false otherwise.
    */
-  public boolean cellIsEmpty(int cellI, int cellJ){
-    for (int i = 0; i < grid[cellI][cellJ].size(); i++){
+  public boolean cellIsEmpty(int cellI, int cellJ) {
+    for (int i = 0; i < grid[cellI][cellJ].size(); i++) {
       AbstractBlock block = grid[cellI][cellJ].get(i);
-      if(!block.isEmptyVisualBlock()){
+      if (!block.isEmptyVisualBlock()) {
         return false;
       }
     }
