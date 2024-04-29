@@ -82,12 +82,6 @@ public class WidgetFactory {
     return line;
   }
 
-  public Text generateCaption(WidgetConfiguration configuration) {
-    Text line = new Text(configuration.getPropertyContents());
-    line.getStyleClass().add("caption");
-    return line;
-  }
-
   public Text generateCaption(String content) {
     Text line = new Text(content);
     line.getStyleClass().add("caption");
@@ -140,10 +134,6 @@ public class WidgetFactory {
     button.setPadding(new Insets(10));
     button.getStyleClass().add(configuration.getCssMatch());
     return button;
-  }
-
-  public void removeInsets(Button btn) {
-    btn.setPadding(new Insets(0));
   }
 
   /**
@@ -226,10 +216,6 @@ public class WidgetFactory {
   }
 
   public void replaceLabelContent(Label old, WidgetConfiguration configuration) {
-    old.setText(configuration.getPropertyContents());
-  }
-
-  public void replaceTextContent(Text old, WidgetConfiguration configuration) {
     old.setText(configuration.getPropertyContents());
   }
 
