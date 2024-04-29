@@ -395,7 +395,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
    * @param i The row index of the cell.
    * @param j The column index of the cell.
    */
-  public void removeBaba(int i, int j) {
+  public void removeControllable(int i, int j) {
     List<AbstractBlock> cell = grid[i][j];
     Iterator<AbstractBlock> iterator = cell.iterator();
     while (iterator.hasNext()) {
