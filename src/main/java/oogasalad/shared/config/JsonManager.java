@@ -6,30 +6,43 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import oogasalad.database.DatabaseConfig;
+import oogasalad.shared.alert.AlertHandler;
+import oogasalad.shared.config.exceptions.FileLoadingException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * JsonManager class is responsible for allowing developers to take information from the authoring
  * environment and the game player to either save it as a JSON file or to load in JSON files.
  */
-public class JsonManager {
+public class JsonManager implements AlertHandler {
 
   private static final Gson gson = new Gson();
+  private static final Logger logger = LogManager.getLogger(JsonManager.class);
 
   /**
    * loadFromFile() is responsible for loading in JSON data from a JSON file that a user selects.
    *
    * @return the JsonObject that represents the JSON file provided.
    */
-  public JsonObject loadFromFile() throws IOException {
+  public JsonObject loadFromFile() throws FileLoadingException {
     Stage stage = new Stage();
-    File file = selectFile(stage);
-    if (file != null) {
+    File file = null;
+    try {
+      file = selectFile(stage);
+      if (file == null) {
+        throw new FileLoadingException("File selection was cancelled by the user.");
+      }
       return loadJsonFromFile(file);
+    } catch (Exception e) {
+      showWarning("Loading Error", "Make sure to select a file");
     }
     return null;
   }
@@ -40,10 +53,12 @@ public class JsonManager {
    * @param file The File object representing the JSON file to be loaded.
    * @return The JsonObject containing the parsed JSON data.
    */
-  public JsonObject loadJsonFromFile(File file) throws IOException {
+  public JsonObject loadJsonFromFile(File file) throws FileLoadingException {
     try (FileReader reader = new FileReader(file)) {
       return gson.fromJson(reader, JsonObject.class);
-    } catch (JsonSyntaxException e) {
+    } catch (JsonSyntaxException | FileNotFoundException | FileLoadingException e) {
+      throw new FileLoadingException("Loading was cancelled", e);
+    } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }

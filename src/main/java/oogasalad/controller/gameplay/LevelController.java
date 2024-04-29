@@ -2,6 +2,7 @@ package oogasalad.controller.gameplay;
 
 import java.io.IOException;
 import oogasalad.database.DatabaseConfig;
+import oogasalad.model.gameplay.exceptions.JsonParsingException;
 import oogasalad.model.gameplay.level.GameLevelParser;
 import oogasalad.model.gameplay.level.JsonGameParser;
 import oogasalad.model.gameplay.level.Level;
@@ -60,16 +61,25 @@ public class LevelController {
    * @param sceneController The current scene controller to be updated with new level data.
    * @throws IOException If there is an error reading the level data from the file.
    */
-  public void loadNewLevel(SceneController sceneController) throws IOException {
-    Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
-    LevelController levelController = new LevelController(newLevel);
-    DatabaseConfig databaseConfig = new DatabaseConfig();
-    DatabaseController databaseController = new DatabaseController(databaseConfig.getDatabase(),
-        levelController);
-    this.sceneController = new SceneController(sceneController.getStage(), databaseController,
-        levelController);
-    this.sceneController.setLanguage(sceneController.getLanguage());
-    this.sceneController.initializeViews();
+  public void loadNewLevel(SceneController sceneController)
+      throws IOException, JsonParsingException {
+    try {
+      Level newLevel = jsonGameParser.parseLevel(jsonManager.loadFromFile());
+      LevelController levelController = new LevelController(newLevel);
+
+      DatabaseConfig databaseConfig = new DatabaseConfig();
+      DatabaseController databaseController = new DatabaseController(databaseConfig.getDatabase(),
+          levelController);
+
+      this.sceneController = new SceneController(sceneController.getStage(), databaseController,
+          levelController);
+      this.sceneController.setLanguage(sceneController.getLanguage());
+      this.sceneController.initializeViews();
+    } catch (JsonParsingException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new RuntimeException("Level loading failed due to an unexpected error", e);
+    }
   }
 
   public void saveLevel(GamePane pane) throws IOException {
