@@ -25,7 +25,7 @@ class GameLevelParserTest {
         {{"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration);
+        2, initialConfiguration, "hint");
     testLevel = new Level(metadata);
 
     jsonManager = new JsonManager();
