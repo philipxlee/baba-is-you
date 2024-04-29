@@ -36,8 +36,7 @@ public class MainScene implements Scene {
 
     this.scene = new javafx.scene.Scene(root, width, height);
 
-    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
-        .toExternalForm());
+    applyCss(DEFAULT_RESOURCE_FOLDER, STYLESHEET);
   }
 
   public javafx.scene.Scene getScene() {

@@ -59,8 +59,7 @@ public class LoseScene implements Scene {
     this.root = new VBox(20);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
-    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
-        .toExternalForm());
+    applyCss(DEFAULT_RESOURCE_FOLDER, STYLESHEET);
     showLoseMessage();
     logger.info("Entered lose scene.");
   }
