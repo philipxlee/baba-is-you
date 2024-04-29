@@ -76,27 +76,7 @@ public class BuilderPane {
     setUpDropHandling();
   }
 
-  protected void alertGrid() {
-    // Display a confirmation dialog
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmation");
-    alert.setHeaderText("Warning: Existing game state will be deleted");
-    alert.setContentText("Would you like to proceed?");
 
-    // Add buttons for user selection
-    ButtonType buttonTypeYes = new ButtonType("Yes");
-    ButtonType buttonTypeNo = new ButtonType("No");
-
-    alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-    Optional<ButtonType> result = alert.showAndWait();
-
-    // If user confirms, clear existing cells and blocks and set up the grid with the new size
-    if (result.isPresent() && result.get() == buttonTypeYes) {
-      // Re-setup the grid with the new size
-      setUpGrid();
-    }
-  }
 
   protected void setUpGrid() {
     gridPane.getChildren().clear(); // Clear the existing grid

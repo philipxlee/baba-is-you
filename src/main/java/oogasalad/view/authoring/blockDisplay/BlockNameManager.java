@@ -8,8 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.shared.config.JsonManager;
-import oogasalad.view.authoring.blockDisplay.BlockData;
 
+/**
+ * Manages block names and data by loading and categorizing block information from JSON configuration files.
+ * This class facilitates filtering and retrieving block data based on specified categories.
+ */
 public class BlockNameManager extends JsonManager {
 
   /**
@@ -26,6 +29,14 @@ public class BlockNameManager extends JsonManager {
     return extractBlocks(jsonObject, category);
   }
 
+  /**
+   * Extracts block data from a JSON object, filtering by category. This method constructs a list of
+   * BlockData instances, each representing a block that matches the specified category.
+   *
+   * @param jsonObject The JSON object containing blocks' data.
+   * @param category The category to filter blocks by. If null, empty, or "All", blocks from all categories are included.
+   * @return A list of BlockData instances for blocks that fit the specified category.
+   */
   public List<BlockData> extractBlocks(JsonObject jsonObject, String category) {
     List<BlockData> blocks = new ArrayList<>();
     if (jsonObject != null) {
@@ -42,7 +53,14 @@ public class BlockNameManager extends JsonManager {
     return blocks;
   }
 
-  // Method to check if a block belongs to a specified category
+  /**
+   * Checks whether a block belongs to a specified category based on the categories listed in a JSON array.
+   * This method supports filtering blocks by a specific category or including all if "All" is specified.
+   *
+   * @param categories A JSON array of categories from a block's data.
+   * @param category The category to match against. If "All", matches any category.
+   * @return true if the block's categories include the specified category or if "All" is specified, false otherwise.
+   */
   public boolean isCategoryMatch(JsonArray categories, String category) {
     if (category == null || category.isEmpty() || category.equals("All")) {
       return categories.contains(new JsonPrimitive("All"));
