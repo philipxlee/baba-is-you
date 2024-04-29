@@ -70,8 +70,7 @@ public class MainScene implements Scene {
     interactionScene.getPane().setLayoutX(0);
 
     root.getChildren().addAll(interactionScene.getPane(), gameScene.setUpScreen());
-    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
-        .toExternalForm());
+    applyCss(DEFAULT_RESOURCE_FOLDER, STYLESHEET);
     logger.info("Initialized the gameplay main scene.");
 
   }
