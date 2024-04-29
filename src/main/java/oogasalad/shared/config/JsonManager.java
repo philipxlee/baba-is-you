@@ -40,6 +40,7 @@ public class JsonManager implements AlertHandler {
       if (file == null) {
         throw new FileLoadingException("File selection was cancelled by the user.");
       }
+      logger.info("Loaded file correctly");
       return loadJsonFromFile(file);
     } catch (Exception e) {
       showWarning("Loading Error", "Make sure to select a file");
@@ -74,6 +75,7 @@ public class JsonManager implements AlertHandler {
     File file = selectSaveFile(stage, fileName);
     if (file != null) {
       writeToFile(jsonObject, file);
+      logger.info("Saved File Correctly");
       return file;
     }
     return null;
