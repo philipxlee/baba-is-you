@@ -71,7 +71,8 @@ public class SceneController {
    */
   public void beginGame(boolean isGuest) {
     this.isGuestSession = isGuest;
-    switchToScene(new MainScene(this, levelController));
+    LevelController newLevelController = new LevelController(levelController.getLevel());
+    switchToScene(new MainScene(this, newLevelController));
   }
 
   /**

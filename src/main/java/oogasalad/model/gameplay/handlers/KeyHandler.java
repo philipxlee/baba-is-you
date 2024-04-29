@@ -39,7 +39,7 @@ public abstract class KeyHandler {
     this.grid = grid;
     this.gameStateController = gameStateController;
     grid.checkForRules();
-    logger.info("Created KeyHandler class");
+//    logger.info("Created KeyHandler class");
   }
 
   /**
