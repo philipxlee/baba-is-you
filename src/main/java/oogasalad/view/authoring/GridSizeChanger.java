@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.Grid;
+import oogasalad.model.authoring.level.LevelMetadata;
 
 /**
  * Manages the functionality to change the size of the grid in a BuilderPane.
@@ -99,7 +100,8 @@ public class GridSizeChanger {
     builderPane.gridWidth = newSize.getKey();
     builderPane.gridHeight = newSize.getValue();
     alertGrid();
-    levelController.getLevel().setGrid(new Grid(builderPane.gridWidth, builderPane.gridHeight));
+    LevelMetadata levelMetadata = new LevelMetadata("", "", builderPane.gridHeight, builderPane.gridWidth, "", "", "");
+    levelController.resetLevel(levelMetadata);
   }
 
   /**
