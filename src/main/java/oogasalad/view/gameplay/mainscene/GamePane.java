@@ -65,8 +65,7 @@ public class GamePane implements Observer<Grid> {
   private double currentDelay = INITIAL_DELAY;
   private final double DECREASE_FACTOR = 0.8;
   private Timeline timeline_Enemy;
-  private boolean babaHat = false;
-
+  private boolean babaCute = false;
   private boolean isGameOver = true;
 
 
@@ -87,6 +86,7 @@ public class GamePane implements Observer<Grid> {
       gameStateController.setGameGridController(gridController);
       this.factory = new WidgetFactory();
       this.time = factory.generateLine("00:00:00");
+      time.setId("timeText");
       handleKeyPresses(scene);
       moveEnemy();
 
@@ -134,6 +134,7 @@ public class GamePane implements Observer<Grid> {
     });
     pauseBtn.setFitHeight(cellSize);
     pauseBtn.setFitWidth(cellSize);
+    pauseBtn.setId("pauseButton");
     return pauseBtn;
   }
 
@@ -172,7 +173,7 @@ public class GamePane implements Observer<Grid> {
     renderGrid();
   }
 
-  protected Pane setUpScreen() {
+  public Pane setUpScreen() {
     HBox buttons = factory.wrapInHBox(new ArrayList<>(Arrays.asList(setUpSaveButton(), setUpPauseButton())),
         cellSize*2);
     buttons.setAlignment(Pos.BOTTOM_RIGHT);
@@ -208,7 +209,7 @@ public class GamePane implements Observer<Grid> {
       String modifiedBlockName;
 
       if (block.getBlockName().contains("BabaVisual") && block.getAttribute("Controllable")) {
-        if (!babaHat) {
+        if (!babaCute) {
           modifiedBlockName = block.getBlockName() + currentDirection;
         } else {
           modifiedBlockName = "Cute" + block.getBlockName() + currentDirection;
@@ -279,7 +280,7 @@ public class GamePane implements Observer<Grid> {
 
   private void handleLetterKeyPresses(KeyEvent event) {
       if (event.getCode() == KeyCode.X) {
-        babaHat = !babaHat;
+        babaCute = !babaCute;
       }
       gridController.sendPlayToModel(event.getCode());
       renderGrid(); // Render grid
