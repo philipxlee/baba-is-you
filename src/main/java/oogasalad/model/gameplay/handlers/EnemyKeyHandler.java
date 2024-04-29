@@ -33,7 +33,7 @@ public class EnemyKeyHandler extends KeyHandler {
         super(grid, gameStateController);
         this.grid = grid;
         this.gameStateController = gameStateController;
-        logger.info("Created enemy handler for artificial player");
+//        logger.info("Created enemy handler for artificial player");
     }
 
 
