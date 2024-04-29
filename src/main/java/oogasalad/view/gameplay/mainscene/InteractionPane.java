@@ -81,8 +81,9 @@ public class InteractionPane {
     //Initializes reset and load buttons
     Button reset = setUpResetButton();
     Button load = setUpLoadButton();
+    Button save = setUpSaveButton();
     //Orient all elements in the space
-    orientPaneDisplay(load, reset, header, hintsAndKeys, background);
+    orientPaneDisplay(load, reset, header, hintsAndKeys, background, save);
   }
 
   /**
@@ -105,12 +106,21 @@ public class InteractionPane {
    * @return reset button
    */
   private Button setUpResetButton() {
-    Button reset = factory.makeButton(new WidgetConfiguration(150, 40,
+    Button reset = factory.makeButton(new WidgetConfiguration(100, 40,
         "Reset", "white-button", language));
     reset.setOnAction(event -> {
       scene.resetGame();
     });
     return reset;
+  }
+
+  private Button setUpSaveButton() {
+    Button save = factory.makeButton(new WidgetConfiguration(100, 40,
+        "Save", "white-button", language));
+    save.setOnAction(event -> {
+
+    });
+    return save;
   }
 
   /**
@@ -119,7 +129,7 @@ public class InteractionPane {
    * @return load button
    */
   private Button setUpLoadButton() {
-    Button load = factory.makeButton(new WidgetConfiguration(150, 40,
+    Button load = factory.makeButton(new WidgetConfiguration(100, 40,
         "Load", "white-button", language));
     load.setOnAction(event -> {
       try {
@@ -139,17 +149,18 @@ public class InteractionPane {
    * @param header       text with header+subtitle
    * @param arrowKeysBox HBox with light-up rectangles showing key presses
    * @param background   Rectangle background hosting all widgets
+   * @param save
    */
   private void orientPaneDisplay(Button load, Button reset, VBox header, HBox arrowKeysBox,
-      Rectangle background) {
+      Rectangle background, Button save) {
     VBox leaderboardButton = setupLeaderboardButton();
     //Set up the file chooser
     VBox display = new VBox(10);
     FileChooserPane fileChooser = new FileChooserPane(width, height, language, levelController,
         sceneController);
 
-    HBox loadAndReset = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset)), width);
-    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadAndReset,
+    HBox loadResetSave = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset, save)), width);
+    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadResetSave,
         leaderboardButton);
     // Setup comments display
     VBox commentButton = setupCommentButton();
