@@ -39,6 +39,9 @@ public class ElementsPane implements AlertHandler {
   private final JsonLoader jsonLoader;
   private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
+
+  private final ResourceBundle messages = ResourceBundle.getBundle("auth_view.authoring_messages");
+
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
   private final LevelController levelController;
@@ -68,25 +71,28 @@ public class ElementsPane implements AlertHandler {
   private void initializeElementsLayout() {
     layout = new VBox(15);
 
-    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
-    Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
-        "AuthEnv", language));
+    Text title = factory.generateHeader(new WidgetConfiguration(messages.getString("headerTitle"), language));
+    Text subtitle = factory.generateSubHeader(new WidgetConfiguration(messages.getString("headerSubtitle"), language));
+    Text descriptionLabel = factory.generateLine(new WidgetConfiguration(messages.getString("dragInstructions"), language));
+
     VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
         (int) layout.getHeight(), 10);
     header.setSpacing(0);
 
-    Text descriptionLabel = factory.generateLine(new WidgetConfiguration
-        ("DragInstructions", language));
 
-    // Category selection setup
-    ComboBox<String> categoryComboBox = factory.makeComboBox(new WidgetConfiguration(200, 50,
-            "combo-box-white", language), new ArrayList<>(Arrays.asList("Visual", "Text", "All")),
-        "All");
 
     // Difficulty chooser setup
-    ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50,
-        "combo-box-white", language), new ArrayList<>(Arrays.asList("Easy", "Medium",
-        "Hard")), "Medium");
+    ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50, "combo-box-white", language),
+            new ArrayList<>(Arrays.asList(messages.getString("difficultyEasy"), messages.getString("difficultyMedium"), messages.getString("difficultyHard"))),
+            messages.getString("difficultyMedium"));
+
+    // ComboBox for categories
+    List<String> categories = Arrays.asList(
+            messages.getString("categoryVisual"),
+            messages.getString("categoryText"),
+            messages.getString("categoryAll")
+    );
+    ComboBox<String> categoryComboBox = factory.makeComboBox(new WidgetConfiguration(200, 50, "combo-box-white", language), new ArrayList<>(categories), messages.getString("categoryAll"));
 
     difficultyComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
       if (newValue != null) {
@@ -128,7 +134,6 @@ public class ElementsPane implements AlertHandler {
 
     Button gptButton = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
-
     gptButton.setOnAction(event -> showLoadingScreen());
 
     gptButton.setOnMouseClicked(event -> {
@@ -258,7 +263,8 @@ public class ElementsPane implements AlertHandler {
     // Create a dialog window for the loading screen
     Stage loadingStage = new Stage();
     loadingStage.initModality(Modality.APPLICATION_MODAL);
-    loadingStage.setTitle("Generating Level");
+    loadingStage.setTitle(messages.getString("loadingTitle"));
+
     loadingStage.setScene(new Scene(loadingPane, 250, 100));
 
     // Start a task for generating the level
@@ -280,10 +286,9 @@ public class ElementsPane implements AlertHandler {
     // When the task completes, close the loading screen
     generateTask.setOnSucceeded(event -> {
       loadingStage.close();
-      // You can add any additional actions after the task completes here
     });
 
-    // Show the loading screen
+    // Showing the loading screen
     loadingStage.show();
 
     // Start the task
@@ -291,7 +296,7 @@ public class ElementsPane implements AlertHandler {
   }
 
   protected void setKeyboardShortcuts(Scene scene) {
-    // Define keyboard shortcuts
+    // Defining keyboard shortcuts
     KeyCombination saveJsonCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
     KeyCombination loadLevelCombination = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
     KeyCombination returntosplash = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
