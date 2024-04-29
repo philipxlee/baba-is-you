@@ -1,14 +1,10 @@
 package oogasalad.view.gameplay;
 
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
-import oogasalad.model.gameplay.level.GameLevelParser;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
-import oogasalad.shared.widgetfactory.WidgetFactory;
-import oogasalad.view.gameplay.mainscene.GamePane;
 import oogasalad.view.gameplay.mainscene.MainScene;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
