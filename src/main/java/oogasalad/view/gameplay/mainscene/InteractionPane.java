@@ -96,6 +96,7 @@ public class InteractionPane {
         "GamePlay", language));
     VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
         height / 6, 0);
+    header.setId("header");
     return header;
   }
 
@@ -105,11 +106,12 @@ public class InteractionPane {
    * @return reset button
    */
   private Button setUpResetButton() {
-    Button reset = factory.makeButton(new WidgetConfiguration(150, 40,
+    Button reset = factory.makeButton(new WidgetConfiguration(100, 40,
         "Reset", "white-button", language));
     reset.setOnAction(event -> {
       scene.resetGame();
     });
+    reset.setId("resetButton");
     return reset;
   }
 
@@ -119,7 +121,7 @@ public class InteractionPane {
    * @return load button
    */
   private Button setUpLoadButton() {
-    Button load = factory.makeButton(new WidgetConfiguration(150, 40,
+    Button load = factory.makeButton(new WidgetConfiguration(100, 40,
         "Load", "white-button", language));
     load.setOnAction(event -> {
       try {
@@ -128,6 +130,7 @@ public class InteractionPane {
         throw new RuntimeException(e);
       }
     });
+    load.setId("loadButton");
     return load;
   }
 
@@ -148,8 +151,8 @@ public class InteractionPane {
     FileChooserPane fileChooser = new FileChooserPane(width, height, language, levelController,
         sceneController);
 
-    HBox loadAndReset = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset)), width);
-    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadAndReset,
+    HBox loadReset = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset)), width);
+    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadReset,
         leaderboardButton);
     // Setup comments display
     VBox commentButton = setupCommentButton();
@@ -189,6 +192,7 @@ public class InteractionPane {
         "ViewBoard", "black-button", language));
     leaderboardButton.setOnAction(
         event -> sceneController.switchToScene(new LeaderboardScene(factory, sceneController)));
+    leaderboardButton.setId("leaderboardButton");
     VBox buttonContainer = new VBox(leaderboardButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
@@ -200,6 +204,7 @@ public class InteractionPane {
         "ViewComments", "black-button", language));
     commentButton.setOnAction(
         event -> sceneController.switchToScene(new CommentScene(factory, sceneController)));
+    commentButton.setId("commentButton");
     VBox buttonContainer = new VBox(commentButton);
     buttonContainer.setAlignment(Pos.CENTER);
     buttonContainer.setPadding(new Insets(15, 0, 0, 0));
@@ -217,6 +222,7 @@ public class InteractionPane {
       newSceneController.setLanguage(language);
       newSceneController.initializeViews();
     });
+    newWindowButton.setId("newWindowButton");
     return newWindowButton;
   }
 
@@ -224,6 +230,7 @@ public class InteractionPane {
     Button backButton = factory.makeButton(new WidgetConfiguration(150, 40,
         "Back", "white-button", language));
     backButton.setOnAction(event -> sceneController.initializeViews());
+    backButton.setId("backButton");
     return backButton;
   }
 
@@ -238,9 +245,4 @@ public class InteractionPane {
   public void updateKeyRelease(KeyCode code) {
     keyPressDisplay.updateArrowKeyVisual(code, BASE_COLOR);
   }
-
-  //For testing
-//  public Rectangle getUpRectangle() {
-//    return up;
-//  }
 }
