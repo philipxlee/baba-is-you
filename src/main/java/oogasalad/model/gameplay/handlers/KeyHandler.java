@@ -56,7 +56,7 @@ public abstract class KeyHandler {
    */
   protected void handleKeyPress(int deltaI, int deltaJ) {
     grid.checkBehaviors();
-    List<int[]> controllableBlockPositions = grid.findControllableBlock();
+    List<int[]> controllableBlockPositions = grid.findAllPresentBlock(CONTROLLABLE);
     if (!controllableBlockPositions.isEmpty()) {
       controllableBlockPositions.stream()
           .forEach(element -> moveBlock(element[0], element[1], element[2], deltaI, deltaJ));
