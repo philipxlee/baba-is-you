@@ -174,7 +174,7 @@ public class GridTest {
   public void testCellHasControllable() {
     babaBlock.accept(youVisitor);
     grid.getGrid()[0][0].add(babaBlock); // Adding a new block to cell (0, 0)
-    assertTrue(grid.cellHasControllable(0, 0));
+    assertTrue(grid.cellHasAttribute(0, 0, "Controllable"));
   }
 
 
@@ -186,7 +186,7 @@ public class GridTest {
     BabaVisualBlock babaBlock = new BabaVisualBlock("Baba", 0, 0);
     babaBlock.accept(winVisitor);
     grid.getGrid()[0][0].add(babaBlock);
-    assertTrue(grid.cellHasWinning(0, 0));
+    assertTrue(grid.cellHasAttribute(0, 0, "Winnable"));
   }
 
 
@@ -198,7 +198,7 @@ public class GridTest {
     BabaVisualBlock babaBlock = new BabaVisualBlock("Baba", 0, 0);
     babaBlock.accept(stopVisitor);
     grid.getGrid()[0][0].add(babaBlock);
-    assertTrue(grid.cellHasStoppable(0, 0));
+    assertTrue(grid.cellHasAttribute(0, 0, "Stoppable"));
   }
 
 
