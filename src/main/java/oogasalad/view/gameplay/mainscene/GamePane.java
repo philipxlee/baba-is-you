@@ -1,5 +1,6 @@
 package oogasalad.view.gameplay.mainscene;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import javafx.scene.text.Text;
 import oogasalad.controller.gameplay.GameGridController;
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.controller.gameplay.KeyHandlerController;
+import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.grid.Grid;
@@ -68,10 +70,11 @@ public class GamePane implements Observer<Grid> {
   private boolean babaHat = false;
 
   private boolean isGameOver = true;
+  private LevelController levelController;
 
 
   public void initializeGameGrid(int width, int height, MainScene scene,
-      SceneController sceneController, Level initialLevel) {
+      SceneController sceneController, Level initialLevel, LevelController levelController) {
     try {
       this.blockFactory = new BlockViewFactory("/blocktypes/blocktypes.json");
       this.width = width;
@@ -87,6 +90,7 @@ public class GamePane implements Observer<Grid> {
       gameStateController.setGameGridController(gridController);
       this.factory = new WidgetFactory();
       this.time = factory.generateLine("00:00:00");
+      this.levelController = levelController;
       handleKeyPresses(scene);
       moveEnemy();
 
@@ -141,6 +145,11 @@ public class GamePane implements Observer<Grid> {
     Button save = factory.makeButton(new WidgetConfiguration(70, 30,
         "Save", "white-button", sceneController.getLanguage()));
     save.setOnAction(event -> {
+      try {
+        levelController.saveLevel(this);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     });
     save.setId("saveButton");
     return save;
@@ -315,6 +324,10 @@ public class GamePane implements Observer<Grid> {
     timeline_Enemy.setCycleCount(Timeline.INDEFINITE);
     // Start the Timeline
     timeline_Enemy.play();
+  }
+
+  public GameGridController getGridController() {
+    return this.gridController;
   }
   public void setGameOverStatus(boolean status){
     this.isGameOver = status;
