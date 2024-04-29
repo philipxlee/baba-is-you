@@ -21,6 +21,9 @@ public class EnemyKeyHandler extends KeyHandler {
     private static final int MAX_ENEMY_COUNT = 30;
     private final int[][] DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
+    private static final String CONTROLLABLE = "Controllable";
+    private static final String KILLABLE =  "Killable";
+
 
 
     /**
@@ -33,7 +36,7 @@ public class EnemyKeyHandler extends KeyHandler {
         super(grid, gameStateController);
         this.grid = grid;
         this.gameStateController = gameStateController;
-        logger.info("Created enemy handler for artificial player");
+//        logger.info("Created enemy handler for artificial player");
     }
 
 
@@ -42,7 +45,7 @@ public class EnemyKeyHandler extends KeyHandler {
      */
     @Override
     public void execute() {
-        if (grid.findEnemyBlock().size() < MAX_ENEMY_COUNT) {
+        if (grid.findAllPresentBlock(KILLABLE).size() < MAX_ENEMY_COUNT) {
             createEnemy();
             logger.info("Created enemy");
         }
@@ -57,8 +60,8 @@ public class EnemyKeyHandler extends KeyHandler {
      * This method also notifies the grid observer after all enemy entities have been moved.
      */
     public void moveEnemy() {
-        List<int[]> allEnemyBlocks = grid.findEnemyBlock();
-        if (allEnemyBlocks.isEmpty() || grid.findControllableBlock().isEmpty()) {
+        List<int[]> allEnemyBlocks = grid.findAllPresentBlock(KILLABLE);
+        if (allEnemyBlocks.isEmpty() || grid.findAllPresentBlock(CONTROLLABLE).isEmpty()) {
             handleNoMovementConditions(allEnemyBlocks);
             return;
         }
@@ -127,7 +130,7 @@ public class EnemyKeyHandler extends KeyHandler {
      * @return Optional containing the coordinates of the nearest controllable block if found, otherwise empty.
      */
     private Optional<int[]> nearestControllableCoordinate(int[] enemyCamp) {
-        List<int[]> allControllableBlock = grid.findControllableBlock();
+        List<int[]> allControllableBlock = grid.findAllPresentBlock(CONTROLLABLE);
         if (allControllableBlock.isEmpty()) {
             return Optional.empty();
         }

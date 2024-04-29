@@ -354,11 +354,9 @@ public class GamePane implements Observer<Grid> {
   private void handleKeyPresses(MainScene scene) {
     // For grid movement
     this.scene.getScene().addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
-      if (event.getCode().isArrowKey() || cheatKeys.contains(event.getCode())) {
+      if (event.getCode().isArrowKey()) {
         gridController.sendPlayToModel(event.getCode());
-        if (event.getCode().isArrowKey()) {
           this.currentDirection = event.getCode().getName();
-        }
         renderGrid(); // Render grid
         gridController.resetBlocks(); // Reset all blocks
         scene.getInteractionPane().updateKeyPress(event.getCode());
@@ -366,7 +364,7 @@ public class GamePane implements Observer<Grid> {
         keyPressed = true;
         firstKeyPressed = true;
       }
-      if (event.getCode().isLetterKey()) {
+      else if (event.getCode().isLetterKey()) {
         handleLetterKeyPresses(event);
       }
     });
