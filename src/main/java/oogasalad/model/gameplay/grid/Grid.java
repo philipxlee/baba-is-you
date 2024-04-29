@@ -235,6 +235,11 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
 
+  /**
+   * Compares blocks in a cell for rendering based on their attributes.
+   * Blocks with certain attributes are sorted to be rendered first.
+   * @param cell The list of blocks in a cell.
+   */
   private void compareCellForRender(List<AbstractBlock> cell) {
     cell.sort(new Comparator<AbstractBlock>() {
       @Override
@@ -250,6 +255,9 @@ public class Grid extends GridHelper implements Observable<Grid> {
     });
   }
 
+  /**
+   * Checks each cell in the grid for blocks that should disappear based on their attributes.
+   */
   public void checkForDisappear() { //cant use streams
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
@@ -258,6 +266,11 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
+  /**
+   * Checks a specific cell in the grid for blocks that should disappear based on their attributes.
+   * @param cellI The row index of the cell.
+   * @param cellJ The column index of the cell.
+   */
   private void checkCellForDisappear(int cellI, int cellJ) {
     int subjectIndex = -1;
     int objectIndex = -1;
@@ -298,12 +311,23 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
 
 
+  /**
+   * Checks if a cell is passable, i.e., if it does not contain blocks with certain attributes.
+   * @param cellI The row index of the cell.
+   * @param cellJ The column index of the cell.
+   * @return True if the cell is passable, false otherwise.
+   */
   public boolean isPassable(int cellI, int cellJ){
     return !cellHasAttribute(cellI, cellJ, STOPPABLE) && !cellHasAttribute(cellI, cellJ, WINNABLE) &&
             !cellHasAttribute(cellI, cellJ, HOTABLE) && !cellHasAttribute(cellI, cellJ, SINKABLE) &&
             !cellHasTextBlock(cellI, cellJ);
   }
 
+  /**
+   * Places an enemy block at the specified position in the grid.
+   * @param I The row index where the enemy should be placed.
+   * @param J The column index where the enemy should be placed.
+   */
   public void placeEnemy(int I, int J){
     AbstractBlock crabBlock = factory.createBlock(CRAB_VISUAL_BLOCK, I, J);
     ((AbstractVisualBlock)crabBlock).modifyAttribute(KILL, true);
@@ -311,6 +335,14 @@ public class Grid extends GridHelper implements Observable<Grid> {
     ((AbstractVisualBlock)crabBlock).modifyAttribute(KILL, true);
   }
 
+  /**
+   * Moves an enemy block from one position to another in the grid.
+   * @param fromI The row index of the original position.
+   * @param fromJ The column index of the original position.
+   * @param fromK The index of the enemy block in the original cell.
+   * @param toI The row index of the target position.
+   * @param toJ The column index of the target position.
+   */
   public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ){
     sortArray();
     moveBlock(fromI, fromJ, fromK, toI, toJ);
@@ -325,6 +357,10 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
 
 
+  /**
+   * Finds the position of the enemy block in the grid.
+   * @return An array containing the row index, column index, and block index of the enemy block.
+   */
   public int[] enemyPosition() {
     return IntStream.range(0, grid.length)
             .boxed()
@@ -338,6 +374,9 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
 
+  /**
+   * Sets the "kill" attribute for all crab blocks in the grid.
+   */
   public void setCrabAttribute(){
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
@@ -351,7 +390,12 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
-  public void removeBaba(int i, int j) {
+  /**
+   * Removes controllable blocks from a specified cell in the grid.
+   * @param i The row index of the cell.
+   * @param j The column index of the cell.
+   */
+  public void removeControllable(int i, int j) {
     List<AbstractBlock> cell = grid[i][j];
     Iterator<AbstractBlock> iterator = cell.iterator();
     while (iterator.hasNext()) {
@@ -362,6 +406,12 @@ public class Grid extends GridHelper implements Observable<Grid> {
     }
   }
 
+  /**
+   * Finds the index of the enemy block in a specified cell.
+   * @param cellI The row index of the cell.
+   * @param cellJ The column index of the cell.
+   * @return The index of the enemy block, or empty if not found.
+   */
   public Optional<Integer> findEnemyIndex(int cellI, int cellJ) {
     for (int i = 0; i < grid[cellI][cellJ].size(); i++) {
       AbstractBlock block = grid[cellI][cellJ].get(i);
@@ -372,6 +422,12 @@ public class Grid extends GridHelper implements Observable<Grid> {
     return Optional.empty();
   }
 
+  /**
+   * Checks if a cell in the grid is empty.
+   * @param cellI The row index of the cell.
+   * @param cellJ The column index of the cell.
+   * @return True if the cell is empty, false otherwise.
+   */
   public boolean cellIsEmpty(int cellI, int cellJ){
     for (int i = 0; i < grid[cellI][cellJ].size(); i++){
       AbstractBlock block = grid[cellI][cellJ].get(i);
