@@ -1,9 +1,7 @@
 package oogasalad.model.gameplay.grid;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.model.gameplay.factory.BlockFactory;
 
@@ -12,6 +10,15 @@ public class GridHelper {
 
   protected final List<AbstractBlock>[][] grid;
   private final BlockFactory factory;
+  private static final String KILL = "Kill";
+  private static final String KILLABLE = "Killable";
+  private static final String CONTROLLABLE = "Controllable";
+
+  private static final String PUSHABLE = "Pushable";
+
+  private static final String HOTABLE = "Hotable";
+
+  private static final String SINKABLE = "Sinkable";
 
   public GridHelper(int rows, int cols) {
     this.grid = new ArrayList[rows][cols];
@@ -170,13 +177,12 @@ public class GridHelper {
    *
    * @param i The row index of the cell.
    * @param j The column index of the cell.
+   *@param attribute The attribue you want to check for in the cell.
    * @return True if the cell contains a block with the Controllable behavior, false otherwise.
    */
-
-  public boolean cellHasControllable(int i, int j) {
-    return grid[i][j].stream().anyMatch(block -> block.getAttribute("Controllable"));
+  public boolean cellHasAttribute(int i, int j, String attribute){
+    return grid[i][j].stream().anyMatch(block -> block.getAttribute(attribute));
   }
-
   /**
    * Checks if a cell contains a block with the Winnable behavior.
    *
@@ -218,7 +224,7 @@ public class GridHelper {
       if (block.isTextBlock()) {
         textBlock = true;
       }
-      if (block.getAttribute("Pushable")) {
+      if (block.getAttribute(PUSHABLE)) {
         hasPushable = true;
       }
     }
@@ -279,15 +285,5 @@ public class GridHelper {
     }
   }
 
-  public boolean cellHasLava(int cellI, int cellJ){
-    return grid[cellI][cellJ].stream().anyMatch(block -> block.getAttribute("Hotable"));
-  }
-
-  public boolean cellHasWater(int cellI, int cellJ){
-    return grid[cellI][cellJ].stream().anyMatch(block -> block.getAttribute("Sinkable"));
-  }
-  public boolean cellHasEnemy(int cellI, int cellJ){
-    return grid[cellI][cellJ].stream().anyMatch(block -> block.getAttribute("Killable"));
-  }
 
 }
