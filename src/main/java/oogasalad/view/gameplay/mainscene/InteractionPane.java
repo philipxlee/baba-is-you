@@ -81,9 +81,8 @@ public class InteractionPane {
     //Initializes reset and load buttons
     Button reset = setUpResetButton();
     Button load = setUpLoadButton();
-    Button save = setUpSaveButton();
     //Orient all elements in the space
-    orientPaneDisplay(load, reset, header, hintsAndKeys, background, save);
+    orientPaneDisplay(load, reset, header, hintsAndKeys, background);
   }
 
   /**
@@ -116,16 +115,6 @@ public class InteractionPane {
     return reset;
   }
 
-  private Button setUpSaveButton() {
-    Button save = factory.makeButton(new WidgetConfiguration(100, 40,
-        "Save", "white-button", language));
-    save.setOnAction(event -> {
-
-    });
-    save.setId("saveButton");
-    return save;
-  }
-
   /**
    * Initialize the load button, which lets the user upload a new game level.
    *
@@ -153,18 +142,17 @@ public class InteractionPane {
    * @param header       text with header+subtitle
    * @param arrowKeysBox HBox with light-up rectangles showing key presses
    * @param background   Rectangle background hosting all widgets
-   * @param save
    */
   private void orientPaneDisplay(Button load, Button reset, VBox header, HBox arrowKeysBox,
-      Rectangle background, Button save) {
+      Rectangle background) {
     VBox leaderboardButton = setupLeaderboardButton();
     //Set up the file chooser
     VBox display = new VBox(10);
     FileChooserPane fileChooser = new FileChooserPane(width, height, language, levelController,
         sceneController);
 
-    HBox loadResetSave = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset, save)), width);
-    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadResetSave,
+    HBox loadReset = factory.wrapInHBox(new ArrayList<Node>(Arrays.asList(load, reset)), width);
+    display.getChildren().addAll(header, arrowKeysBox, fileChooser.getFileChooser(), loadReset,
         leaderboardButton);
     // Setup comments display
     VBox commentButton = setupCommentButton();
