@@ -1,12 +1,9 @@
 package oogasalad.view.authoring;
 
-import java.util.Optional;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -18,7 +15,6 @@ import oogasalad.model.authoring.level.Grid;
 import oogasalad.model.authoring.level.LevelMetadata;
 import oogasalad.shared.blockview.BlockViewFactory;
 import oogasalad.shared.widgetfactory.WidgetFactory;
-
 import java.util.ResourceBundle;
 
 /**
@@ -70,23 +66,6 @@ public class BuilderPane {
     root.heightProperty().addListener((obs, oldVal, newVal) -> setUpGrid());
     setUpGrid();
     setUpDropHandling();
-  }
-
-  /**
-   * Displays a confirmation dialog when clearing the grid or making significant modifications.
-   */
-  protected void alertGrid() {
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle(messages.getString("grid.confirmationTitle"));
-    alert.setHeaderText(messages.getString("grid.warning"));
-    alert.setContentText(messages.getString("grid.changeConfirmation"));
-    ButtonType buttonTypeYes = new ButtonType(messages.getString("yes"));
-    ButtonType buttonTypeNo = new ButtonType(messages.getString("no"));
-    alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-    Optional<ButtonType> result = alert.showAndWait();
-    if (result.isPresent() && result.get() == buttonTypeYes) {
-      setUpGrid();
-    }
   }
 
   /**
