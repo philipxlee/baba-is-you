@@ -187,18 +187,14 @@ public class BuilderPane {
     setRemoveModeEventHandlers();
   }
 
-  /**
-   * Renders a grid based on a pre-loaded set of grid data.
-   * @param loadedGrid The grid data to load.
-   */
   public void renderLoadedGrid(Grid loadedGrid) {
-    gridWidth = loadedGrid.getNumRows() - 2;
-    gridHeight = loadedGrid.getNumColumns() - 2;
+    gridWidth = loadedGrid.getNumRows() - 2;  // Adjusted for padding
+    gridHeight = loadedGrid.getNumColumns() - 2;  // Adjusted for padding
     setUpGrid();
     levelController.getLevel().setGrid(new Grid(gridWidth, gridHeight));
     for (int row = 0; row < gridHeight; row++) {
       for (int col = 0; col < gridWidth; col++) {
-        String[] blockTypes = loadedGrid.getCell(row, col);
+        String[] blockTypes = loadedGrid.getCell(row, col); // Adjusting indices to skip padding
         for (String blockType : blockTypes) {
           if (!"EmptyVisualBlock".equals(blockType)) {
             ImageView blockView = createBlockView(blockType);
@@ -222,6 +218,43 @@ public class BuilderPane {
       }
     }
   }
+
+
+  /**
+   * Renders a grid based on a pre-loaded set of grid data.
+   * @param loadedGrid The grid data to load.
+   */
+//  public void renderLoadedGrid(Grid loadedGrid) {
+//    gridWidth = loadedGrid.getNumRows() - 2;
+//    gridHeight = loadedGrid.getNumColumns() - 2;
+//    setUpGrid();
+//    levelController.getLevel().setGrid(new Grid(gridWidth, gridHeight));
+//    for (int row = 0; row < gridHeight; row++) {
+//      for (int col = 0; col < gridWidth; col++) {
+//        String[] blockTypes = loadedGrid.getCell(row, col);
+//        for (String blockType : blockTypes) {
+//          if (!"EmptyVisualBlock".equals(blockType)) {
+//            ImageView blockView = createBlockView(blockType);
+//            if (blockView != null) {
+//              blockView.setFitWidth(cellSize);
+//              blockView.setFitHeight(cellSize);
+//              double xPos = col * cellSize + gridPane.getLayoutX();
+//              double yPos = row * cellSize + gridPane.getLayoutY();
+//              blockView.setLayoutX(xPos);
+//              blockView.setLayoutY(yPos);
+//              root.getChildren().add(blockView);
+//              blockView.toFront();
+//              try {
+//                levelController.addBlockToCell(row, col, blockType);
+//              } catch (Exception e) {
+//                System.err.println("Error adding block to cell: " + e.getMessage());
+//              }
+//            }
+//          }
+//        }
+//      }
+//    }
+//  }
 
   /**
    * Calculates the column and row indices for a given x, y coordinate within the grid.
