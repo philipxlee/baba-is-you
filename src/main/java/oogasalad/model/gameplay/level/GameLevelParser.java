@@ -2,7 +2,10 @@ package oogasalad.model.gameplay.level;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.List;
+import oogasalad.model.gameplay.blocks.AbstractBlock;
 import oogasalad.shared.config.JsonManager;
+import oogasalad.view.gameplay.mainscene.GamePane;
 
 /**
  * Parses Level objects into JSON representations. This parser handles the conversion of level data,
@@ -26,14 +29,15 @@ public class GameLevelParser {
    * grid cells, and metadata into JSON format.
    *
    * @param level The Level object to parse.
+   * @param pane
    * @return A JsonObject representing the serialized level.
    */
-  public JsonObject parseLevel(Level level) {
+  public JsonObject parseLevel(Level level, GamePane pane) {
     JsonObject levelJson = new JsonObject();
 
     addLevelNameAndGridSize(level, levelJson);
 
-    addGridAndMetadata(level, levelJson);
+    addGridAndMetadata(level, levelJson, pane);
 
     return levelJson;
   }
@@ -59,9 +63,9 @@ public class GameLevelParser {
    * @param level     The Level object containing the grid and metadata.
    * @param levelJson The JsonObject to which the grid and metadata are added.
    */
-  private void addGridAndMetadata(Level level, JsonObject levelJson) {
+  private void addGridAndMetadata(Level level, JsonObject levelJson, GamePane pane) {
     JsonObject grid = new JsonObject();
-    JsonArray cellsArray = constructGridArray(level);
+    JsonArray cellsArray = constructGridArray(pane);
     jsonManager.addArrayToJson(grid, "cells", cellsArray);
 
     JsonObject metadata = constructMetadata(level);
@@ -74,12 +78,12 @@ public class GameLevelParser {
    * Constructs the cells array from the level's initial configuration. This method delegates the
    * construction of each row to a helper method to reduce complexity.
    *
-   * @param level The Level object containing the initial configuration.
+   * @param pane The pane object containing the current configuration.
    * @return A JsonArray representing the cells of the level's grid.
    */
-  private JsonArray constructGridArray(Level level) {
+  private JsonArray constructGridArray(GamePane pane) {
     JsonArray cellsArray = new JsonArray();
-    for (String[][] layer : level.getLevelMetadata().initialConfiguration()) {
+    for (List<AbstractBlock>[] layer : pane.getGridController().getGameGrid().getGrid()) {
       JsonArray layerArray = constructRowArray(layer);
       cellsArray.add(layerArray);
     }
@@ -93,9 +97,9 @@ public class GameLevelParser {
    * @param layer A 2D String array representing a single row of the grid.
    * @return A JsonArray of JsonArrays, where each inner array represents a row.
    */
-  private JsonArray constructRowArray(String[][] layer) {
+  private JsonArray constructRowArray(List<AbstractBlock>[] layer) {
     JsonArray layerArray = new JsonArray();
-    for (String[] row : layer) {
+    for (List<AbstractBlock> row : layer) {
       JsonArray rowArray = constructCellArray(row);
       layerArray.add(rowArray);
     }
@@ -109,10 +113,10 @@ public class GameLevelParser {
    * @param row An array of Strings, where each String represents a cell's content.
    * @return A JsonArray containing the cell values.
    */
-  private JsonArray constructCellArray(String[] row) {
+  private JsonArray constructCellArray(List<AbstractBlock> row) {
     JsonArray rowArray = new JsonArray();
-    for (String cell : row) {
-      rowArray.add(cell);
+    for (AbstractBlock cell : row) {
+      rowArray.add(cell.getBlockName());
     }
     return rowArray;
   }
@@ -126,6 +130,8 @@ public class GameLevelParser {
   private JsonObject constructMetadata(Level level) {
     JsonObject metadata = new JsonObject();
     jsonManager.addProperty(metadata, "difficulty", level.getLevelMetadata().difficulty());
+    jsonManager.addProperty(metadata, "hint", level.getLevelMetadata().hint());
+    jsonManager.addProperty(metadata, "author", level.getLevelMetadata().authorName());
     return metadata;
   }
 }

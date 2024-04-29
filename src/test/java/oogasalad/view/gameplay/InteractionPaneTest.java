@@ -28,7 +28,7 @@ public class InteractionPaneTest extends ApplicationTest {
         {{"EmptyVisualBlock"}, {"EmptyVisualBlock", "BabaVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration, "hint");
+        2, initialConfiguration, "BabaIsUs", "hint");
     testLevel = new Level(metadata);
   }
 
