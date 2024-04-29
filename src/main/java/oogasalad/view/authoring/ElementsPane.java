@@ -1,12 +1,12 @@
 package oogasalad.view.authoring;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
@@ -15,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -22,25 +23,27 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import oogasalad.controller.authoring.LevelController;
 import oogasalad.model.authoring.level.Grid;
 import oogasalad.model.authoring.level.Level;
+import oogasalad.shared.alert.AlertHandler;
 import oogasalad.shared.widgetfactory.WidgetConfiguration;
 import oogasalad.shared.widgetfactory.WidgetFactory;
 import oogasalad.view.authoring.blockDisplay.BlockLoader;
 import oogasalad.view.authoring.jsonOps.JsonLoader;
 import oogasalad.view.authoring.jsonOps.JsonSaver;
-import oogasalad.view.authoring.HelpWizardDialog;
 
 
-public class ElementsPane {
+public class ElementsPane implements AlertHandler {
 
   public final String IMAGE_FILE_PATH = "src/main/resources/blocktypes/blocktypes.json";
   private final JsonSaver jsonSaver;
   private final JsonLoader jsonLoader;
   private final ResourceBundle resourceBundle = ResourceBundle.getBundle("error_bundle/authoring_errors");
   private final BuilderPane builderPane;
+
+  private final ResourceBundle messages = ResourceBundle.getBundle("auth_view.authoring_messages");
+
   private final BlockLoader blockLoader = new BlockLoader();
   private final WidgetFactory factory;
   private final LevelController levelController;
@@ -70,25 +73,28 @@ public class ElementsPane {
   private void initializeElementsLayout() {
     layout = new VBox(15);
 
-    Text title = factory.generateHeader(new WidgetConfiguration("BIU", language));
-    Text subtitle = factory.generateSubHeader(new WidgetConfiguration(
-        "AuthEnv", language));
+    Text title = factory.generateHeader(new WidgetConfiguration(messages.getString("headerTitle"), language));
+    Text subtitle = factory.generateSubHeader(new WidgetConfiguration(messages.getString("headerSubtitle"), language));
+    Text descriptionLabel = factory.generateLine(new WidgetConfiguration(messages.getString("dragInstructions"), language));
+
     VBox header = factory.wrapInVBox(new ArrayList<>(Arrays.asList(title, subtitle)),
         (int) layout.getHeight(), 10);
     header.setSpacing(0);
 
-    Text descriptionLabel = factory.generateLine(new WidgetConfiguration
-        ("DragInstructions", language));
 
-    // Category selection setup
-    ComboBox<String> categoryComboBox = factory.makeComboBox(new WidgetConfiguration(200, 50,
-            "combo-box-white", language), new ArrayList<>(Arrays.asList("Visual", "Text", "All")),
-        "All");
 
     // Difficulty chooser setup
-    ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50,
-        "combo-box-white", language), new ArrayList<>(Arrays.asList("Easy", "Medium",
-        "Hard")), "Medium");
+    ComboBox<String> difficultyComboBox = factory.makeComboBox(new WidgetConfiguration(170, 50, "combo-box-white", language),
+            new ArrayList<>(Arrays.asList(messages.getString("difficultyEasy"), messages.getString("difficultyMedium"), messages.getString("difficultyHard"))),
+            messages.getString("difficultyMedium"));
+
+    // ComboBox for categories
+    List<String> categories = Arrays.asList(
+            messages.getString("categoryVisual"),
+            messages.getString("categoryText"),
+            messages.getString("categoryAll")
+    );
+    ComboBox<String> categoryComboBox = factory.makeComboBox(new WidgetConfiguration(200, 50, "combo-box-white", language), new ArrayList<>(categories), messages.getString("categoryAll"));
 
     difficultyComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
       if (newValue != null) {
@@ -131,13 +137,15 @@ public class ElementsPane {
     Button gptButton = factory.makeButton(new WidgetConfiguration(170, 40,
         "GPTGenerate", "white-button", language));
 
-    gptButton.setOnAction(event -> showLoadingScreen());
-
     gptButton.setOnMouseClicked(event -> {
       try {
-        levelController.generateLevel();
+        generateLevel();
       } catch (Exception e) {
-        e.printStackTrace();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("GPT Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Error with generate function. Try again :(");
+        alert.showAndWait();
       }
     });
 
@@ -172,8 +180,8 @@ public class ElementsPane {
         Level loadedLevel = levelController.loadLevel();
         Grid loadedGrid = loadedLevel.getGrid();
         builderPane.renderLoadedGrid(loadedGrid);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+      } catch (Exception e) {
+        showError("Error", e.getMessage());
       }
     });
 
@@ -244,9 +252,7 @@ public class ElementsPane {
     return entryPoint;
   }
 
-
-
-  private void showLoadingScreen() {
+  private void generateLevel() {
     // Create a progress bar for the loading screen
     ProgressBar progressBar = new ProgressBar();
     progressBar.setPrefWidth(200);
@@ -260,40 +266,33 @@ public class ElementsPane {
     // Create a dialog window for the loading screen
     Stage loadingStage = new Stage();
     loadingStage.initModality(Modality.APPLICATION_MODAL);
-    loadingStage.setTitle("Generating Level");
+    loadingStage.setTitle(messages.getString("loadingTitle"));
+
     loadingStage.setScene(new Scene(loadingPane, 250, 100));
-
-    // Start a task for generating the level
-    Task<Void> generateTask = new Task<>() {
-      @Override
-      protected Void call() throws Exception {
-        // Simulate generation process
-        for (int i = 0; i <= 100; i++) {
-          updateProgress(i, 100);
-          Thread.sleep(50);
-        }
-        return null;
-      }
-    };
-
-    // Bind the progress of the task to the progress bar
-    progressBar.progressProperty().bind(generateTask.progressProperty());
-
-    // When the task completes, close the loading screen
-    generateTask.setOnSucceeded(event -> {
-      loadingStage.close();
-      // You can add any additional actions after the task completes here
-    });
-
-    // Show the loading screen
     loadingStage.show();
-
-    // Start the task
-    new Thread(generateTask).start();
+    levelController.generateLevel(success -> {
+      Platform.runLater(() -> {
+        loadingStage.close();
+        if (success) {
+          System.out.println("Level generation completed successfully.");
+          Level newLevel = levelController.getLevel();
+          Grid loadedGrid = newLevel.getGrid();
+          builderPane.renderLoadedGrid(loadedGrid);
+        } else {
+          System.out.println("Failed to generate level.");
+          Alert alert = new Alert(AlertType.ERROR);
+          alert.setTitle("Failed to Generate Level");
+          alert.setContentText("GPT didn't work :( Try again later.");
+          alert.setWidth(10);
+          alert.setHeight(200);
+          alert.showAndWait();
+        }
+      });
+    });
   }
 
   protected void setKeyboardShortcuts(Scene scene) {
-    // Define keyboard shortcuts
+    // Defining keyboard shortcuts
     KeyCombination saveJsonCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
     KeyCombination loadLevelCombination = new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN);
     KeyCombination returntosplash = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);

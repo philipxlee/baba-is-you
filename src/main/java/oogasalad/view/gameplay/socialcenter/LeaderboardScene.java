@@ -57,8 +57,7 @@ public class LeaderboardScene implements Scene {
     this.root = new VBox(20);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
-    getScene().getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
-        .toExternalForm());
+    applyCss(DEFAULT_RESOURCE_FOLDER, STYLESHEET);
     populateLeaderboard();
   }
 
@@ -101,6 +100,12 @@ public class LeaderboardScene implements Scene {
     root.getChildren().addAll(leaderboardList, backButton);
   }
 
+  /**
+   * Creates a leaderboard row for a user.
+   * @param number number associated with a leaderboard score
+   * @param player player achieving the score
+   * @return HBox with all necessary leaderboard data
+   */
   private HBox createLeaderboardRow(int number, LeaderboardData player) {
     WidgetConfiguration configuration = new WidgetConfiguration(300, 50, "row-cell", language);
     Button username = factory.makeButton(configuration, number + ". " + player.getUsername());

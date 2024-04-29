@@ -1,7 +1,10 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.gamestates;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -9,19 +12,15 @@ import oogasalad.controller.gameplay.LevelController;
 import oogasalad.controller.gameplay.SceneController;
 import oogasalad.model.gameplay.level.Level;
 import oogasalad.model.gameplay.level.LevelMetadata;
-import oogasalad.view.gameplay.gamestates.LoseScene;
+import oogasalad.view.gameplay.gamestates.WinScene;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class LoseSceneTest extends ApplicationTest {
+public class WinSceneTest extends ApplicationTest {
 
   private SceneController sceneController;
-  private LoseScene loseScene;
+  private WinScene winScene;
   private Level testLevel;
 
   @BeforeEach
@@ -32,7 +31,7 @@ public class LoseSceneTest extends ApplicationTest {
             {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration, "hint");
+        2, initialConfiguration, "BabaIsUs","hint");
     testLevel = new Level(metadata);
   }
 
@@ -43,39 +42,39 @@ public class LoseSceneTest extends ApplicationTest {
     sceneController = new SceneController(stage, null,
         levelController);
     sceneController.setLanguage("English");
-    loseScene = new LoseScene(sceneController);
-    loseScene.initializeScene(1500, 800);
-    stage.setScene(loseScene.getScene());
+    winScene = new WinScene(sceneController);
+    winScene.initializeScene(1500, 800);
+    stage.setScene(winScene.getScene());
     stage.show();
   }
 
   @Test
   public void testInitialization() {
     Platform.runLater(() -> {
-      assertNotNull(loseScene.getScene());
+      assertNotNull(winScene.getScene());
     });
   }
 
   @Test
-  public void testLoseMessageContent() {
+  public void testWinMessageContent() {
     Platform.runLater(() -> {
-      VBox root = (VBox) loseScene.getScene().getRoot();
+      VBox root = (VBox) winScene.getScene().getRoot();
       assertNotNull(root);
 
-      assertEquals(1, root.getChildren().size());
+      assertEquals(6, root.getChildren().size());
 
-      Button tryAgainButton = (Button) loseScene.getScene().lookup("#tryAgainButton");
-      assertEquals("Try Again", tryAgainButton.getText());
+      Button playAgainButton = (Button) winScene.getScene().lookup("#playAgainButton");
+      assertEquals("Play Again", playAgainButton.getText());
     });
   }
 
   @Test
-  public void testTryAgainButtonAction() {
-    VBox root = (VBox) loseScene.getScene().getRoot();
+  public void testPlayAgainButtonAction() {
+    VBox root = (VBox) winScene.getScene().getRoot();
     assertNotNull(root);
 
-    Button tryAgainButton = (Button) loseScene.getScene().lookup("#tryAgainButton");
-    Platform.runLater(() -> tryAgainButton.fire());
+    Button playAgainButton = (Button) winScene.getScene().lookup("#playAgainButton");
+    Platform.runLater(() -> playAgainButton.fire());
 
     try {
       Thread.sleep(1000);
@@ -83,7 +82,8 @@ public class LoseSceneTest extends ApplicationTest {
       e.printStackTrace();
     }
 
-    //Test if the scene switched from lose scene back to game
-    assertTrue(sceneController.getStage().getScene() != loseScene.getScene());
+    //Test if the scene switched from win scene back to starting screen
+    assertTrue(sceneController.getStage().getScene() != winScene.getScene());
   }
+
 }

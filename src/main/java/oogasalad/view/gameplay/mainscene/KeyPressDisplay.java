@@ -26,15 +26,26 @@ public class KeyPressDisplay {
   private static final int ROUNDED_CORNER = 10;
   private static final int RECTANGLE_SIZE = 50;
 
+  /**
+   * Creates the light-up key press display corresponding to arrow-key usage.
+   */
   public KeyPressDisplay() {
     this.root = setupArrowKeys();
     root.setAlignment(Pos.CENTER_RIGHT);
   }
 
+  /**
+   * Returns the root of this widget.
+   * @return VBox root
+   */
   public VBox getRoot() {
     return this.root;
   }
 
+  /**
+   * Sets up the light up arrow key rectangles.
+   * @return VBox of the rectangles
+   */
   private VBox setupArrowKeys() {
     HBox topRow = new HBox(createRectangle(true), up, createRectangle(true));
     topRow.setSpacing(5);
@@ -52,6 +63,11 @@ public class KeyPressDisplay {
     return arrowKeysContainer;
   }
 
+  /**
+   * Creates a stylized rectangle representing an arrow key on the keyboard.
+   * @param transparent value of it is transparent (pressed) or not
+   * @return Rectangle obj for the arrow key
+   */
   private Rectangle createRectangle(boolean transparent) {
     Rectangle rectangle = new Rectangle(RECTANGLE_SIZE, RECTANGLE_SIZE,
         transparent ? Color.TRANSPARENT : BASE_COLOR);
@@ -61,6 +77,10 @@ public class KeyPressDisplay {
     return rectangle;
   }
 
+  /**
+   * Creates event handler for the pressed KeyEvent.
+   * @param event the KeyEvent (pressed key) that just occurred
+   */
   public void handleKeyPress(javafx.scene.input.KeyEvent event) {
     switch (event.getCode()) {
       case UP, DOWN, LEFT, RIGHT -> {
@@ -71,6 +91,10 @@ public class KeyPressDisplay {
     }
   }
 
+  /**
+   * Creates event handler for the released KeyEvent.
+   * @param event the KeyEvent (released key) that just occurred
+   */
   public void handleKeyRelease(javafx.scene.input.KeyEvent event) {
     if (event.getCode().isArrowKey()) {
       updateArrowKeyVisual(event.getCode(), BASE_COLOR);
@@ -78,6 +102,11 @@ public class KeyPressDisplay {
     }
   }
 
+  /**
+   * Updates the visual changes of the rectangles when they are pressed.
+   * @param code the current KeyCode
+   * @param color color to fill the rectangle
+   */
   protected void updateArrowKeyVisual(KeyCode code, Color color) {
     switch (code) {
       case UP -> up.setFill(color);
@@ -88,5 +117,4 @@ public class KeyPressDisplay {
       }
     }
   }
-
 }

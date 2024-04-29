@@ -1,4 +1,4 @@
-package oogasalad.view.gameplay;
+package oogasalad.view.gameplay.mainscene;
 
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
@@ -28,7 +28,7 @@ public class GamePaneTest extends ApplicationTest {
             {"EmptyVisualBlock", "BabaTextBlock"}, {"EmptyVisualBlock"}}
     };
     LevelMetadata metadata = new LevelMetadata("TestLevel", "Easy", 2,
-        2, initialConfiguration, "hint");
+        2, initialConfiguration,"BabaIsUs","hint");
     testLevel = new Level(metadata);
   }
 
