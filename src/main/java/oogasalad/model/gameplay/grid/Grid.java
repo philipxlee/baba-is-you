@@ -5,28 +5,41 @@ import com.google.common.collect.HashBiMap;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.stream.StreamSupport;
+import java.util.stream.IntStream;
 
 import oogasalad.model.gameplay.blocks.AbstractBlock;
-import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.AbstractVisualBlock;
 import oogasalad.model.gameplay.exceptions.InvalidBlockName;
 import oogasalad.model.gameplay.exceptions.VisitorReflectionException;
 import oogasalad.model.gameplay.factory.BlockFactory;
 import oogasalad.model.gameplay.interpreter.RuleInterpreter;
+import oogasalad.shared.loader.PropertiesLoader;
 import oogasalad.shared.observer.Observable;
 import oogasalad.shared.observer.Observer;
 
 
 public class Grid extends GridHelper implements Observable<Grid> {
 
+  private static final String BIMAP_PROPERTIES = "blockbehaviors/strategies.properties";
+  public static final String CRAB_VISUAL_BLOCK = "CrabVisualBlock";
   private final List<Observer<Grid>> observers = new ArrayList<>();
   private final RuleInterpreter parser;
   private final BlockFactory factory;
   private final BlockUpdater blockUpdater;
+  private final Properties properties;
   private final String[][][] initialConfiguration;
 
   private final BiMap<String, String> strategyMap;
+
+  private static final String KILL = "Kill";
+  private static final String KILLABLE = "Killable";
+  private static final String CONTROLLABLE = "Controllable";
+
+  private static final String WINNABLE = "Winnable";
+  private static final String STOPPABLE = "Stoppable";
+
+  private static final String HOTABLE = "Hotable";
+  private static final String SINKABLE = "Sinkable";
 
 
   /**
@@ -44,22 +57,26 @@ public class Grid extends GridHelper implements Observable<Grid> {
     this.blockUpdater = new BlockUpdater(this, factory);
     this.initialConfiguration = initialConfiguration; // Initialize initial configuration
     this.strategyMap = HashBiMap.create();
+    this.properties = PropertiesLoader.loadProperties(BIMAP_PROPERTIES);
     addMappingsToStrategyMap();
-    InitializeGrid();
+    initializeGrid();
   }
 
   private void addMappingsToStrategyMap() {
-    strategyMap.put("Hotable", "Meltable");
-    strategyMap.put("Sinkable", "Drownable");
-    strategyMap.put("Killable", "Controllable");
-    // Add more mappings as needed
+    // Iterate through properties and add them to the strategy map
+    for (String key : properties.stringPropertyNames()) {
+      String value = properties.getProperty(key);
+      if (value != null) {
+        strategyMap.put(key, value);
+      }
+    }
   }
 
 
   /**
    * Initializes the grid with blocks based on the initial configuration.
    */
-  private void InitializeGrid() {
+  private void initializeGrid() {
     // Initializing elements
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
@@ -137,7 +154,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
   /**
    * Executes behaviors for all blocks in the grid.
    */
-  public void checkBehaviors() {
+  public void checkBehaviors() { //cant use Streams
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
@@ -147,6 +164,7 @@ public class Grid extends GridHelper implements Observable<Grid> {
       }
     }
   }
+
 
   /**
    * Checks if the specified indices are within the bounds of the grid.
@@ -211,25 +229,28 @@ public class Grid extends GridHelper implements Observable<Grid> {
    * This method sorts each cell's list so that EmptyVisualBlock instances come first.
    */
   private void sortCellsForRender() {
-    for (List<AbstractBlock>[] row : grid) {
-      for (List<AbstractBlock> cell : row) {
-        cell.sort(new Comparator<AbstractBlock>() {
-          @Override
-          public int compare(AbstractBlock block1, AbstractBlock block2) {
-            if (block1.isEmptyVisualBlock() && !(block2.isEmptyVisualBlock())) {
-              return -1;
-            } else if (!(block1.isEmptyVisualBlock())
-                && block2.isEmptyVisualBlock()) {
-              return 1;
-            }
-            return 0;
-          }
-        });
-      }
-    }
+    Arrays.stream(grid)
+            .flatMap(Arrays::stream)
+            .forEach(this::compareCellForRender);
   }
 
-  public void checkForDisappear() {
+
+  private void compareCellForRender(List<AbstractBlock> cell) {
+    cell.sort(new Comparator<AbstractBlock>() {
+      @Override
+      public int compare(AbstractBlock block1, AbstractBlock block2) {
+        if (block1.isEmptyVisualBlock() && !(block2.isEmptyVisualBlock())) {
+          return -1;
+        } else if (!(block1.isEmptyVisualBlock())
+            && block2.isEmptyVisualBlock()) {
+          return 1;
+        }
+        return 0;
+      }
+    });
+  }
+
+  public void checkForDisappear() { //cant use streams
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         checkCellForDisappear(i, j);
@@ -246,7 +267,6 @@ public class Grid extends GridHelper implements Observable<Grid> {
     for (int k = 0; k < grid[cellI][cellJ].size(); k++) {
       AbstractBlock block = grid[cellI][cellJ].get(k);
       Optional<Iterator<Entry<String, Boolean>>> optionalIterator = block.getAttributeIterator();
-
       if (optionalIterator.isPresent()) {
         Iterator<Entry<String, Boolean>> iterator = optionalIterator.get();
         while (iterator.hasNext()) {
@@ -259,14 +279,10 @@ public class Grid extends GridHelper implements Observable<Grid> {
             subjectIndex = k;
             subjectStrategyKey = attribute;
           }
-
-          // Check if an object is found, if not, check if it's a potential object
           if (isActive && objectIndex == -1 && strategyMap.inverse().containsKey(attribute)) {
             objectIndex = k;
             objectStrategyValue = attribute;
           }
-
-          // If both indices are found but not matched yet, check if they complete each other
           if (subjectIndex != -1 && objectIndex != -1 && subjectIndex != objectIndex) {
             if (strategyMap.get(subjectStrategyKey).equals(objectStrategyValue)
                     || strategyMap.inverse().get(objectStrategyValue).equals(subjectStrategyKey)) {
@@ -281,29 +297,18 @@ public class Grid extends GridHelper implements Observable<Grid> {
 
 
 
-  public boolean hasEnemy(){ //
-    boolean hasACrab = false;
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[i].length; j++) {
-        for(AbstractBlock block : grid[i][j]){
-          if(!block.isTextBlock() && block.getAttribute("Killable")){
-            hasACrab = true;
-          }
-        }
-      }
-    }
-    return hasACrab;
-  }
 
   public boolean isPassable(int cellI, int cellJ){
-    return !cellHasStoppable(cellI, cellJ) && !cellHasWinning(cellI, cellJ) && !cellHasLava(cellI, cellJ) && !cellHasWater(cellI, cellJ) && !cellHasTextBlock(cellI, cellJ); //should return opposite of cellHasStoppabe
+    return !cellHasAttribute(cellI, cellJ, STOPPABLE) && !cellHasAttribute(cellI, cellJ, WINNABLE) &&
+            !cellHasAttribute(cellI, cellJ, HOTABLE) && !cellHasAttribute(cellI, cellJ, SINKABLE) &&
+            !cellHasTextBlock(cellI, cellJ);
   }
 
   public void placeEnemy(int I, int J){
-    AbstractBlock crabBlock = factory.createBlock("CrabVisualBlock", I, J);
-    ((AbstractVisualBlock)crabBlock).modifyAttribute("Kill", true);
+    AbstractBlock crabBlock = factory.createBlock(CRAB_VISUAL_BLOCK, I, J);
+    ((AbstractVisualBlock)crabBlock).modifyAttribute(KILL, true);
     grid[I][J].add(crabBlock);
-    ((AbstractVisualBlock)crabBlock).modifyAttribute("Kill", true);
+    ((AbstractVisualBlock)crabBlock).modifyAttribute(KILL, true);
   }
 
   public void moveEnemy(int fromI, int fromJ, int fromK, int toI, int toJ){
@@ -313,35 +318,33 @@ public class Grid extends GridHelper implements Observable<Grid> {
     List<AbstractBlock> cell = grid[toI][toJ];
     AbstractBlock crabBlock = grid[toI][toJ].get(cell.size()-1);
     if (!crabBlock.isTextBlock()) {
-      ((AbstractVisualBlock) crabBlock).modifyAttribute("Kill", true);
+      ((AbstractVisualBlock) crabBlock).modifyAttribute(KILL, true);
     }
 
   }
 
 
 
-  public int [] enemyPosition(){
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid[i].length; j++) {
-        for (int k = 0; k < grid[i][j].size(); k++) {
-          AbstractBlock block = grid[i][j].get(k);
-          if(block.getAttribute("Killable")){
-            int[] enemyPosition = {i, j, k};
-            return enemyPosition;
-          }
-        }
-      }
-    }
-    return null;
+  public int[] enemyPosition() {
+    return IntStream.range(0, grid.length)
+            .boxed()
+            .flatMap(i -> IntStream.range(0, grid[i].length)
+                    .boxed()
+                    .flatMap(j -> IntStream.range(0, grid[i][j].size())
+                            .filter(k -> grid[i][j].get(k).getAttribute(KILLABLE))
+                            .mapToObj(k -> new int[]{i, j, k})))
+            .findFirst()
+            .orElse(null);
   }
+
 
   public void setCrabAttribute(){
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
         for (int k = 0; k < grid[i][j].size(); k++) {
           AbstractBlock block = grid[i][j].get(k);
-          if(!block.isTextBlock() && block.getBlockName().equals("CrabVisualBlock")) {
-            ((AbstractVisualBlock)block).modifyAttribute("Kill", true);
+          if(!block.isTextBlock() && block.getBlockName().equals(CRAB_VISUAL_BLOCK)) {
+            ((AbstractVisualBlock)block).modifyAttribute(KILL, true);
           }
         }
       }
@@ -349,35 +352,23 @@ public class Grid extends GridHelper implements Observable<Grid> {
   }
 
   public void removeBaba(int i, int j) {
-    System.out.println("calling remove BABA");
     List<AbstractBlock> cell = grid[i][j];
     Iterator<AbstractBlock> iterator = cell.iterator();
     while (iterator.hasNext()) {
       AbstractBlock block = iterator.next();
-      if (block.getAttribute("Controllable")) {
+      if (block.getAttribute(CONTROLLABLE)) {
         iterator.remove();
       }
     }
   }
 
-  public void removeEnemy(int i, int j) {
-    List<AbstractBlock> cell = grid[i][j];
-    Iterator<AbstractBlock> iterator = cell.iterator();
-    while (iterator.hasNext()) {
-      AbstractBlock block = iterator.next();
-      if (block.getAttribute("Killable")) {
-        iterator.remove();
-      }
-    }
-  }
   public Optional<Integer> findEnemyIndex(int cellI, int cellJ) {
     for (int i = 0; i < grid[cellI][cellJ].size(); i++) {
       AbstractBlock block = grid[cellI][cellJ].get(i);
-      if (block.getAttribute("Killable")) {
+      if (block.getAttribute(KILLABLE)) {
         return Optional.of(i);
       }
     }
-    // If no enemy block is found, return Optional.empty()
     return Optional.empty();
   }
 

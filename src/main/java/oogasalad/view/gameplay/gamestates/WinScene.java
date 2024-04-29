@@ -55,8 +55,7 @@ public class WinScene implements Scene {
     this.root = new VBox(20);
     this.root.setAlignment(Pos.CENTER);
     this.scene = new javafx.scene.Scene(root, width, height);
-    this.scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET)
-        .toExternalForm());
+    applyCss(DEFAULT_RESOURCE_FOLDER, STYLESHEET);
     showWinMessage();
     logger.info("Entered win scene.");
   }
