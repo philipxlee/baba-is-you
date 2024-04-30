@@ -101,7 +101,9 @@
   },
   "RockVisualBlock": {
     "imagePath": "/images/RockVisualBlock.png",
-    "category": []
+    "category": [
+      "All",
+    "Visual"]
   },
   "WallVisualBlock": {
     "imagePath": "/images/WallVisualBlock.png",
