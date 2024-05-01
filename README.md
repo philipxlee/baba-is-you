@@ -30,6 +30,7 @@ This project implements an authoring environment and player for multiple related
 
   * StackOverflow (to find helpful code snippets)
   * JavaFX Documentation
+  * ChatGPT (to generate helpful code snippets)
 
 ### Running the Program
 
@@ -52,13 +53,22 @@ This project implements an authoring environment and player for multiple related
 * Key/Mouse inputs:
 
   * Arrow Keys: Up, Down, Left, Right to move controllable characters.
-  * Cheat Keys:
+  * Cheat Keys (Gameplay):
     * `R`: Restart the level
     * `W`: Win the level
     * `L`: Lose the level
     * `E`: Spawn an enemy (crab)
-    * `X`: Easter egg: Turn Baba more girly with a bow and a skirt!
+    * `X`: Easter egg: Turn Baba more girly with a bow and a skirt! 
 
+  * Authoring Environment: 
+    * Drag and drop using mouse
+    * Remove blocks using mouse clicks
+    * Cheat Keys:
+      * "R" : Restarts the level
+      * "S" : Saves current level
+      * "L" : Loads a level for editing
+
+  
 ### Notes/Assumptions
 
 * Assumptions or Simplifications:
@@ -69,6 +79,8 @@ This project implements an authoring environment and player for multiple related
   
   * Clicking on the "load" button to load a new level may cause all crabs to clear from the screen,
   even if a user decides to click cancel on the file chooser dialog.
+  * Removing a block on authoring environment and then saving the level does not remove 
+  the block from controller and corresponding JSON file
 
 * Features implemented:
   
@@ -78,11 +90,14 @@ This project implements an authoring environment and player for multiple related
   * GPT generation: Users can generate levels using GPT-3.5.
   * Leaderboard: Users can view the top 10 scores for each level.
   * Social Center: Users can view comments on each level, and reply to them.
-  * Cheat Keys: Users can cheat to win or lose levels or reset a level.
+  * Cheat Keys: Users can cheat to win or lose levels or reset a level in gameplay, and restart, load and save in authoring view.
   * Easter Egg: Users can turn Baba more girly with a bow and a skirt.
   * Artificial Player: Spawn crabs that move towards their closest controllable character and kill them.
   * KeyPress Highlighter: shows which arrow key is being pressed as user plays the game
   * Loading and Saving: Users can load and save files in both the authoring environment and the game-player.
+  * Help system : Authoring environment has a hovering help system which lets you hover over a button to tell you what it does. Auth. view also has a help dialog!
+  * Robust validation for level creation : Ensures that a level is possible to play while creating it in the authoring environment itself, based on a set of basic rules
+
 
 * Features unimplemented:
   
@@ -95,6 +110,7 @@ This project implements an authoring environment and player for multiple related
     * Error handling in inputs for username creation during the gameplay, and for level creation
     during specifying the size of the grid.
     * GPT generation: Users can generate levels using GPT-3.5.
+    * Validation of playability of levels in authoring environment creation
     * Ability to play as a guest or as a user, which would control the access you have to saving 
     data to the leaderboard and social center.
     * Artificial player that moves towards a controllable character and kills them.
@@ -112,6 +128,8 @@ This project implements an authoring environment and player for multiple related
 is like to work with multiple people using sprints.
 * This project also reinforced the importance of setting realistic objectives and forcing yourself 
 to meet your deadlines so that the team is not experiencing blockers.
+* The project has made me appreciate how smaller individual goals can work so interdependently and come together to achieve a beautiful larger goal. I have developed a great understanding of working in large code and large, distributed teams.
+
 * [PUT MORE HERE]
 
     
