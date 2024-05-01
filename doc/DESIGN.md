@@ -6,7 +6,13 @@
 
 ## Team Roles and Responsibilities
 
-* Team Member #1
+* Team Member #1: Yasha
+  * Responsible for front-end gameplay, entrypoint, making all of the images/UI/widget
+  factory, and making the properties files for languages
+  * Also helped with refactoring some of the frontend on the Authoring env side
+  * Created the GameGridObserver, implemented the Observer paradigm in the Gameplay view (with my
+  teammates code for the interfaces)
+  * Worked on a couple other controllers
 
 * Team Member #2
 
@@ -38,6 +44,9 @@
 ## Design Goals
 
 * Goal #1
+  * Design is intuitive, neat, and standardized
+  * No hardcoded values in the view, so almost all widget text are located in property files
+  * UI widgets are shared between the two environments
 
 * Goal #2
 
@@ -51,6 +60,8 @@
 #### How were Specific Features Made Easy to Add
 
 * Feature #1
+  * It's easy to add new languages. Simply add the language name as a parameter to a combo box, 
+  then make a properties file with all necessary texts/buttons converted to the language you want.
 
 * Feature #2
 
@@ -63,6 +74,11 @@
 #### Core Classes and Abstractions, their Responsibilities and Collaborators
 
 * Class #1
+  * Core abstraction: Scene interface (and all Scene classes)
+    * The Scene interface is helped to standardize View-related classes. All highlevel view classes
+    like MainScene implement the Scene interface, and they are all managed by a SceneController class.
+    For more complex functionality, classes within scenes are split into Panes (aka, MainScene contains 
+    the GamePane and InteractionPane) to follow the multiple classes principle.
 
 * Class #2
 
@@ -93,7 +109,9 @@
   each array was a row and the elements within it were columns. But then we changed this to ensure
   that each element itself was a dynamically resizable arraylist allowing phasability of elements.
 
-* Change #2
+* Change #2: We changed the way UI widgets work. Originally, gameplay and authoring environment had
+separate UIs. Then, we decided it would make sense to have a shared API to standardize making widgets
+and streamlining the process.
 
 * Change #3
 
@@ -103,7 +121,8 @@
 
 #### Features Designed to be Easy to Add
 
-* Feature #1
+* Feature #1: It's easy to add new languages. Simply add the language name as a parameter to a combo box,
+  then make a properties file with all necessary texts/buttons converted to the language you want.
 
 * Feature #2
 
@@ -115,7 +134,9 @@
 
 #### Features Not Yet Done
 
-* Feature #1
+* Feature #1: Multiple themes
+  * We wanted to make multiple themes, such as languages, but ran out of time. It should be relatively
+  easy however; you just follow the same controller paradigm that languages follows.
 
 * Feature #2
 
