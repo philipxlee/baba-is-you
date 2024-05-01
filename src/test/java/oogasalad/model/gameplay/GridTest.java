@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
 import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.CrabVisualBlock;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.shared.observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,7 @@ public class GridTest {
   AttributeVisitor winVisitor;
   AttributeVisitor youVisitor;
   AttributeVisitor killVisitor;
+
   private BabaVisualBlock babaBlock;
   private final String[][][] initialConfiguration = {
       {{"BabaVisualBlock"}, {"BabaVisualBlock"}, {"FlagVisualBlock"}, {"WallVisualBlock"},

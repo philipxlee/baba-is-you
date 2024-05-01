@@ -2,10 +2,7 @@ package oogasalad.model.gameplay;
 
 import oogasalad.controller.gameplay.GameStateController;
 import oogasalad.model.gameplay.blocks.blockvisitor.AttributeVisitor;
-import oogasalad.model.gameplay.blocks.visualblocks.BabaVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.LavaVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.WallVisualBlock;
-import oogasalad.model.gameplay.blocks.visualblocks.WaterVisualBlock;
+import oogasalad.model.gameplay.blocks.visualblocks.*;
 import oogasalad.model.gameplay.grid.Grid;
 import oogasalad.model.gameplay.handlers.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -258,6 +255,18 @@ public class KeyHandlerTest {
     assertEquals(newEnemyPosition[1], 2);
 
 
+  }
+
+  @Test
+  public void testCrabBug(){
+    babaBlock.accept(killVisitor);
+    grid.getGrid()[1][1].add(babaBlock);
+    CrabVisualBlock crab = new CrabVisualBlock("Crab", 2, 2);
+    crab.modifyAttribute("Kill", true);
+    grid.getGrid()[1][2].add(crab);
+    EnemyKeyHandler enemy = new EnemyKeyHandler(grid, gameStateControllerMock);
+    enemy.moveEnemy();
+    assertEquals(grid.getGrid()[1][1].size(), 1);
   }
 
 
