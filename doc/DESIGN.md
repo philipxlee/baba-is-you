@@ -14,7 +14,12 @@
 
 * Team Member #4
 
-* Team Member #5
+* Team Member #5 (Divyansh Jain)
+    * Responsible for the front end of the authoring environment 
+    * Worked on core drag and drop functionality, remove blocks functionality, help system (hover and dialog box),
+      saving and loading of files from authoring environment, error handling for grid size, cheat keys and resource bundles.
+    * Also helped with the overall loading functionality/debugging, adding methods to levelcontroller, Grid and JSONLoader classes.
+    
 
 * Team Member #6 (Nikita Daga)
     * Responsible for the authoring environment view
