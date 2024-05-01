@@ -30,6 +30,10 @@
 * Goal #2
 
 * Goal #3
+  * We wanted the authoring environment and game player to be well connected with a process to save
+  from the authoring environment and load it into the game player, whilst also being able to do 
+  the reverse. This was important in being able to take an existing level and editing it in the
+  authoring environment.
 
 
 #### How were Specific Features Made Easy to Add
@@ -52,12 +56,19 @@
 * Class #3
 
 * Class #4
+  * A core class for our project was the JsonManager class. This class was an example of the 
+  facade design pattern as it was created to encapsulate the GSON library that we used to be 
+  able to handle our json files. This class was important in the parsing of levels to json and 
+  vice versa, whilst also being important to the level controllers being able to save and load.
 
 
 
 ## Assumptions or Simplifications
 
 * Decision #1
+  * A simplification we introduced towards the deadline was not allowing for rectangular grids, as 
+  they did not respond well to the updated editing and saving. As of right now we utilize square
+  grids so that there are no bugs.
 
 * Decision #2
 
