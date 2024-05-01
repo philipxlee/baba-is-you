@@ -269,6 +269,19 @@ public class KeyHandlerTest {
     assertEquals(grid.getGrid()[1][1].size(), 1);
   }
 
+  @Test
+  public void testFixedCrabBug(){
+    babaBlock.accept(killVisitor);
+    grid.getGrid()[1][1].add(babaBlock);
+    CrabVisualBlock crab = new CrabVisualBlock("Crab", 2, 2);
+    crab.modifyAttribute("Kill", true);
+    grid.getGrid()[1][2].add(crab);
+    EnemyKeyHandler enemy = new EnemyKeyHandler(grid, gameStateControllerMock);
+    enemy.moveEnemy();
+    assertEquals(grid.getGrid()[1][1].size(), 1);
+  }
+
+
 
 
 }
