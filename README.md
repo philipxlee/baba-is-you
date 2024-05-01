@@ -45,6 +45,7 @@ This project implements an authoring environment and player for multiple related
 * Interesting data files:
   * Tunnel Of The Crab King: an easy level that introduces opposing artificial players that may 
   kill Baba.
+  * Who is You: A medium level that demonstrates the feature of crabs moving towards the closest controllable block to them rather than all crabs moving towards one controllable. 
   * [PUT MORE HERE]
 
 * Key/Mouse inputs:
@@ -78,7 +79,8 @@ This project implements an authoring environment and player for multiple related
   * Social Center: Users can view comments on each level, and reply to them.
   * Cheat Keys: Users can cheat to win or lose levels or reset a level.
   * Easter Egg: Users can turn Baba more girly with a bow and a skirt.
-  * Artificial Player: Spawn crabs that move towards a controllable character and kill them.
+  * Artificial Player: Spawn crabs that move towards their closest controllable character and kill them.
+  * KeyPress Highlighter: shows which arrow key is being pressed as user plays the game
   * [PUT MORE HERE]
 
 * Features unimplemented:
@@ -98,6 +100,9 @@ This project implements an authoring environment and player for multiple related
 ### Assignment Impressions
 
 * This project was a great way to learn how to work with a large team and manage a large codebase.
+* This project was a way to challenge ourselves and acquire new technical and interpersonal skills along the way.
+* It taught us to appreciate the synergy that comes from working together toward a common goal.
+* It also taught us to embrace constructive criticism as an opportunity for growth and improvement, as depicted by changes we made from the feedback we go after demos.
 * [PUT MORE HERE]
 
     
