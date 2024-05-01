@@ -452,6 +452,7 @@ public class GamePane implements Observer<Grid> {
    * @param status new status to set the game over status to
    */
   public void setGameOverStatus(boolean status) {
+    gridController.getGameGrid().clearAllCrabs();
     this.isGameOver = status;
   }
 }

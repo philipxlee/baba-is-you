@@ -445,4 +445,19 @@ public class Grid extends GridHelper implements Observable<Grid> {
     return true;
   }
 
+  public void clearAllCrabs() {
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        for (int k = 0; k < grid[i][j].size(); k++) {
+          AbstractBlock block = grid[i][j].get(k);
+          if (!block.isTextBlock() && block.getBlockName().equals(CRAB_VISUAL_BLOCK)) {
+            grid[i][j].clear();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
 }
