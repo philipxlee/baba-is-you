@@ -45,7 +45,8 @@ This project implements an authoring environment and player for multiple related
 * Interesting data files:
   * Tunnel Of The Crab King: an easy level that introduces opposing artificial players that may 
   kill Baba.
-  * Who is You: A medium level that demonstrates the feature of crabs moving towards the closest controllable block to them rather than all crabs moving towards one controllable. 
+  * Who is You: A medium level that demonstrates the feature of crabs moving towards the closest controllable block to them rather than all crabs moving towards one controllable.
+  * Dynamic: This is a medium level that demonstrates the dynamic rule changes in-game and also the ability to alter who/what you are controlling mid-game.
   * [PUT MORE HERE]
 
 * Key/Mouse inputs:
@@ -111,6 +112,7 @@ This project implements an authoring environment and player for multiple related
 is like to work with multiple people using sprints.
 * This project also reinforced the importance of setting realistic objectives and forcing yourself 
 to meet your deadlines so that the team is not experiencing blockers.
+* [PUT MORE HERE]
 
     
 
