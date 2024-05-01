@@ -127,6 +127,7 @@ public class InteractionPane implements AlertHandler {
         "Load", "white-button", language));
     load.setOnAction(event -> {
       try {
+        scene.resetGame();
         levelController.loadNewLevel(sceneController);
       } catch (IOException e) {
         logger.error("Issue setting up load button: " + e.getMessage());
