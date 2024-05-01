@@ -1,6 +1,6 @@
-# DESIGN Document for PROJECT_NAME
-### Team
-### Names
+# DESIGN Document for OOGASalad
+### Team 2
+### Yasha Doddabele, Nikita Daga, Arnav Nayak, Philip Lee, Divyansh Jain, Joseph Ogunbadewa, Jonathan Esponda
 
 
 ## Team Roles and Responsibilities
@@ -12,6 +12,15 @@
 * Team Member #3
 
 * Team Member #4
+
+* Team Member #5
+
+* Team Member #6
+
+* Team Member #7 (Jonathan Esponda)
+  * Responsible for JsonManager class and the loading and saving of different games and levels.
+  * Helped initially with the view of the game player and also helped with the authoring environment 
+    model.
 
 
 ## Design Goals
@@ -91,4 +100,8 @@
 * Feature #3
 
 * Feature #4
+  * One of the features that we could not fully implement was handling the saving and loading of 
+  rectangular grids. Towards the end of our submission, we encountered a bug that did not allow for 
+  the correct handling of non-square grids. Therefore, we just set square grids as the only option
+  for creating levels.
  
