@@ -63,7 +63,6 @@ public class MainScene implements Scene {
     gameScene.initializeGameGrid(GAMEPLAY_WIDTH, HEIGHT, this, sceneController, level,
         levelController);
     gameScene.getGrid().setLayoutX(1000);
-    gameScene.setGameOverStatus(false);
 
     //Initialize interaction pane1
     this.interactionScene = new InteractionPane();

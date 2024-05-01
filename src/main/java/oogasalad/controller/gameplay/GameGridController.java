@@ -101,9 +101,7 @@ public class GameGridController implements AlertHandler {
     return jsonGameParser.parseLevel(jsonObject);
   }
 
-  private void clearCrabs() {
-    gameGrid.clearAllCrabs();
-  }
+
 
   /**
    * Sets the game over status for the game pane.
@@ -111,7 +109,6 @@ public class GameGridController implements AlertHandler {
    * @param status new status to set to
    */
   public void setGameOverStatus(boolean status) {
-    clearCrabs();
     gamePane.setGameOverStatus(status);
   }
 
