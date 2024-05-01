@@ -86,8 +86,7 @@
 
 * Change #1: We changed the format of our planned JSon. In the plan the grid was a 2D array where
   each array was a row and the elements within it were columns. But then we changed this to ensure
-  that
-  each element itself was a dynamically resizable arraylist allowing phasability of elements.
+  that each element itself was a dynamically resizable arraylist allowing phasability of elements.
 
 * Change #2
 
@@ -117,16 +116,12 @@
 
 * Feature #3
     * One of the bugs in our features in the removal of blocks from the backend after they are
-      removed
-      from the authoring frontend. Currently, despite not showing up on the frontend, blocks will be
-      saved
-      in their past position and show up when a file is loaded.
+      removed from the authoring frontend. Currently, despite not showing up on the frontend, blocks
+      will be saved in their past position and show up when a file is loaded.
 
 * Feature #4
     * One of the features that we could not fully implement was handling the saving and loading of
       rectangular grids. Towards the end of our submission, we encountered a bug that did not allow
-      for
-      the correct handling of non-square grids. Therefore, we just set square grids as the only
-      option
-      for creating levels.
+      for the correct handling of non-square grids. Therefore, we just set square grids as the only
+      option for creating levels.
  
