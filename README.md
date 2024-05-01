@@ -81,12 +81,13 @@ This project implements an authoring environment and player for multiple related
   * Easter Egg: Users can turn Baba more girly with a bow and a skirt.
   * Artificial Player: Spawn crabs that move towards their closest controllable character and kill them.
   * KeyPress Highlighter: shows which arrow key is being pressed as user plays the game
-  * [PUT MORE HERE]
+  * Loading and Saving: Users can load and save files in both the authoring environment and the game-player.
 
 * Features unimplemented:
   
   * Pull functionality that may have allowed a controllable character to pull blocks as opposed to
   always pushing them.
+  * A way to create new rules and blocks to give level creators more flexibility.
 
 * Noteworthy Features:
   
@@ -96,6 +97,9 @@ This project implements an authoring environment and player for multiple related
     * Ability to play as a guest or as a user, which would control the access you have to saving 
     data to the leaderboard and social center.
     * Artificial player that moves towards a controllable character and kills them.
+    * Ability to control multiple elements on the grid simultaneously.
+    * Dynamic rule updating in game. 
+    * Ability to have multiple windows running the game.
 
 ### Assignment Impressions
 
@@ -103,7 +107,10 @@ This project implements an authoring environment and player for multiple related
 * This project was a way to challenge ourselves and acquire new technical and interpersonal skills along the way.
 * It taught us to appreciate the synergy that comes from working together toward a common goal.
 * It also taught us to embrace constructive criticism as an opportunity for growth and improvement, as depicted by changes we made from the feedback we go after demos.
-* [PUT MORE HERE]
+* The project was also very helpful in being able to experience agile in a team and to see what it 
+is like to work with multiple people using sprints.
+* This project also reinforced the importance of setting realistic objectives and forcing yourself 
+to meet your deadlines so that the team is not experiencing blockers.
 
     
 
