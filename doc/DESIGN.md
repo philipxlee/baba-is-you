@@ -13,7 +13,14 @@
   * Also developed the social center and leaderboard by creating database connections and classes to 
     interact with the MongoDB Atlas interface.
 
-* Team Member #2
+* Team Member #2: (Yasha Doddabele)
+  * Responsible for front-end gameplay, entrypoint, making all of the images/UI/widget
+  factory, and making the properties files for languages
+  * Also helped with refactoring some of the frontend on the Authoring env side
+  * Created the GameGridObserver, implemented the Observer paradigm in the Gameplay view (with my
+  teammates code for the interfaces)
+  * Worked on a couple other controllers
+
 
 * Team Member #3
 
@@ -47,12 +54,15 @@
     block factory that could create new blocks based on their type and category, as well as implemented
     a visitor pattern to assign strategies to blocks with minimal code changes.
 
+
 * Goal #2
+  * Design is intuitive, neat, and standardized
+  * No hardcoded values in the view, so almost all widget text are located in property files
+  * UI widgets are shared between the two environments
 
 * Goal #3
     * We wanted the authoring environment and game player to be well-connected with a process to
-      save
-      from the authoring environment and load it into the game player, whilst also being able to do
+      save from the authoring environment and load it into the game player, whilst also being able to do
       the reverse. This was important in being able to take an existing level and editing it in the
       authoring environment.
 
@@ -62,7 +72,8 @@
     factory and visitor pattern. The block factory could create new blocks based on their type and 
     category, and the visitor pattern could assign strategies to blocks with minimal code changes.
 
-* Feature #2
+* Feature #2: It's easy to add new languages. Simply add the language name as a parameter to a combo box, 
+  then make a properties file with all necessary texts/buttons converted to the language you want.
 
 * Feature #3: It is easy to add new blocks and their categories to the authoring view since all
   of this information is read from a json file. Only the file needs to be updated for new blocks and
@@ -76,9 +87,15 @@
   * A core class was the rule interpreter which was responsible for interpreting the rules of the
     game. This class was important in the gameplay as it was responsible for interpreting the rules
     of the game and applying them to the blocks on the grid. It was abstracted as it followed single
-    responsability, and was only used to assign strategies to blocks.
+    responsibility, and was only used to assign strategies to blocks.
 
 * Class #2
+    * Core abstraction: Scene interface (and all Scene classes)
+    * The Scene interface is helped to standardize View-related classes. All highlevel view classes
+      like MainScene implement the Scene interface, and they are all managed by a SceneController class.
+      For more complex functionality, classes within scenes are split into Panes (aka, MainScene contains
+      the GamePane and InteractionPane) to follow the multiple classes principle.
+
 
 * Class #3
 
@@ -106,7 +123,9 @@
   each array was a row and the elements within it were columns. But then we changed this to ensure
   that each element itself was a dynamically resizable arraylist allowing phasability of elements.
 
-* Change #2
+* Change #2: We changed the way UI widgets work. Originally, gameplay and authoring environment had
+separate UIs. Then, we decided it would make sense to have a shared API to standardize making widgets
+and streamlining the process.
 
 * Change #3
 
@@ -116,11 +135,13 @@
 
 #### Features Designed to be Easy to Add
 
-* Feature #1
-  * To add a new visual block, just extend the BlockVisitor by adding a new visit method, as well as the
-  visitor classes that implement the BlockVisitor. 
+* Feature #1: 
+  * It's easy to add new languages. Simply add the language name as a parameter to a combo box,
+    then make a properties file with all necessary texts/buttons converted to the language you want.
 
-* Feature #2
+* Feature #2:  
+  * To add a new visual block, just extend the BlockVisitor by adding a new visit method, as well as the
+    visitor classes that implement the BlockVisitor.
 
 * Feature #3
 
@@ -130,7 +151,9 @@
 
 #### Features Not Yet Done
 
-* Feature #1
+* Feature #1: Multiple themes
+  * We wanted to make multiple themes, such as languages, but ran out of time. It should be relatively
+  easy however; you just follow the same controller paradigm that languages follows.
 
 * Feature #2
   * Pull functionality, which could allow a controllable block to pull blocks towards them as opposed to 
