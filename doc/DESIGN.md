@@ -6,13 +6,18 @@
 
 ## Team Roles and Responsibilities
 
-* Team Member #1
+* Team Member #1 (Philip Lee)
+  * Responsible for the rule interpreter, strategy and visitor pattern that assigns strategies to 
+   corresponding blocks.
+  * Worked on controllers such as GameState controller which is responsible for winnign and losing logic.
+  * Also developed the social center and leaderboard by creating database connections and classes to 
+    interact with the MongoDB Atlas interface.
 
 * Team Member #2
 
 * Team Member #3
 
-* Team Member #4
+* Team Member #4 
 
 * Team Member #5 (Divyansh Jain)
     * Responsible for the front end of the authoring environment 
@@ -38,6 +43,9 @@
 ## Design Goals
 
 * Goal #1
+  * We wanted to create a game engine that could adapt to new blocks easily. As such, we created a
+    block factory that could create new blocks based on their type and category, as well as implemented
+    a visitor pattern to assign strategies to blocks with minimal code changes.
 
 * Goal #2
 
@@ -50,7 +58,9 @@
 
 #### How were Specific Features Made Easy to Add
 
-* Feature #1
+* Feature #1: Adding a new block to the game engine and making it work with attributes was made easy by block 
+    factory and visitor pattern. The block factory could create new blocks based on their type and 
+    category, and the visitor pattern could assign strategies to blocks with minimal code changes.
 
 * Feature #2
 
@@ -63,6 +73,10 @@
 #### Core Classes and Abstractions, their Responsibilities and Collaborators
 
 * Class #1
+  * A core class was the rule interpreter which was responsible for interpreting the rules of the
+    game. This class was important in the gameplay as it was responsible for interpreting the rules
+    of the game and applying them to the blocks on the grid. It was abstracted as it followed single
+    responsability, and was only used to assign strategies to blocks.
 
 * Class #2
 
@@ -82,10 +96,9 @@
       grids so that there are no bugs.
 
 * Decision #2
-
-* Decision #3
-
-* Decision #4
+   * An assumption we made was to only allow guest users to reply to comments on levels and not have the
+      ability to save their comments to the database. This was done to simplify the social center and leaderboard, 
+      but to also encourage users to create an account to have more functionality.
 
 ## Changes from the Original Plan
 
@@ -104,6 +117,8 @@
 #### Features Designed to be Easy to Add
 
 * Feature #1
+  * To add a new visual block, just extend the BlockVisitor by adding a new visit method, as well as the
+  visitor classes that implement the BlockVisitor. 
 
 * Feature #2
 
@@ -118,6 +133,8 @@
 * Feature #1
 
 * Feature #2
+  * Pull functionality, which could allow a controllable block to pull blocks towards them as opposed to 
+  always pushing them.
 
 * Feature #3
     * One of the bugs in our features in the removal of blocks from the backend after they are
