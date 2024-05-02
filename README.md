@@ -1,5 +1,3 @@
-# oogasalad
-
 ## BabaIsUs
 
 ## Philip Lee, Divyansh Jain, Nikita Daga, Jonathan Esponada, Arnav Nayak, Joseph Ogunbadewa, Yasha Doddabele
@@ -8,14 +6,11 @@ This project implements an authoring environment and player for multiple related
 
 ### Timeline
 
-* Start Date:
-    * March 19
+* Start Date: March 19
 
-* Finish Date:
-    * May 1
+* Finish Date: May 1
 
-* Hours Spent:
-    * 300
+* Hours Spent: 300
 
 ### Attributions
 
@@ -31,7 +26,6 @@ This project implements an authoring environment and player for multiple related
     * JavaFX Documentation
     * StackOverflow (to find helpful code snippets)
     * JavaFX Documentation
-    * ChatGPT (to generate helpful code snippets)
 
 ### Running the Program
 
@@ -118,25 +112,4 @@ This project implements an authoring environment and player for multiple related
     * Ability to control multiple elements on the grid simultaneously.
     * Dynamic rule updating in game.
     * Ability to have multiple windows running the game.
-
-### Assignment Impressions
-
-* This project was a great way to learn how to work with a large team and manage a large codebase.
-* The project required good usage of data files to integrate between the model and view of both
-  authoring and gameplay applications.
-* This project was a way to challenge ourselves and acquire new technical and interpersonal skills
-  along the way.
-* It taught us to appreciate the synergy that comes from working together toward a common goal.
-* It also taught us to embrace constructive criticism as an opportunity for growth and improvement,
-  as depicted by changes we made from the feedback we got after demos.
-* The project was also very helpful in being able to experience agile in a team and to see what it
-  is like to work with multiple people using sprints.
-* This project also reinforced the importance of setting realistic objectives and forcing yourself
-  to meet your deadlines so that the team is not experiencing blockers.
-* The project has made me appreciate how smaller individual goals can work so interdependently and
-  come together to achieve a beautiful larger goal. I have developed a great understanding of
-  working in large code and large, distributed teams.
-
-    
-
 
